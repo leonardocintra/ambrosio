@@ -4,6 +4,7 @@ CREATE TABLE tipo_template_exame (
 	descricao varchar(100) NOT NULL,
 	ativo bit(1) NOT NULL,
 	identificador_manual INT NOT NULL,
+        cliente_que_criou bigint(20) NOT NULL,
 	data_criacao DATETIME NOT NULL,
 	data_atualizacao DATETIME NOT NULL,
     PRIMARY KEY (id)
