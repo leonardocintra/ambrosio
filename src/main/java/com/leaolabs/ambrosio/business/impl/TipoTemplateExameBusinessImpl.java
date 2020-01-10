@@ -25,7 +25,7 @@ public class TipoTemplateExameBusinessImpl implements TipoTemplateExameBusiness 
 	public List<TipoTemplateExame> findAll() {
 		List<TipoTemplateExame> tipos = this.tipoTemplateExameRepository.findAll();
 		if (tipos.isEmpty()) {
-			throw new EntityNotFoundException("Tipos de Template Exame");
+			throw new EntityNotFoundException("TipoTemplateExame");
 		}
 		return this.tipoTemplateExameRepository.findAll();
 	}
