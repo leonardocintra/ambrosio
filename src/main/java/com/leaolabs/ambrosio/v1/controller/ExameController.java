@@ -2,6 +2,7 @@ package com.leaolabs.ambrosio.v1.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ import com.leaolabs.ambrosio.v1.dtos.ExameDto;
 import com.leaolabs.ambrosio.v1.mapper.ExameMapper;
 
 @RestController
-@RequestMapping("/v1/ambrosio/exame")
+@RequestMapping("/v1/ambrosio")
 public class ExameController extends BaseController {
 
 	private final ExameBusiness exameBusinness;
@@ -37,26 +38,27 @@ public class ExameController extends BaseController {
 		this.exameMapper = exameMapper;
 	}
 
-	@GetMapping(value = "")
+	@GetMapping(value = "/exames")
 	@ResponseBody
 	public ResponseEntity<ResponseMeta> getAll() {
 		final List<Exame> exames = this.exameBusinness.findAll();
 		return super.buildResponse(HttpStatus.OK, Optional.of(this.exameMapper.serialize(exames)));
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/exames/{id}")
 	@ResponseBody
 	public ResponseEntity<ResponseMeta> getById(@PathVariable final Long id) {
 		final var optionalExame = this.exameBusinness.findById(id);
 
-		return super.buildResponse(HttpStatus.OK, Optional.of(
-				this.exameMapper.serialize(optionalExame.orElseThrow(() -> new EntityNotFoundException("Exame")))));
+		return super.buildResponse(HttpStatus.OK, Optional
+				.of(this.exameMapper.serialize(optionalExame.orElseThrow(() -> new EntityNotFoundException("Exame")))));
 	}
 
 	@ResponseBody
-	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseMeta> post(@RequestBody final ExameDto exameDto) {
-		final var optionalExame = this.exameBusinness.create(this.exameMapper.deserialize(exameDto));
+	@PostMapping(value = "/{id}/exames", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ResponseMeta> post(@PathVariable final Long id,
+			@RequestBody final ExameDto exameDto) {
+		final var optionalExame = this.exameBusinness.create(this.exameMapper.deserialize(exameDto), id);
 
 		return super.buildResponse(HttpStatus.CREATED, Optional
 				.of(this.exameMapper.serialize(optionalExame.orElseThrow(() -> new EntityNotFoundException("Exame")))));

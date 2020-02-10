@@ -9,7 +9,7 @@ public interface ExameBusiness {
 
 	List<Exame> findAll();
 
-	Optional<Exame> create(Exame exame);
+	Optional<Exame> create(Exame exame, Long tipoTemplateExameId);
 
 	Optional<Exame> findById(Long id);
 }

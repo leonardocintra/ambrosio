@@ -24,7 +24,7 @@ import com.leaolabs.ambrosio.v1.dtos.TipoTemplateExameDto;
 import com.leaolabs.ambrosio.v1.mapper.TipoTemplateExameMapper;
 
 @RestController
-@RequestMapping("/v1/ambrosio/tipo-templates-exame")
+@RequestMapping("/v1/ambrosio")
 public class TipoTemplateExameController extends BaseController {
 
 	private final TipoTemplateExameBusiness tipoTemplateExameBusinness;
@@ -38,14 +38,14 @@ public class TipoTemplateExameController extends BaseController {
 		this.tipoTemplateExameMapper = tipoTemplateExameMapper;
 	}
 
-	@GetMapping(value = "")
+	@GetMapping(value = "/tipo-templates-exame")
 	@ResponseBody
 	public ResponseEntity<ResponseMeta> getAll() {
 		final List<TipoTemplateExame> medicos = this.tipoTemplateExameBusinness.findAll();
 		return super.buildResponse(HttpStatus.OK, Optional.of(this.tipoTemplateExameMapper.serialize(medicos)));
 	}
 
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/tipo-templates-exame/{id}")
 	@ResponseBody
 	public ResponseEntity<ResponseMeta> getById(@PathVariable final Long id) {
 		final var optionalMedico = this.tipoTemplateExameBusinness.findById(id);
@@ -55,7 +55,7 @@ public class TipoTemplateExameController extends BaseController {
 	}
 
 	@ResponseBody
-	@PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/tipo-templates-exame", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseMeta> post(@RequestBody final TipoTemplateExameDto tipoTemplateExameDto) {
 		final var optionalTipo = this.tipoTemplateExameBusinness
 				.create(this.tipoTemplateExameMapper.deserialize(tipoTemplateExameDto));
