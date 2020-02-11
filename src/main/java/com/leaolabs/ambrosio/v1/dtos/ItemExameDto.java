@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import com.leaolabs.ambrosio.model.TipoTemplateExame;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,9 +22,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 @Builder
-public class ExameDto implements Serializable {
+public class ItemExameDto implements Serializable {
 	
-	private static final long serialVersionUID = 330981960071258215L;
+	private static final long serialVersionUID = -2909272439123528207L;
 
 	private Long id;
 
@@ -36,10 +34,24 @@ public class ExameDto implements Serializable {
 	private Boolean ativo;
 
 	@NotBlank
-	private String descricao;
+	private String nome;
 
-	@NotNull
-	private TipoTemplateExame tipoTemplateExame;
+	private String valorPadrao;
+
+	private Integer ordemExibicao;
+
+	private String metodo;
+
+	private String material;
+
+	private String valorReferencia;
+
+	private String observacao;
+
+	private String unidadeMedida;
+
+	@Valid
+	private TipoCampoDto tipoCampo;
 
 	@NotBlank
 	private ZonedDateTime dataCriacao;

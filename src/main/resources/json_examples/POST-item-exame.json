@@ -1,0 +1,14 @@
+{
+    "exame": {
+        "id": 1
+    },
+    "nome": "ACIDO URICO",
+    "valorPadrao": "0.0",
+    "tipoCampo": {
+        "id": 2
+    },
+    "ordemExibicao": 0,
+    "metodo": "Colorimétrico Enzimático",
+    "material": "Sangue",
+    "valorReferencia": "Valores de referência \n de 3,4 a 7,0 mg/d"
+}

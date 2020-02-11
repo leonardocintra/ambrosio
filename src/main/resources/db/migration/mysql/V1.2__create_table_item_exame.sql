@@ -43,7 +43,7 @@ CREATE TABLE item_exame (
 	nome varchar(150) NOT NULL UNIQUE,
 	tipo_campo_id bigint(20) NOT NULL,
 	valor_padrao varchar(150) NULL,
-	order_exibicao INT NOT NULL,
+	ordem_exibicao INT NOT NULL,
 	metodo varchar(200) NULL,
 	material varchar(200) NULL,
 	observacao TEXT NULL,
