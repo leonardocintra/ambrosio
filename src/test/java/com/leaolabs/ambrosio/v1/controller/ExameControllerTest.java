@@ -29,7 +29,6 @@ public class ExameControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("Exame not found")))
                 .andReturn()
-                .getResponse()
-                .getContentAsString();
+                .getResponse();
     }
 }
