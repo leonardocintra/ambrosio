@@ -3,12 +3,12 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:11-jdk
-      - image: circleci/mysql:8.0.4
+      - image: circleci/mysql:5.7
         environment:
-          MYSQL_ROOT_PASSWORD: rootpw
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: user
-          MYSQL_PASSWORD: passw0rd
+          MYSQL_ROOT_PASSWORD: ambrosio
+          MYSQL_DATABASE: ambrosio
+          MYSQL_USER: ambrosio
+          MYSQL_PASSWORD: ambrosio
 
     working_directory: ~/repo
 
@@ -32,7 +32,7 @@ jobs:
       - run:
           name: Install MySQL CLI;
           command: |
-            sudo apt-get install default-mysql-client
+            sudo apt-get install mysql-client
 
       # Download and cache dependencies
       - restore_cache:
