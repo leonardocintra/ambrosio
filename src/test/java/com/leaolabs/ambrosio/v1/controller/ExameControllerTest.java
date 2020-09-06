@@ -28,6 +28,7 @@ public class ExameControllerTest {
                 .contentType(JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("Exame not found")))
+                .andExpect(jsonPath("$.[0].userMessage", Matchers.is("You attempted to get a Exame, but did not find any")))
                 .andReturn()
                 .getResponse();
     }
