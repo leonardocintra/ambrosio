@@ -23,6 +23,8 @@ import com.leaolabs.ambrosio.model.TipoTemplateExame;
 import com.leaolabs.ambrosio.v1.dtos.TipoTemplateExameDto;
 import com.leaolabs.ambrosio.v1.mapper.TipoTemplateExameMapper;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/ambrosio")
 public class TipoTemplateExameController extends BaseController {
@@ -56,7 +58,7 @@ public class TipoTemplateExameController extends BaseController {
 
 	@ResponseBody
 	@PostMapping(value = "/tipo-templates-exame", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseMeta> post(@RequestBody final TipoTemplateExameDto tipoTemplateExameDto) {
+	public ResponseEntity<ResponseMeta> post(@RequestBody @Valid final TipoTemplateExameDto tipoTemplateExameDto) {
 		final var optionalTipo = this.tipoTemplateExameBusinness
 				.create(this.tipoTemplateExameMapper.deserialize(tipoTemplateExameDto));
 

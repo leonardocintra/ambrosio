@@ -5,6 +5,8 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,21 +29,19 @@ public class TipoTemplateExameDto implements Serializable {
 	
 	private Long id;
 
-	@NotBlank
 	private UUID uuid;
 	
 	private Boolean ativo;
 	
-	@NotBlank
+	@NotNull
 	private Long clienteQueCriou;
 
 	@NotBlank
+	@Size(max = 100)
 	private String descricao;
 
-	@NotBlank
 	private ZonedDateTime dataCriacao;
 
-	@NotBlank
 	private ZonedDateTime dataAtualizacao;
 
 }
