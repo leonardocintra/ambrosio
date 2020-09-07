@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -20,7 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Transactional
 public class TipoTemplateExameControllerTest {
 
     @Autowired
@@ -58,6 +55,44 @@ public class TipoTemplateExameControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("Missing body parameter descricao")))
                 .andExpect(jsonPath("$.[0].userMessage", Matchers.is("Field descricao is required and can not be empty")))
+                .andReturn()
+                .getResponse();
+    }
+
+    @Test
+    @SneakyThrows
+    public void deveRetornar400QuandoAoCadastrarTemplateExameDescricaoVazia() {
+        var templateExameDto = TipoTemplateExameDto.builder()
+                .ativo(true)
+                .clienteQueCriou(1L)
+                .descricao("")
+                .build();
+
+        this.mockMvc.perform(post(URI)
+                .contentType(JSON)
+                .content(objectMapper.writeValueAsBytes(templateExameDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("Missing body parameter descricao")))
+                .andExpect(jsonPath("$.[0].userMessage", Matchers.is("Field descricao is required and can not be empty")))
+                .andReturn()
+                .getResponse();
+    }
+
+    @Test
+    @SneakyThrows
+    public void deveRetornar400QuandoAoCadastrarTemplateExameDescricaoMuitoGrande() {
+        var templateExameDto = TipoTemplateExameDto.builder()
+                .ativo(true)
+                .clienteQueCriou(1L)
+                .descricao("leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique - leonardo juliana luisa henrique")
+                .build();
+
+        this.mockMvc.perform(post(URI)
+                .contentType(JSON)
+                .content(objectMapper.writeValueAsBytes(templateExameDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("Invalid body parameter descricao - it must be filled with a value lesser or equals than 100")))
+                .andExpect(jsonPath("$.[0].userMessage", Matchers.is("Invalid field descricao - it must be filled with a value lesser or equals than 100")))
                 .andReturn()
                 .getResponse();
     }
