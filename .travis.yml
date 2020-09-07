@@ -5,4 +5,5 @@ service:
   - mysql
 before_script:
   - mysql -e 'DROP DATABASE IF EXISTS ambrosio'
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS ambrosio;'  
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS ambrosio;'
+  - mysql -u ambrosio -p ambrosio --default-character-set=utf8 ambrosio 
