@@ -30,7 +30,8 @@ public class TipoTemplateExameDto implements Serializable {
 	private Long id;
 
 	private UUID uuid;
-	
+
+	@NotNull
 	private Boolean ativo;
 	
 	@NotNull
