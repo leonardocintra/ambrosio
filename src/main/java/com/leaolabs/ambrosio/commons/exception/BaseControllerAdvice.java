@@ -2,10 +2,8 @@ package com.leaolabs.ambrosio.commons.exception;
 
 import static java.text.MessageFormat.format;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.text.MessageFormat;
+import java.util.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.leaolabs.ambrosio.commons.controller.ResponseMeta;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @ControllerAdvice
 public class BaseControllerAdvice {
@@ -190,6 +189,30 @@ public class BaseControllerAdvice {
         });
 
         return errorMessages;
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public List<ResponseMeta.ErrorMessage> exception(final MethodArgumentTypeMismatchException ex) {
+        if (ex.getRequiredType() == UUID.class) {
+            return Collections.singletonList(ResponseMeta.ErrorMessage.builder()
+                    .developerMessage(
+                            MessageFormat.format(
+                                    "Invalid parameter {0} - it must be filled with a valid UUID",
+                                    ex.getName()))
+                    .userMessage(MessageFormat.format(
+                            "Invalid field {0} - it must be filled with a valid UUID", ex.getName()))
+                    .build());
+        } else {
+            return Collections.singletonList(ResponseMeta.ErrorMessage.builder()
+                    .developerMessage(
+                            MessageFormat.format("Invalid query parameter {0} - it is not allowed",
+                                    ex.getName() + "=" + ex.getValue()))
+                    .userMessage(MessageFormat.format(
+                            "Invalid field {0} - it is not allowed", ex.getName()))
+                    .build());
+        }
     }
 
     private Long getValue(final FieldError fieldError) {

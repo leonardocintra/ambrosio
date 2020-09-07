@@ -1,6 +1,7 @@
 package com.leaolabs.ambrosio.v1.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leaolabs.ambrosio.model.TipoTemplateExame;
 import com.leaolabs.ambrosio.repository.TipoTemplateExameRepository;
 import com.leaolabs.ambrosio.v1.dtos.TipoTemplateExameDto;
 import lombok.SneakyThrows;
@@ -36,6 +37,7 @@ public class TipoTemplateExameControllerTest {
 
     static final String URI = "/v1/ambrosio/tipo-templates-exame";
     static final MediaType JSON = MediaType.APPLICATION_JSON;
+
 
     @Test
     @SneakyThrows
@@ -168,5 +170,68 @@ public class TipoTemplateExameControllerTest {
         Assert.assertEquals(templateExameDto.getDescricao(), result.get().getDescricao());
         Assert.assertNotNull(result.get().getDataCriacao());
         Assert.assertNotNull(result.get().getDataAtualizacao());
+    }
+
+    @Test
+    @SneakyThrows
+    public void deveRetornar200QuandoExisteTemplateExamesCadastrado() {
+        var tipoTemplateExame = this.tipoTemplateExameRepository.save(TipoTemplateExame.builder()
+                .clienteQueCriou(1L)
+                .ativo(true)
+                .descricao("Exame Teste Consta Template")
+                .build());
+
+        this.mockMvc.perform(get(URI))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.records", hasSize(1)))
+                .andExpect(jsonPath("$.records[0].descricao", Matchers.is("Exame Teste Consta Template")))
+                .andReturn()
+                .getResponse();
+
+        var result = this.tipoTemplateExameRepository.findById(tipoTemplateExame.getId());
+
+        Assert.assertEquals("Exame Teste Consta Template", result.get().getDescricao());
+        Assert.assertNotNull(result.get().getUuid());
+    }
+
+    @Test
+    @SneakyThrows
+    public void deveRetornar200QuandoBuscaTemplateExameById() {
+        var tipoTemplateExame = this.tipoTemplateExameRepository.save(TipoTemplateExame.builder()
+                .clienteQueCriou(1L)
+                .ativo(true)
+                .descricao("Exame Teste By ID")
+                .build());
+
+        this.mockMvc.perform(get(URI + "/" + tipoTemplateExame.getId().toString()))
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.records", hasSize(1)))
+                .andExpect(jsonPath("$.records[0].descricao", Matchers.is("Exame Teste By ID")))
+                .andReturn()
+                .getResponse();
+    }
+
+    @Test
+    @SneakyThrows
+    public void deveRetornar404QuandoBuscaTemplateExameInexistenteById() {
+
+        this.mockMvc.perform(get(URI + "/2323"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$[0].developerMessage", Matchers.is("Tipo Template Exame not found")))
+                .andExpect(jsonPath("$[0].userMessage", Matchers.is("You attempted to get a Tipo Template Exame, but did not find any")))
+                .andReturn()
+                .getResponse();
+    }
+
+    @Test
+    @SneakyThrows
+    public void deveRetornar400QuandoBuscaTemplateExameInexistenteByIdString() {
+
+        this.mockMvc.perform(get(URI + "/aaaaaaaa"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[0].developerMessage", Matchers.is("Invalid query parameter id=aaaaaaaa - it is not allowed")))
+                .andExpect(jsonPath("$[0].userMessage", Matchers.is("Invalid field id - it is not allowed")))
+                .andReturn()
+                .getResponse();
     }
 }
