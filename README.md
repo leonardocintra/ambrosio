@@ -2,6 +2,7 @@
 API Laudos e Exames laboratoriais
 
 [![Build Status](https://travis-ci.org/leonardocintra/ambrosio.svg?branch=master)](https://travis-ci.org/leonardocintra/ambrosio)
+[![CircleCI](https://circleci.com/gh/leonardocintra/ambrosio.svg?style=svg)](https://circleci.com/gh/leonardocintra/ambrosio)
 
 ## Ambrosio
 Por ser uma API de Laudos e Exames, algo relacionado a medico, doutores e medicina, o nome Ambrosio foi escolhido em homenagem a Sando Ambrosio, Santo de **Doutor** da igreja
