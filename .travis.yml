@@ -1,4 +1,8 @@
 language: java
 jdk:
-  - oraclejdk9
   - oraclejdk11
+service:
+  - mysql
+before_script:
+  - mysql -e 'DROP DATABASE IF EXISTS ambrosio'
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS ambrosio;'  
