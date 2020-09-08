@@ -22,4 +22,4 @@ sudo docker-compose up -d
 ```
 
 ### Tests
-```mvn clean compile test```
+```mvn clean test```
