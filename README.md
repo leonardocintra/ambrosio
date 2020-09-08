@@ -20,3 +20,6 @@ Por ser uma API de Laudos e Exames, algo relacionado a medico, doutores e medici
 git clone 
 sudo docker-compose up -d
 ```
+
+### Tests
+```mvn clean compile test```
