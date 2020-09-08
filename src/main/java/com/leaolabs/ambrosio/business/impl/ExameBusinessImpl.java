@@ -15,38 +15,38 @@ import com.leaolabs.ambrosio.repository.TipoTemplateExameRepository;
 @Service
 public class ExameBusinessImpl implements ExameBusiness {
 
-	private ExameRepository exameRepository;
-	private TipoTemplateExameRepository tipoTemplateExameRepository;
+    private ExameRepository exameRepository;
+    private TipoTemplateExameRepository tipoTemplateExameRepository;
 
-	@Autowired
-	public ExameBusinessImpl(final ExameRepository exameRepository,
-			final TipoTemplateExameRepository tipoTemplateExameRepository) {
-		this.exameRepository = exameRepository;
-		this.tipoTemplateExameRepository = tipoTemplateExameRepository;
-	}
+    @Autowired
+    public ExameBusinessImpl(final ExameRepository exameRepository,
+                             final TipoTemplateExameRepository tipoTemplateExameRepository) {
+        this.exameRepository = exameRepository;
+        this.tipoTemplateExameRepository = tipoTemplateExameRepository;
+    }
 
-	@Override
-	public List<Exame> findAll() {
-		final List<Exame> tipos = this.exameRepository.findAll();
-		if (tipos.isEmpty()) {
-			throw new EntityNotFoundException("Exame");
-		}
-		return this.exameRepository.findAll();
-	}
+    @Override
+    public List<Exame> findAll() {
+        final List<Exame> tipos = this.exameRepository.findAll();
+        if (tipos.isEmpty()) {
+            throw new EntityNotFoundException("Exame");
+        }
+        return this.exameRepository.findAll();
+    }
 
-	@Override
-	public Optional<Exame> create(final Exame exame, final Long tipoTemplateExameId) {
+    @Override
+    public Optional<Exame> create(final Exame exame) {
 
-		final var tipoTemplateExame = this.tipoTemplateExameRepository.findById(tipoTemplateExameId)
-				.orElseThrow(() -> new EntityNotFoundException("TipoTemplateExame"));
+        final var tipoTemplateExame = this.tipoTemplateExameRepository.findById(exame.getTipoTemplateExame().getId())
+                .orElseThrow(() -> new EntityNotFoundException("TipoTemplateExame"));
 
-		exame.setTipoTemplateExame(tipoTemplateExame);
+        exame.setTipoTemplateExame(tipoTemplateExame);
 
-		return Optional.of(this.exameRepository.save(exame));
-	}
+        return Optional.of(this.exameRepository.save(exame));
+    }
 
-	@Override
-	public Optional<Exame> findById(final Long id) {
-		return this.exameRepository.findById(id);
-	}
+    @Override
+    public Optional<Exame> findById(final Long id) {
+        return this.exameRepository.findById(id);
+    }
 }

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.leaolabs.ambrosio.model.TipoTemplateExame;
 
@@ -30,21 +31,20 @@ public class ExameDto implements Serializable {
 
 	private Long id;
 
-	@NotBlank
 	private UUID uuid;
-	
+
+	@NotNull
 	private Boolean ativo;
 
 	@NotBlank
+	@Size(max = 100)
 	private String descricao;
 
 	@NotNull
 	private TipoTemplateExame tipoTemplateExame;
 
-	@NotBlank
 	private ZonedDateTime dataCriacao;
 
-	@NotBlank
 	private ZonedDateTime dataAtualizacao;
 
 }

@@ -23,44 +23,45 @@ import com.leaolabs.ambrosio.model.Exame;
 import com.leaolabs.ambrosio.v1.dtos.ExameDto;
 import com.leaolabs.ambrosio.v1.mapper.ExameMapper;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/ambrosio")
 public class ExameController extends BaseController {
 
-	private final ExameBusiness exameBusinness;
-	private final ExameMapper exameMapper;
+    private final ExameBusiness exameBusinness;
+    private final ExameMapper exameMapper;
 
-	@Autowired
-	public ExameController(final ExameBusiness exameBusinness, final ExameMapper exameMapper) {
-		super(Exame.class);
-		this.exameBusinness = exameBusinness;
-		this.exameMapper = exameMapper;
-	}
+    @Autowired
+    public ExameController(final ExameBusiness exameBusinness, final ExameMapper exameMapper) {
+        super(Exame.class);
+        this.exameBusinness = exameBusinness;
+        this.exameMapper = exameMapper;
+    }
 
-	@GetMapping(value = "/exames")
-	@ResponseBody
-	public ResponseEntity<ResponseMeta> getAll() {
-		final List<Exame> exames = this.exameBusinness.findAll();
-		return super.buildResponse(HttpStatus.OK, Optional.of(this.exameMapper.serialize(exames)));
-	}
+    @GetMapping(value = "/exames")
+    @ResponseBody
+    public ResponseEntity<ResponseMeta> getAll() {
+        final List<Exame> exames = this.exameBusinness.findAll();
+        return super.buildResponse(HttpStatus.OK, Optional.of(this.exameMapper.serialize(exames)));
+    }
 
-	@GetMapping(value = "/exames/{id}")
-	@ResponseBody
-	public ResponseEntity<ResponseMeta> getById(@PathVariable final Long id) {
-		final var optionalExame = this.exameBusinness.findById(id);
+    @GetMapping(value = "/exames/{id}")
+    @ResponseBody
+    public ResponseEntity<ResponseMeta> getById(@PathVariable final Long id) {
+        final var optionalExame = this.exameBusinness.findById(id);
 
-		return super.buildResponse(HttpStatus.OK, Optional
-				.of(this.exameMapper.serialize(optionalExame.orElseThrow(() -> new EntityNotFoundException("Exame")))));
-	}
+        return super.buildResponse(HttpStatus.OK, Optional
+                .of(this.exameMapper.serialize(optionalExame.orElseThrow(() -> new EntityNotFoundException("Exame")))));
+    }
 
-	@ResponseBody
-	@PostMapping(value = "/{id}/exames", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ResponseMeta> post(@PathVariable final Long id,
-			@RequestBody final ExameDto exameDto) {
-		final var optionalExame = this.exameBusinness.create(this.exameMapper.deserialize(exameDto), id);
+    @ResponseBody
+    @PostMapping(value = "/exames", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseMeta> post(@RequestBody @Valid final ExameDto exameDto) {
+        final var optionalExame = this.exameBusinness.create(this.exameMapper.deserialize(exameDto));
 
-		return super.buildResponse(HttpStatus.CREATED, Optional
-				.of(this.exameMapper.serialize(optionalExame.orElseThrow(() -> new EntityNotFoundException("Exame")))));
-	}
+        return super.buildResponse(HttpStatus.CREATED, Optional
+                .of(this.exameMapper.serialize(optionalExame.orElseThrow(() -> new EntityNotFoundException("Exame")))));
+    }
 
 }

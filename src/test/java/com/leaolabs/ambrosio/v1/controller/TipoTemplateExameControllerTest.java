@@ -6,6 +6,8 @@ import com.leaolabs.ambrosio.repository.TipoTemplateExameRepository;
 import com.leaolabs.ambrosio.v1.dtos.TipoTemplateExameDto;
 import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,7 +157,7 @@ public class TipoTemplateExameControllerTest {
                 .ativo(true)
                 .build();
 
-        this.mockMvc.perform(post(URI)
+        var postTemplate = this.mockMvc.perform(post(URI)
                 .contentType(JSON)
                 .content(objectMapper.writeValueAsBytes(templateExameDto)))
                 .andExpect(status().isCreated())
@@ -163,7 +165,16 @@ public class TipoTemplateExameControllerTest {
                 .andReturn()
                 .getResponse();
 
-        var result = this.tipoTemplateExameRepository.findById(1L);
+        JSONObject obj = new JSONObject(postTemplate.getContentAsString());
+        JSONArray records = obj.getJSONArray("records");
+        Long idTemplate = 0L;
+
+        for (int i = 0; i < records.length(); i++) {
+            JSONObject rec = records.getJSONObject(i);
+            idTemplate = rec.getLong("id");
+        }
+
+        var result = this.tipoTemplateExameRepository.findById(idTemplate);
 
         Assert.assertTrue(result.isPresent());
         Assert.assertNotNull(result.get().getUuid());
