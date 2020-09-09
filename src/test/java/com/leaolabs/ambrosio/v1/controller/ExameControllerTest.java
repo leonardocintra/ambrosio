@@ -127,6 +127,83 @@ public class ExameControllerTest {
                 .getResponse();
     }
 
+    @Test
+    public void deveRetornar400NoCadastroAoNaoPassarOCampoAtivo() throws Exception {
+        TipoTemplateExame tipoTemplateExame = getTipoTemplateExameFake();
+
+        var exameDto = ExameDto.builder()
+                .tipoTemplateExame(tipoTemplateExame)
+                .descricao("Qualquer descricao")
+                .build();
+
+        this.mockMvc.perform(post(URI)
+                .contentType(JSON)
+                .content(objectMapper.writeValueAsBytes(exameDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("Missing body parameter ativo")))
+                .andExpect(jsonPath("$.[0].userMessage", Matchers.is("Field ativo is required and can not be empty")))
+                .andReturn()
+                .getResponse();
+    }
+
+    @Test
+    public void deveRetornar400NoCadastroAoNaoPassarOTipoDeTemplate() throws Exception {
+        var exameDto = ExameDto.builder()
+                .descricao("Qualquer descricao")
+                .ativo(true)
+                .build();
+
+        this.mockMvc.perform(post(URI)
+                .contentType(JSON)
+                .content(objectMapper.writeValueAsBytes(exameDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("Missing body parameter tipoTemplateExame")))
+                .andExpect(jsonPath("$.[0].userMessage", Matchers.is("Field tipoTemplateExame is required and can not be empty")))
+                .andReturn()
+                .getResponse();
+    }
+
+    @Test
+    public void deveRetornar400NoCadastroComTipoDeTemplateExameSemId() throws Exception {
+        var exameDto = ExameDto.builder()
+                .descricao("Qualquer descricao")
+                .tipoTemplateExame(TipoTemplateExame.builder()
+                        .descricao("sem id")
+                        .build())
+                .ativo(true)
+                .build();
+
+        this.mockMvc.perform(post(URI)
+                .contentType(JSON)
+                .content(objectMapper.writeValueAsBytes(exameDto)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("TipoTemplateExame not found")))
+                .andExpect(jsonPath("$.[0].userMessage", Matchers.is("You attempted to get a TipoTemplateExame, but did not find any")))
+                .andReturn()
+                .getResponse();
+    }
+
+    @Test
+    public void deveRetornar400NoCadastroComTipoDeTemplateExameInexistente() throws Exception {
+        var exameDto = ExameDto.builder()
+                .descricao("Qualquer descricao")
+                .tipoTemplateExame(TipoTemplateExame.builder()
+                        .id(88932L)
+                        .descricao("sem id")
+                        .build())
+                .ativo(true)
+                .build();
+
+        this.mockMvc.perform(post(URI)
+                .contentType(JSON)
+                .content(objectMapper.writeValueAsBytes(exameDto)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.[0].developerMessage", Matchers.is("TipoTemplateExame not found")))
+                .andExpect(jsonPath("$.[0].userMessage", Matchers.is("You attempted to get a TipoTemplateExame, but did not find any")))
+                .andReturn()
+                .getResponse();
+    }
+
     private TipoTemplateExame getTipoTemplateExameFake() {
         return this.tipoTemplateExameRepository.save(TipoTemplateExame.builder()
                 .descricao("Template Basico de Teste")

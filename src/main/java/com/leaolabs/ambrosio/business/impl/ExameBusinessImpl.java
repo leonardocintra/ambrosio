@@ -37,7 +37,8 @@ public class ExameBusinessImpl implements ExameBusiness {
     @Override
     public Optional<Exame> create(final Exame exame) {
 
-        final var tipoTemplateExame = this.tipoTemplateExameRepository.findById(exame.getTipoTemplateExame().getId())
+        final Long id = Optional.ofNullable(exame.getTipoTemplateExame().getId()).orElse(0L);
+        final var tipoTemplateExame = this.tipoTemplateExameRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("TipoTemplateExame"));
 
         exame.setTipoTemplateExame(tipoTemplateExame);
