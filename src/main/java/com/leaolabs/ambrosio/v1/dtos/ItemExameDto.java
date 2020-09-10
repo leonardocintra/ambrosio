@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,35 +30,40 @@ public class ItemExameDto implements Serializable {
 
 	private Long id;
 
-	@NotBlank
 	private UUID uuid;
-	
+
+	@NotNull
 	private Boolean ativo;
 
 	@NotBlank
+	@Size(max = 150)
 	private String nome;
 
+	@Size(max = 150)
 	private String valorPadrao;
 
 	private Integer ordemExibicao;
 
+	@Size(max = 200)
 	private String metodo;
 
+	@Size(max = 200)
 	private String material;
 
+	@Size(max = 200)
 	private String valorReferencia;
 
 	private String observacao;
 
+	@Size(max = 50)
 	private String unidadeMedida;
 
 	@Valid
+	@NotNull
 	private TipoCampoDto tipoCampo;
 
-	@NotBlank
 	private ZonedDateTime dataCriacao;
 
-	@NotBlank
 	private ZonedDateTime dataAtualizacao;
 
 }

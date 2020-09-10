@@ -229,6 +229,7 @@ public class ExameControllerTest {
     @SneakyThrows
     public void deveRetornar201NoCadastrodeExame() {
         getTipoTemplateExameFake();
+        this.exameRepository.deleteAll();
 
         var exameDto = ExameDto.builder()
                 .descricao("Qualquer descricao")

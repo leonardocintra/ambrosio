@@ -85,6 +85,7 @@ public class ItemExame {
 		dataCriacao = dataAtualizacao = ZonedDateTime.now();
 		uuid = UUID.randomUUID();
 		ativo = true;
+		ordemExibicao = 0;
 	}
 
 	@PreUpdate

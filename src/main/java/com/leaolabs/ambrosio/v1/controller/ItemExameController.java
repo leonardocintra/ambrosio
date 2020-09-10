@@ -20,6 +20,8 @@ import com.leaolabs.ambrosio.commons.exception.EntityNotFoundException;
 import com.leaolabs.ambrosio.v1.dtos.ItemExameDto;
 import com.leaolabs.ambrosio.v1.mapper.ItemExameMapper;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/ambrosio/exames")
 public class ItemExameController extends BaseController {
@@ -36,7 +38,7 @@ public class ItemExameController extends BaseController {
 	@ResponseBody
 	@PostMapping(value = "/{id}/item-exame", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ResponseMeta> post(@PathVariable final Long id,
-			@RequestBody final ItemExameDto itemExameDto) {
+			@RequestBody @Valid final ItemExameDto itemExameDto) {
 		final var optionalExame = this.itemExameBusinness.create(this.itemExameMapper.deserialize(itemExameDto), id);
 
 		return super.buildResponse(HttpStatus.CREATED, Optional.of(this.itemExameMapper
