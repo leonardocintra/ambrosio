@@ -1,3 +1,5 @@
+# Ambrosio
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
@@ -36,7 +38,7 @@ $ npm install
 
 ```bash
 # development
-$ npm run start
+$ sudo docker compose up -d & npm run start
 
 # watch mode
 $ npm run start:dev
