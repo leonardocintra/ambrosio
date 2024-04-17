@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateEstadoCivilDto } from './dto/create-estado-civil.dto';
 import { UpdateEstadoCivilDto } from './dto/update-estado-civil.dto';
 import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class EstadoCivilService {
   constructor(private prisma: PrismaService) {}
 
-  create(createEstadoCivilDto: CreateEstadoCivilDto) {
-    return this.prisma.estadoCivil.create({
+  async create(createEstadoCivilDto: CreateEstadoCivilDto) {
+    return await this.prisma.estadoCivil.create({
       data: {
         descricao: createEstadoCivilDto.descricao,
       },
@@ -28,6 +29,8 @@ export class EstadoCivilService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} estadoCivil`;
+    return this.prisma.estadoCivil.delete({
+      where: { id },
+    });
   }
 }
