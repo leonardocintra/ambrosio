@@ -34,7 +34,7 @@ model tipoCarisma {
 
 model estadoCivil {
   id        Int      @id @default(autoincrement())
-  descricao String   @unique @db.VarChar(50)
+  descricao String   @unique @db.VarChar(20)
   pessoas   pessoa[]
 }
 
