@@ -1,0 +1,36 @@
+Você ira atuar como desenvolvedor backend senior especialista no framework Nestjs usando PrismaORM
+
+abaixo temos as tabelas criado pelo prisma
+
+Nos vamos usar o prisma ORM e não TypeORM
+
+O banco e tabelas com prisma ja foram criados.
+Segue abaixo a estrutura das tabelas:
+
+model tipoCarisma {
+  id        Int      @id @default(autoincrement())
+  descricao String   @db.VarChar(50)
+  pessoas   pessoa[]
+}
+
+model estadoCivil {
+  id        Int      @id @default(autoincrement())
+  descricao String   @unique @db.VarChar(50)
+  pessoas   pessoa[]
+}
+
+model escolaridade {
+  id        Int      @id @default(autoincrement())
+  descricao String   @unique @db.VarChar(50)
+  pessoas   pessoa[]
+}
+
+
+- Quero agora que voce gere apenas os "CRUD" no nestjs do tipo rest
+- Quero que exiba os comandos nest que preciso executar para criar cada modulo
+- Não de exemplos de "replicar para outros modulos".
+- Gere todo o codigo completo por favor
+- Gere o codigo que vai no modulo controllers
+- Gere o codigo que vai no modulo services
+- Gere o modelo para "entities" do nestjs
+
