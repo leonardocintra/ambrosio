@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres-ambrosio:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=ambrosio
+      - POSTGRES_USER=ambrosio
+      - POSTGRES_DB=ambrosio

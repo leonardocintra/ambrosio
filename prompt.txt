@@ -1,0 +1,97 @@
+Você ira atuar como desenvolvedor backend senior.
+
+Nos vamos criar um sistema que administrará dados do Caminho Neocatecumenal.
+Pensa no caminho neocatecumenal como se fossemos criar um sistema de um mosteiro onde são formados padres e freiras
+
+Esse caminho neocatecumenal é um itinerario de iniciação cristã. 
+
+Nela iremos gerenciar as pessoas que fazem parte do Caminho neocatecumenal, seus carismas, onde estão atuando (Ex: no Brasil ou no exterior).
+
+# Ferramentas que vamos usar
+- Nestjs
+- Prisma 
+- Banco de dados Postgress
+- Typescript
+
+Veja como será o relacionamento dos models:
+# Tabela: endereço
+- CEP (max length 8)
+- Logradouro (max length 50)
+- Cidade (max length 50)
+- Bairro (max length 50)
+- Numero (string)
+- UF (max length 2)
+- Pais (default Brasil) (max length 20)
+
+## Tabela: tipoCarisma
+- Descrição (max length 50)
+> Os carismas por exemplo são: Bispo, padre, salmista, catequista, etc
+
+## Tabela: estadoCivil
+- descricao (unique) (max length 50)
+
+## Tabela: escolaridade
+- descricao (unique) (max length 50)
+
+## Tabela: pessoa
+- Nome (max length 50)
+- Nacionalidade (max length 50)
+- EstadoCivilId (relecionamento com a tabela estadoCivil)
+- Foto (url string)
+- EscolaridadeId (opcional) (relacionamento com a tabela escolaridade)
+- Tipo de carisma (relacionamento com a tabela tipoCarisma)
+- ativo (sim ou não - default true)
+> Cada pessoa pode ter mais de um endereço
+> Cada pessoa pode ter mais de uma forma de contato (telefone, celular, etc)
+
+## Tabela: pessoaCasal
+- pessoaMaridoId (relacionamento com tabela pessoa)
+- pessoaMulherId (relacionamento com tabela pessoa)
+> Esses sao unique. Garantir que nao permite um cadastro de que um marido nao pode ter mais de uma mulher e uma mulher nao pode ter mais de um marido
+
+## Tabela: passaportePessoa
+- PessoaId (relacionamento com a tabela pessoa)
+- Numero do passaporte (string)
+- Data expiração
+- Renovado (sim ou não - default false)
+- RenovadoPor (relacionamento com tabela pessoa)
+- DataRenovação
+
+## Tabela: historicoCarisma
+- carismaId
+- DataInicio
+- DataFinal
+- observacao
+> uma pessoa pode evoluir em carisma. Ex (João foi padre de 2005 a 2009, depois virou bispo de 2009 a 2014 e depois virou arcebispo de 2014 até hoje)
+
+## Tabela: pessoaContato
+- TelefoneResidencial
+- TelefoneCelular
+- observacao
+- ativo (sim ou não)
+- email (opcional)
+
+
+## Tabela: tipoDiocese
+- descricao (max length 50)
+
+## Tabela: diocese
+- tipoDioceseId (relacionamento com tabela tipoDiocese)
+- descricao (max length 50)
+- enderecoId (relacionamento com tabela endereco)
+
+## Tabela: paroquia
+- enderecoId (relacionamento com tabela endereco)
+- dioceseId (relacionamento com tabela diocese)
+- descricao (max length 50)
+
+## Tabela: paroquiaPessoas
+- pessoaId (relacionamento com tabela pessoa)
+- paroquiaId (relacionamento com tabela paroquia)
+> Uma paroquia pode ter muitas pessoas
+
+
+### Atencao com esses pontos
+- Gere o codigo pronto para copiar e colar no arquivo prisma
+- Mostre a estrutura de diretorios do nestjs e cada arquivo em seus respectivos lugares
+- Nao esqueca de mostrar o codigo do docker compose para criacao do banco localhost
