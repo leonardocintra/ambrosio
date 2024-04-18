@@ -1,8 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateEstadoCivilDto } from './dto/create-estado-civil.dto';
 import { UpdateEstadoCivilDto } from './dto/update-estado-civil.dto';
 import { PrismaService } from 'src/prisma.service';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class EstadoCivilService {
