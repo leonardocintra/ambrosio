@@ -10,6 +10,8 @@ export class EstadoCivilService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} estadoCivil`;
+    return this.prisma.estadoCivil.findFirstOrThrow({
+      where: { id },
+    });
   }
 }

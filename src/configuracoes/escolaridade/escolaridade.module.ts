@@ -5,5 +5,6 @@ import { EscolaridadeController } from './escolaridade.controller';
 @Module({
   controllers: [EscolaridadeController],
   providers: [EscolaridadeService],
+  exports: [EscolaridadeService],
 })
 export class EscolaridadeModule {}

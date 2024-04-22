@@ -5,6 +5,11 @@ import { TipoCarismaModule } from './tipo-carisma/tipo-carisma.module';
 import { TipoDioceseModule } from './tipo-diocese/tipo-diocese.module';
 
 @Module({
-  imports: [EscolaridadeModule, EstadoCivilModule, TipoCarismaModule, TipoDioceseModule]
+  imports: [
+    EscolaridadeModule,
+    EstadoCivilModule,
+    TipoCarismaModule,
+    TipoDioceseModule,
+  ],
 })
 export class ConfiguracoesModule {}

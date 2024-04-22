@@ -10,6 +10,8 @@ export class EscolaridadeService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} escolaridade`;
+    return this.prisma.escolaridade.findFirstOrThrow({
+      where: { id },
+    });
   }
 }
