@@ -42,12 +42,26 @@ export class PessoaService {
   }
 
   findAll() {
-    return this.prisma.pessoa.findMany();
+    return this.prisma.pessoa.findMany({
+      include: {
+        estadoCivil: true,
+        escolaridade: true,
+        tipoCarisma: true,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+    });
   }
 
   findOne(id: number) {
-    return this.prisma.pessoa.findFirstOrThrow({
+    return this.prisma.pessoa.findUniqueOrThrow({
       where: { id },
+      include: {
+        estadoCivil: true,
+        escolaridade: true,
+        tipoCarisma: true,
+      },
     });
   }
 
