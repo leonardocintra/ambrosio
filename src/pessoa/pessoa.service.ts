@@ -1,4 +1,3 @@
-import { escolaridade, tipoCarisma } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
@@ -18,17 +17,11 @@ export class PessoaService {
   ) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
-    const estadoCivil = await this.estadoCivilService.findOne(
-      createPessoaDto.estadoCivil.id,
-    );
-
-    const escolaridade = await this.escolaridadeService.findOne(
-      createPessoaDto.escolaridade.id,
-    );
-
-    const tipoCarisma = await this.tipoCarismaService.findOne(
-      createPessoaDto.tipoCarisma.id,
-    );
+    const [estadoCivil, escolaridade, tipoCarisma] = await Promise.all([
+      await this.estadoCivilService.findOne(createPessoaDto.estadoCivil.id),
+      await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
+      await this.tipoCarismaService.findOne(createPessoaDto.tipoCarisma.id),
+    ]);
 
     return this.prisma.pessoa.create({
       data: {
@@ -68,8 +61,26 @@ export class PessoaService {
     });
   }
 
-  update(id: number, updatePessoaDto: UpdatePessoaDto) {
-    return `This action updates a #${id} pessoa`;
+  async update(id: number, updatePessoaDto: UpdatePessoaDto) {
+    const [estadoCivil, escolaridade, tipoCarisma] = await Promise.all([
+      this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
+      this.escolaridadeService.findOne(updatePessoaDto.escolaridade.id),
+      this.tipoCarismaService.findOne(updatePessoaDto.tipoCarisma.id),
+    ]);
+
+    return await this.prisma.pessoa.update({
+      where: { id },
+      data: {
+        nome: updatePessoaDto.nome,
+        nacionalidade: updatePessoaDto.nacionalidade,
+        estadoCivilId: estadoCivil.id,
+        foto: updatePessoaDto.foto,
+        tipoCarismaId: tipoCarisma.id,
+        escolaridadeId: escolaridade.id,
+        sexo:
+          updatePessoaDto.sexo === 'MASCULINO' ? Sexo.MASCULINO : Sexo.FEMININO,
+      },
+    });
   }
 
   remove(id: number) {

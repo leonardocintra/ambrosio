@@ -14,16 +14,17 @@ datasource db {
 }
 
 model endereco {
-  id         Int        @id @default(autoincrement())
-  cep        String     @db.VarChar(8)
-  logradouro String     @db.VarChar(50)
-  cidade     String     @db.VarChar(50)
-  bairro     String     @db.VarChar(50)
-  numero     String     @db.VarChar(5)
-  UF         String     @db.VarChar(2)
-  pais       String     @default("Brasil") @db.VarChar(20)
-  dioceses   diocese[]
-  paroquias  paroquia[]
+  id             Int              @id @default(autoincrement())
+  cep            String           @db.VarChar(8)
+  logradouro     String           @db.VarChar(50)
+  cidade         String           @db.VarChar(50)
+  bairro         String           @db.VarChar(50)
+  numero         String           @db.VarChar(5)
+  UF             String           @db.VarChar(2)
+  pais           String           @default("Brasil") @db.VarChar(20)
+  dioceses       diocese[]
+  paroquias      paroquia[]
+  pessoaEndereco pessoaEndereco[]
 }
 
 model tipoCarisma {
@@ -67,6 +68,16 @@ model pessoa {
   paroquias            paroquiaPessoas[]
   casamentosComoMarido pessoaCasal[]      @relation("Marido")
   casamentosComoMulher pessoaCasal[]      @relation("Mulher")
+  pessoaEndereco       pessoaEndereco[]
+}
+
+model pessoaEndereco {
+  pessoaId   Int
+  enderecoId Int
+  pessoa     pessoa   @relation(fields: [pessoaId], references: [id])
+  endereco   endereco @relation(fields: [enderecoId], references: [id])
+
+  @@id([pessoaId, enderecoId])
 }
 
 model pessoaCasal {
