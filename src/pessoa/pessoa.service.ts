@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { TipoCarismaService } from 'src/configuracoes/tipo-carisma/tipo-carisma.service';
+import { Sexo } from 'src/commons/enums/enums';
 
 @Injectable()
 export class PessoaService {
@@ -37,6 +38,8 @@ export class PessoaService {
         foto: createPessoaDto.foto,
         tipoCarismaId: tipoCarisma.id,
         escolaridadeId: escolaridade.id,
+        sexo:
+          createPessoaDto.sexo === 'MASCULINO' ? Sexo.MASCULINO : Sexo.FEMININO,
       },
     });
   }

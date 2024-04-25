@@ -44,9 +44,15 @@ model escolaridade {
   pessoas   pessoa[]
 }
 
+enum Sexo {
+  MASCULINO
+  FEMININO
+}
+
 model pessoa {
   id                   Int                @id @default(autoincrement())
   nome                 String             @db.VarChar(50)
+  sexo                 Sexo               @default(MASCULINO)
   nacionalidade        String             @db.VarChar(50)
   estadoCivilId        Int
   estadoCivil          estadoCivil        @relation(fields: [estadoCivilId], references: [id])

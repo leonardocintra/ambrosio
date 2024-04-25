@@ -1,5 +1,12 @@
 import { escolaridade, estadoCivil, tipoCarisma } from '@prisma/client';
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+import { Sexo } from 'src/commons/enums/enums';
 
 export class CreatePessoaDto {
   @IsNotEmpty()
@@ -17,7 +24,13 @@ export class CreatePessoaDto {
   @IsOptional()
   foto: string;
 
+  @IsEnum(Sexo)
+  @IsOptional()
+  sexo: string;
+
+  @IsNotEmpty()
   escolaridade: escolaridade;
 
+  @IsNotEmpty()
   tipoCarisma: tipoCarisma;
 }
