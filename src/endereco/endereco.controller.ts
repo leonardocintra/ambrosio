@@ -12,9 +12,9 @@ export class EnderecoController {
     return this.enderecoService.create(createEnderecoDto);
   }
 
-  @Get()
-  findAll() {
-    return this.enderecoService.findAll();
+  @Get('pessoa/:id')
+  findAll(@Param('id') id: string) {
+    return this.enderecoService.findAll(+id);
   }
 
   @Get(':id')

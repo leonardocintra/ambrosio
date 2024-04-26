@@ -38,5 +38,5 @@ export class CreateEnderecoDto {
   @MaxLength(2)
   @MinLength(2)
   @IsString()
-  uf: string;
+  UF: string;
 }

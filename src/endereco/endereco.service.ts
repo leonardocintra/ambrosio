@@ -18,7 +18,7 @@ export class EnderecoService {
         cidade: createEnderecoDto.cidade,
         bairro: createEnderecoDto.bairro,
         pais: createEnderecoDto.pais,
-        UF: createEnderecoDto.uf,
+        UF: createEnderecoDto.UF,
       },
     });
 
@@ -32,8 +32,22 @@ export class EnderecoService {
     return endereco;
   }
 
-  findAll() {
-    return this.prisma.endereco.findMany();
+  async findAll(id: number) {
+    const pessoaEndereco = await this.prisma.pessoaEndereco.findMany({
+      where: {
+        pessoaId: id,
+      },
+    });
+
+    const enderecos = await this.prisma.endereco.findMany({
+      where: {
+        id: {
+          in: pessoaEndereco.map((item) => item.enderecoId),
+        },
+      },
+    });
+
+    return enderecos;
   }
 
   findOne(id: number) {
