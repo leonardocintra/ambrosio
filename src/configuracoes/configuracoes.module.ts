@@ -3,6 +3,7 @@ import { EscolaridadeModule } from './escolaridade/escolaridade.module';
 import { EstadoCivilModule } from './estado-civil/estado-civil.module';
 import { TipoCarismaModule } from './tipo-carisma/tipo-carisma.module';
 import { TipoDioceseModule } from './tipo-diocese/tipo-diocese.module';
+import { DioceseModule } from './diocese/diocese.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { TipoDioceseModule } from './tipo-diocese/tipo-diocese.module';
     EstadoCivilModule,
     TipoCarismaModule,
     TipoDioceseModule,
+    DioceseModule,
   ],
 })
 export class ConfiguracoesModule {}

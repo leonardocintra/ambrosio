@@ -11,6 +11,7 @@ import { EnderecoModule } from './endereco/endereco.module';
 import { PessoaModule } from './pessoa/pessoa.module';
 import { TipoDioceseModule } from './configuracoes/tipo-diocese/tipo-diocese.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
+import { ParoquiaModule } from './paroquia/paroquia.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
     PessoaModule,
     TipoDioceseModule,
     ConfiguracoesModule,
+    ParoquiaModule,
   ],
   controllers: [AppController],
   providers: [

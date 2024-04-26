@@ -125,7 +125,7 @@ async function main() {
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'SEMINARISTA',
+      descricao: 'OSTIARIO(A)',
     },
   });
 
@@ -143,6 +143,27 @@ async function main() {
 
   console.log('---------------------------------');
   console.log('Tipo de carisma preenchido com sucesso!');
+
+  await prisma.tipoDiocese.create({
+    data: {
+      descricao: 'Arquidiocese',
+    },
+  });
+
+  await prisma.tipoDiocese.create({
+    data: {
+      descricao: 'Diocese',
+    },
+  });
+
+  await prisma.tipoDiocese.create({
+    data: {
+      descricao: 'Prelazia',
+    },
+  });
+
+  console.log('---------------------------------');
+  console.log('Tipo de diocese preenchido com sucesso!');
 }
 
 main()

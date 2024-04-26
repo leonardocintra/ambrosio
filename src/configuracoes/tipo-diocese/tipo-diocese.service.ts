@@ -1,9 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class TipoDioceseService {
+  constructor(private prisma: PrismaService) {}
+
   findAll() {
-    return `This action returns all tipoDiocese`;
+    return this.prisma.tipoDiocese.findMany();
   }
 
   findOne(id: number) {
