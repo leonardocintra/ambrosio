@@ -144,3 +144,8 @@ model paroquiaPessoas {
 
   @@id([pessoaId, paroquiaId])
 }
+
+model etapa {
+  id        Int    @id @default(autoincrement())
+  descricao String @db.VarChar(50)
+}
