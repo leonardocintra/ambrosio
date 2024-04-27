@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateRegioeDto } from './create-regioe.dto';
+import { CreateRegiaoDto } from './create-regioe.dto';
 
-export class UpdateRegioeDto extends PartialType(CreateRegioeDto) {}
+export class UpdateRegioeDto extends PartialType(CreateRegiaoDto) {}

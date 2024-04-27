@@ -25,6 +25,7 @@ model endereco {
   dioceses   diocese[]
   paroquias  paroquia[]
   pessoas    pessoaEndereco[]
+  localidade localidade[]
 }
 
 model tipoCarisma {
@@ -69,6 +70,7 @@ model pessoa {
   casamentosComoMarido pessoaCasal[]      @relation("Marido")
   casamentosComoMulher pessoaCasal[]      @relation("Mulher")
   enderecos            pessoaEndereco[]
+  equipes              equipePessoas[]
 }
 
 model pessoaEndereco {
@@ -81,6 +83,7 @@ model pessoaEndereco {
 }
 
 model pessoaCasal {
+  id             Int    @id @default(autoincrement())
   pessoaMaridoId Int
   pessoaMulherId Int
   marido         pessoa @relation("Marido", fields: [pessoaMaridoId], references: [id])
@@ -111,19 +114,21 @@ model pessoaContato {
 }
 
 model tipoDiocese {
-  id        Int       @id @default(autoincrement())
-  descricao String    @db.VarChar(50)
-  dioceses  diocese[]
+  id         Int          @id @default(autoincrement())
+  descricao  String       @db.VarChar(50)
+  dioceses   diocese[]
+  localidade localidade[]
 }
 
 model diocese {
-  id            Int         @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   tipoDioceseId Int
-  tipoDiocese   tipoDiocese @relation(fields: [tipoDioceseId], references: [id])
-  descricao     String      @db.VarChar(50)
+  tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
+  descricao     String       @db.VarChar(50)
   enderecoId    Int
-  endereco      endereco    @relation(fields: [enderecoId], references: [id])
+  endereco      endereco     @relation(fields: [enderecoId], references: [id])
   paroquias     paroquia[]
+  localidade    localidade[]
 }
 
 model paroquia {
@@ -150,7 +155,72 @@ model etapa {
   descricao String @db.VarChar(50)
 }
 
-model regioesCaminho {
-  id        Int    @id @default(autoincrement())
-  descricao String @db.VarChar(50)
+model regiao {
+  id               Int                @id @default(autoincrement())
+  descricao        String             @db.VarChar(50)
+  equipes          equipeRegiao[]
+  localidadeRegiao localidadeRegiao[]
+}
+
+model tipoEquipe {
+  id        Int                @id @default(autoincrement())
+  descricao String             @db.VarChar(80)
+  equipes   equipeTipoEquipe[]
+}
+
+model equipe {
+  id            Int                @id @default(autoincrement())
+  descricao     String             @db.VarChar(50)
+  regioes       equipeRegiao[]
+  equipePessoas equipePessoas[]
+  tipos         equipeTipoEquipe[]
+}
+
+model equipeTipoEquipe {
+  equipeId     Int
+  tipoEquipeId Int
+  equipe       equipe     @relation(fields: [equipeId], references: [id])
+  tipoEquipe   tipoEquipe @relation(fields: [tipoEquipeId], references: [id])
+
+  @@id([equipeId, tipoEquipeId])
+}
+
+model equipeRegiao {
+  equipeId Int
+  regiaoId Int
+  equipe   equipe @relation(fields: [equipeId], references: [id])
+  regiao   regiao @relation(fields: [regiaoId], references: [id])
+
+  @@id([equipeId, regiaoId])
+}
+
+model equipePessoas {
+  equipeId Int
+  pessoaId Int
+  equipe   equipe @relation(fields: [equipeId], references: [id])
+  pessoa   pessoa @relation(fields: [pessoaId], references: [id])
+
+  @@id([equipeId, pessoaId])
+}
+
+model localidade {
+  id               Int                @id @default(autoincrement())
+  descricao        String             @db.VarChar(80)
+  dioceseId        Int
+  diocese          diocese            @relation(fields: [dioceseId], references: [id])
+  tipoDioceseId    Int
+  tipoDiocese      tipoDiocese        @relation(fields: [tipoDioceseId], references: [id])
+  observacao       String             @db.VarChar(200)
+  enderecoId       Int
+  endereco         endereco           @relation(fields: [enderecoId], references: [id])
+  localidadeRegiao localidadeRegiao[]
+}
+
+model localidadeRegiao {
+  localidadeId Int
+  regiaoId     Int
+  localidade   localidade @relation(fields: [localidadeId], references: [id])
+  regiao       regiao     @relation(fields: [regiaoId], references: [id])
+
+  @@id([localidadeId, regiaoId])
 }

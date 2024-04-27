@@ -33,7 +33,12 @@ export class DioceseService {
   }
 
   findAll() {
-    return this.prisma.diocese.findMany();
+    return this.prisma.diocese.findMany({
+      include: {
+        tipoDiocese: true,
+        endereco: true,
+      },
+    });
   }
 
   findOne(id: number) {

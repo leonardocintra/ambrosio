@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { RegioesService } from './regioes.service';
-import { CreateRegioeDto } from './dto/create-regioe.dto';
+import { CreateRegiaoDto } from './dto/create-regioe.dto';
 import { UpdateRegioeDto } from './dto/update-regioe.dto';
 
 @Controller('regioes')
@@ -8,7 +8,7 @@ export class RegioesController {
   constructor(private readonly regioesService: RegioesService) {}
 
   @Post()
-  create(@Body() createRegioeDto: CreateRegioeDto) {
+  create(@Body() createRegioeDto: CreateRegiaoDto) {
     return this.regioesService.create(createRegioeDto);
   }
 

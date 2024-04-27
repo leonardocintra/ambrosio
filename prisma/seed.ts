@@ -164,6 +164,135 @@ async function main() {
 
   console.log('---------------------------------');
   console.log('Tipo de diocese preenchido com sucesso!');
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Amazonas/Pará',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Bahia',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Brasília',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Ceará',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Franca',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Goiás',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Grande São Paulo',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Maranhão',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Maranhão / Piauí',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'MG / RJ',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'MS / MT',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Paraná',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'PE - PB - AL - SE',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Piauí',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Rio de Janeiro',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'RS / SC',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'São Paulo (Cidade - Capital)',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'São Paulo (Interior - Padre Joaquim)',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'São Paulo (Oeste)',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Tocantins',
+    },
+  });
+
+  await prisma.regiao.create({
+    data: {
+      descricao: 'Umuarama',
+    },
+  });
+
+  console.log('---------------------------------');
+  console.log('Região do caminho preenchido com sucesso!');
 }
 
 main()

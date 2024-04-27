@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRegioeDto } from './dto/create-regioe.dto';
+import { CreateRegiaoDto } from './dto/create-regioe.dto';
 import { UpdateRegioeDto } from './dto/update-regioe.dto';
 import { PrismaService } from 'src/prisma.service';
 
@@ -7,18 +7,18 @@ import { PrismaService } from 'src/prisma.service';
 export class RegioesService {
   constructor(private prisma: PrismaService) {}
 
-  create(createRegioeDto: CreateRegioeDto) {
-    return this.prisma.regioesCaminho.create({
+  create(createRegioeDto: CreateRegiaoDto) {
+    return this.prisma.regiao.create({
       data: createRegioeDto,
     });
   }
 
   findAll() {
-    return this.prisma.regioesCaminho.findMany();
+    return this.prisma.regiao.findMany();
   }
 
   findOne(id: number) {
-    return this.prisma.regioesCaminho.findUniqueOrThrow({
+    return this.prisma.regiao.findUniqueOrThrow({
       where: { id },
     });
   }
