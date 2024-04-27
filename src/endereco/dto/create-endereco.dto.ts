@@ -2,15 +2,13 @@ import {
   IsNumber,
   IsNumberString,
   IsOptional,
+  IsPositive,
   IsString,
   MaxLength,
   MinLength,
 } from 'class-validator';
 
 export class CreateEnderecoDto {
-  @IsNumber()
-  pessoaId: number;
-
   @IsNumberString()
   @MaxLength(8)
   @MinLength(8)

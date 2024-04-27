@@ -7,9 +7,11 @@ import { PrismaService } from 'src/prisma.service';
 export class EnderecoService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createEnderecoDto: CreateEnderecoDto) {
+  async createByPessoaId(
+    createEnderecoDto: CreateEnderecoDto,
+    pessoaId: number,
+  ) {
     // TODO: validar se precisa fazer request se pessoaId existe
-
     const endereco = await this.prisma.endereco.create({
       data: {
         cep: createEnderecoDto.cep,
@@ -24,7 +26,7 @@ export class EnderecoService {
 
     await this.prisma.pessoaEndereco.create({
       data: {
-        pessoaId: createEnderecoDto.pessoaId,
+        pessoaId: pessoaId,
         enderecoId: endereco.id,
       },
     });
@@ -32,11 +34,24 @@ export class EnderecoService {
     return endereco;
   }
 
-  async findAll(id: number) {
-    const pessoaEndereco = await this.prisma.pessoaEndereco.findMany({
-      where: {
-        pessoaId: id,
+  async create(createEnderecoDto: CreateEnderecoDto) {
+    return await this.prisma.endereco.create({
+      data: {
+        cep: createEnderecoDto.cep,
+        logradouro: createEnderecoDto.logradouro,
+        numero: createEnderecoDto.numero,
+        cidade: createEnderecoDto.cidade,
+        bairro: createEnderecoDto.bairro,
+        pais: createEnderecoDto.pais,
+        UF: createEnderecoDto.UF,
       },
+    });
+  }
+
+  async findAllByPessoaId(pessoaId: number) {
+    // TODO: colocar tudo num request so. Em vez de dois
+    const pessoaEndereco = await this.prisma.pessoaEndereco.findMany({
+      where: { pessoaId },
     });
 
     const enderecos = await this.prisma.endereco.findMany({

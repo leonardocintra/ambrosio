@@ -6,7 +6,6 @@ import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { TipoCarismaService } from 'src/configuracoes/tipo-carisma/tipo-carisma.service';
 import { Sexo } from 'src/commons/enums/enums';
-import { pessoa } from '@prisma/client';
 
 @Injectable()
 export class PessoaService {
