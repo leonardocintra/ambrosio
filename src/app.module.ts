@@ -13,6 +13,7 @@ import { TipoDioceseModule } from './configuracoes/tipo-diocese/tipo-diocese.mod
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { ParoquiaModule } from './paroquia/paroquia.module';
 import { RegioesModule } from './regioes/regioes.module';
+import { EquipesModule } from './equipes/equipes.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { RegioesModule } from './regioes/regioes.module';
     ConfiguracoesModule,
     ParoquiaModule,
     RegioesModule,
+    EquipesModule,
   ],
   controllers: [AppController],
   providers: [

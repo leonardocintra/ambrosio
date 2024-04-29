@@ -101,43 +101,67 @@ async function main() {
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'LEIGO(A)',
+      descricao: 'Seminarista',
     },
   });
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'VOCACIONADO(A)',
+      descricao: 'Família em Missão',
     },
   });
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'SEMINARISTA(A)',
+      descricao: 'Vida Religiosa',
     },
   });
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'SALMISTA',
+      descricao: 'Presbítero',
     },
   });
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'OSTIARIO(A)',
+      descricao: 'Catequista Itinerante',
     },
   });
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'PADRE',
+      descricao: 'Vocacionado',
     },
   });
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'BISPO',
+      descricao: 'Pós Crisma',
+    },
+  });
+
+  await prisma.tipoCarisma.create({
+    data: {
+      descricao: 'Pós Crisma',
+    },
+  });
+
+  await prisma.tipoCarisma.create({
+    data: {
+      descricao: 'Catequista',
+    },
+  });
+
+  await prisma.tipoCarisma.create({
+    data: {
+      descricao: 'Rapaz / Moça levantado Missão',
+    },
+  });
+  
+  await prisma.tipoCarisma.create({
+    data: {
+      descricao: 'Casal itinerante',
     },
   });
 
@@ -293,6 +317,32 @@ async function main() {
 
   console.log('---------------------------------');
   console.log('Região do caminho preenchido com sucesso!');
+
+  await prisma.tipoEquipe.create({ data: { descricao: 'Catequista' } });
+  await prisma.tipoEquipe.create({
+    data: { descricao: 'Secretários Centro Neocatecumenal' },
+  });
+  await prisma.tipoEquipe.create({
+    data: { descricao: 'Peregrinações Jovens' },
+  });
+  await prisma.tipoEquipe.create({
+    data: { descricao: 'Catequista Regional' },
+  });
+  await prisma.tipoEquipe.create({
+    data: { descricao: 'Catequista Itinerante' },
+  });
+  await prisma.tipoEquipe.create({ data: { descricao: 'Vocacional - Moças' } });
+  await prisma.tipoEquipe.create({ data: { descricao: 'Vocacional - Moços' } });
+  await prisma.tipoEquipe.create({
+    data: { descricao: 'Responsável GRANDE REGIAO' },
+  });
+  await prisma.tipoEquipe.create({
+    data: { descricao: 'Perscrutação Jovens' },
+  });
+  await prisma.tipoEquipe.create({ data: { descricao: 'Pós-Crisma' } });
+
+  console.log('---------------------------------');
+  console.log('Tipo de equipes preenchido com sucesso!');
 }
 
 main()
