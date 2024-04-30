@@ -1,3 +1,4 @@
+import { tipoPessoa } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
@@ -48,6 +49,7 @@ export class PessoaService {
         estadoCivil: true,
         escolaridade: true,
         tipoCarisma: true,
+        tipoPessoa: true,
       },
       orderBy: {
         id: 'desc',
@@ -62,6 +64,7 @@ export class PessoaService {
         estadoCivil: true,
         escolaridade: true,
         tipoCarisma: true,
+        tipoPessoa: true,
         enderecos: {
           include: {
             endereco: true,
@@ -75,11 +78,13 @@ export class PessoaService {
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
-    const [estadoCivil, escolaridade, tipoCarisma] = await Promise.all([
-      this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
-      this.escolaridadeService.findOne(updatePessoaDto.escolaridade.id),
-      this.tipoCarismaService.findOne(updatePessoaDto.tipoCarisma.id),
-    ]);
+    const [estadoCivil, escolaridade, tipoCarisma, tipoPessoa] =
+      await Promise.all([
+        this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
+        this.escolaridadeService.findOne(updatePessoaDto.escolaridade.id),
+        this.tipoCarismaService.findOne(updatePessoaDto.tipoCarisma.id),
+        this.tipoPessoaService.findOne(updatePessoaDto.tipoPessoa.id),
+      ]);
 
     return await this.prisma.pessoa.update({
       where: { id },
@@ -90,6 +95,7 @@ export class PessoaService {
         foto: updatePessoaDto.foto,
         tipoCarismaId: tipoCarisma.id,
         escolaridadeId: escolaridade.id,
+        tipoPessoaId: tipoPessoa.id,
         sexo:
           updatePessoaDto.sexo === 'MASCULINO' ? Sexo.MASCULINO : Sexo.FEMININO,
       },
@@ -111,6 +117,7 @@ export class PessoaService {
       ativo: pessoa.ativo,
       escolaridade: pessoa.escolaridade,
       tipoCarisma: pessoa.tipoCarisma,
+      tipoPessoa: pessoa.tipoPessoa,
       enderecos: pessoa.enderecos.map((end) => {
         return {
           id: end.endereco.id,
