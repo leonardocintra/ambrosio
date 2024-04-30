@@ -64,6 +64,8 @@ model pessoa {
   tipoCarismaId        Int
   tipoCarisma          tipoCarisma        @relation(fields: [tipoCarismaId], references: [id])
   ativo                Boolean            @default(true)
+  tipoPessoaId         Int                @default(1)
+  tipoPessoa           tipoPessoa         @relation(fields: [tipoPessoaId], references: [id])
   passaportes          passaportePessoa[]
   contatos             pessoaContato[]
   paroquias            paroquiaPessoas[]
@@ -74,8 +76,9 @@ model pessoa {
 }
 
 model tipoPessoa {
-  id        Int    @id @default(autoincrement())
-  descricao String @unique @db.VarChar(40)
+  id        Int      @id @default(autoincrement())
+  descricao String   @unique @db.VarChar(40)
+  pessoa    pessoa[]
 }
 
 model pessoaEndereco {
@@ -163,6 +166,7 @@ model etapa {
 model regiao {
   id               Int                @id @default(autoincrement())
   descricao        String             @db.VarChar(50)
+  macroRegiao      Boolean            @default(false)
   equipes          equipeRegiao[]
   localidadeRegiao localidadeRegiao[]
 }

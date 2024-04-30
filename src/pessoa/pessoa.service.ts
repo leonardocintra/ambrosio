@@ -6,6 +6,7 @@ import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { TipoCarismaService } from 'src/configuracoes/tipo-carisma/tipo-carisma.service';
 import { Sexo } from 'src/commons/enums/enums';
+import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 
 @Injectable()
 export class PessoaService {
@@ -14,14 +15,17 @@ export class PessoaService {
     private estadoCivilService: EstadoCivilService,
     private escolaridadeService: EscolaridadeService,
     private tipoCarismaService: TipoCarismaService,
+    private tipoPessoaService: TipoPessoaService,
   ) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
-    const [estadoCivil, escolaridade, tipoCarisma] = await Promise.all([
-      await this.estadoCivilService.findOne(createPessoaDto.estadoCivil.id),
-      await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
-      await this.tipoCarismaService.findOne(createPessoaDto.tipoCarisma.id),
-    ]);
+    const [estadoCivil, escolaridade, tipoCarisma, tipoPessoa] =
+      await Promise.all([
+        await this.estadoCivilService.findOne(createPessoaDto.estadoCivil.id),
+        await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
+        await this.tipoCarismaService.findOne(createPessoaDto.tipoCarisma.id),
+        await this.tipoPessoaService.findOne(createPessoaDto.tipoPessoa.id),
+      ]);
 
     return this.prisma.pessoa.create({
       data: {
@@ -31,6 +35,7 @@ export class PessoaService {
         foto: createPessoaDto.foto,
         tipoCarismaId: tipoCarisma.id,
         escolaridadeId: escolaridade.id,
+        tipoPessoaId: tipoPessoa.id,
         sexo:
           createPessoaDto.sexo === 'MASCULINO' ? Sexo.MASCULINO : Sexo.FEMININO,
       },

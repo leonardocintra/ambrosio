@@ -5,6 +5,7 @@ import { TipoCarismaModule } from './tipo-carisma/tipo-carisma.module';
 import { TipoDioceseModule } from './tipo-diocese/tipo-diocese.module';
 import { DioceseModule } from './diocese/diocese.module';
 import { TipoEquipeModule } from './tipo-equipe/tipo-equipe.module';
+import { TipoPessoaModule } from './tipo-pessoa/tipo-pessoa.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TipoEquipeModule } from './tipo-equipe/tipo-equipe.module';
     TipoDioceseModule,
     DioceseModule,
     TipoEquipeModule,
+    TipoPessoaModule,
   ],
 })
 export class ConfiguracoesModule {}

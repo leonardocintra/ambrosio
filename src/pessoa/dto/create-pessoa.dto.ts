@@ -1,4 +1,9 @@
-import { escolaridade, estadoCivil, tipoCarisma } from '@prisma/client';
+import {
+  escolaridade,
+  estadoCivil,
+  tipoCarisma,
+  tipoPessoa,
+} from '@prisma/client';
 import {
   IsEnum,
   IsNotEmpty,
@@ -33,4 +38,7 @@ export class CreatePessoaDto {
 
   @IsNotEmpty()
   tipoCarisma: tipoCarisma;
+
+  @IsNotEmpty()
+  tipoPessoa: tipoPessoa;
 }
