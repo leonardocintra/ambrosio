@@ -11,7 +11,7 @@ export class DioceseService {
       return this.prisma.diocese.create({
         data: {
           descricao: createDioceseDto.descricao,
-          tipoDioceseId: createDioceseDto.tipo.id,
+          tipoDioceseId: createDioceseDto.tipoDiocese.id,
         },
       });
     } catch (error) {

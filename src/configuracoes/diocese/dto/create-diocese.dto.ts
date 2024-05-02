@@ -10,5 +10,5 @@ export class CreateDioceseDto {
 
   @IsObject()
   @ValidateNested({ each: true })
-  tipo: CreateTipoDioceseDto;
+  tipoDiocese: CreateTipoDioceseDto;
 }
