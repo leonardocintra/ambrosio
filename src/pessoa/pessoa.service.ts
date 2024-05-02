@@ -1,4 +1,3 @@
-import { tipoPessoa } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';

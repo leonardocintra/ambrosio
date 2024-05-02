@@ -76,6 +76,10 @@ export class EnderecoService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} endereco`;
+    return this.prisma.endereco.delete({
+      where: {
+        id,
+      },
+    });
   }
 }

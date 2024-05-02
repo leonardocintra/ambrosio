@@ -22,7 +22,6 @@ model endereco {
   numero     String           @db.VarChar(5)
   UF         String           @db.VarChar(2)
   pais       String           @default("Brasil") @db.VarChar(20)
-  dioceses   diocese[]
   paroquias  paroquia[]
   pessoas    pessoaEndereco[]
   localidade localidade[]
@@ -133,8 +132,6 @@ model diocese {
   tipoDioceseId Int
   tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
   descricao     String       @db.VarChar(50)
-  enderecoId    Int
-  endereco      endereco     @relation(fields: [enderecoId], references: [id])
   paroquias     paroquia[]
   localidade    localidade[]
 }

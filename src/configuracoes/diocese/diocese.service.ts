@@ -2,33 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { CreateDioceseDto } from './dto/create-diocese.dto';
 import { UpdateDioceseDto } from './dto/update-diocese.dto';
 import { PrismaService } from 'src/prisma.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
 
 @Injectable()
 export class DioceseService {
-  constructor(
-    private prisma: PrismaService,
-    private enderecoService: EnderecoService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
   async create(createDioceseDto: CreateDioceseDto) {
-    const endereco = await this.enderecoService.create(
-      createDioceseDto.endereco,
-    );
     try {
       return this.prisma.diocese.create({
         data: {
           descricao: createDioceseDto.descricao,
           tipoDioceseId: createDioceseDto.tipo.id,
-          enderecoId: endereco.id,
         },
       });
     } catch (error) {
-      // TODO: implementar via enderecoService
-      this.prisma.endereco.delete({
-        where: {
-          id: endereco.id,
-        },
-      });
+      console.log(error);
     }
   }
 
@@ -36,7 +23,6 @@ export class DioceseService {
     return this.prisma.diocese.findMany({
       include: {
         tipoDiocese: true,
-        endereco: true,
       },
     });
   }

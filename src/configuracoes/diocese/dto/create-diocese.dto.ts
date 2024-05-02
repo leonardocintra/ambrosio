@@ -11,9 +11,4 @@ export class CreateDioceseDto {
   @IsObject()
   @ValidateNested({ each: true })
   tipo: CreateTipoDioceseDto;
-
-  @IsObject()
-  @ValidateNested({ each: true })
-  @Type(() => CreateEnderecoDto)
-  endereco: CreateEnderecoDto;
 }
