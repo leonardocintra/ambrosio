@@ -121,10 +121,9 @@ model pessoaContato {
 }
 
 model tipoDiocese {
-  id         Int          @id @default(autoincrement())
-  descricao  String       @db.VarChar(50)
-  dioceses   diocese[]
-  localidade localidade[]
+  id        Int       @id @default(autoincrement())
+  descricao String    @db.VarChar(50)
+  dioceses  diocese[]
 }
 
 model diocese {
@@ -214,9 +213,9 @@ model localidade {
   descricao        String             @db.VarChar(80)
   dioceseId        Int
   diocese          diocese            @relation(fields: [dioceseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  tipoDioceseId    Int
-  tipoDiocese      tipoDiocese        @relation(fields: [tipoDioceseId], references: [id], onDelete: Restrict)
-  observacao       String             @db.VarChar(200)
+  tipoLocalidadeId Int
+  tipoLocalidade   tipoLocalidade     @relation(fields: [tipoLocalidadeId], references: [id], onDelete: Restrict)
+  observacao       String?            @db.VarChar(200)
   enderecoId       Int
   endereco         endereco           @relation(fields: [enderecoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   localidadeRegiao localidadeRegiao[]
@@ -229,4 +228,10 @@ model localidadeRegiao {
   regiao       regiao     @relation(fields: [regiaoId], references: [id], onDelete: Restrict)
 
   @@id([localidadeId, regiaoId])
+}
+
+model tipoLocalidade {
+  id         Int          @id @default(autoincrement())
+  descricao  String       @db.VarChar(80)
+  localidade localidade[]
 }

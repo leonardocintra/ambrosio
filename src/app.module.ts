@@ -14,6 +14,7 @@ import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { ParoquiaModule } from './paroquia/paroquia.module';
 import { RegioesModule } from './regioes/regioes.module';
 import { EquipesModule } from './equipes/equipes.module';
+import { LocalidadeModule } from './localidade/localidade.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { EquipesModule } from './equipes/equipes.module';
     ParoquiaModule,
     RegioesModule,
     EquipesModule,
+    LocalidadeModule,
   ],
   controllers: [AppController],
   providers: [
