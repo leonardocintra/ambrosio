@@ -9,3 +9,13 @@ services:
       - POSTGRES_PASSWORD=ambrosio
       - POSTGRES_USER=ambrosio
       - POSTGRES_DB=ambrosio
+  rabbitmq_dev:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: usr_rabbit
+      RABBITMQ_DEFAULT_PASS: pass_rabbit
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - 5672:5672
+      - 15672:15672

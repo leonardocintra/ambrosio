@@ -75,8 +75,8 @@ export class EnderecoService {
     return `This action updates a #${id} endereco`;
   }
 
-  remove(id: number) {
-    return this.prisma.endereco.delete({
+  async remove(id: number) {
+    return await this.prisma.endereco.delete({
       where: {
         id,
       },

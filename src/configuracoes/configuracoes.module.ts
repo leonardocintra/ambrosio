@@ -7,6 +7,7 @@ import { DioceseModule } from './diocese/diocese.module';
 import { TipoEquipeModule } from './tipo-equipe/tipo-equipe.module';
 import { TipoPessoaModule } from './tipo-pessoa/tipo-pessoa.module';
 import { TipoLocalidadeModule } from './tipo-localidade/tipo-localidade.module';
+import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { TipoLocalidadeModule } from './tipo-localidade/tipo-localidade.module';
     TipoEquipeModule,
     TipoPessoaModule,
     TipoLocalidadeModule,
+    RabbitmqModule,
   ],
 })
 export class ConfiguracoesModule {}

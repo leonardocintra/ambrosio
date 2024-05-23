@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTipoLocalidadeDto } from './dto/create-tipo-localidade.dto';
 import { UpdateTipoLocalidadeDto } from './dto/update-tipo-localidade.dto';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class TipoLocalidadeService {
+  constructor(private prisma: PrismaService) {}
+
   create(createTipoLocalidadeDto: CreateTipoLocalidadeDto) {
     return 'This action adds a new tipoLocalidade';
   }
 
   findAll() {
-    return `This action returns all tipoLocalidade`;
+    return this.prisma.tipoLocalidade.findMany();
   }
 
   findOne(id: number) {

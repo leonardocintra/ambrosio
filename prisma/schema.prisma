@@ -215,9 +215,9 @@ model localidade {
   diocese          diocese            @relation(fields: [dioceseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   tipoLocalidadeId Int
   tipoLocalidade   tipoLocalidade     @relation(fields: [tipoLocalidadeId], references: [id], onDelete: Restrict)
-  observacao       String?            @db.VarChar(200)
+  observacao       String?
   enderecoId       Int
-  endereco         endereco           @relation(fields: [enderecoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  endereco         endereco           @relation(fields: [enderecoId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   localidadeRegiao localidadeRegiao[]
 }
 
