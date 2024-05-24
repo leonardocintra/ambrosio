@@ -1,13 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CreateLocalidadeDto } from './dto/create-localidade.dto';
 import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
 import { PrismaService } from 'src/prisma.service';
 import { EnderecoService } from 'src/endereco/endereco.service';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RmqContext } from '@nestjs/microservices';
 import { RABBIT_PATTERN_LOCALIDADE_CREATED } from 'src/commons/constants/constants';
 
 @Injectable()
 export class LocalidadeService {
+  private readonly logger = new Logger(LocalidadeService.name);
+
   constructor(
     private prisma: PrismaService,
     private enderecoService: EnderecoService,
@@ -42,7 +44,10 @@ export class LocalidadeService {
         },
       });
 
-      this.clientRabbit.emit('localidade_created', localidade.id);
+      this.clientRabbit.emit(RABBIT_PATTERN_LOCALIDADE_CREATED, {
+        localidadeId: localidade.id,
+        descricao: localidade.descricao,
+      });
 
       return localidade;
     } catch (err) {
@@ -66,7 +71,13 @@ export class LocalidadeService {
     return `This action removes a #${id} localidade`;
   }
 
-  testeRabbitao() {
-    return `Entrei no bagulho aqui manooo`;
+  async testeRabitao(data: any, context: any) {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+
+    this.logger.debug(data);
+
+    // descarta a mensagem
+    channel.ack(originalMsg);
   }
 }

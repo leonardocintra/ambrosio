@@ -10,6 +10,8 @@ import {
 import { LocalidadeService } from './localidade.service';
 import { CreateLocalidadeDto } from './dto/create-localidade.dto';
 import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
+import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
+import { RABBIT_PATTERN_LOCALIDADE_CREATED } from 'src/commons/constants/constants';
 
 @Controller('localidade')
 export class LocalidadeController {
@@ -41,5 +43,10 @@ export class LocalidadeController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.localidadeService.remove(+id);
+  }
+
+  @EventPattern(RABBIT_PATTERN_LOCALIDADE_CREATED)
+  getNotifications(@Payload() data: any, @Ctx() context: RmqContext) {
+    return this.localidadeService.testeRabitao(data, context);
   }
 }

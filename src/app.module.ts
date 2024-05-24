@@ -16,9 +16,11 @@ import { RegioesModule } from './regioes/regioes.module';
 import { EquipesModule } from './equipes/equipes.module';
 import { LocalidadeModule } from './localidade/localidade.module';
 import { MessagingModule } from './messaging/messaging.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     EstadoCivilModule,
     PrismaModule,
     EscolaridadeModule,
