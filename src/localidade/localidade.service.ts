@@ -4,13 +4,14 @@ import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
 import { PrismaService } from 'src/prisma.service';
 import { EnderecoService } from 'src/endereco/endereco.service';
 import { ClientProxy } from '@nestjs/microservices';
+import { RABBIT_PATTERN_LOCALIDADE_CREATED } from 'src/commons/constants/constants';
 
 @Injectable()
 export class LocalidadeService {
   constructor(
     private prisma: PrismaService,
     private enderecoService: EnderecoService,
-    @Inject('MESSAGE_QUEUE') private clientRabbit: ClientProxy,
+    @Inject('LOCALIDADES_SERVICE') private clientRabbit: ClientProxy,
   ) {}
 
   async create(createLocalidadeDto: CreateLocalidadeDto) {
@@ -41,7 +42,7 @@ export class LocalidadeService {
         },
       });
 
-      await this.clientRabbit.emit('localidade_created', localidade.id);
+      this.clientRabbit.emit('localidade_created', localidade.id);
 
       return localidade;
     } catch (err) {
@@ -63,5 +64,9 @@ export class LocalidadeService {
 
   remove(id: number) {
     return `This action removes a #${id} localidade`;
+  }
+
+  testeRabbitao() {
+    return `Entrei no bagulho aqui manooo`;
   }
 }

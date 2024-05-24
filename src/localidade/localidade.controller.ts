@@ -10,7 +10,6 @@ import {
 import { LocalidadeService } from './localidade.service';
 import { CreateLocalidadeDto } from './dto/create-localidade.dto';
 import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
-import { EventPattern } from '@nestjs/microservices';
 
 @Controller('localidade')
 export class LocalidadeController {
@@ -42,10 +41,5 @@ export class LocalidadeController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.localidadeService.remove(+id);
-  }
-
-  @EventPattern('localidade_created')
-  async onLocalidadeCreated(data: string) {
-    console.log('Localidade created', data);
   }
 }

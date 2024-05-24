@@ -5,11 +5,11 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   imports: [
     ClientsModule.register([
       {
-        name: 'MESSAGE_QUEUE',
+        name: 'LOCALIDADES_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL],
-          queue: process.env.RABBITMQ_QUEUE,
+          queue: 'localidade_queue',
           queueOptions: {
             durable: false,
           },
@@ -19,4 +19,4 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   ],
   exports: [ClientsModule],
 })
-export class RabbitmqModule {}
+export class MessagingModule {}

@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import {
   RECORD_TO_DELETE_DOES_NOT_EXIST,
   UNIQUE_CONSTRAINT_FAILED,
-} from 'src/constants/constants';
+} from 'src/commons/constants/constants';
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionsFilter implements ExceptionFilter {

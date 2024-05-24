@@ -2,3 +2,6 @@
 export const UNIQUE_CONSTRAINT_FAILED = 'P2002';
 export const RECORD_TO_DELETE_DOES_NOT_EXIST = 'P2025';
 export const NULL_CONSTRAINT_VIOLATION = 'P2011';
+
+// QUEUE RABBITMQ
+export const RABBIT_PATTERN_LOCALIDADE_CREATED = 'localidade_created';

@@ -15,6 +15,7 @@ import { ParoquiaModule } from './paroquia/paroquia.module';
 import { RegioesModule } from './regioes/regioes.module';
 import { EquipesModule } from './equipes/equipes.module';
 import { LocalidadeModule } from './localidade/localidade.module';
+import { MessagingModule } from './messaging/messaging.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { LocalidadeModule } from './localidade/localidade.module';
     RegioesModule,
     EquipesModule,
     LocalidadeModule,
+    MessagingModule,
   ],
   controllers: [AppController],
   providers: [
