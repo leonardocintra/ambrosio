@@ -71,11 +71,23 @@ export class LocalidadeService {
     return `This action removes a #${id} localidade`;
   }
 
-  async testeRabitao(data: any, context: any) {
+  async testeRabitao(
+    data: { localidadeId: number; descricao: string },
+    context: any,
+  ) {
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
 
-    this.logger.debug(data);
+    const id = data.localidadeId;
+
+    await this.prisma.localidade.update({
+      where: {
+        id,
+      },
+      data: {
+        observacao: `Teste RabbitMQ com sucesso! ${new Date()}`,
+      },
+    });
 
     // descarta a mensagem
     channel.ack(originalMsg);
