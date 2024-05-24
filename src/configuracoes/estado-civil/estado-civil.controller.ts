@@ -13,7 +13,7 @@ export class EstadoCivilController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.estadoCivilService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.estadoCivilService.findOne(id);
   }
 }
