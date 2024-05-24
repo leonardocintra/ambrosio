@@ -10,7 +10,9 @@ import {
 import { PessoaService } from './pessoa.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Pessoas')
 @Controller('pessoa')
 export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}

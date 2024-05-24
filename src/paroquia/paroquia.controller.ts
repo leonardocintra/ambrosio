@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ParoquiaService } from './paroquia.service';
 import { CreateParoquiaDto } from './dto/create-paroquia.dto';
 import { UpdateParoquiaDto } from './dto/update-paroquia.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Paróquias')
 @Controller('paroquia')
 export class ParoquiaController {
   constructor(private readonly paroquiaService: ParoquiaService) {}
@@ -23,7 +33,10 @@ export class ParoquiaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateParoquiaDto: UpdateParoquiaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateParoquiaDto: UpdateParoquiaDto,
+  ) {
     return this.paroquiaService.update(+id, updateParoquiaDto);
   }
 

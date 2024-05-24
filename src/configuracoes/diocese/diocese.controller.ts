@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DioceseService } from './diocese.service';
 import { CreateDioceseDto } from './dto/create-diocese.dto';
 import { UpdateDioceseDto } from './dto/update-diocese.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Diocese')
 @Controller('diocese')
 export class DioceseController {
   constructor(private readonly dioceseService: DioceseService) {}

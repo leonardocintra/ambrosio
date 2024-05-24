@@ -8,6 +8,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('Ambrosio')
     .setDescription('The CNC API documentation')
@@ -18,8 +19,10 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+
   await app.listen(3005);
 
+  // RabbitMQ configuration
   const msRMQLocalidade: MicroserviceOptions = {
     transport: Transport.RMQ,
     options: {
