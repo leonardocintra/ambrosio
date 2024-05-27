@@ -3,7 +3,7 @@ import { CreateLocalidadeDto } from './dto/create-localidade.dto';
 import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
 import { PrismaService } from 'src/prisma.service';
 import { EnderecoService } from 'src/endereco/endereco.service';
-import { ClientProxy, RmqContext } from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
 import { RABBIT_PATTERN_LOCALIDADE_CREATED } from 'src/commons/constants/constants';
 
 @Injectable()

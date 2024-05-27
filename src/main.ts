@@ -23,6 +23,10 @@ async function bootstrap() {
   
   // RabbitMQ configuration
   const queues = [QUEUE_LOCALIDADE];
+
+  console.log(QUEUE_LOCALIDADE)
+  console.log(process.env.RABBITMQ_URL)
+  
   
   for (const queue of queues) {
     await app.connectMicroservice({
