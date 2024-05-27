@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { Transport } from '@nestjs/microservices';
 import { QUEUE_LOCALIDADE } from './commons/constants/constants';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -19,28 +19,27 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
-
-  await app.listen(3005);
-
+  
+  
   // RabbitMQ configuration
-  const msRMQLocalidade: MicroserviceOptions = {
-    transport: Transport.RMQ,
-    options: {
-      urls: [process.env.RABBITMQ_URL],
-      queue: QUEUE_LOCALIDADE,
-      noAck: false,
-      queueOptions: {
-        durable: false,
+  const queues = [QUEUE_LOCALIDADE];
+  
+  for (const queue of queues) {
+    await app.connectMicroservice({
+      transport: Transport.RMQ,
+      options: {
+        urls: [process.env.RABBITMQ_URL],
+        queue,
+        noAck: false,
+        queueOptions: {
+          durable: false,
+        },
       },
-    },
-  };
+    });
+  }
 
-  const microserviceLocalidade =
-    await NestFactory.createMicroservice<MicroserviceOptions>(
-      AppModule,
-      msRMQLocalidade,
-    );
-
-  await microserviceLocalidade.listen();
+  
+  await app.startAllMicroservices();
+  await app.listen(3005);
 }
 bootstrap();

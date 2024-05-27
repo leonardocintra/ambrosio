@@ -85,7 +85,7 @@ export class LocalidadeService {
         id,
       },
       data: {
-        observacao: `Teste RabbitMQ com sucesso! ${new Date()}`,
+        observacao: `RabbitMQ OK! Sucesso! ${new Date()}`,
       },
     });
 
