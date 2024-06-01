@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PessoaService } from './pessoa.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { SexoQueryParamDto } from './dto/sexo.dto';
 
 @ApiTags('Pessoas')
 @Controller('pessoa')
@@ -25,6 +27,13 @@ export class PessoaController {
   @Get()
   findAll() {
     return this.pessoaService.findAll();
+  }
+
+  @Get('/conjugue')
+  findAllConjugue(@Query() query: SexoQueryParamDto) {
+    return this.pessoaService.findAllBySexoEstadoCivilCasado(
+      query.sexo.toUpperCase(),
+    );
   }
 
   @Get(':id')

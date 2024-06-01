@@ -56,6 +56,27 @@ export class PessoaService {
     });
   }
 
+  async findAllBySexoEstadoCivilCasado(sexo: string) {
+    // Funcao para buscar todas as pessoas com estado civil casado que não estao vinculados marido e mulher
+    const param = sexo === 'M' ? Sexo.MASCULINO : Sexo.FEMININO;
+    const estadoCivilId = Number(process.env.ESTADO_CIVIL_CASADO_ID);
+
+    // TODO: pensar uma alternativa para essa query, pois queryRamUnsafe é perigoso. Nesse caso se nao tiver alteração na query esta tudo bem.
+    return await this.prisma.$queryRawUnsafe(
+      `SELECT p.id, p.nome
+          FROM pessoa p 
+          LEFT JOIN "pessoaCasal" marido 
+            ON marido."pessoaMaridoId" = p.id 
+          LEFT JOIN "pessoaCasal" mulher 
+            ON mulher."pessoaMulherId" = p.id 
+          WHERE 
+            p."estadoCivilId" = ${estadoCivilId}
+            AND mulher.id IS NULL 
+            AND marido.id IS NULL
+            AND p.sexo = '${param}'`,
+    );
+  }
+
   async findOne(id: number) {
     const pessoa = await this.prisma.pessoa.findUniqueOrThrow({
       where: { id },

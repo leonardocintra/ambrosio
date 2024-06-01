@@ -143,12 +143,6 @@ async function main() {
 
   await prisma.tipoCarisma.create({
     data: {
-      descricao: 'Pós Crisma',
-    },
-  });
-
-  await prisma.tipoCarisma.create({
-    data: {
       descricao: 'Catequista',
     },
   });
