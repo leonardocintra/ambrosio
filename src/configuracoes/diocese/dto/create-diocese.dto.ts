@@ -1,8 +1,6 @@
 import { Type } from 'class-transformer';
 import {
-  IsNumber,
   IsObject,
-  IsPositive,
   IsString,
   MaxLength,
   ValidateNested,
@@ -10,10 +8,6 @@ import {
 import { CreateTipoDioceseDto } from 'src/configuracoes/tipo-diocese/dto/create-tipo-diocese.dto';
 
 export class CreateDioceseDto {
-  @IsPositive()
-  @IsNumber()
-  id: number;
-
   @IsString()
   @MaxLength(50)
   descricao: string;

@@ -21,25 +21,23 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   
   
+  // ******* DESABILITADO ATE RESOLVER **************
   // RabbitMQ configuration
-  const queues = [QUEUE_LOCALIDADE];
-
-
+  // const queues = [QUEUE_LOCALIDADE];
   
-  for (const queue of queues) {
-    await app.connectMicroservice({
-      transport: Transport.RMQ,
-      options: {
-        urls: [process.env.RABBITMQ_URL],
-        queue,
-        noAck: false,
-        queueOptions: {
-          durable: false,
-        },
-      },
-    });
-  }
-
+  // for (const queue of queues) {
+  //   await app.connectMicroservice({
+  //     transport: Transport.RMQ,
+  //     options: {
+  //       urls: [process.env.RABBITMQ_URL],
+  //       queue,
+  //       noAck: false,
+  //       queueOptions: {
+  //         durable: false,
+  //       },
+  //     },
+  //   });
+  // }
   
   //await app.startAllMicroservices();
   await app.listen(3005);
