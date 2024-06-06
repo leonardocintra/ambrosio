@@ -91,6 +91,32 @@ export class PessoaService {
       );
     }
 
+    const existingConjugue = await this.prisma.pessoaCasal.findFirst({
+      where: {
+        OR: [
+          {
+            pessoaMaridoId: pessoa.id,
+          },
+          {
+            pessoaMaridoId: conjugue.id,
+          },
+          {
+            pessoaMulherId: pessoa.id,
+          },
+          {
+            pessoaMulherId: conjugue.id,
+          },
+        ],
+      },
+    });
+
+    if (existingConjugue) {
+      throw new HttpException(
+        'Marido ou mulher já está em outro relacionamento.',
+        400,
+      );
+    }
+
     if (pessoa.sexo === Sexo.MASCULINO) {
       return await this.prisma.pessoaCasal.create({
         data: {
@@ -98,13 +124,18 @@ export class PessoaService {
           pessoaMulherId: conjugue.id,
         },
       });
-    } else {
+    } else if (pessoa.sexo === Sexo.FEMININO) {
       return await this.prisma.pessoaCasal.create({
         data: {
           pessoaMaridoId: conjugue.id,
           pessoaMulherId: pessoa.id,
         },
       });
+    } else {
+      throw new HttpException(
+        'Marido ou esposa esta com os sexo (F ou M) cadastrado de forma errada. Verificar.',
+        400,
+      );
     }
   }
 
@@ -145,7 +176,9 @@ export class PessoaService {
       },
     });
 
-    const response = this.handleResponsePessoa(pessoa);
+    const conjugue = await this.getConjugue(pessoa);
+
+    const response = this.handleResponsePessoa(pessoa, conjugue);
     return response;
   }
 
@@ -178,13 +211,14 @@ export class PessoaService {
     return `This action removes a #${id} pessoa`;
   }
 
-  private handleResponsePessoa(pessoa: any) {
+  private handleResponsePessoa(pessoa: any, conjugue: any) {
     const response = {
       id: pessoa.id,
       nome: pessoa.nome,
       sexo: pessoa.sexo,
       nacionalidade: pessoa.nacionalidade,
       estadoCivil: pessoa.estadoCivil,
+      conjugue,
       foto: pessoa.foto,
       ativo: pessoa.ativo,
       escolaridade: pessoa.escolaridade,
@@ -204,5 +238,39 @@ export class PessoaService {
     };
 
     return response;
+  }
+
+  private async getConjugue(pessoa) {
+    if (pessoa.estadoCivilId !== Number(process.env.ESTADO_CIVIL_CASADO_ID)) {
+      return;
+    }
+
+    let where = {};
+
+    if (pessoa.sexo === Sexo.MASCULINO) {
+      where = {
+        pessoaMaridoId: pessoa.id,
+      };
+    } else {
+      where = {
+        pessoaMulherId: pessoa.id,
+      };
+    }
+    const casal = await this.prisma.pessoaCasal.findFirst({ where });
+
+    if (casal) {
+      return await this.prisma.pessoa.findUniqueOrThrow({
+        select: {
+          id: true,
+          nome: true,
+        },
+        where: {
+          id:
+            pessoa.sexo === Sexo.MASCULINO
+              ? casal.pessoaMulherId
+              : casal.pessoaMaridoId,
+        },
+      });
+    }
   }
 }
