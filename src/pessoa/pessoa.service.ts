@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -7,6 +7,7 @@ import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade
 import { TipoCarismaService } from 'src/configuracoes/tipo-carisma/tipo-carisma.service';
 import { Sexo } from 'src/commons/enums/enums';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
+import { CreateCasalDto } from './dto/create-casal.dto';
 
 @Injectable()
 export class PessoaService {
@@ -54,6 +55,57 @@ export class PessoaService {
         id: 'desc',
       },
     });
+  }
+
+  async createCasal(createCasalDto: CreateCasalDto) {
+    const pessoaId = createCasalDto.pessoaId;
+    const conjugueId = createCasalDto.conjugueId;
+
+    const [pessoa, conjugue] = await Promise.all([
+      this.prisma.pessoa.findUniqueOrThrow({
+        where: { id: pessoaId },
+      }),
+      this.prisma.pessoa.findUniqueOrThrow({
+        where: { id: conjugueId },
+      }),
+    ]);
+
+    if (pessoa.estadoCivilId !== Number(process.env.ESTADO_CIVIL_CASADO_ID)) {
+      throw new HttpException(
+        'Apenas pessoas com estado civil casado podem se casar',
+        400,
+      );
+    }
+
+    if (conjugue.estadoCivilId !== Number(process.env.ESTADO_CIVIL_CASADO_ID)) {
+      throw new HttpException(
+        'Apenas pessoas com estado civil casado podem se casar',
+        400,
+      );
+    }
+
+    if (pessoa.sexo === conjugue.sexo) {
+      throw new HttpException(
+        'Casal do mesmo sexo! Não existe casal do mesmo sexo. Verificar.',
+        400,
+      );
+    }
+
+    if (pessoa.sexo === Sexo.MASCULINO) {
+      return await this.prisma.pessoaCasal.create({
+        data: {
+          pessoaMaridoId: pessoa.id,
+          pessoaMulherId: conjugue.id,
+        },
+      });
+    } else {
+      return await this.prisma.pessoaCasal.create({
+        data: {
+          pessoaMaridoId: conjugue.id,
+          pessoaMulherId: pessoa.id,
+        },
+      });
+    }
   }
 
   async findAllBySexoEstadoCivilCasado(sexo: string) {

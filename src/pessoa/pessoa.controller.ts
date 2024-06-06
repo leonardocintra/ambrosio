@@ -13,6 +13,7 @@ import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { SexoQueryParamDto } from './dto/sexo.dto';
+import { CreateCasalDto } from './dto/create-casal.dto';
 
 @ApiTags('Pessoas')
 @Controller('pessoa')
@@ -22,6 +23,11 @@ export class PessoaController {
   @Post()
   create(@Body() createPessoaDto: CreatePessoaDto) {
     return this.pessoaService.create(createPessoaDto);
+  }
+
+  @Post('/casal')
+  createCasal(@Body() createCasalDto: CreateCasalDto) {
+    return this.pessoaService.createCasal(createCasalDto);
   }
 
   @Get()
