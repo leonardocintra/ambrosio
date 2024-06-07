@@ -5,6 +5,7 @@ import { PessoaController } from './pessoa.controller';
 import { EstadoCivilModule } from 'src/configuracoes/estado-civil/estado-civil.module';
 import { EnderecoModule } from 'src/endereco/endereco.module';
 import { TipoPessoaModule } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.module';
+import { CarismaModule } from './carisma/carisma.module';
 
 @Module({
   controllers: [PessoaController],
@@ -14,6 +15,7 @@ import { TipoPessoaModule } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.modu
     EstadoCivilModule,
     TipoPessoaModule,
     EnderecoModule,
+    CarismaModule,
   ],
 })
 export class PessoaModule {}

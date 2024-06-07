@@ -1,6 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import {
+  FOREIGN_KEY_CONSTRAINT,
   RECORD_TO_DELETE_DOES_NOT_EXIST,
   UNIQUE_CONSTRAINT_FAILED,
 } from 'src/commons/constants/constants';
@@ -15,6 +16,11 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
       const meta = exception.meta as { target?: string[] };
       if (meta.target && meta.target.length) {
         return `O campo '${meta.target.join(', ')}' já existe cadastrado. Não permitimos duplicidade.`;
+      }
+
+      const metaFieldName = exception.meta as { field_name?: string | null };
+      if (metaFieldName.field_name) {
+        return `O campo '${metaFieldName.field_name}' não foi encontrado. Verificar.`;
       }
     }
     return null;
@@ -45,6 +51,16 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
         path: request.url,
         method: request.method,
         message: 'Registro não encontrado. Tente novamente',
+      });
+    } else if (exception.code === FOREIGN_KEY_CONSTRAINT) {
+      status = 404;
+      const errorMessage = this.extractErrorMessage(exception);
+      response.status(status).json({
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+        method: request.method,
+        message: `ID informado não encontrado. ${errorMessage}`,
       });
     } else {
       response.status(status).json({
