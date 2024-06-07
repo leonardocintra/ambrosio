@@ -4,7 +4,6 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
-import { TipoCarismaService } from 'src/configuracoes/tipo-carisma/tipo-carisma.service';
 import { Sexo } from 'src/commons/enums/enums';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { CreateCasalDto } from './dto/create-casal.dto';
@@ -15,18 +14,15 @@ export class PessoaService {
     private prisma: PrismaService,
     private estadoCivilService: EstadoCivilService,
     private escolaridadeService: EscolaridadeService,
-    private tipoCarismaService: TipoCarismaService,
     private tipoPessoaService: TipoPessoaService,
   ) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
-    const [estadoCivil, escolaridade, tipoCarisma, tipoPessoa] =
-      await Promise.all([
-        await this.estadoCivilService.findOne(createPessoaDto.estadoCivil.id),
-        await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
-        await this.tipoCarismaService.findOne(createPessoaDto.tipoCarisma.id),
-        await this.tipoPessoaService.findOne(createPessoaDto.tipoPessoa.id),
-      ]);
+    const [estadoCivil, escolaridade, tipoPessoa] = await Promise.all([
+      await this.estadoCivilService.findOne(createPessoaDto.estadoCivil.id),
+      await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
+      await this.tipoPessoaService.findOne(createPessoaDto.tipoPessoa.id),
+    ]);
 
     return this.prisma.pessoa.create({
       data: {
@@ -34,7 +30,6 @@ export class PessoaService {
         nacionalidade: createPessoaDto.nacionalidade,
         estadoCivilId: estadoCivil.id,
         foto: createPessoaDto.foto,
-        tipoCarismaId: tipoCarisma.id,
         escolaridadeId: escolaridade.id,
         tipoPessoaId: tipoPessoa.id,
         sexo:
@@ -43,18 +38,29 @@ export class PessoaService {
     });
   }
 
-  findAll() {
-    return this.prisma.pessoa.findMany({
+  async findAll() {
+    const results = await this.prisma.pessoa.findMany({
       include: {
         estadoCivil: true,
         escolaridade: true,
-        tipoCarisma: true,
         tipoPessoa: true,
+        pessoaCarisma: {
+          include: {
+            tipoCarisma: true,
+          },
+        },
+        enderecos: {
+          include: {
+            endereco: true,
+          },
+        },
       },
       orderBy: {
         id: 'desc',
       },
     });
+
+    return results.map((result) => this.handleResponsePessoa(result, null));
   }
 
   async createCasal(createCasalDto: CreateCasalDto) {
@@ -161,13 +167,17 @@ export class PessoaService {
   }
 
   async findOne(id: number) {
-    const pessoa = await this.prisma.pessoa.findUniqueOrThrow({
+    const result = await this.prisma.pessoa.findUniqueOrThrow({
       where: { id },
       include: {
         estadoCivil: true,
         escolaridade: true,
-        tipoCarisma: true,
         tipoPessoa: true,
+        pessoaCarisma: {
+          include: {
+            tipoCarisma: true,
+          },
+        },
         enderecos: {
           include: {
             endereco: true,
@@ -176,20 +186,18 @@ export class PessoaService {
       },
     });
 
-    const conjugue = await this.getConjugue(pessoa);
+    const conjugue = await this.getConjugue(result);
 
-    const response = this.handleResponsePessoa(pessoa, conjugue);
-    return response;
+    const pessoa = this.handleResponsePessoa(result, conjugue);
+    return pessoa;
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
-    const [estadoCivil, escolaridade, tipoCarisma, tipoPessoa] =
-      await Promise.all([
-        this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
-        this.escolaridadeService.findOne(updatePessoaDto.escolaridade.id),
-        this.tipoCarismaService.findOne(updatePessoaDto.tipoCarisma.id),
-        this.tipoPessoaService.findOne(updatePessoaDto.tipoPessoa.id),
-      ]);
+    const [estadoCivil, escolaridade, tipoPessoa] = await Promise.all([
+      this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
+      this.escolaridadeService.findOne(updatePessoaDto.escolaridade.id),
+      this.tipoPessoaService.findOne(updatePessoaDto.tipoPessoa.id),
+    ]);
 
     return await this.prisma.pessoa.update({
       where: { id },
@@ -198,7 +206,6 @@ export class PessoaService {
         nacionalidade: updatePessoaDto.nacionalidade,
         estadoCivilId: estadoCivil.id,
         foto: updatePessoaDto.foto,
-        tipoCarismaId: tipoCarisma.id,
         escolaridadeId: escolaridade.id,
         tipoPessoaId: tipoPessoa.id,
         sexo:
@@ -222,8 +229,13 @@ export class PessoaService {
       foto: pessoa.foto,
       ativo: pessoa.ativo,
       escolaridade: pessoa.escolaridade,
-      tipoCarisma: pessoa.tipoCarisma,
       tipoPessoa: pessoa.tipoPessoa,
+      carismas: pessoa.pessoaCarisma.map((carisma) => {
+        return {
+          id: carisma.tipoCarisma.id,
+          descricao: carisma.tipoCarisma.descricao,
+        };
+      }),
       enderecos: pessoa.enderecos.map((end) => {
         return {
           id: end.endereco.id,
