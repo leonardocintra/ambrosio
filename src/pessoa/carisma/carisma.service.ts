@@ -16,6 +16,7 @@ export class CarismaService {
     });
 
     return await this.prisma.pessoaCarisma.createMany({
+      skipDuplicates: true,
       data: createCarismaDto.carismas.map((carisma) => ({
         tipoCarismaId: carisma,
         pessoaId: createCarismaDto.pessoaId,
