@@ -1,8 +1,10 @@
-import { IsPositive } from 'class-validator';
+import { IsArray, IsNumber, IsPositive } from 'class-validator';
 
 export class CreateCarismaDto {
-  @IsPositive()
-  tipoCarismaId: number;
+  
+  @IsArray()
+  @IsNumber({}, { each: true })
+  carismas: number[];
 
   @IsPositive()
   pessoaId: number;

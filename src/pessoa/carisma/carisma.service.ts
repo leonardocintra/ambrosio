@@ -7,12 +7,19 @@ import { PrismaService } from 'src/prisma.service';
 export class CarismaService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createCarismaDto: CreateCarismaDto) {
-    return this.prisma.pessoaCarisma.create({
-      data: {
-        tipoCarismaId: createCarismaDto.tipoCarismaId,
+  async create(createCarismaDto: CreateCarismaDto) {
+    // deleta todos os carismas e add novamente
+    await this.prisma.pessoaCarisma.deleteMany({
+      where: {
         pessoaId: createCarismaDto.pessoaId,
       },
+    });
+
+    return await this.prisma.pessoaCarisma.createMany({
+      data: createCarismaDto.carismas.map((carisma) => ({
+        tipoCarismaId: carisma,
+        pessoaId: createCarismaDto.pessoaId,
+      })),
     });
   }
 
