@@ -93,8 +93,8 @@ model pessoaCasal {
   id             Int    @id @default(autoincrement())
   pessoaMaridoId Int
   pessoaMulherId Int
-  marido         pessoa @relation("Marido", fields: [pessoaMaridoId], references: [id])
-  mulher         pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id])
+  marido         pessoa @relation("Marido", fields: [pessoaMaridoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  mulher         pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([pessoaMaridoId, pessoaMulherId])
 }
