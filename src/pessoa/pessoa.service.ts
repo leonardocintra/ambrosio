@@ -32,6 +32,7 @@ export class PessoaService {
         foto: createPessoaDto.foto,
         escolaridadeId: escolaridade.id,
         tipoPessoaId: tipoPessoa.id,
+        dataNascimento: createPessoaDto.dataNascimento ? new Date(createPessoaDto.dataNascimento) : null,
         sexo:
           createPessoaDto.sexo === 'MASCULINO' ? Sexo.MASCULINO : Sexo.FEMININO,
       },
@@ -225,6 +226,7 @@ export class PessoaService {
       sexo: pessoa.sexo,
       nacionalidade: pessoa.nacionalidade,
       estadoCivil: pessoa.estadoCivil,
+      dataNascimento: pessoa.dataNascimento,
       conjugue,
       foto: pessoa.foto,
       ativo: pessoa.ativo,
