@@ -1,0 +1,9 @@
+colocar o id da imagem abaixo ID_IMAGEM_DOCKER (EX: 18f5ee0063d4)
+
+1 - COPIAR O DUMP (execute o comando na pasta que esta baixada o dump)
+docker cp pgsql.gestao.20240605.06hs.dump ID_IMAGEM_DOCKER:/pgsql.gestao.20240605.06hs.dump
+
+2 - CRIAR O BANCO cnc (Pode ser pelo dbEaver)
+
+3 - EXECUTAR OS DADOS PARA O BANCO
+docker exec -i ID_IMAGEM_DOCKER pg_restore -U ambrosio -d cnc --no-owner /pgsql.gestao.20240605.06hs.dump

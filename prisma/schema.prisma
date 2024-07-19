@@ -52,8 +52,10 @@ enum Sexo {
 
 model pessoa {
   id                   Int                @id @default(autoincrement())
-  nome                 String             @db.VarChar(50)
+  nome                 String             @db.VarChar(80)
+  conhecidoPor         String?            @db.VarChar(30)
   sexo                 Sexo               @default(MASCULINO)
+  cpf                  String?            @db.VarChar(11)
   nacionalidade        String             @db.VarChar(50)
   dataNascimento       DateTime?          @db.Date
   estadoCivilId        Int
@@ -139,7 +141,7 @@ model diocese {
   id            Int          @id @default(autoincrement())
   tipoDioceseId Int
   tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
-  descricao     String       @db.VarChar(50)
+  descricao     String       @db.VarChar(90)
   paroquias     paroquia[]
   localidade    localidade[]
 }
