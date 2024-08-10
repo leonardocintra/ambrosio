@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class DioceseService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   async create(createDioceseDto: CreateDioceseDto) {
     try {
       return this.prisma.diocese.create({

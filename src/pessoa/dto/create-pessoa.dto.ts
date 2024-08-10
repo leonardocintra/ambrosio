@@ -2,12 +2,13 @@ import { escolaridade, estadoCivil, tipoPessoa } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsDate,
-  IsDateString,
   IsEnum,
   IsNotEmpty,
+  IsNumberString,
   IsOptional,
   IsString,
   MaxLength,
+  MinLength,
 } from 'class-validator';
 import { Sexo } from 'src/commons/enums/enums';
 
@@ -17,6 +18,12 @@ export class CreatePessoaDto {
   @IsString()
   nome: string;
 
+  @MaxLength(11)
+  @MinLength(11)
+  @IsNumberString()
+  @IsOptional()
+  cpf: string;
+
   @MaxLength(50)
   @IsString()
   nacionalidade: string;
@@ -25,7 +32,7 @@ export class CreatePessoaDto {
   estadoCivil: estadoCivil;
 
   @IsOptional()
-  @IsDate({ message: "A data precisa estar no formato yyyy-mm-dd (Ex: 1994-05-15)"})
+  @IsDate({ message: "A data de nascimento precisa estar no formato yyyy-mm-dd (Ex: 1994-05-15)" })
   @Type(() => Date)
   dataNascimento: Date;
 

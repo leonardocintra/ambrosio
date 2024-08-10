@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { EstadoCivilModule } from './configuracoes/estado-civil/estado-civil.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaExceptionsFilter } from './commons/prisma-exceptions/prisma-exceptions.filter';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { EscolaridadeModule } from './configuracoes/escolaridade/escolaridade.module';
 import { TipoCarismaModule } from './configuracoes/tipo-carisma/tipo-carisma.module';
 import { EnderecoModule } from './endereco/endereco.module';
@@ -17,6 +17,7 @@ import { EquipesModule } from './equipes/equipes.module';
 import { LocalidadeModule } from './localidade/localidade.module';
 import { MessagingModule } from './messaging/messaging.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { PaginationInterceptor } from './commons/interceptors/pagination.interceptors';
 
 @Module({
   imports: [
@@ -42,6 +43,10 @@ import { ScheduleModule } from '@nestjs/schedule';
       provide: APP_FILTER,
       useClass: PrismaExceptionsFilter,
     },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: PaginationInterceptor,
+    }
   ],
 })
-export class AppModule {}
+export class AppModule { }

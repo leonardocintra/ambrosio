@@ -5,7 +5,7 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
+  Delete
 } from '@nestjs/common';
 import { DioceseService } from './diocese.service';
 import { CreateDioceseDto } from './dto/create-diocese.dto';
@@ -15,7 +15,7 @@ import { ApiTags } from '@nestjs/swagger';
 @ApiTags('Diocese')
 @Controller('diocese')
 export class DioceseController {
-  constructor(private readonly dioceseService: DioceseService) {}
+  constructor(private readonly dioceseService: DioceseService) { }
 
   @Post()
   create(@Body() createDioceseDto: CreateDioceseDto) {

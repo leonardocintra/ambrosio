@@ -7,6 +7,7 @@ import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade
 import { Sexo } from 'src/commons/enums/enums';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { CreateCasalDto } from './dto/create-casal.dto';
+import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants';
 
 @Injectable()
 export class PessoaService {
@@ -15,18 +16,23 @@ export class PessoaService {
     private estadoCivilService: EstadoCivilService,
     private escolaridadeService: EscolaridadeService,
     private tipoPessoaService: TipoPessoaService,
-  ) {}
+  ) { }
 
   async create(createPessoaDto: CreatePessoaDto) {
+
+    await this.analisarCPF(createPessoaDto.cpf);
+
     const [estadoCivil, escolaridade, tipoPessoa] = await Promise.all([
       await this.estadoCivilService.findOne(createPessoaDto.estadoCivil.id),
       await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
       await this.tipoPessoaService.findOne(createPessoaDto.tipoPessoa.id),
     ]);
 
+
     return this.prisma.pessoa.create({
       data: {
         nome: createPessoaDto.nome,
+        cpf: createPessoaDto.cpf,
         nacionalidade: createPessoaDto.nacionalidade,
         estadoCivilId: estadoCivil.id,
         foto: createPessoaDto.foto,
@@ -39,8 +45,15 @@ export class PessoaService {
     });
   }
 
-  async findAll() {
+  async findAll(page: number, limit: number) {
+    if (!page) page = PAGE_DEFAULT;
+    if (!limit) limit = LIMIT_DEFAULT;
+
+    const skip = (page - 1) * limit;
+
     const results = await this.prisma.pessoa.findMany({
+      skip,
+      take: limit,
       include: {
         estadoCivil: true,
         escolaridade: true,
@@ -61,7 +74,7 @@ export class PessoaService {
       },
     });
 
-    return results.map((result) => this.handleResponsePessoa(result, null));
+    return results.map((result) => this.handleResponsePessoa(result));
   }
 
   async createCasal(createCasalDto: CreateCasalDto) {
@@ -204,6 +217,7 @@ export class PessoaService {
       where: { id },
       data: {
         nome: updatePessoaDto.nome,
+        cpf: updatePessoaDto.cpf,
         nacionalidade: updatePessoaDto.nacionalidade,
         estadoCivilId: estadoCivil.id,
         foto: updatePessoaDto.foto,
@@ -219,10 +233,11 @@ export class PessoaService {
     return `This action removes a #${id} pessoa`;
   }
 
-  private handleResponsePessoa(pessoa: any, conjugue: any) {
+  private handleResponsePessoa(pessoa: any, conjugue?: any) {
     const response = {
       id: pessoa.id,
       nome: pessoa.nome,
+      cpf: pessoa.cpf,
       sexo: pessoa.sexo,
       nacionalidade: pessoa.nacionalidade,
       estadoCivil: pessoa.estadoCivil,
@@ -285,6 +300,19 @@ export class PessoaService {
               : casal.pessoaMaridoId,
         },
       });
+    }
+  }
+
+  private async analisarCPF(cpf: string) {
+    // TODO: colocar validacao de CPF aqui
+
+    if (cpf === undefined || cpf === "") return;
+
+    const pessoa = await this.prisma.pessoa.findFirst({
+      where: { cpf },
+    });
+    if (pessoa) {
+      throw new HttpException(`O CPF ja registrado para ${pessoa.nome}`, 409);
     }
   }
 }

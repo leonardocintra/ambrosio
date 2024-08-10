@@ -19,12 +19,9 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
-  
-  
-  // ******* DESABILITADO ATE RESOLVER **************
-  //RabbitMQ configuration
+
   const queues = [QUEUE_LOCALIDADE];
-  
+
   for (const queue of queues) {
     await app.connectMicroservice({
       transport: Transport.RMQ,
@@ -38,7 +35,7 @@ async function bootstrap() {
       },
     });
   }
-  
+
   await app.startAllMicroservices();
   await app.listen(3005);
 }

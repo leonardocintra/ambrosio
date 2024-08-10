@@ -18,7 +18,7 @@ import { CreateCasalDto } from './dto/create-casal.dto';
 @ApiTags('Pessoas')
 @Controller('pessoa')
 export class PessoaController {
-  constructor(private readonly pessoaService: PessoaService) {}
+  constructor(private readonly pessoaService: PessoaService) { }
 
   @Post()
   create(@Body() createPessoaDto: CreatePessoaDto) {
@@ -31,8 +31,11 @@ export class PessoaController {
   }
 
   @Get()
-  findAll() {
-    return this.pessoaService.findAll();
+  findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number
+  ) {
+    return this.pessoaService.findAll(Number(page), Number(limit));
   }
 
   @Get('/conjugue')
