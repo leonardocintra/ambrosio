@@ -32,6 +32,7 @@ export class PessoaService {
     return this.prisma.pessoa.create({
       data: {
         nome: createPessoaDto.nome,
+        conhecidoPor: createPessoaDto.conhecidoPor,
         cpf: createPessoaDto.cpf,
         nacionalidade: createPessoaDto.nacionalidade,
         estadoCivilId: estadoCivil.id,
@@ -217,6 +218,7 @@ export class PessoaService {
       where: { id },
       data: {
         nome: updatePessoaDto.nome,
+        conhecidoPor: updatePessoaDto.conhecidoPor,
         cpf: updatePessoaDto.cpf,
         nacionalidade: updatePessoaDto.nacionalidade,
         estadoCivilId: estadoCivil.id,
@@ -237,6 +239,7 @@ export class PessoaService {
     const response = {
       id: pessoa.id,
       nome: pessoa.nome,
+      conhecidoPor: pessoa.conhecidoPor,
       cpf: pessoa.cpf,
       sexo: pessoa.sexo,
       nacionalidade: pessoa.nacionalidade,

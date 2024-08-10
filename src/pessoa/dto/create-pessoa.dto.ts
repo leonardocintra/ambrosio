@@ -18,6 +18,11 @@ export class CreatePessoaDto {
   @IsString()
   nome: string;
 
+  @MaxLength(50)
+  @IsString()
+  @IsOptional()
+  conhecidoPor: string;
+
   @MaxLength(11)
   @MinLength(11)
   @IsNumberString()
