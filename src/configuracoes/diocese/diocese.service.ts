@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma.service';
 @Injectable()
 export class DioceseService {
   constructor(private prisma: PrismaService) { }
+
   async create(createDioceseDto: CreateDioceseDto) {
     try {
       return this.prisma.diocese.create({
@@ -28,7 +29,14 @@ export class DioceseService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} diocese`;
+    return this.prisma.diocese.findFirstOrThrow({
+      where: {
+        id
+      },
+      include: {
+        tipoDiocese: true
+      }
+    })
   }
 
   update(id: number, updateDioceseDto: UpdateDioceseDto) {
