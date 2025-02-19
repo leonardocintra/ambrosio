@@ -6,6 +6,9 @@
     "name": "Leonardo Nascimento Cintra",
     "email": "leonardo.ncintra@outlook.com"
   },
+  "engines": {
+    "node": "22"
+  },
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
