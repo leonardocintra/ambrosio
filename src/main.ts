@@ -20,6 +20,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
+  // rabbitMQ
   const queues = [QUEUE_LOCALIDADE];
 
   for (const queue of queues) {

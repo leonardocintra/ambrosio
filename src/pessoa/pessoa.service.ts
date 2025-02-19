@@ -4,7 +4,7 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
-import { Sexo } from 'src/commons/enums/enums';
+import { SEXO_ENUM } from 'src/commons/enums/enums';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants';
@@ -41,7 +41,7 @@ export class PessoaService {
         tipoPessoaId: tipoPessoa.id,
         dataNascimento: createPessoaDto.dataNascimento ? new Date(createPessoaDto.dataNascimento) : null,
         sexo:
-          createPessoaDto.sexo === 'MASCULINO' ? Sexo.MASCULINO : Sexo.FEMININO,
+          createPessoaDto.sexo === 'MASCULINO' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
       },
     });
   }
@@ -138,14 +138,14 @@ export class PessoaService {
       );
     }
 
-    if (pessoa.sexo === Sexo.MASCULINO) {
+    if (pessoa.sexo === SEXO_ENUM.MASCULINO) {
       return await this.prisma.pessoaCasal.create({
         data: {
           pessoaMaridoId: pessoa.id,
           pessoaMulherId: conjugue.id,
         },
       });
-    } else if (pessoa.sexo === Sexo.FEMININO) {
+    } else if (pessoa.sexo === SEXO_ENUM.FEMININO) {
       return await this.prisma.pessoaCasal.create({
         data: {
           pessoaMaridoId: conjugue.id,
@@ -162,7 +162,7 @@ export class PessoaService {
 
   async findAllBySexoEstadoCivilCasado(sexo: string) {
     // Funcao para buscar todas as pessoas com estado civil casado que não estao vinculados marido e mulher
-    const param = sexo === 'M' ? Sexo.MASCULINO : Sexo.FEMININO;
+    const param = sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO;
     const estadoCivilId = Number(process.env.ESTADO_CIVIL_CASADO_ID);
 
     // TODO: pensar uma alternativa para essa query, pois queryRamUnsafe é perigoso. Nesse caso se nao tiver alteração na query esta tudo bem.
@@ -226,7 +226,7 @@ export class PessoaService {
         escolaridadeId: escolaridade.id,
         tipoPessoaId: tipoPessoa.id,
         sexo:
-          updatePessoaDto.sexo === 'MASCULINO' ? Sexo.MASCULINO : Sexo.FEMININO,
+          updatePessoaDto.sexo === 'MASCULINO' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
       },
     });
   }
@@ -279,7 +279,7 @@ export class PessoaService {
 
     let where = {};
 
-    if (pessoa.sexo === Sexo.MASCULINO) {
+    if (pessoa.sexo === SEXO_ENUM.MASCULINO) {
       where = {
         pessoaMaridoId: pessoa.id,
       };
@@ -298,7 +298,7 @@ export class PessoaService {
         },
         where: {
           id:
-            pessoa.sexo === Sexo.MASCULINO
+            pessoa.sexo === SEXO_ENUM.MASCULINO
               ? casal.pessoaMulherId
               : casal.pessoaMaridoId,
         },

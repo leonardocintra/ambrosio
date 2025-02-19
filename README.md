@@ -21,6 +21,7 @@ Rename `.env-sample` to .env
 ```bash
 # development
 $ sudo docker compose up -d
+$ npx prisma migrate dev
 $ npm run seed
 $ npm run start:dev
 

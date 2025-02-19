@@ -10,7 +10,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { Sexo } from 'src/commons/enums/enums';
+import { SEXO_ENUM } from 'src/commons/enums/enums';
 
 export class CreatePessoaDto {
   @IsNotEmpty()
@@ -44,7 +44,7 @@ export class CreatePessoaDto {
   @IsOptional()
   foto: string;
 
-  @IsEnum(Sexo)
+  @IsEnum(SEXO_ENUM)
   @IsOptional()
   sexo: string;
 
