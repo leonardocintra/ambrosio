@@ -18,17 +18,17 @@ export class PaisController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.paisService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaiDto: UpdatePaisDto) {
+  update(@Param('id') id: number, @Body() updatePaiDto: UpdatePaisDto) {
     return this.paisService.update(+id, updatePaiDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.paisService.remove(+id);
   }
 }

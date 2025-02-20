@@ -19,17 +19,17 @@ export class PaisService {
 
   async create(createPaisDto: CreatePaisDto) {
 
-    const pais: IPaisOnu = await this.buscaPaisOnu(createPaisDto);
+    const paisOnu: IPaisOnu = await this.buscaPaisOnu(createPaisDto);
 
     return this.prisma.pais.create({
       data: {
-        nome: pais.nome.abreviado,
-        capital: pais.governo.capital.nome,
-        isoAlpha2: pais.id['ISO-3166-1-ALPHA-2'],
-        lingua: pais.linguas[0].nome,
-        regiao: pais.localizacao.regiao.nome,
-        subRegiao: pais.localizacao['sub-regiao'].nome,
-        regiaoIntermediaria: pais.localizacao['regiao-intermediaria']?.nome
+        nome: paisOnu.nome.abreviado,
+        capital: paisOnu.governo.capital.nome,
+        isoAlpha2: paisOnu.id['ISO-3166-1-ALPHA-2'],
+        lingua: paisOnu.linguas[0].nome,
+        regiao: paisOnu.localizacao.regiao.nome,
+        subRegiao: paisOnu.localizacao['sub-regiao'].nome,
+        regiaoIntermediaria: paisOnu.localizacao['regiao-intermediaria']?.nome
       }
     })
   }
