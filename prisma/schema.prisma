@@ -14,14 +14,33 @@ datasource db {
 }
 
 model pais {
-  id                  Int     @id @default(autoincrement())
-  isoAlpha2           String  @db.VarChar(2)
-  nome                String  @unique @db.VarChar(100)
-  regiao              String  @db.VarChar(100)
-  subRegiao           String  @db.VarChar(100)
-  regiaoIntermediaria String? @db.VarChar(100)
-  lingua              String  @db.VarChar(50)
-  capital             String  @db.VarChar(100)
+  id                  Int      @id @default(autoincrement())
+  isoAlpha2           String   @db.VarChar(2)
+  nome                String   @unique @db.VarChar(100)
+  regiao              String   @db.VarChar(100)
+  subRegiao           String   @db.VarChar(100)
+  regiaoIntermediaria String?  @db.VarChar(100)
+  lingua              String   @db.VarChar(50)
+  capital             String   @db.VarChar(100)
+  estado              estado[]
+}
+
+model estado {
+  id     Int      @id @default(autoincrement())
+  nome   String   @unique @db.VarChar(100)
+  sigla  String   @unique @db.VarChar(2)
+  ativo  Boolean  @default(true) @db.Boolean
+  paisId Int
+  pais   pais     @relation(fields: [paisId], references: [id])
+  cidade cidade[]
+}
+
+model cidade {
+  id       Int     @id @default(autoincrement())
+  nome     String  @unique @db.VarChar(100)
+  estadoId Int
+  estado   estado  @relation(fields: [estadoId], references: [id])
+  ativo    Boolean @default(true) @db.Boolean
 }
 
 model endereco {

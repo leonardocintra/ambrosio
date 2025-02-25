@@ -39,7 +39,6 @@ export interface Lingua {
   nome: string
 }
 
-
 export interface Governo {
   capital: Capital
 }
