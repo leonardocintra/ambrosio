@@ -8,6 +8,8 @@ import { TipoEquipeModule } from './tipo-equipe/tipo-equipe.module';
 import { TipoPessoaModule } from './tipo-pessoa/tipo-pessoa.module';
 import { TipoLocalidadeModule } from './tipo-localidade/tipo-localidade.module';
 import { PaisModule } from './pais/pais.module';
+import { EstadoModule } from './estado/estado.module';
+import { CidadeModule } from './cidade/cidade.module';
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import { PaisModule } from './pais/pais.module';
     TipoEquipeModule,
     TipoPessoaModule,
     TipoLocalidadeModule,
-    PaisModule
+    PaisModule,
+    EstadoModule,
+    CidadeModule
   ],
 })
 export class ConfiguracoesModule { }
