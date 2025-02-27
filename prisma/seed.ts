@@ -3,340 +3,613 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.estadoCivil.create({
-    data: {
-      descricao: 'SOLTEIRO(A)',
-    },
-  });
+  await pais();
+  await estado();
+  await estadoCivil();
+  await escolaridade();
+  await tipoPessoa();
+  await tipoCarisma();
+  await tipoDiocese();
+  await tipoLocalidade();
+  await regiao();
+  await tipoEquipe();
+  await etapa();
 
-  await prisma.estadoCivil.create({
-    data: {
-      descricao: 'CASADO(A)',
-    },
-  });
+  async function tipoLocalidade() {
+    await prisma.tipoLocalidade.create({
+      data: {
+        descricao: 'Paróquia',
+      },
+    });
 
-  await prisma.estadoCivil.create({
-    data: {
-      descricao: 'VIUVO(A)',
-    },
-  });
+    await prisma.tipoLocalidade.create({
+      data: {
+        descricao: 'Centro Neocatecumenal',
+      },
+    });
 
-  await prisma.estadoCivil.create({
-    data: {
-      descricao: 'DIVORCIADO(A)',
-    },
-  });
+    await prisma.tipoLocalidade.create({
+      data: {
+        descricao: 'Seminário',
+      },
+    });
 
-  console.log('---------------------------------');
-  console.log('Estado Civil preenchido com sucesso!');
+    await prisma.tipoLocalidade.create({
+      data: {
+        descricao: 'Convento',
+      },
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Analfabeto',
-    },
-  });
+    await prisma.tipoLocalidade.create({
+      data: {
+        descricao: 'Casa de Convivência',
+      },
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Ensino Fundamental',
-    },
-  });
+    await prisma.tipoLocalidade.create({
+      data: {
+        descricao: 'Arquidiocese',
+      },
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Ensino Fundamental Incompleto',
-    },
-  });
+    await prisma.tipoLocalidade.create({
+      data: {
+        descricao: 'Diocese',
+      },
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Ensino Médio',
-    },
-  });
+    await prisma.tipoLocalidade.create({
+      data: {
+        descricao: 'Prelazia',
+      },
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Ensino Médio Incompleto',
-    },
-  });
+    console.log('---------------------------------');
+    console.log('Tipo localidade preenchidas com sucesso!');
+  }
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Ensino Superior',
-    },
-  });
+  async function tipoPessoa() {
+    await prisma.tipoPessoa.create({
+      data: {
+        descricao: 'Leigo',
+      },
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Ensino Superior Incompleto',
-    },
-  });
+    await prisma.tipoPessoa.create({
+      data: {
+        descricao: 'Padre',
+      },
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Pos Graduação',
-    },
-  });
+    await prisma.tipoPessoa.create({
+      data: {
+        descricao: 'Bispo',
+      },
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Mestrado',
-    },
-  });
+    await prisma.tipoPessoa.create({
+      data: {
+        descricao: 'Arcebispo'
+      }
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Douturado',
-    },
-  });
+    await prisma.tipoPessoa.create({
+      data: {
+        descricao: 'Seminarista'
+      }
+    });
 
-  await prisma.escolaridade.create({
-    data: {
-      descricao: 'Pos Doutorado',
-    },
-  });
+    await prisma.tipoPessoa.create({
+      data: {
+        descricao: 'Diácono'
+      }
+    });
 
-  console.log('---------------------------------');
-  console.log('Escolaridade preenchido com sucesso!');
+    await prisma.tipoPessoa.create({
+      data: {
+        descricao: 'Diácono Permanente'
+      }
+    });
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Seminarista',
-    },
-  });
+    await prisma.tipoPessoa.create({
+      data: {
+        descricao: 'Religioso(a)'
+      }
+    });
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Família em Missão',
-    },
-  });
+    console.log('---------------------------------');
+    console.log('Tipo pessoa preenchidas com sucesso!');
+  }
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Vida Religiosa',
-    },
-  });
+  async function etapa() {
+    await prisma.etapa.create({
+      data: {
+        descricao: 'pre-catecumenato',
+      },
+    });
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Presbítero',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: '1º escrutinio',
+      },
+    });
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Catequista Itinerante',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: 'Shemá Israel',
+      },
+    });
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Vocacionado',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: '2º escrutinio',
+      }
+    });
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Pós Crisma',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: 'Iniciação a Oração',
+      }
+    });
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Catequista',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: 'Tradditio Symboli',
+      }
+    });
 
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Rapaz / Moça levantado Missão',
-    },
-  });
-  
-  await prisma.tipoCarisma.create({
-    data: {
-      descricao: 'Casal itinerante',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: 'Redditio Symboli',
+      }
+    });
 
-  console.log('---------------------------------');
-  console.log('Tipo de carisma preenchido com sucesso!');
+    await prisma.etapa.create({
+      data: {
+        descricao: 'Pai Nosso I',
+      }
+    });
 
-  await prisma.tipoDiocese.create({
-    data: {
-      descricao: 'Arquidiocese',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: 'Pai Nosso II',
+      }
+    });
+    await prisma.etapa.create({
+      data: {
+        descricao: 'Pai Nosso III',
+      }
+    });
 
-  await prisma.tipoDiocese.create({
-    data: {
-      descricao: 'Diocese',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: 'Pai Nosso III',
+      }
+    });
 
-  await prisma.tipoDiocese.create({
-    data: {
-      descricao: 'Prelazia',
-    },
-  });
+    await prisma.etapa.create({
+      data: {
+        descricao: '3º escrutinio',
+      }
+    });
 
-  console.log('---------------------------------');
-  console.log('Tipo de diocese preenchido com sucesso!');
+    console.log('---------------------------------');
+    console.log('Etapas preenchidas com sucesso!');
+  }
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Amazonas/Pará',
-    },
-  });
+  async function pais() {
+    await prisma.pais.create({
+      data: {
+        capital: "Brasília",
+        nome: "Brasil",
+        lingua: "portugues",
+        regiao: "América",
+        subRegiao: "América Latina e Caribe",
+        regiaoIntermediaria: "América do sul",
+        isoAlpha2: "BR",
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Bahia',
-    },
-  });
+    await prisma.pais.create({
+      data: {
+        capital: "Lima",
+        nome: "Peru",
+        lingua: "aimará",
+        regiao: "América",
+        subRegiao: "América Latina e Caribe",
+        regiaoIntermediaria: "América do sul",
+        isoAlpha2: "PE",
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Brasília',
-    },
-  });
+    console.log('---------------------------------');
+    console.log('Paises preenchido com sucesso!');
+  }
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Ceará',
-    },
-  });
+  async function estado() {
+    const paisId = (await prisma.pais.findFirst({ where: { nome: "Brasil" } })).id;
+    await prisma.estado.create({
+      data: {
+        nome: "Minas Gerais",
+        sigla: "MG",
+        paisId
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Franca',
-    },
-  });
+    await prisma.estado.create({
+      data: {
+        nome: "Tocantins",
+        sigla: "TO",
+        paisId
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Goiás',
-    },
-  });
+    await prisma.estado.create({
+      data: {
+        nome: "São Paulo",
+        sigla: "SP",
+        paisId
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Grande São Paulo',
-    },
-  });
+    await prisma.estado.create({
+      data: {
+        nome: "Goiás",
+        sigla: "GO",
+        paisId
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Maranhão',
-    },
-  });
+    console.log('---------------------------------');
+    console.log('Estados (UF) preenchido com sucesso!');
+  }
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Maranhão / Piauí',
-    },
-  });
+  async function tipoEquipe() {
+    await prisma.tipoEquipe.create({ data: { descricao: 'Catequista' } });
+    await prisma.tipoEquipe.create({
+      data: { descricao: 'Secretários Centro Neocatecumenal' },
+    });
+    await prisma.tipoEquipe.create({
+      data: { descricao: 'Peregrinações Jovens' },
+    });
+    await prisma.tipoEquipe.create({
+      data: { descricao: 'Catequista Regional' },
+    });
+    await prisma.tipoEquipe.create({
+      data: { descricao: 'Catequista Itinerante' },
+    });
+    await prisma.tipoEquipe.create({ data: { descricao: 'Vocacional - Moças' } });
+    await prisma.tipoEquipe.create({ data: { descricao: 'Vocacional - Moços' } });
+    await prisma.tipoEquipe.create({
+      data: { descricao: 'Responsável GRANDE REGIAO' },
+    });
+    await prisma.tipoEquipe.create({
+      data: { descricao: 'Perscrutação Jovens' },
+    });
+    await prisma.tipoEquipe.create({ data: { descricao: 'Pós-Crisma' } });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'MG / RJ',
-    },
-  });
+    console.log('---------------------------------');
+    console.log('Tipo de equipes preenchido com sucesso!');
+  }
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'MS / MT',
-    },
-  });
+  async function regiao() {
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Amazonas/Pará',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Paraná',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Bahia',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'PE - PB - AL - SE',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Brasília',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Piauí',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Ceará',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Rio de Janeiro',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Franca',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'RS / SC',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Goiás',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'São Paulo (Cidade - Capital)',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Grande São Paulo',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'São Paulo (Interior - Padre Joaquim)',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Maranhão',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'São Paulo (Oeste)',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Maranhão / Piauí',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Tocantins',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'MG / RJ',
+      },
+    });
 
-  await prisma.regiao.create({
-    data: {
-      descricao: 'Umuarama',
-    },
-  });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'MS / MT',
+      },
+    });
 
-  console.log('---------------------------------');
-  console.log('Região do caminho preenchido com sucesso!');
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Paraná',
+      },
+    });
 
-  await prisma.tipoEquipe.create({ data: { descricao: 'Catequista' } });
-  await prisma.tipoEquipe.create({
-    data: { descricao: 'Secretários Centro Neocatecumenal' },
-  });
-  await prisma.tipoEquipe.create({
-    data: { descricao: 'Peregrinações Jovens' },
-  });
-  await prisma.tipoEquipe.create({
-    data: { descricao: 'Catequista Regional' },
-  });
-  await prisma.tipoEquipe.create({
-    data: { descricao: 'Catequista Itinerante' },
-  });
-  await prisma.tipoEquipe.create({ data: { descricao: 'Vocacional - Moças' } });
-  await prisma.tipoEquipe.create({ data: { descricao: 'Vocacional - Moços' } });
-  await prisma.tipoEquipe.create({
-    data: { descricao: 'Responsável GRANDE REGIAO' },
-  });
-  await prisma.tipoEquipe.create({
-    data: { descricao: 'Perscrutação Jovens' },
-  });
-  await prisma.tipoEquipe.create({ data: { descricao: 'Pós-Crisma' } });
+    await prisma.regiao.create({
+      data: {
+        descricao: 'PE - PB - AL - SE',
+      },
+    });
 
-  console.log('---------------------------------');
-  console.log('Tipo de equipes preenchido com sucesso!');
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Piauí',
+      },
+    });
+
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Rio de Janeiro',
+      },
+    });
+
+    await prisma.regiao.create({
+      data: {
+        descricao: 'RS / SC',
+      },
+    });
+
+    await prisma.regiao.create({
+      data: {
+        descricao: 'São Paulo (Cidade - Capital)',
+      },
+    });
+
+    await prisma.regiao.create({
+      data: {
+        descricao: 'São Paulo (Interior - Padre Joaquim)',
+      },
+    });
+
+    await prisma.regiao.create({
+      data: {
+        descricao: 'São Paulo (Oeste)',
+      },
+    });
+
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Tocantins',
+      },
+    });
+
+    await prisma.regiao.create({
+      data: {
+        descricao: 'Umuarama',
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Região do caminho preenchido com sucesso!');
+  }
+
+  async function tipoDiocese() {
+    await prisma.tipoDiocese.create({
+      data: {
+        descricao: 'Arquidiocese',
+      },
+    });
+
+    await prisma.tipoDiocese.create({
+      data: {
+        descricao: 'Diocese',
+      },
+    });
+
+    await prisma.tipoDiocese.create({
+      data: {
+        descricao: 'Prelazia',
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Tipo de diocese preenchido com sucesso!');
+  }
+
+  async function tipoCarisma() {
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Seminarista',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Família em Missão',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Vida Religiosa',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Presbítero',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Catequista Itinerante',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Vocacionado',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Pós Crisma',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Catequista',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Rapaz / Moça levantado Missão',
+      },
+    });
+
+    await prisma.tipoCarisma.create({
+      data: {
+        descricao: 'Casal itinerante',
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Tipo de carisma preenchido com sucesso!');
+  }
+
+  async function escolaridade() {
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Analfabeto',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Ensino Fundamental',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Ensino Fundamental Incompleto',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Ensino Médio',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Ensino Médio Incompleto',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Ensino Superior',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Ensino Superior Incompleto',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Pos Graduação',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Mestrado',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Douturado',
+      },
+    });
+
+    await prisma.escolaridade.create({
+      data: {
+        descricao: 'Pos Doutorado',
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Escolaridade preenchido com sucesso!');
+  }
+
+  async function estadoCivil() {
+    await prisma.estadoCivil.create({
+      data: {
+        descricao: 'SOLTEIRO(A)',
+      },
+    });
+
+    await prisma.estadoCivil.create({
+      data: {
+        descricao: 'CASADO(A)',
+      },
+    });
+
+    await prisma.estadoCivil.create({
+      data: {
+        descricao: 'VIUVO(A)',
+      },
+    });
+
+    await prisma.estadoCivil.create({
+      data: {
+        descricao: 'DIVORCIADO(A)',
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Estado Civil preenchido com sucesso!');
+  }
 }
 
 main()

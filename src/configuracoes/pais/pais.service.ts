@@ -45,7 +45,7 @@ export class PaisService {
   }
 
   update(id: number, updatePaisDto: UpdatePaisDto) {
-    return `This action updates a #${id} pai`;
+    return `This action updates a #${id} pai $${updatePaisDto.nome}`;
   }
 
   remove(id: number) {

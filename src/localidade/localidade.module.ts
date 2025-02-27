@@ -8,5 +8,6 @@ import { MessagingModule } from 'src/messaging/messaging.module';
   controllers: [LocalidadeController],
   providers: [LocalidadeService],
   imports: [EnderecoModule, MessagingModule],
+  exports: [LocalidadeService]
 })
-export class LocalidadeModule {}
+export class LocalidadeModule { }

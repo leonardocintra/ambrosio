@@ -26,9 +26,9 @@ export class CreateEnderecoDto {
   @IsString()
   bairro: string;
 
-  @MaxLength(20)
-  @IsString()
   @IsOptional()
+  @MaxLength(50)
+  @IsString()
   pais: string;
 
   @MaxLength(2)

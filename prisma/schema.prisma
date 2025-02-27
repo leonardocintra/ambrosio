@@ -51,7 +51,7 @@ model endereco {
   bairro     String           @db.VarChar(50)
   numero     String           @db.VarChar(5)
   UF         String           @db.VarChar(2)
-  pais       String           @default("Brasil") @db.VarChar(20)
+  pais       String           @default("Brasil") @db.VarChar(50)
   paroquias  paroquia[]
   pessoas    pessoaEndereco[]
   localidade localidade[]

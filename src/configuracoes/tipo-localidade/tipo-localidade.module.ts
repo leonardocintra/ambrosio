@@ -5,5 +5,6 @@ import { TipoLocalidadeController } from './tipo-localidade.controller';
 @Module({
   controllers: [TipoLocalidadeController],
   providers: [TipoLocalidadeService],
+  exports: [TipoLocalidadeService]
 })
-export class TipoLocalidadeModule {}
+export class TipoLocalidadeModule { }

@@ -32,7 +32,7 @@ export class CreateLocalidadeDto {
 
   @IsOptional()
   @MaxLength(200)
-  observacao: string;
+  observacao?: string;
 
   @IsObject()
   @ValidateNested({ each: true })
