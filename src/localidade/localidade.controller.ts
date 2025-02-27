@@ -48,6 +48,7 @@ export class LocalidadeController {
   }
 
   @EventPattern(RABBIT_PATTERN_LOCALIDADE_CREATED)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getNotifications(@Payload() data: any, @Ctx() context: RmqContext) {
     return this.localidadeService.testeRabitao(data, context);
   }

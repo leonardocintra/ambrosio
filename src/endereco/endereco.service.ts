@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class EnderecoService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async createByPessoaId(
     createEnderecoDto: CreateEnderecoDto,
@@ -72,7 +72,7 @@ export class EnderecoService {
   }
 
   update(id: number, updateEnderecoDto: UpdateEnderecoDto) {
-    return `This action updates a #${id} endereco`;
+    return `This action updates a #${id} endereco ${updateEnderecoDto.cep}`;
   }
 
   async remove(id: number) {

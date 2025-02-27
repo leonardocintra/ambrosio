@@ -1,22 +1,66 @@
-import { Injectable } from '@nestjs/common';
+import { TipoDioceseService } from './../tipo-diocese/tipo-diocese.service';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { CreateDioceseDto } from './dto/create-diocese.dto';
 import { UpdateDioceseDto } from './dto/update-diocese.dto';
 import { PrismaService } from 'src/prisma.service';
+import { LocalidadeService } from 'src/localidade/localidade.service';
+import { TipoLocalidadeService } from '../tipo-localidade/tipo-localidade.service';
 
 @Injectable()
 export class DioceseService {
-  constructor(private prisma: PrismaService) { }
+  private readonly logger = new Logger(DioceseService.name);
+
+  constructor(private prisma: PrismaService,
+    private localidadeSerivce: LocalidadeService,
+    private readonly tipoLocalidadeService: TipoLocalidadeService,
+    private readonly tipoDiocese: TipoDioceseService) { }
 
   async create(createDioceseDto: CreateDioceseDto) {
+    let dioceseId = 0;
+    const tipoDiocese = await this.tipoDiocese.findOne(createDioceseDto.tipoDiocese.id);
+    const tipoLocalidade = await this.tipoLocalidadeService.findByName(createDioceseDto.tipoDiocese.descricao);
+
     try {
-      return this.prisma.diocese.create({
+      const diocese = await this.prisma.diocese.create({
         data: {
           descricao: createDioceseDto.descricao,
-          tipoDioceseId: createDioceseDto.tipoDiocese.id,
+          tipoDioceseId: tipoDiocese.id
         },
       });
+      dioceseId = diocese.id;
+
+      await this.localidadeSerivce.create({
+        descricao: createDioceseDto.descricao,
+        diocese: {
+          descricao: diocese.descricao,
+          id: diocese.id,
+        },
+        tipoLocalidade: {
+          descricao: tipoLocalidade.descricao,
+          id: tipoLocalidade.id,
+        },
+        observacao: createDioceseDto.observacao,
+        endereco: {
+          bairro: createDioceseDto.endereco.bairro,
+          cep: createDioceseDto.endereco.cep,
+          cidade: createDioceseDto.endereco.cidade,
+          logradouro: createDioceseDto.endereco.logradouro,
+          numero: createDioceseDto.endereco.numero,
+          UF: createDioceseDto.endereco.UF,
+          pais: createDioceseDto.endereco.pais,
+        },
+      });
+
+      return diocese;
     } catch (error) {
-      console.log(error);
+      this.logger.error(error);
+      if (dioceseId > 0) {
+        this.prisma.diocese.delete({
+          where: { id: dioceseId }
+        })
+        this.logger.warn(`Removido diocese ${dioceseId}`);
+      }
+      throw new HttpException(`Ocorreu um erro ao cadastrar a diocese ${createDioceseDto.descricao}. Erro: ${error}`, HttpStatus.BAD_GATEWAY);
     }
   }
 
@@ -40,7 +84,7 @@ export class DioceseService {
   }
 
   update(id: number, updateDioceseDto: UpdateDioceseDto) {
-    return `This action updates a #${id} diocese`;
+    return `This action updates a #${id} diocese e ${updateDioceseDto.descricao}`;
   }
 
   remove(id: number) {

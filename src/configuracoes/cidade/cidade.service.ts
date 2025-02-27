@@ -10,7 +10,7 @@ export class CidadeService {
   constructor(private prisma: PrismaService, private estadoService: EstadoService) { }
 
   async create(createCidadeDto: CreateCidadeDto) {
-    const cidade = await this.findByName(createCidadeDto)
+    const cidade = await this.findByName(createCidadeDto.nome)
 
     if (cidade) {
       this.logger.warn("Cidade com esse nome já existe.")
@@ -34,11 +34,9 @@ export class CidadeService {
     return `This action returns a #${id} cidade`;
   }
 
-  private async findByName(createCidadeDto: CreateCidadeDto) {
+  private async findByName(nome: string) {
     return await this.prisma.cidade.findFirst({
-      where: {
-        nome: createCidadeDto.nome,
-      }
+      where: { nome }
     });
   }
 }
