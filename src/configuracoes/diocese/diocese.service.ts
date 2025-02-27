@@ -18,7 +18,7 @@ export class DioceseService {
   async create(createDioceseDto: CreateDioceseDto) {
     let dioceseId = 0;
     const tipoDiocese = await this.tipoDiocese.findOne(createDioceseDto.tipoDiocese.id);
-    const tipoLocalidade = await this.tipoLocalidadeService.findByName(createDioceseDto.tipoDiocese.descricao);
+    const tipoLocalidade = await this.tipoLocalidadeService.findByName(tipoDiocese.descricao);
 
     try {
       const diocese = await this.prisma.diocese.create({
