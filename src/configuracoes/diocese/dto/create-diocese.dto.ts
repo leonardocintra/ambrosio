@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsObject,
   IsOptional,
   IsString,
@@ -8,6 +9,13 @@ import {
 } from 'class-validator';
 import { CreateTipoDioceseDto } from 'src/configuracoes/tipo-diocese/dto/create-tipo-diocese.dto';
 import { CreateEnderecoDto } from 'src/endereco/dto/create-endereco.dto';
+
+export class CreateLocalidadeDioceseDto {
+  @IsObject()
+  @ValidateNested({ each: true })
+  @Type(() => CreateEnderecoDto)
+  endereco: CreateEnderecoDto;
+}
 
 export class CreateDioceseDto {
   @IsString()
@@ -19,12 +27,12 @@ export class CreateDioceseDto {
   @Type(() => CreateTipoDioceseDto)
   tipoDiocese: CreateTipoDioceseDto;
 
-  @IsObject()
+  @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreateEnderecoDto)
-  endereco: CreateEnderecoDto;
+  @Type(() => CreateLocalidadeDioceseDto)
+  localidade: CreateLocalidadeDioceseDto[];
 
   @MaxLength(200)
   @IsOptional()
-  observacao: string;
+  observacao?: string;
 }

@@ -30,24 +30,21 @@ export class DioceseService {
       dioceseId = diocese.id;
 
       await this.localidadeSerivce.create({
-        descricao: createDioceseDto.descricao,
-        diocese: {
-          descricao: diocese.descricao,
-          id: diocese.id,
-        },
+        descricao: `${tipoLocalidade.descricao} - ${createDioceseDto.descricao}`,
+        diocese,
         tipoLocalidade: {
           descricao: tipoLocalidade.descricao,
           id: tipoLocalidade.id,
         },
         observacao: createDioceseDto.observacao,
         endereco: {
-          bairro: createDioceseDto.endereco.bairro,
-          cep: createDioceseDto.endereco.cep,
-          cidade: createDioceseDto.endereco.cidade,
-          logradouro: createDioceseDto.endereco.logradouro,
-          numero: createDioceseDto.endereco.numero,
-          UF: createDioceseDto.endereco.UF,
-          pais: createDioceseDto.endereco.pais,
+          bairro: createDioceseDto.localidade[0].endereco.bairro,
+          cep: createDioceseDto.localidade[0].endereco.cep,
+          cidade: createDioceseDto.localidade[0].endereco.cidade,
+          logradouro: createDioceseDto.localidade[0].endereco.logradouro,
+          numero: createDioceseDto.localidade[0].endereco.numero,
+          UF: createDioceseDto.localidade[0].endereco.UF,
+          pais: createDioceseDto.localidade[0].endereco.pais,
         },
       });
 
@@ -93,8 +90,14 @@ export class DioceseService {
     })
   }
 
-  update(id: number, updateDioceseDto: UpdateDioceseDto) {
-    return `This action updates a #${id} diocese e ${updateDioceseDto.descricao}`;
+  async update(id: number, updateDioceseDto: UpdateDioceseDto) {
+    return await this.prisma.diocese.update({
+      where: { id },
+      data: {
+        descricao: updateDioceseDto.descricao,
+        tipoDioceseId: updateDioceseDto.tipoDiocese.id,
+      }
+    });
   }
 
   remove(id: number) {

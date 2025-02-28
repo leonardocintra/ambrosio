@@ -235,6 +235,7 @@ export class PessoaService {
     return `This action removes a #${id} pessoa`;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private handleResponsePessoa(pessoa: any, conjugue?: any) {
     const response = {
       id: pessoa.id,

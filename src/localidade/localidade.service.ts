@@ -72,6 +72,7 @@ export class LocalidadeService {
     return `This action removes a #${id} localidade`;
   }
 
+  // Essa funcao foi criada apenas para estudo de caso usando RabbitMQ. Pode remover no futuro
   async testeRabitao(
     data: { localidadeId: number; descricao: string },
     context: RmqContext,
