@@ -68,6 +68,11 @@ export class DioceseService {
     return this.prisma.diocese.findMany({
       include: {
         tipoDiocese: true,
+        localidade: {
+          include: {
+            endereco: true,
+          }
+        }
       },
     });
   }
@@ -78,7 +83,12 @@ export class DioceseService {
         id
       },
       include: {
-        tipoDiocese: true
+        tipoDiocese: true,
+        localidade: {
+          include: {
+            endereco: true,
+          }
+        }
       }
     })
   }
