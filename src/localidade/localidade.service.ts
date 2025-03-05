@@ -57,11 +57,22 @@ export class LocalidadeService {
   }
 
   findAll() {
-    return this.prisma.localidade.findMany();
+    return this.prisma.localidade.findMany({
+      include: {
+        tipoLocalidade: true
+      }
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} localidade`;
+    return this.prisma.localidade.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        tipoLocalidade: true
+      }
+    });
   }
 
   update(id: number, updateLocalidadeDto: UpdateLocalidadeDto) {

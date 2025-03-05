@@ -14,7 +14,7 @@ import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { RABBIT_PATTERN_LOCALIDADE_CREATED } from 'src/commons/constants/constants';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Localidade do caminho')
+@ApiTags('Localidades do caminho')
 @Controller('localidade')
 export class LocalidadeController {
   constructor(private readonly localidadeService: LocalidadeService) {}
