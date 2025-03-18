@@ -2,9 +2,9 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { setupTestModule } from '../test-setup';
 
-describe('EstadoCivilController (e2e)', () => {
+describe('TipoDioceseController (e2e)', () => {
   let app: INestApplication;
-  const principal = 'estado-civil'
+  const principal = 'tipo-diocese'
 
   beforeAll(async () => {
     app = await setupTestModule();
@@ -14,30 +14,30 @@ describe('EstadoCivilController (e2e)', () => {
     await app.close();
   });
 
-  it(`/${principal} (GET) | deve retornar os estados civis`, () => {
+  it(`/${principal} (GET) | deve retornar os tipos de diocese`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}`)
       .expect(200)
       .expect((res) => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.data).toBeInstanceOf(Array);
-        expect(res.body.data).toContainEqual({ id: 2, descricao: 'CASADO(A)' });
+        expect(res.body.data).toContainEqual({ id: 2, descricao: 'Diocese' });
       });
   });
 
-  it(`/${principal} (GET) | deve retornar o estado civil by id`, () => {
+  it(`/${principal} (GET) | deve retornar os tipo de diocese by id`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}/2`)
       .expect(200)
       .expect((res) => {
         expect(res.body.data).not.toBeInstanceOf(Array);
-        expect(res.body.data).toEqual({ id: 2, descricao: 'CASADO(A)' });
+        expect(res.body.data).toEqual({ id: 2, descricao: 'Diocese' });
         expect(res.body.data.id).toEqual(2);
-        expect(res.body.data.descricao).toEqual('CASADO(A)');
+        expect(res.body.data.descricao).toEqual('Diocese');
       });
   });
 
-  it(`/${principal} (POST) | cadastro de estado civil não é permitido`, () => {
+  it(`/${principal} (POST) | cadastro de tipo de diocese não é permitido`, () => {
     return request(app.getHttpServer())
       .post(`/${principal}`)
       .expect(404)
@@ -48,7 +48,7 @@ describe('EstadoCivilController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (DELETE) | delete de estado civil não é permitido`, () => {
+  it(`/${principal} (DELETE) | delete de tipo de diocese não é permitido`, () => {
     return request(app.getHttpServer())
       .delete(`/${principal}`)
       .expect(404)
@@ -59,7 +59,7 @@ describe('EstadoCivilController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (PATCH) | atualizacao patch de estado civil não é permitido`, () => {
+  it(`/${principal} (PATCH) | atualizacao patch de tipo de diocese não é permitido`, () => {
     return request(app.getHttpServer())
       .patch(`/${principal}`)
       .expect(404)
@@ -70,7 +70,7 @@ describe('EstadoCivilController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (PUT) | atualizacao put de estado civil não é permitido`, () => {
+  it(`/${principal} (PUT) | atualizacao put de tipo de diocese não é permitido`, () => {
     return request(app.getHttpServer())
       .put(`/${principal}`)
       .expect(404)
