@@ -19,6 +19,8 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World! Bem vindo ao Caminho Neocatecumenal');
+      .expect((res) => {
+        expect(res.body.data).toBe('Hello World! Bem vindo ao Caminho Neocatecumenal')
+      });
   });
 });
