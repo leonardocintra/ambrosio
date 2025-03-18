@@ -1,0 +1,59 @@
+name: Run Tests
+
+on: [push, pull_request] # Executa o workflow em push e pull request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: mydb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U user -d mydb"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      rabbitmq:
+        image: rabbitmq:3.12-management
+        env:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+        ports:
+          - 5672:5672 # Porta do AMQP
+          - 15672:15672 # Painel de administração
+        options: >-
+          --health-cmd "rabbitmqctl status"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v3
+
+      - name: ⚡️ Instalar Node.js 22
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: 📦 Instalar dependências
+        run: npm install
+
+      - name: 🛠️ Rodar migrations (se usar Prisma)
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
+
+      - name: 🚀 Rodar testes
+        run: npm run test:e2e
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
+          RABBITMQ_URL: amqp://guest:guest@localhost:5672
