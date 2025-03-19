@@ -52,6 +52,18 @@ jobs:
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
+      - name: ⏳ Aguardar banco estar pronto
+        run: |
+          until pg_isready -h localhost -p 5432 -U user; do
+            echo "Aguardando o PostgreSQL iniciar..."
+            sleep 2
+          done
+
+      - name: 📦 Rodar seed
+        run: npm run seed
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
+
       - name: 🚀 Rodar testes
         run: npm run test:e2e
         env:
