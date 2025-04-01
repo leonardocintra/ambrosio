@@ -65,7 +65,7 @@ jobs:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
       - name: 🚀 Rodar testes
-        run: npm run test:e2e
+        run: npm run test
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
           RABBITMQ_URL: amqp://guest:guest@localhost:5672
