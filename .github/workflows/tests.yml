@@ -47,7 +47,7 @@ jobs:
       - name: 📦 Instalar dependências
         run: npm install
 
-      - name: 🛠️ Rodar migrations (se usar Prisma)
+      - name: 🛠️ Rodar migrations
         run: npx prisma migrate deploy
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
@@ -60,7 +60,7 @@ jobs:
           done
 
       - name: 📦 Rodar seed
-        run: npm run seed
+        run: npx prisma migrate reset --force && ts-node prisma/seed.ts
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
