@@ -16,6 +16,8 @@ export class TipoLocalidadeService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} tipoLocalidade`;
+    return this.prisma.tipoLocalidade.findFirstOrThrow({
+      where: { id },
+    });
   }
 }

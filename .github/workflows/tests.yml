@@ -1,6 +1,6 @@
 name: Run Tests
 
-on: [push, pull_request] # Executa o workflow em push e pull request
+on: [pull_request] # Executa o workflow em push e pull request
 
 jobs:
   test:
@@ -47,13 +47,25 @@ jobs:
       - name: 📦 Instalar dependências
         run: npm install
 
-      - name: 🛠️ Rodar migrations (se usar Prisma)
+      - name: 🛠️ Rodar migrations
         run: npx prisma migrate deploy
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
+      - name: ⏳ Aguardar banco estar pronto
+        run: |
+          until pg_isready -h localhost -p 5432 -U user; do
+            echo "Aguardando o PostgreSQL iniciar..."
+            sleep 5
+          done
+
+      - name: 📦 Rodar seed
+        run: npm run seed
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
+
       - name: 🚀 Rodar testes
-        run: npm run test:e2e
+        run: npm run test
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
           RABBITMQ_URL: amqp://guest:guest@localhost:5672
