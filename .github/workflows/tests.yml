@@ -1,6 +1,6 @@
 name: Run Tests
 
-on: [push, pull_request] # Executa o workflow em push e pull request
+on: [pull_request] # Executa o workflow em push e pull request
 
 jobs:
   test:
@@ -60,7 +60,7 @@ jobs:
           done
 
       - name: 📦 Rodar seed
-        run: npx prisma migrate reset --force && ts-node prisma/seed.ts
+        run: npx prisma migrate reset --force && npm run seed
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
