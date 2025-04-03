@@ -276,3 +276,24 @@ model tipoLocalidade {
   descricao  String       @db.VarChar(80)
   localidade localidade[]
 }
+
+enum roles {
+  ADMIN
+  CATEQUISTA_NACIONAL
+  CATEQUISTA_GRANDE_REGIAO
+  CATEQUISTA_REGIAO
+  CATEQUISTA_SETOR
+  CATEQUISTA_PAROQUIA
+  SECRETARIA_CNC
+  SECRETARIA_PAROQUIA
+}
+
+model user {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      roles    @default(SECRETARIA_PAROQUIA)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

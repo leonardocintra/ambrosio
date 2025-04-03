@@ -1,0 +1,16 @@
+POST http://localhost:3005/users
+Content-Type: application/json
+
+{
+  "name": "Leonardo Cintra",
+  "email": "leonardo.cintra@luizalabs.com",
+  "password": "admin",
+  "role": "ADMIN"
+}
+
+###
+GET http://localhost:3005/users
+
+###
+GET http://localhost:3005/users/cm91kgd9t0002ry7if0jkv96c
+
