@@ -1,30 +1,26 @@
+import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
 import { PrismaService } from 'src/prisma.service';
+import { AuthGuard } from './auth.guard';
 
-describe('UsersService', () => {
-  let service: UsersService;
+describe('AuthGuard', () => {
+  let guard: AuthGuard;
+  let jwtService: JwtService;
   let prismaService: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        UsersService,
-        {
-          provide: PrismaService,
-          useValue: {
-            create: jest.fn(),
-          },
-        },
-      ],
+      providers: [AuthGuard, JwtService, PrismaService],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
+    guard = module.get<AuthGuard>(AuthGuard);
+    jwtService = module.get<JwtService>(JwtService);
     prismaService = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(guard).toBeDefined();
+    expect(jwtService).toBeDefined();
     expect(prismaService).toBeDefined();
   });
 });
