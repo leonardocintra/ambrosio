@@ -18,6 +18,8 @@ import { LocalidadeModule } from './localidade/localidade.module';
 import { MessagingModule } from './messaging/messaging.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { PaginationInterceptor } from './commons/interceptors/pagination.interceptors';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { PaginationInterceptor } from './commons/interceptors/pagination.interce
     EquipesModule,
     LocalidadeModule,
     MessagingModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
