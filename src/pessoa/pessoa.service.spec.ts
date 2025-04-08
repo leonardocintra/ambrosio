@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 
 describe('PessoaService', () => {
   let service: PessoaService;
@@ -11,11 +12,13 @@ describe('PessoaService', () => {
   let estadoCivilService: EstadoCivilService;
   let escolaridadeService: EscolaridadeService;
   let tipoPessoaService: TipoPessoaService;
+  let abilityService: CaslAbilityService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PessoaService,
+        CaslAbilityService,
         {
           provide: PrismaService,
           useValue: {
@@ -55,6 +58,8 @@ describe('PessoaService', () => {
     estadoCivilService = module.get<EstadoCivilService>(EstadoCivilService);
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
     tipoPessoaService = module.get<TipoPessoaService>(TipoPessoaService);
+    abilityService = await module.resolve<CaslAbilityService>(CaslAbilityService);
+
   });
 
   it('should be defined', () => {
@@ -63,5 +68,6 @@ describe('PessoaService', () => {
     expect(estadoCivilService).toBeDefined();
     expect(escolaridadeService).toBeDefined();
     expect(tipoPessoaService).toBeDefined();
+    expect(abilityService).toBeDefined();
   });
 });

@@ -17,8 +17,6 @@ import { SexoQueryParamDto } from './dto/sexo.dto';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
-import { RequiredRoles } from 'src/auth/required-roles.decorator';
-import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 @ApiTags('Pessoas')
 @UseGuards(AuthGuard, RoleGuard)
@@ -36,7 +34,6 @@ export class PessoaController {
     return this.pessoaService.createCasal(createCasalDto);
   }
 
-  @RequiredRoles(ROLE_ENUM.ADMIN)
   @Get()
   findAll(@Query('page') page: number, @Query('limit') limit: number) {
     return this.pessoaService.findAll(Number(page), Number(limit));

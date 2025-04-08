@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "name": "Leonardo Cintra",
-  "email": "leonardo.cintra@luizalabs.com",
+  "email": "leonardo@gmail.com",
   "password": "admin",
   "role": "ADMIN"
 }
@@ -26,7 +26,7 @@ POST http://localhost:3005/auth/login
 Content-Type: application/json
 
 {
-  "email": "leonardo.cintra@luizalabs.com",
+  "email": "leonardo@gmail.com",
   "password": "admin"
 }
 

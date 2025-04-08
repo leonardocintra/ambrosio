@@ -3,12 +3,15 @@ import { LoginDto } from './login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma.service';
 import bcrypt from 'bcrypt';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { packRules } from '@casl/ability/extra';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
+    private readonly abilityService: CaslAbilityService,
   ) {}
 
   async login(loginDto: LoginDto) {
@@ -17,7 +20,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new Error('Usuário não encontrado');
+      return null;
     }
 
     const isPasswordValid = bcrypt.compareSync(
@@ -26,15 +29,18 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      throw new Error('Senha inválida');
+      return null;
     }
 
+    const ability = this.abilityService.createForUser(user);
     const token = this.jwtService.sign({
       sub: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
+      permissions: packRules(ability.rules),
     });
-    return { access_token: token };
+
+    return { access_token: token, access_token_type: 'Bearer' };
   }
 }

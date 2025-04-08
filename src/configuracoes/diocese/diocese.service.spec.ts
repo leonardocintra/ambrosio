@@ -5,14 +5,16 @@ import { LocalidadeService } from 'src/localidade/localidade.service';
 import { TipoLocalidadeService } from '../tipo-localidade/tipo-localidade.service';
 import { TipoDioceseService } from '../tipo-diocese/tipo-diocese.service';
 import { EnderecoService } from 'src/endereco/endereco.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 
 describe('DioceseService', () => {
   let service: DioceseService;
   let prismaService: PrismaService;
   let localidadeService: LocalidadeService;
   let tipoLocalidadeService: TipoLocalidadeService;
-  let tipoDioceseService: TipoDioceseService
-  let enderecoService: EnderecoService
+  let tipoDioceseService: TipoDioceseService;
+  let enderecoService: EnderecoService;
+  let abilityService: CaslAbilityService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -22,6 +24,7 @@ describe('DioceseService', () => {
         TipoLocalidadeService,
         TipoDioceseService,
         EnderecoService,
+        CaslAbilityService,
         {
           provide: PrismaService,
           useValue: {
@@ -41,9 +44,13 @@ describe('DioceseService', () => {
     service = module.get<DioceseService>(DioceseService);
     prismaService = module.get<PrismaService>(PrismaService);
     localidadeService = module.get<LocalidadeService>(LocalidadeService);
-    tipoLocalidadeService = module.get<TipoLocalidadeService>(TipoLocalidadeService);
+    tipoLocalidadeService = module.get<TipoLocalidadeService>(
+      TipoLocalidadeService,
+    );
     tipoDioceseService = module.get<TipoDioceseService>(TipoDioceseService);
     enderecoService = module.get<EnderecoService>(EnderecoService);
+    abilityService =
+      await module.resolve<CaslAbilityService>(CaslAbilityService);
   });
 
   it('should be defined', () => {
@@ -53,5 +60,6 @@ describe('DioceseService', () => {
     expect(tipoLocalidadeService).toBeDefined();
     expect(tipoDioceseService).toBeDefined();
     expect(enderecoService).toBeDefined();
+    expect(abilityService).toBeDefined();
   });
 });

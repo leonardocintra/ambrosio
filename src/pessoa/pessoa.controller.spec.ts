@@ -6,6 +6,7 @@ import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { JwtService } from '@nestjs/jwt';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 
 describe('PessoaController', () => {
   let controller: PessoaController;
@@ -14,6 +15,7 @@ describe('PessoaController', () => {
   let escolaridadeService: EscolaridadeService;
   let tipoPessoaService: TipoPessoaService;
   let jwtService: JwtService;
+  let abilityService: CaslAbilityService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,6 +23,7 @@ describe('PessoaController', () => {
       providers: [
         PessoaService,
         JwtService,
+        CaslAbilityService,
         {
           provide: PrismaService,
           useValue: {
@@ -61,6 +64,8 @@ describe('PessoaController', () => {
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
     tipoPessoaService = module.get<TipoPessoaService>(TipoPessoaService);
     jwtService = module.get<JwtService>(JwtService);
+    abilityService =
+      await module.resolve<CaslAbilityService>(CaslAbilityService);
   });
 
   it('should be defined', () => {
@@ -70,5 +75,6 @@ describe('PessoaController', () => {
     expect(escolaridadeService).toBeDefined();
     expect(tipoPessoaService).toBeDefined();
     expect(jwtService).toBeDefined();
+    expect(abilityService).toBeDefined();
   });
 });

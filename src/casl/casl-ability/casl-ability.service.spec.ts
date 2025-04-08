@@ -9,7 +9,7 @@ describe('CaslAbilityService', () => {
       providers: [CaslAbilityService],
     }).compile();
 
-    service = module.get<CaslAbilityService>(CaslAbilityService);
+    service = await module.resolve<CaslAbilityService>(CaslAbilityService);
   });
 
   it('should be defined', () => {

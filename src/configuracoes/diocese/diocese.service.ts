@@ -1,30 +1,45 @@
 import { TipoDioceseService } from './../tipo-diocese/tipo-diocese.service';
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { CreateDioceseDto } from './dto/create-diocese.dto';
 import { UpdateDioceseDto } from './dto/update-diocese.dto';
 import { PrismaService } from 'src/prisma.service';
 import { LocalidadeService } from 'src/localidade/localidade.service';
 import { TipoLocalidadeService } from '../tipo-localidade/tipo-localidade.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { accessibleBy } from '@casl/prisma';
 
 @Injectable()
 export class DioceseService {
   private readonly logger = new Logger(DioceseService.name);
 
-  constructor(private prisma: PrismaService,
+  constructor(
+    private prisma: PrismaService,
     private localidadeSerivce: LocalidadeService,
     private readonly tipoLocalidadeService: TipoLocalidadeService,
-    private readonly tipoDiocese: TipoDioceseService) { }
+    private readonly tipoDiocese: TipoDioceseService,
+    private readonly abilityService: CaslAbilityService,
+  ) {}
 
   async create(createDioceseDto: CreateDioceseDto) {
     let dioceseId = 0;
-    const tipoDiocese = await this.tipoDiocese.findOne(createDioceseDto.tipoDiocese.id);
-    const tipoLocalidade = await this.tipoLocalidadeService.findByName(tipoDiocese.descricao);
+    const tipoDiocese = await this.tipoDiocese.findOne(
+      createDioceseDto.tipoDiocese.id,
+    );
+    const tipoLocalidade = await this.tipoLocalidadeService.findByName(
+      tipoDiocese.descricao,
+    );
 
     try {
       const diocese = await this.prisma.diocese.create({
         data: {
           descricao: createDioceseDto.descricao,
-          tipoDioceseId: tipoDiocese.id
+          tipoDioceseId: tipoDiocese.id,
         },
       });
       dioceseId = diocese.id;
@@ -53,41 +68,47 @@ export class DioceseService {
       this.logger.error(error);
       if (dioceseId > 0) {
         this.prisma.diocese.delete({
-          where: { id: dioceseId }
-        })
+          where: { id: dioceseId },
+        });
         this.logger.warn(`Removido diocese ${dioceseId}`);
       }
-      throw new HttpException(`Ocorreu um erro ao cadastrar a diocese ${createDioceseDto.descricao}. Erro: ${error}`, HttpStatus.BAD_GATEWAY);
+      throw new HttpException(
+        `Ocorreu um erro ao cadastrar a diocese ${createDioceseDto.descricao}. Erro: ${error}`,
+        HttpStatus.BAD_GATEWAY,
+      );
     }
   }
 
   findAll() {
+    const where = this.asPermissions();
     return this.prisma.diocese.findMany({
+      where,
       include: {
         tipoDiocese: true,
         localidade: {
           include: {
             endereco: true,
-          }
-        }
+          },
+        },
       },
     });
   }
 
   findOne(id: number) {
+    const wherePermissions = this.asPermissions();
     return this.prisma.diocese.findFirstOrThrow({
       where: {
-        id
+        AND: [{ id }, wherePermissions],
       },
       include: {
         tipoDiocese: true,
         localidade: {
           include: {
             endereco: true,
-          }
-        }
-      }
-    })
+          },
+        },
+      },
+    });
   }
 
   async update(id: number, updateDioceseDto: UpdateDioceseDto) {
@@ -96,11 +117,21 @@ export class DioceseService {
       data: {
         descricao: updateDioceseDto.descricao,
         tipoDioceseId: updateDioceseDto.tipoDiocese.id,
-      }
+      },
     });
   }
 
   remove(id: number) {
     return `This action removes a #${id} diocese`;
+  }
+
+  private asPermissions() {
+    const ability = this.abilityService.ability;
+    if (!ability.can('read', 'diocese')) {
+      throw new ForbiddenException(
+        'Você não tem permissão para listar dioceses',
+      );
+    }
+    return accessibleBy(ability, 'read').diocese;
   }
 }

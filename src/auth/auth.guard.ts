@@ -2,18 +2,23 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  private readonly logger = new Logger(AuthGuard.name);
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
+    private abilityService: CaslAbilityService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -31,6 +36,7 @@ export class AuthGuard implements CanActivate {
         name: string;
         email: string;
         roles: ROLE_ENUM;
+        permissions: string[];
       }>(token, {
         algorithms: ['HS256'],
       });
@@ -44,9 +50,11 @@ export class AuthGuard implements CanActivate {
       }
 
       request.user = user;
+      this.abilityService.createForUser(user);
+
       return true;
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
       throw new UnauthorizedException('Invalid token', { cause: error });
     }
   }

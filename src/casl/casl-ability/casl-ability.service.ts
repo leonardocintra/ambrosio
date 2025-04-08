@@ -1,15 +1,20 @@
 import { AbilityBuilder, PureAbility } from '@casl/ability';
-import { createPrismaAbility, Subjects } from '@casl/prisma';
-import { Injectable } from '@nestjs/common';
-import { pessoa, user } from '@prisma/client';
+import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
+import { Injectable, Scope } from '@nestjs/common';
+import { diocese, pessoa, user } from '@prisma/client';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 
-// para entende melhor: https://youtu.be/_ZyX4Vcofek?t=7648
 export type PermActions = 'manage' | 'create' | 'read' | 'update' | 'delete';
+
 export type PermissionResource =
-  | Subjects<{ Pessoa: pessoa; User: user }>
+  | Subjects<{ pessoa: pessoa; user: user; diocese: diocese }>
   | 'all';
-export type AppAbility = PureAbility<[PermActions, PermissionResource]>;
+
+export type AppAbility = PureAbility<
+  [PermActions, PermissionResource],
+  PrismaQuery
+>;
+
 export type DefinePermissions = (
   user,
   builder: AbilityBuilder<AppAbility>,
@@ -19,33 +24,37 @@ const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
   ADMIN(user, { can }) {
     can('manage', 'all');
   },
-  CATEQUISTA_GRANDE_REGIAO(user, { can }) {
-    can('read', 'Pessoa');
-  },
   CATEQUISTA_NACIONAL(user, { can }) {
-    can('read', 'Pessoa');
+    can('read', 'pessoa');
+    can('read', 'diocese');
   },
-  CATEQUISTA_PAROQUIA(user, { can }) {
-    can('read', 'Pessoa');
-  },
-  CATEQUISTA_REGIAO(user, { can }) {
-    can('read', 'Pessoa');
+  CATEQUISTA_GRANDE_REGIAO(user, { can }) {
+    can('read', 'pessoa');
+    can('read', 'diocese');
   },
   CATEQUISTA_SETOR(user, { can }) {
-    can('read', 'Pessoa');
+    can('read', 'pessoa');
+    can('read', 'diocese');
+  },
+  CATEQUISTA_REGIAO(user, { can }) {
+    can('read', 'pessoa');
+    can('read', 'diocese');
+  },
+  CATEQUISTA_PAROQUIA(user, { can }) {
+    can('read', 'pessoa');
+    can('read', 'diocese');
   },
   SECRETARIA_PAROQUIA(user, { can }) {
-    can('read', 'Pessoa');
+    can('read', 'pessoa');
+    can('read', 'diocese');
   },
   SECRETARIA_CNC(user, { can }) {
-    can('read', 'Pessoa');
+    can('read', 'pessoa');
+    can('read', 'diocese');
   },
 };
 
-
-// PAREI https://youtu.be/_ZyX4Vcofek?t=7990
-
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class CaslAbilityService {
   ability: AppAbility;
 
