@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
+import { JwtService } from '@nestjs/jwt';
 
 describe('PessoaController', () => {
   let controller: PessoaController;
@@ -12,12 +13,14 @@ describe('PessoaController', () => {
   let estadoCivilService: EstadoCivilService;
   let escolaridadeService: EscolaridadeService;
   let tipoPessoaService: TipoPessoaService;
+  let jwtService: JwtService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PessoaController],
       providers: [
         PessoaService,
+        JwtService,
         {
           provide: PrismaService,
           useValue: {
@@ -57,6 +60,7 @@ describe('PessoaController', () => {
     estadoCivilService = module.get<EstadoCivilService>(EstadoCivilService);
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
     tipoPessoaService = module.get<TipoPessoaService>(TipoPessoaService);
+    jwtService = module.get<JwtService>(JwtService);
   });
 
   it('should be defined', () => {
@@ -65,5 +69,6 @@ describe('PessoaController', () => {
     expect(estadoCivilService).toBeDefined();
     expect(escolaridadeService).toBeDefined();
     expect(tipoPessoaService).toBeDefined();
+    expect(jwtService).toBeDefined();
   });
 });

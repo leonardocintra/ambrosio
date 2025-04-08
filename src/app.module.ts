@@ -20,6 +20,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { PaginationInterceptor } from './commons/interceptors/pagination.interceptors';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { AuthModule } from './auth/auth.module';
     MessagingModule,
     UsersModule,
     AuthModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PessoaService } from './pessoa.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
@@ -14,11 +15,16 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { SexoQueryParamDto } from './dto/sexo.dto';
 import { CreateCasalDto } from './dto/create-casal.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { RoleGuard } from 'src/auth/role/role.guard';
+import { RequiredRoles } from 'src/auth/required-roles.decorator';
+import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 @ApiTags('Pessoas')
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('pessoa')
 export class PessoaController {
-  constructor(private readonly pessoaService: PessoaService) { }
+  constructor(private readonly pessoaService: PessoaService) {}
 
   @Post()
   create(@Body() createPessoaDto: CreatePessoaDto) {
@@ -30,11 +36,9 @@ export class PessoaController {
     return this.pessoaService.createCasal(createCasalDto);
   }
 
+  @RequiredRoles(ROLE_ENUM.ADMIN)
   @Get()
-  findAll(
-    @Query('page') page: number,
-    @Query('limit') limit: number
-  ) {
+  findAll(@Query('page') page: number, @Query('limit') limit: number) {
     return this.pessoaService.findAll(Number(page), Number(limit));
   }
 
