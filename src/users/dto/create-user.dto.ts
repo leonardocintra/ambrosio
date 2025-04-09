@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsMobilePhone, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsMobilePhone, IsString, MaxLength } from 'class-validator';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 export class CreateUserDto {
@@ -15,5 +15,6 @@ export class CreateUserDto {
   role: ROLE_ENUM;
 
   @IsMobilePhone('pt-BR')
+  @MaxLength(13)
   whatsapp: string;
 }
