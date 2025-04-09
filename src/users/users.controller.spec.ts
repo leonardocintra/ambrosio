@@ -1,36 +1,25 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ParoquiaController } from './paroquia.controller';
-import { ParoquiaService } from './paroquia.service';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 
-describe('ParoquiaController', () => {
-  let controller: ParoquiaController;
+describe('UsersController', () => {
+  let controller: UsersController;
   let prismaService: PrismaService;
-  let jwtService: JwtService;
+  let jwtservice: JwtService;
   let abilityService: CaslAbilityService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ParoquiaController],
-      providers: [
-        ParoquiaService,
-        JwtService,
-        CaslAbilityService,
-        {
-          provide: PrismaService,
-          useValue: {
-            create: jest.fn(),
-            findFirstOrThrow: jest.fn(),
-          },
-        },
-      ],
+      controllers: [UsersController],
+      providers: [UsersService, PrismaService, JwtService, CaslAbilityService],
     }).compile();
 
-    controller = module.get<ParoquiaController>(ParoquiaController);
+    controller = module.get<UsersController>(UsersController);
     prismaService = module.get<PrismaService>(PrismaService);
-    jwtService = module.get<JwtService>(JwtService);
+    jwtservice = module.get<JwtService>(JwtService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
   });
@@ -38,7 +27,7 @@ describe('ParoquiaController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
     expect(prismaService).toBeDefined();
-    expect(jwtService).toBeDefined();
+    expect(jwtservice).toBeDefined();
     expect(abilityService).toBeDefined();
   });
 });

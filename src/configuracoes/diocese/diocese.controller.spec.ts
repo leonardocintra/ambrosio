@@ -7,6 +7,8 @@ import { TipoLocalidadeService } from '../tipo-localidade/tipo-localidade.servic
 import { TipoDioceseService } from '../tipo-diocese/tipo-diocese.service';
 import { EnderecoService } from 'src/endereco/endereco.service';
 import { ClientProxy } from '@nestjs/microservices';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { JwtService } from '@nestjs/jwt';
 
 describe('DioceseController', () => {
   let controller: DioceseController;
@@ -16,6 +18,9 @@ describe('DioceseController', () => {
   let tipoDioceseService: TipoDioceseService;
   let enderecoService: EnderecoService
   let clientRabbit: ClientProxy;
+  let abilityService: CaslAbilityService;
+  let jwtService: JwtService;
+  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,6 +31,8 @@ describe('DioceseController', () => {
         TipoLocalidadeService,
         TipoDioceseService,
         EnderecoService,
+        JwtService,
+        CaslAbilityService,
         {
           provide: PrismaService,
           useValue: {
@@ -49,6 +56,8 @@ describe('DioceseController', () => {
     tipoDioceseService = module.get<TipoDioceseService>(TipoDioceseService);
     enderecoService = module.get<EnderecoService>(EnderecoService);
     clientRabbit = module.get<ClientProxy>('LOCALIDADES_SERVICE');
+    abilityService = await module.resolve<CaslAbilityService>(CaslAbilityService);
+    jwtService = module.get<JwtService>(JwtService);
 
   });
 
@@ -60,5 +69,7 @@ describe('DioceseController', () => {
     expect(tipoDioceseService).toBeDefined();
     expect(enderecoService).toBeDefined();
     expect(clientRabbit).toBeDefined();
+    expect(abilityService).toBeDefined();
+    expect(jwtService).toBeDefined();
   });
 });

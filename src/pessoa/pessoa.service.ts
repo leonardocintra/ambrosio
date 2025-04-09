@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -8,6 +8,8 @@ import { SEXO_ENUM } from 'src/commons/enums/enums';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { accessibleBy } from '@casl/prisma';
 
 @Injectable()
 export class PessoaService {
@@ -16,9 +18,16 @@ export class PessoaService {
     private estadoCivilService: EstadoCivilService,
     private escolaridadeService: EscolaridadeService,
     private tipoPessoaService: TipoPessoaService,
-  ) { }
+    private abilityService: CaslAbilityService,
+  ) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
+    const { ability } = this.abilityService;
+    if (!ability.can('create', 'pessoa')) {
+      throw new ForbiddenException(
+        'Você não tem permissão para criar uma pessoa',
+      );
+    }
 
     await this.analisarCPF(createPessoaDto.cpf);
 
@@ -27,7 +36,6 @@ export class PessoaService {
       await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
       await this.tipoPessoaService.findOne(createPessoaDto.tipoPessoa.id),
     ]);
-
 
     return this.prisma.pessoa.create({
       data: {
@@ -39,14 +47,26 @@ export class PessoaService {
         foto: createPessoaDto.foto,
         escolaridadeId: escolaridade.id,
         tipoPessoaId: tipoPessoa.id,
-        dataNascimento: createPessoaDto.dataNascimento ? new Date(createPessoaDto.dataNascimento) : null,
+        dataNascimento: createPessoaDto.dataNascimento
+          ? new Date(createPessoaDto.dataNascimento)
+          : null,
         sexo:
-          createPessoaDto.sexo === 'MASCULINO' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
+          createPessoaDto.sexo === 'MASCULINO'
+            ? SEXO_ENUM.MASCULINO
+            : SEXO_ENUM.FEMININO,
       },
     });
   }
 
   async findAll(page: number, limit: number) {
+    const { ability } = this.abilityService;
+    if (!ability.can('read', 'pessoa')) {
+      throw new ForbiddenException(
+        'Você não tem permissão para listar pessoas',
+      );
+    }
+    const where = accessibleBy(ability, 'read').pessoa;
+
     if (!page) page = PAGE_DEFAULT;
     if (!limit) limit = LIMIT_DEFAULT;
 
@@ -55,6 +75,7 @@ export class PessoaService {
     const results = await this.prisma.pessoa.findMany({
       skip,
       take: limit,
+      where,
       include: {
         estadoCivil: true,
         escolaridade: true,
@@ -226,7 +247,9 @@ export class PessoaService {
         escolaridadeId: escolaridade.id,
         tipoPessoaId: tipoPessoa.id,
         sexo:
-          updatePessoaDto.sexo === 'MASCULINO' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
+          updatePessoaDto.sexo === 'MASCULINO'
+            ? SEXO_ENUM.MASCULINO
+            : SEXO_ENUM.FEMININO,
       },
     });
   }
@@ -310,7 +333,9 @@ export class PessoaService {
   private async analisarCPF(cpf: string) {
     // TODO: colocar validacao de CPF aqui
 
-    if (cpf === undefined || cpf === "") return;
+    if (cpf === undefined || cpf === '') {
+      return;
+    }
 
     const pessoa = await this.prisma.pessoa.findFirst({
       where: { cpf },

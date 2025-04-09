@@ -1,0 +1,44 @@
+POST http://localhost:3005/users
+Content-Type: application/json
+
+{
+  "name": "Leonardo Cintra",
+  "email": "leonardo@gmail.com",
+  "password": "admin",
+  "role": "ADMIN"
+}
+
+###
+POST http://localhost:3005/users
+Content-Type: application/json
+Authorization: Bearer {{tokenAdmin}}
+
+{
+  "name": "Orley da Silva",
+  "email": "orley@gmail.com",
+  "password": "admin",
+  "role": "SECRETARIA_CNC"
+}
+
+###
+# @name adminLogin
+POST http://localhost:3005/auth/login
+Content-Type: application/json
+
+{
+  "email": "leonardo@gmail.com",
+  "password": "admin"
+}
+
+###
+@tokenAdmin = {{ adminLogin.response.body.data.access_token }}
+
+###
+GET http://localhost:3005/users
+Authorization: Bearer {{tokenAdmin}}
+
+###
+GET http://localhost:3005/users/cm91kgd9t0002ry7if0jkv96c
+Content-Type: application/json
+Authorization: Bearer {{tokenAdmin}}
+
