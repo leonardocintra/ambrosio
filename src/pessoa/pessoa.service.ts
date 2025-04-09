@@ -22,7 +22,7 @@ export class PessoaService {
   ) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
-    const ability = this.abilityService.ability;
+    const { ability } = this.abilityService;
     if (!ability.can('create', 'pessoa')) {
       throw new ForbiddenException(
         'Você não tem permissão para criar uma pessoa',
@@ -59,7 +59,7 @@ export class PessoaService {
   }
 
   async findAll(page: number, limit: number) {
-    const ability = this.abilityService.ability;
+    const { ability } = this.abilityService;
     if (!ability.can('read', 'pessoa')) {
       throw new ForbiddenException(
         'Você não tem permissão para listar pessoas',
@@ -333,7 +333,9 @@ export class PessoaService {
   private async analisarCPF(cpf: string) {
     // TODO: colocar validacao de CPF aqui
 
-    if (cpf === undefined || cpf === '') return;
+    if (cpf === undefined || cpf === '') {
+      return;
+    }
 
     const pessoa = await this.prisma.pessoa.findFirst({
       where: { cpf },

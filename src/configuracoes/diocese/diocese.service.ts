@@ -67,7 +67,7 @@ export class DioceseService {
     } catch (error) {
       this.logger.error(error);
       if (dioceseId > 0) {
-        this.prisma.diocese.delete({
+        await this.prisma.diocese.delete({
           where: { id: dioceseId },
         });
         this.logger.warn(`Removido diocese ${dioceseId}`);
@@ -126,7 +126,7 @@ export class DioceseService {
   }
 
   private asPermissions() {
-    const ability = this.abilityService.ability;
+    const { ability } = this.abilityService;
     if (!ability.can('read', 'diocese')) {
       throw new ForbiddenException(
         'Você não tem permissão para listar dioceses',

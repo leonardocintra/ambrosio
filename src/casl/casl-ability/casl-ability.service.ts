@@ -20,38 +20,23 @@ export type DefinePermissions = (
   builder: AbilityBuilder<AppAbility>,
 ) => void;
 
+// TODO: renomear essa funcao para algo comum que todos podem acessar
+const grantReadPessoaDiocese: DefinePermissions = (user, { can }) => {
+  can('read', 'pessoa');
+  can('read', 'diocese');
+};
+
 const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
   ADMIN(user, { can }) {
     can('manage', 'all');
   },
-  CATEQUISTA_NACIONAL(user, { can }) {
-    can('read', 'pessoa');
-    can('read', 'diocese');
-  },
-  CATEQUISTA_GRANDE_REGIAO(user, { can }) {
-    can('read', 'pessoa');
-    can('read', 'diocese');
-  },
-  CATEQUISTA_SETOR(user, { can }) {
-    can('read', 'pessoa');
-    can('read', 'diocese');
-  },
-  CATEQUISTA_REGIAO(user, { can }) {
-    can('read', 'pessoa');
-    can('read', 'diocese');
-  },
-  CATEQUISTA_PAROQUIA(user, { can }) {
-    can('read', 'pessoa');
-    can('read', 'diocese');
-  },
-  SECRETARIA_PAROQUIA(user, { can }) {
-    can('read', 'pessoa');
-    can('read', 'diocese');
-  },
-  SECRETARIA_CNC(user, { can }) {
-    can('read', 'pessoa');
-    can('read', 'diocese');
-  },
+  CATEQUISTA_NACIONAL: grantReadPessoaDiocese,
+  CATEQUISTA_GRANDE_REGIAO: grantReadPessoaDiocese,
+  CATEQUISTA_SETOR: grantReadPessoaDiocese,
+  CATEQUISTA_REGIAO: grantReadPessoaDiocese,
+  CATEQUISTA_PAROQUIA: grantReadPessoaDiocese,
+  SECRETARIA_PAROQUIA: grantReadPessoaDiocese,
+  SECRETARIA_CNC: grantReadPessoaDiocese,
 };
 
 @Injectable({ scope: Scope.REQUEST })
