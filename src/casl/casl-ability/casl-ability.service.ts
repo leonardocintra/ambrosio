@@ -1,13 +1,18 @@
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
 import { Injectable, Scope } from '@nestjs/common';
-import { diocese, pessoa, user } from '@prisma/client';
+import { diocese, localidade, pessoa, user } from '@prisma/client';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 export type PermActions = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
 export type PermissionResource =
-  | Subjects<{ pessoa: pessoa; user: user; diocese: diocese }>
+  | Subjects<{
+      pessoa: pessoa;
+      user: user;
+      diocese: diocese;
+      localidade: localidade;
+    }>
   | 'all';
 
 export type AppAbility = PureAbility<
@@ -36,7 +41,11 @@ const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
   CATEQUISTA_REGIAO: grantReadPessoaDiocese,
   CATEQUISTA_PAROQUIA: grantReadPessoaDiocese,
   SECRETARIA_PAROQUIA: grantReadPessoaDiocese,
-  SECRETARIA_CNC: grantReadPessoaDiocese,
+  SECRETARIA_CNC(user, { can }) {
+    can('read', 'pessoa');
+    can('read', 'diocese');
+    can('read', 'localidade');
+  },
 };
 
 @Injectable({ scope: Scope.REQUEST })

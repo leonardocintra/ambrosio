@@ -18,6 +18,9 @@ export class RoleGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const authUser = request.user;
+    if (!authUser) {
+      return false;
+    }
 
     return (
       authUser!.role === ROLE_ENUM.ADMIN ||
