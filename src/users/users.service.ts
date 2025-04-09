@@ -13,13 +13,13 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { ability } = this.abilityService;
+    // const { ability } = this.abilityService;
 
-    if (!ability.can('create', 'user')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para criar um usuário',
-      );
-    }
+    // if (!ability.can('create', 'user')) {
+    //   throw new ForbiddenException(
+    //     'Você não tem permissão para criar um usuário',
+    //   );
+    // }
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     return this.prismaService.user.create({
