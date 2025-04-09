@@ -23,7 +23,7 @@ export class AuthService {
       return null;
     }
 
-    const isPasswordValid = bcrypt.compareSync(
+    const isPasswordValid = await bcrypt.compare(
       loginDto.password,
       user.password,
     );

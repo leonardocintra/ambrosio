@@ -12,7 +12,7 @@ export class UsersService {
     private readonly abilityService: CaslAbilityService,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const { ability } = this.abilityService;
 
     if (!ability.can('create', 'user')) {
@@ -21,10 +21,11 @@ export class UsersService {
       );
     }
 
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     return this.prismaService.user.create({
       data: {
         ...createUserDto,
-        password: bcrypt.hashSync(createUserDto.password, 10),
+        password: hashedPassword,
       },
     });
   }
@@ -37,8 +38,11 @@ export class UsersService {
     return this.prismaService.user.findUnique({ where: { id } });
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    // TODO: ver se tem password para aplicar o hash
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    // If a password is provided in the update DTO, hash it before updating.
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
     return this.prismaService.user.update({
       where: { id },
       data: updateUserDto,
