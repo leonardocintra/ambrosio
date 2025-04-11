@@ -18,15 +18,30 @@ $ npm install
 
 Rename `.env-sample` to .env
 
+### development
 ```bash
-# development
+
 $ sudo docker compose up -d
 $ npx prisma migrate dev
 $ npm run seed
 $ npm run start:dev
+```
 
+O usuario principal é criado apos rodar o seed
+- user: admin@admin.com.br
+- pass: admin
+```bash
+curl --location 'http://localhost:3005/auth/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "admin@admin.com",
+    "password": "admin"
+    
+}'
+```
 
-# production mode
+### production mode
+```bash
 $ npm run start:prod
 $ npx prisma migrate deploy
 ```
