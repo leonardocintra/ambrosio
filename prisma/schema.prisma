@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model pais {
+model Pais {
   id                  Int      @id @default(autoincrement())
   isoAlpha2           String   @db.VarChar(2)
   nome                String   @unique @db.VarChar(100)
@@ -22,28 +22,34 @@ model pais {
   regiaoIntermediaria String?  @db.VarChar(100)
   lingua              String   @db.VarChar(50)
   capital             String   @db.VarChar(100)
-  estado              estado[]
+  estado              Estado[]
+
+	@@map("pais")
 }
 
-model estado {
+model Estado {
   id     Int      @id @default(autoincrement())
   nome   String   @unique @db.VarChar(100)
   sigla  String   @unique @db.VarChar(2)
   ativo  Boolean  @default(true) @db.Boolean
   paisId Int
-  pais   pais     @relation(fields: [paisId], references: [id])
-  cidade cidade[]
+  pais   Pais     @relation(fields: [paisId], references: [id])
+  cidade Cidade[]
+
+	@@map("estado")
 }
 
-model cidade {
+model Cidade {
   id       Int     @id @default(autoincrement())
   nome     String  @unique @db.VarChar(100)
   estadoId Int
-  estado   estado  @relation(fields: [estadoId], references: [id])
+  estado   Estado  @relation(fields: [estadoId], references: [id])
   ativo    Boolean @default(true) @db.Boolean
+
+	@@map("cidade")
 }
 
-model endereco {
+model Endereco {
   id         Int              @id @default(autoincrement())
   cep        String           @db.VarChar(8)
   logradouro String           @db.VarChar(50)
@@ -52,9 +58,11 @@ model endereco {
   numero     String           @db.VarChar(5)
   UF         String           @db.VarChar(2)
   pais       String           @default("Brasil") @db.VarChar(50)
-  paroquias  paroquia[]
-  pessoas    pessoaEndereco[]
+  paroquias  Paroquia[]
+  pessoas    PessoaEndereco[]
   localidade localidade[]
+
+	@@map("endereco")
 }
 
 model tipoCarisma {
@@ -66,13 +74,13 @@ model tipoCarisma {
 model estadoCivil {
   id        Int      @id @default(autoincrement())
   descricao String   @unique @db.VarChar(20)
-  pessoas   pessoa[]
+  pessoas   Pessoa[]
 }
 
 model escolaridade {
   id        Int      @id @default(autoincrement())
   descricao String   @unique @db.VarChar(30)
-  pessoas   pessoa[]
+  pessoas   Pessoa[]
 }
 
 enum Sexo {
@@ -80,7 +88,7 @@ enum Sexo {
   FEMININO
 }
 
-model pessoa {
+model Pessoa {
   id                   Int                @id @default(autoincrement())
   nome                 String             @db.VarChar(80)
   conhecidoPor         String?            @db.VarChar(30)
@@ -95,46 +103,52 @@ model pessoa {
   escolaridade         escolaridade?      @relation(fields: [escolaridadeId], references: [id])
   ativo                Boolean            @default(true)
   tipoPessoaId         Int                @default(1)
-  tipoPessoa           tipoPessoa         @relation(fields: [tipoPessoaId], references: [id])
+  tipoPessoa           TipoPessoa         @relation(fields: [tipoPessoaId], references: [id])
   passaportes          passaportePessoa[]
   contatos             pessoaContato[]
   paroquias            paroquiaPessoas[]
-  casamentosComoMarido pessoaCasal[]      @relation("Marido")
-  casamentosComoMulher pessoaCasal[]      @relation("Mulher")
-  enderecos            pessoaEndereco[]
+  casamentosComoMarido PessoaCasal[]      @relation("Marido")
+  casamentosComoMulher PessoaCasal[]      @relation("Mulher")
+  enderecos            PessoaEndereco[]
   equipes              equipePessoas[]
   pessoaCarisma        pessoaCarisma[]
+
+	@@map("pessoa")
 }
 
-model tipoPessoa {
+model TipoPessoa {
   id        Int      @id @default(autoincrement())
   descricao String   @unique @db.VarChar(40)
-  pessoa    pessoa[]
+  pessoa    Pessoa[]
+
+	@@map("tipoPessoa")
 }
 
-model pessoaEndereco {
+model PessoaEndereco {
   pessoaId   Int
   enderecoId Int
-  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  endereco   endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pessoa     Pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  endereco   Endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([pessoaId, enderecoId])
+	@@map("pessoaEndereco")
 }
 
-model pessoaCasal {
+model PessoaCasal {
   id             Int    @id @default(autoincrement())
   pessoaMaridoId Int
   pessoaMulherId Int
-  marido         pessoa @relation("Marido", fields: [pessoaMaridoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  mulher         pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  marido         Pessoa @relation("Marido", fields: [pessoaMaridoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  mulher         Pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([pessoaMaridoId, pessoaMulherId])
+	@@map("pessoaCasal")
 }
 
 model pessoaCarisma {
   pessoaId      Int
   tipoCarismaId Int
-  pessoa        pessoa      @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pessoa        Pessoa      @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tipoCarisma   tipoCarisma @relation(fields: [tipoCarismaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([pessoaId, tipoCarismaId])
@@ -147,7 +161,7 @@ model passaportePessoa {
   dataExpiracao DateTime
   renovado      Boolean   @default(false)
   dataRenovacao DateTime?
-  pessoa        pessoa    @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
+  pessoa        Pessoa    @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 }
 
 model pessoaContato {
@@ -158,39 +172,45 @@ model pessoaContato {
   ativo               Boolean @default(true)
   email               String?
   pessoaId            Int
-  pessoa              pessoa  @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pessoa              Pessoa  @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model tipoDiocese {
+model TipoDiocese {
   id        Int       @id @default(autoincrement())
   descricao String    @db.VarChar(50)
-  dioceses  diocese[]
+  dioceses  Diocese[]
+
+	@@map("tipoDiocese")
 }
 
-model diocese {
+model Diocese {
   id            Int          @id @default(autoincrement())
   tipoDioceseId Int
-  tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
+  tipoDiocese   TipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
   descricao     String       @db.VarChar(90)
-  paroquias     paroquia[]
+  paroquias     Paroquia[]
   localidade    localidade[]
+
+	@@map("diocese")
 }
 
-model paroquia {
+model Paroquia {
   id         Int               @id @default(autoincrement())
   enderecoId Int
   dioceseId  Int
-  endereco   endereco          @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
-  diocese    diocese           @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
+  endereco   Endereco          @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
+  diocese    Diocese           @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
   descricao  String            @db.VarChar(50)
   pessoas    paroquiaPessoas[]
+  
+	@@map("paroquia")
 }
 
 model paroquiaPessoas {
   pessoaId   Int
   paroquiaId Int
-  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  paroquia   paroquia @relation(fields: [paroquiaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pessoa     Pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  paroquia   Paroquia @relation(fields: [paroquiaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([pessoaId, paroquiaId])
 }
@@ -244,7 +264,7 @@ model equipePessoas {
   equipeId Int
   pessoaId Int
   equipe   equipe @relation(fields: [equipeId], references: [id])
-  pessoa   pessoa @relation(fields: [pessoaId], references: [id])
+  pessoa   Pessoa @relation(fields: [pessoaId], references: [id])
 
   @@id([equipeId, pessoaId])
 }
@@ -253,12 +273,12 @@ model localidade {
   id               Int                @id @default(autoincrement())
   descricao        String             @db.VarChar(80)
   dioceseId        Int
-  diocese          diocese            @relation(fields: [dioceseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  diocese          Diocese            @relation(fields: [dioceseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   tipoLocalidadeId Int
   tipoLocalidade   tipoLocalidade     @relation(fields: [tipoLocalidadeId], references: [id], onDelete: Restrict)
   observacao       String?
   enderecoId       Int
-  endereco         endereco           @relation(fields: [enderecoId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  endereco         Endereco           @relation(fields: [enderecoId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   localidadeRegiao localidadeRegiao[]
 }
 
@@ -277,7 +297,7 @@ model tipoLocalidade {
   localidade localidade[]
 }
 
-enum roles {
+enum Roles {
   ADMIN
   CATEQUISTA_NACIONAL
   CATEQUISTA_GRANDE_REGIAO
@@ -286,17 +306,21 @@ enum roles {
   CATEQUISTA_PAROQUIA
   SECRETARIA_CNC
   SECRETARIA_PAROQUIA
+
+	@@map("roles")
 }
 
-model user {
+model User {
   id               String   @id @default(cuid())
   name             String
   email            String   @unique
   password         String
-  role             roles    @default(SECRETARIA_PAROQUIA)
+  role             Roles    @default(SECRETARIA_PAROQUIA)
   whatsapp         String?  @db.VarChar(20)
   verifiedWhatsapp Boolean  @default(false)
   active           Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@map("user")
 }
