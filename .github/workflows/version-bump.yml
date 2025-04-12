@@ -1,3 +1,6 @@
+permissions:
+  contents: write
+
 name: Bump version on merge to main
 
 on:
@@ -26,4 +29,4 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           npm version patch -m "chore: bump version to %s [skip ci]"
-          git push origin main --follow-tags
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main --follow-tags
