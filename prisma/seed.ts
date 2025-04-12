@@ -14,6 +14,20 @@ async function main() {
   await regiao();
   await tipoEquipe();
   await etapa();
+  await admin();
+
+  async function admin() {
+    await prisma.user.create({
+      data: {
+        name: 'Admin Geral',
+        email: 'admin@admin.com',
+        password:
+          '$2b$10$.TT7jgY.IqTW/3qg9RXw4.y20H4ROVqfj0TIjBi5l9ks2fb5ueQsC',
+        role: 'ADMIN',
+        whatsapp: '16999739999',
+      },
+    });
+  }
 
   async function tipoLocalidade() {
     await prisma.tipoLocalidade.create({
@@ -89,32 +103,32 @@ async function main() {
 
     await prisma.tipoPessoa.create({
       data: {
-        descricao: 'Arcebispo'
-      }
+        descricao: 'Arcebispo',
+      },
     });
 
     await prisma.tipoPessoa.create({
       data: {
-        descricao: 'Seminarista'
-      }
+        descricao: 'Seminarista',
+      },
     });
 
     await prisma.tipoPessoa.create({
       data: {
-        descricao: 'Diácono'
-      }
+        descricao: 'Diácono',
+      },
     });
 
     await prisma.tipoPessoa.create({
       data: {
-        descricao: 'Diácono Permanente'
-      }
+        descricao: 'Diácono Permanente',
+      },
     });
 
     await prisma.tipoPessoa.create({
       data: {
-        descricao: 'Religioso(a)'
-      }
+        descricao: 'Religioso(a)',
+      },
     });
 
     console.log('---------------------------------');
@@ -143,54 +157,54 @@ async function main() {
     await prisma.etapa.create({
       data: {
         descricao: '2º escrutinio',
-      }
+      },
     });
 
     await prisma.etapa.create({
       data: {
         descricao: 'Iniciação a Oração',
-      }
+      },
     });
 
     await prisma.etapa.create({
       data: {
         descricao: 'Tradditio Symboli',
-      }
+      },
     });
 
     await prisma.etapa.create({
       data: {
         descricao: 'Redditio Symboli',
-      }
+      },
     });
 
     await prisma.etapa.create({
       data: {
         descricao: 'Pai Nosso I',
-      }
+      },
     });
 
     await prisma.etapa.create({
       data: {
         descricao: 'Pai Nosso II',
-      }
+      },
     });
     await prisma.etapa.create({
       data: {
         descricao: 'Pai Nosso III',
-      }
+      },
     });
 
     await prisma.etapa.create({
       data: {
         descricao: 'Pai Nosso III',
-      }
+      },
     });
 
     await prisma.etapa.create({
       data: {
         descricao: '3º escrutinio',
-      }
+      },
     });
 
     console.log('---------------------------------');
@@ -200,25 +214,25 @@ async function main() {
   async function pais() {
     await prisma.pais.create({
       data: {
-        capital: "Brasília",
-        nome: "Brasil",
-        lingua: "portugues",
-        regiao: "América",
-        subRegiao: "América Latina e Caribe",
-        regiaoIntermediaria: "América do sul",
-        isoAlpha2: "BR",
+        capital: 'Brasília',
+        nome: 'Brasil',
+        lingua: 'portugues',
+        regiao: 'América',
+        subRegiao: 'América Latina e Caribe',
+        regiaoIntermediaria: 'América do sul',
+        isoAlpha2: 'BR',
       },
     });
 
     await prisma.pais.create({
       data: {
-        capital: "Lima",
-        nome: "Peru",
-        lingua: "aimará",
-        regiao: "América",
-        subRegiao: "América Latina e Caribe",
-        regiaoIntermediaria: "América do sul",
-        isoAlpha2: "PE",
+        capital: 'Lima',
+        nome: 'Peru',
+        lingua: 'aimará',
+        regiao: 'América',
+        subRegiao: 'América Latina e Caribe',
+        regiaoIntermediaria: 'América do sul',
+        isoAlpha2: 'PE',
       },
     });
 
@@ -227,36 +241,37 @@ async function main() {
   }
 
   async function estado() {
-    const paisId = (await prisma.pais.findFirst({ where: { nome: "Brasil" } })).id;
+    const paisId = (await prisma.pais.findFirst({ where: { nome: 'Brasil' } }))
+      .id;
     await prisma.estado.create({
       data: {
-        nome: "Minas Gerais",
-        sigla: "MG",
-        paisId
+        nome: 'Minas Gerais',
+        sigla: 'MG',
+        paisId,
       },
     });
 
     await prisma.estado.create({
       data: {
-        nome: "Tocantins",
-        sigla: "TO",
-        paisId
+        nome: 'Tocantins',
+        sigla: 'TO',
+        paisId,
       },
     });
 
     await prisma.estado.create({
       data: {
-        nome: "São Paulo",
-        sigla: "SP",
-        paisId
+        nome: 'São Paulo',
+        sigla: 'SP',
+        paisId,
       },
     });
 
     await prisma.estado.create({
       data: {
-        nome: "Goiás",
-        sigla: "GO",
-        paisId
+        nome: 'Goiás',
+        sigla: 'GO',
+        paisId,
       },
     });
 
@@ -278,8 +293,12 @@ async function main() {
     await prisma.tipoEquipe.create({
       data: { descricao: 'Catequista Itinerante' },
     });
-    await prisma.tipoEquipe.create({ data: { descricao: 'Vocacional - Moças' } });
-    await prisma.tipoEquipe.create({ data: { descricao: 'Vocacional - Moços' } });
+    await prisma.tipoEquipe.create({
+      data: { descricao: 'Vocacional - Moças' },
+    });
+    await prisma.tipoEquipe.create({
+      data: { descricao: 'Vocacional - Moços' },
+    });
     await prisma.tipoEquipe.create({
       data: { descricao: 'Responsável GRANDE REGIAO' },
     });
