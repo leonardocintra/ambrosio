@@ -35,4 +35,8 @@ export class CreateEnderecoDto {
   @MinLength(2)
   @IsString()
   UF: string;
+
+  @MaxLength(250)
+  @IsOptional()
+  observacao: string;
 }

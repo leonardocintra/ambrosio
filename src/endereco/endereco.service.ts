@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class EnderecoService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async createByPessoaId(
     createEnderecoDto: CreateEnderecoDto,
@@ -44,6 +44,7 @@ export class EnderecoService {
         bairro: createEnderecoDto.bairro,
         pais: createEnderecoDto.pais,
         UF: createEnderecoDto.UF,
+        observacao: createEnderecoDto.observacao,
       },
     });
   }

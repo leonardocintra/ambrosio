@@ -52,9 +52,11 @@ model endereco {
   numero     String           @db.VarChar(5)
   UF         String           @db.VarChar(2)
   pais       String           @default("Brasil") @db.VarChar(50)
+  observacao String?          @db.VarChar(250)
   paroquias  paroquia[]
   pessoas    pessoaEndereco[]
   localidade localidade[]
+  diocese    diocese[]
 }
 
 model tipoCarisma {
@@ -172,6 +174,8 @@ model diocese {
   tipoDioceseId Int
   tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
   descricao     String       @db.VarChar(90)
+  enderecoId    Int
+  endereco      endereco     @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
   paroquias     paroquia[]
   localidade    localidade[]
 }
@@ -286,6 +290,7 @@ enum roles {
   CATEQUISTA_PAROQUIA
   SECRETARIA_CNC
   SECRETARIA_PAROQUIA
+  NAO_IDENTIFICADO
 }
 
 model user {
