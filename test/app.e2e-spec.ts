@@ -1,12 +1,12 @@
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { setupTestModule } from './test-setup';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    app = await setupTestModule();  // Usando a configuração centralizada
+    app = await setupTestModule(); // Usando a configuração centralizada
   });
 
   afterAll(async () => {
@@ -18,7 +18,9 @@ describe('AppController (e2e)', () => {
       .get('/')
       .expect(200)
       .expect((res) => {
-        expect(res.body.data).toBe('Hello World! Bem vindo ao Caminho Neocatecumenal')
+        expect(res.body.data).toBe(
+          'Hello World! Bem vindo ao Caminho Neocatecumenal',
+        );
       });
   });
 });

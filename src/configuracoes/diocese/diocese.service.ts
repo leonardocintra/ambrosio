@@ -92,7 +92,25 @@ export class DioceseService {
       where: { id },
       data: {
         descricao: updateDioceseDto.descricao,
-        tipoDioceseId: updateDioceseDto.tipoDiocese.id,
+        tipoDiocese: {
+          connect: {
+            id: updateDioceseDto.tipoDiocese.id,
+          },
+        },
+        endereco: {
+          update: {
+            bairro: updateDioceseDto.endereco.bairro,
+            cep: updateDioceseDto.endereco.cep,
+            cidade: updateDioceseDto.endereco.cidade,
+            logradouro: updateDioceseDto.endereco.logradouro,
+            numero: updateDioceseDto.endereco.numero,
+            UF: updateDioceseDto.endereco.UF,
+          },
+        },
+      },
+      include: {
+        endereco: true,
+        tipoDiocese: true,
       },
     });
   }

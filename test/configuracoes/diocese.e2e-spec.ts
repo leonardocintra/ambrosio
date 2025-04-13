@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
 import { setupTestModule } from '../test-setup';
+import request from 'supertest';
+import { faker } from '@faker-js/faker/.';
 
 describe('DioceseController (e2e)', () => {
   let app: INestApplication;
@@ -108,5 +109,57 @@ describe('DioceseController (e2e)', () => {
         expect(res.body.error).toBe('Unauthorized');
         expect(res.body.statusCode).toBe(401);
       });
+  });
+
+  it(`/${principal}/1 (PATCH) | deve falhar sem autenticação`, async () => {
+    await request(app.getHttpServer())
+      .patch(`/${principal}/1`)
+      .send({ descricao: 'Diocese sem token' })
+      .expect(401)
+      .expect((res) => {
+        expect(res.body.message).toBe('Invalid or missing token');
+        expect(res.body.error).toBe('Unauthorized');
+        expect(res.body.statusCode).toBe(401);
+      });
+  });
+
+  it(`/${principal} (PATCH) | deve atualizar uma diocese com campos válidos`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      tipoDiocese: { id: 2, descricao: 'Diocese' },
+      endereco: {
+        cep: faker.location.zipCode('########'),
+        logradouro: 'Dave Groves',
+        numero: '32',
+        bairro: 'Granite Refined Cotton Keyboard',
+        UF: 'SP',
+        cidade: 'São Paulo',
+      },
+    };
+
+    const response = await request(app.getHttpServer())
+      .patch(`/${principal}/1`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(200);
+
+    expect(response.body.data).toHaveProperty('id');
+    expect(response.body.data.descricao).toBe(dioceseData.descricao);
+    expect(response.body.data.tipoDiocese.id).toBe(dioceseData.tipoDiocese.id);
+    expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
+    expect(response.body.data.endereco.bairro).toBe(
+      dioceseData.endereco.bairro,
+    );
+    expect(response.body.data.endereco.numero).toBe(
+      dioceseData.endereco.numero,
+    );
+    expect(response.body.data.endereco.logradouro).toBe(
+      dioceseData.endereco.logradouro,
+    );
+    expect(response.body.data.endereco.cidade).toBe(
+      dioceseData.endereco.cidade,
+    );
+    expect(response.body.data.endereco.UF).toBe(dioceseData.endereco.UF);
   });
 });
