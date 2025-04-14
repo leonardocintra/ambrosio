@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 @Injectable()
 export class UsersService {
@@ -13,24 +14,23 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { ability } = this.abilityService;
-
-    if (!ability.can('create', 'user')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para criar um usuário',
-      );
-    }
-
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     return this.prismaService.user.create({
       data: {
         ...createUserDto,
         password: hashedPassword,
+        role: ROLE_ENUM.NAO_IDENTIFICADO,
       },
     });
   }
 
   findAll() {
+    const { ability } = this.abilityService;
+    if (!ability.can('read', 'user')) {
+      throw new ForbiddenException(
+        'Você não tem permissão para listar usuários',
+      );
+    }
     return this.prismaService.user.findMany();
   }
 

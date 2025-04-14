@@ -5,14 +5,14 @@ import {
   HttpStatus,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateDioceseDto } from './dto/create-diocese.dto';
 import { UpdateDioceseDto } from './dto/update-diocese.dto';
 import { PrismaService } from 'src/prisma.service';
-import { LocalidadeService } from 'src/localidade/localidade.service';
-import { TipoLocalidadeService } from '../tipo-localidade/tipo-localidade.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
+import { EnderecoService } from 'src/endereco/endereco.service';
 
 @Injectable()
 export class DioceseService {
@@ -20,58 +20,46 @@ export class DioceseService {
 
   constructor(
     private prisma: PrismaService,
-    private localidadeSerivce: LocalidadeService,
-    private readonly tipoLocalidadeService: TipoLocalidadeService,
-    private readonly tipoDiocese: TipoDioceseService,
+    private enderecoService: EnderecoService,
+    private readonly tipoDioceseService: TipoDioceseService,
     private readonly abilityService: CaslAbilityService,
   ) {}
 
   async create(createDioceseDto: CreateDioceseDto) {
-    let dioceseId = 0;
-    const tipoDiocese = await this.tipoDiocese.findOne(
+    const tipoDiocese = await this.tipoDioceseService.findOne(
       createDioceseDto.tipoDiocese.id,
     );
-    const tipoLocalidade = await this.tipoLocalidadeService.findByName(
-      tipoDiocese.descricao,
-    );
+
+    if (!tipoDiocese) {
+      throw new NotFoundException('Tipo de diocese não encontrada');
+    }
+
+    const enderecoComObservacao = {
+      ...createDioceseDto.endereco,
+      observacao: `Endereço de ${tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao || ''}`,
+    };
 
     try {
-      const diocese = await this.prisma.diocese.create({
-        data: {
-          descricao: createDioceseDto.descricao,
-          tipoDioceseId: tipoDiocese.id,
-        },
-      });
-      dioceseId = diocese.id;
+      return await this.prisma.$transaction(async (transaction) => {
+        const endereco = await this.enderecoService.create(
+          enderecoComObservacao,
+          transaction,
+        );
 
-      await this.localidadeSerivce.create({
-        descricao: `${tipoLocalidade.descricao} - ${createDioceseDto.descricao}`,
-        diocese,
-        tipoLocalidade: {
-          descricao: tipoLocalidade.descricao,
-          id: tipoLocalidade.id,
-        },
-        observacao: createDioceseDto.observacao,
-        endereco: {
-          bairro: createDioceseDto.localidade[0].endereco.bairro,
-          cep: createDioceseDto.localidade[0].endereco.cep,
-          cidade: createDioceseDto.localidade[0].endereco.cidade,
-          logradouro: createDioceseDto.localidade[0].endereco.logradouro,
-          numero: createDioceseDto.localidade[0].endereco.numero,
-          UF: createDioceseDto.localidade[0].endereco.UF,
-          pais: createDioceseDto.localidade[0].endereco.pais,
-        },
+        return await transaction.diocese.create({
+          data: {
+            descricao: createDioceseDto.descricao,
+            tipoDioceseId: tipoDiocese.id,
+            enderecoId: endereco.id,
+          },
+          include: {
+            endereco: true,
+            tipoDiocese: true,
+          },
+        });
       });
-
-      return diocese;
     } catch (error) {
       this.logger.error(error);
-      if (dioceseId > 0) {
-        await this.prisma.diocese.delete({
-          where: { id: dioceseId },
-        });
-        this.logger.warn(`Removido diocese ${dioceseId}`);
-      }
       throw new HttpException(
         `Ocorreu um erro ao cadastrar a diocese ${createDioceseDto.descricao}. Erro: ${error}`,
         HttpStatus.BAD_GATEWAY,
@@ -85,11 +73,7 @@ export class DioceseService {
       where,
       include: {
         tipoDiocese: true,
-        localidade: {
-          include: {
-            endereco: true,
-          },
-        },
+        endereco: true,
       },
     });
   }
@@ -102,11 +86,7 @@ export class DioceseService {
       },
       include: {
         tipoDiocese: true,
-        localidade: {
-          include: {
-            endereco: true,
-          },
-        },
+        endereco: true,
       },
     });
   }
@@ -116,7 +96,25 @@ export class DioceseService {
       where: { id },
       data: {
         descricao: updateDioceseDto.descricao,
-        tipoDioceseId: updateDioceseDto.tipoDiocese.id,
+        tipoDiocese: {
+          connect: {
+            id: updateDioceseDto.tipoDiocese.id,
+          },
+        },
+        endereco: {
+          update: {
+            bairro: updateDioceseDto.endereco.bairro,
+            cep: updateDioceseDto.endereco.cep,
+            cidade: updateDioceseDto.endereco.cidade,
+            logradouro: updateDioceseDto.endereco.logradouro,
+            numero: updateDioceseDto.endereco.numero,
+            UF: updateDioceseDto.endereco.UF,
+          },
+        },
+      },
+      include: {
+        endereco: true,
+        tipoDiocese: true,
       },
     });
   }

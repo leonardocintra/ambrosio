@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreateEnderecoDto } from './dto/create-endereco.dto';
 import { UpdateEnderecoDto } from './dto/update-endereco.dto';
 import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class EnderecoService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async createByPessoaId(
     createEnderecoDto: CreateEnderecoDto,
@@ -34,8 +35,13 @@ export class EnderecoService {
     return endereco;
   }
 
-  async create(createEnderecoDto: CreateEnderecoDto) {
-    return await this.prisma.endereco.create({
+  async create(
+    createEnderecoDto: CreateEnderecoDto,
+    transaction?: Prisma.TransactionClient,
+  ) {
+    const prismaClient = transaction || this.prisma;
+
+    return await prismaClient.endereco.create({
       data: {
         cep: createEnderecoDto.cep,
         logradouro: createEnderecoDto.logradouro,
@@ -44,6 +50,7 @@ export class EnderecoService {
         bairro: createEnderecoDto.bairro,
         pais: createEnderecoDto.pais,
         UF: createEnderecoDto.UF,
+        observacao: createEnderecoDto.observacao,
       },
     });
   }

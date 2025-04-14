@@ -24,6 +24,12 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // Para permitir somente request vindo de Restful (HTTP). E não do rabbitMQ, GPRC, Kafka, etc
     const request: Request = context.switchToHttp().getRequest();
+
+    const { path } = request.route;
+    if (path === '/users' && request.method === 'POST') {
+      return true;
+    }
+
     const authHeader = request.headers['authorization'];
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedException('Invalid or missing token');

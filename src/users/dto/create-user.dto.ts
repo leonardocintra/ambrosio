@@ -1,5 +1,4 @@
-import { IsEmail, IsEnum, IsMobilePhone, IsString, MaxLength } from 'class-validator';
-import { ROLE_ENUM } from 'src/commons/enums/enums';
+import { IsEmail, IsMobilePhone, IsString, MaxLength } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -10,9 +9,6 @@ export class CreateUserDto {
 
   @IsString()
   password: string;
-
-  @IsEnum(ROLE_ENUM)
-  role: ROLE_ENUM;
 
   @IsMobilePhone('pt-BR')
   @MaxLength(13)

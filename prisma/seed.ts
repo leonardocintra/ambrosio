@@ -1,3 +1,4 @@
+import { faker, fakerPT_BR } from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -14,6 +15,7 @@ async function main() {
   await regiao();
   await tipoEquipe();
   await etapa();
+  await diocese();
   await admin();
 
   async function admin() {
@@ -27,6 +29,20 @@ async function main() {
         whatsapp: '16999739999',
       },
     });
+
+    await prisma.user.create({
+      data: {
+        name: 'Ronaldinho Gaucho',
+        email: 'ronaldinho@admin.com',
+        password:
+          '$2b$10$.TT7jgY.IqTW/3qg9RXw4.y20H4ROVqfj0TIjBi5l9ks2fb5ueQsC',
+        role: 'NAO_IDENTIFICADO',
+        whatsapp: '16999139999',
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Usuario padrao preenchido com sucesso!');
   }
 
   async function tipoLocalidade() {
@@ -628,6 +644,31 @@ async function main() {
 
     console.log('---------------------------------');
     console.log('Estado Civil preenchido com sucesso!');
+  }
+
+  async function diocese() {
+    const endereco = await prisma.endereco.create({
+      data: {
+        bairro: faker.location.street(),
+        cep: faker.location.zipCode('########'),
+        cidade: faker.location.city(),
+        logradouro: faker.location.street(),
+        numero: faker.number.int({ min: 1, max: 9000 }).toString(),
+        UF: fakerPT_BR.location.state({ abbreviated: true }),
+        observacao: faker.location.streetAddress(),
+      },
+    });
+
+    await prisma.diocese.create({
+      data: {
+        descricao: 'Diocese de teste Se Catedral',
+        tipoDioceseId: 1,
+        enderecoId: endereco.id,
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Diocese preenchido com sucesso!');
   }
 }
 

@@ -1,13 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { LoginDto } from './login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma.service';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { packRules } from '@casl/ability/extra';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+  
   constructor(
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
@@ -20,15 +22,17 @@ export class AuthService {
     });
 
     if (!user) {
+      this.logger.log(`Usuario não encontrado. Email ${loginDto.email} `)
       return null;
     }
 
     const isPasswordValid = await bcrypt.compare(
       loginDto.password,
-      user.password,
+      String(user.password),
     );
 
     if (!isPasswordValid) {
+      this.logger.log(`Senha invalida. User ${user.name}`)
       return null;
     }
 

@@ -35,6 +35,11 @@ const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
   ADMIN(user, { can }) {
     can('manage', 'all');
   },
+  NAO_IDENTIFICADO(user, { cannot }) {
+    cannot('read', 'pessoa');
+    cannot('read', 'diocese');
+    cannot('read', 'localidade');
+  },
   CATEQUISTA_NACIONAL: grantReadPessoaDiocese,
   CATEQUISTA_GRANDE_REGIAO: grantReadPessoaDiocese,
   CATEQUISTA_SETOR: grantReadPessoaDiocese,
