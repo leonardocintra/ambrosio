@@ -34,28 +34,32 @@ export class DioceseService {
       throw new NotFoundException('Tipo de diocese não encontrada');
     }
 
-    const endereco = await this.enderecoService.create({
+    const enderecoComObservacao = {
       ...createDioceseDto.endereco,
-      observacao: `Endereço de ${tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao ? createDioceseDto.observacao : ''}`,
-    });
+      observacao: `Endereço de ${tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao || ''}`,
+    };
 
     try {
-      return await this.prisma.diocese.create({
-        data: {
-          descricao: createDioceseDto.descricao,
-          tipoDioceseId: tipoDiocese.id,
-          enderecoId: endereco.id,
-        },
-        include: {
-          endereco: true,
-          tipoDiocese: true,
-        },
+      return await this.prisma.$transaction(async (transaction) => {
+        const endereco = await this.enderecoService.create(
+          enderecoComObservacao,
+          transaction,
+        );
+
+        return await transaction.diocese.create({
+          data: {
+            descricao: createDioceseDto.descricao,
+            tipoDioceseId: tipoDiocese.id,
+            enderecoId: endereco.id,
+          },
+          include: {
+            endereco: true,
+            tipoDiocese: true,
+          },
+        });
       });
     } catch (error) {
       this.logger.error(error);
-      this.enderecoService.remove(endereco.id);
-      this.logger.warn(`Removido diocese ${endereco.id}`);
-
       throw new HttpException(
         `Ocorreu um erro ao cadastrar a diocese ${createDioceseDto.descricao}. Erro: ${error}`,
         HttpStatus.BAD_GATEWAY,

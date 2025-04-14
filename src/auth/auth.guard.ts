@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     // Para permitir somente request vindo de Restful (HTTP). E não do rabbitMQ, GPRC, Kafka, etc
     const request: Request = context.switchToHttp().getRequest();
 
-    const path = request.route.path;
+    const { path } = request.route;
     if (path === '/users' && request.method === 'POST') {
       return true;
     }

@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { setupTestModule } from '../test-setup';
 import { faker } from '@faker-js/faker/.';
+import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -56,7 +57,7 @@ describe('UserController (e2e)', () => {
       data: {
         email,
         name,
-        role: 'NAO_IDENTIFICADO',
+        role: ROLE_ENUM.NAO_IDENTIFICADO,
         whatsapp,
         verifiedWhatsapp: false,
         active: false,

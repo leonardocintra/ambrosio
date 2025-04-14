@@ -32,6 +32,24 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
+  it(`/${principal} (GET) - nao pode ver diocese se nao tiver permissao`, async () => {
+    const response = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ email: 'ronaldinho@admin.com', password: 'admin' });
+
+    const tokenNaoPermitido = response.body.data.access_token;
+
+    return request(app.getHttpServer())
+      .get(`/${principal}`)
+      .set('Authorization', `Bearer ${tokenNaoPermitido}`)
+      .expect(403)
+      .expect((res) => {
+        expect(res.body.message).toBe('Você não tem permissão para listar dioceses');
+        expect(res.body.error).toBe('Forbidden');
+        expect(res.body.statusCode).toBe(403);
+      });
+  });
+
   it(`/${principal} (GET) | deve retornar dioceses com campos obrigatórios preenchidos`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}`)
