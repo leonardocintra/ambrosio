@@ -1,4 +1,3 @@
-import { TipoDioceseService } from './../tipo-diocese/tipo-diocese.service';
 import {
   ForbiddenException,
   HttpException,
@@ -13,6 +12,7 @@ import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { EnderecoService } from 'src/endereco/endereco.service';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
 
 @Injectable()
 export class DioceseService {
