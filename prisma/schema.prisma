@@ -175,7 +175,7 @@ model diocese {
   tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
   descricao     String       @db.VarChar(90)
   enderecoId    Int
-  endereco      endereco     @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
+  endereco      endereco     @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
   paroquias     paroquia[]
   localidade    localidade[]
 }
@@ -184,7 +184,7 @@ model paroquia {
   id         Int               @id @default(autoincrement())
   enderecoId Int
   dioceseId  Int
-  endereco   endereco          @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
+  endereco   endereco          @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
   diocese    diocese           @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
   descricao  String            @db.VarChar(50)
   pessoas    paroquiaPessoas[]
