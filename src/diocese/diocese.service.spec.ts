@@ -2,10 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DioceseService } from './diocese.service';
 import { PrismaService } from 'src/prisma.service';
 import { LocalidadeService } from 'src/localidade/localidade.service';
-import { TipoLocalidadeService } from '../tipo-localidade/tipo-localidade.service';
-import { TipoDioceseService } from '../tipo-diocese/tipo-diocese.service';
 import { EnderecoService } from 'src/endereco/endereco.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { TipoLocalidadeService } from 'src/configuracoes/tipo-localidade/tipo-localidade.service';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
 
 describe('DioceseService', () => {
   let service: DioceseService;
