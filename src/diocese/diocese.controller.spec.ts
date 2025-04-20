@@ -41,7 +41,7 @@ describe('DioceseController', () => {
           },
         },
         {
-          provide: 'LOCALIDADES_SERVICE',
+          provide: 'PAIS_UF_CIDADE_SERVICE',
           useValue: {
             emit: jest.fn(),
           },
@@ -55,7 +55,7 @@ describe('DioceseController', () => {
     tipoLocalidadeService = module.get<TipoLocalidadeService>(TipoLocalidadeService);
     tipoDioceseService = module.get<TipoDioceseService>(TipoDioceseService);
     enderecoService = module.get<EnderecoService>(EnderecoService);
-    clientRabbit = module.get<ClientProxy>('LOCALIDADES_SERVICE');
+    clientRabbit = module.get<ClientProxy>('PAIS_UF_CIDADE_SERVICE');
     abilityService = await module.resolve<CaslAbilityService>(CaslAbilityService);
     jwtService = module.get<JwtService>(JwtService);
 

@@ -2,6 +2,7 @@ import {
   ForbiddenException,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   Logger,
   NotFoundException,
@@ -13,6 +14,11 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { EnderecoService } from 'src/endereco/endereco.service';
 import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
+import { ClientProxy, RmqContext } from '@nestjs/microservices';
+import { RABBIT_PATTERN_PAIS_UF_CIDADE_CREATED } from 'src/commons/constants/constants';
+import { PaisService } from 'src/configuracoes/pais/pais.service';
+import { EstadoService } from 'src/configuracoes/estado/estado.service';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
 
 @Injectable()
 export class DioceseService {
@@ -22,7 +28,11 @@ export class DioceseService {
     private prisma: PrismaService,
     private enderecoService: EnderecoService,
     private readonly tipoDioceseService: TipoDioceseService,
+    private readonly paisService: PaisService,
+    private readonly estadoService: EstadoService,
+    private readonly cidadeService: CidadeService,
     private readonly abilityService: CaslAbilityService,
+    @Inject('PAIS_UF_CIDADE_SERVICE') private clientRabbit: ClientProxy,
   ) {}
 
   async create(createDioceseDto: CreateDioceseDto) {
@@ -40,7 +50,7 @@ export class DioceseService {
     };
 
     try {
-      return await this.prisma.$transaction(async (transaction) => {
+      const result = await this.prisma.$transaction(async (transaction) => {
         const endereco = await this.enderecoService.create(
           enderecoComObservacao,
           transaction,
@@ -58,6 +68,15 @@ export class DioceseService {
           },
         });
       });
+
+      this.clientRabbit.emit(RABBIT_PATTERN_PAIS_UF_CIDADE_CREATED, {
+        enderecoId: result.enderecoId,
+      });
+      this.logger.log(
+        `Endereço id ${result.enderecoId} enviado para fila rabbitMQ`,
+      );
+
+      return result;
     } catch (error) {
       this.logger.error(error);
       throw new HttpException(
@@ -131,5 +150,31 @@ export class DioceseService {
       );
     }
     return accessibleBy(ability, 'read').diocese;
+  }
+
+  async processQueuePaisUfCidade(
+    data: { enderecoId: number },
+    context: RmqContext,
+  ) {
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+
+    const id = data.enderecoId;
+    const endereco = await this.enderecoService.findOne(id);
+
+    if (!endereco) {
+      this.logger.error(`Endereço id ${id} não encontrada.`);
+      // TODO: add log no sentry
+      return;
+    }
+
+    try {
+      await this.paisService.create({ nome: endereco.pais });
+      this.logger.log(`Cadastrado pais de endereco id ${id} ${endereco.observacao}`);
+    } catch (error) {
+      this.logger.error(error);
+    } finally {
+      channel.ack(originalMsg);
+    }
   }
 }

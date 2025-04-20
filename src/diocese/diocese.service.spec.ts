@@ -33,7 +33,7 @@ describe('DioceseService', () => {
           },
         },
         {
-          provide: 'LOCALIDADES_SERVICE',
+          provide: 'PAIS_UF_CIDADE_SERVICE',
           useValue: {
             emit: jest.fn(),
           },

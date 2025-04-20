@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { setupTestModule } from '../test-setup';
 import request from 'supertest';
 import { faker } from '@faker-js/faker/.';
+import { of } from 'rxjs';
 
 describe('DioceseController (e2e)', () => {
   let app: INestApplication;
@@ -10,6 +11,9 @@ describe('DioceseController (e2e)', () => {
 
   beforeAll(async () => {
     app = await setupTestModule();
+    const clientRabbit = app.get('PAIS_UF_CIDADE_SERVICE');
+    jest.spyOn(clientRabbit, 'emit').mockReturnValue(of(true));
+
     const response = await request(app.getHttpServer())
       .post('/auth/login')
       .send({ email: 'admin@admin.com', password: 'admin' });
@@ -44,7 +48,9 @@ describe('DioceseController (e2e)', () => {
       .set('Authorization', `Bearer ${tokenNaoPermitido}`)
       .expect(403)
       .expect((res) => {
-        expect(res.body.message).toBe('Você não tem permissão para listar dioceses');
+        expect(res.body.message).toBe(
+          'Você não tem permissão para listar dioceses',
+        );
         expect(res.body.error).toBe('Forbidden');
         expect(res.body.statusCode).toBe(403);
       });
@@ -115,6 +121,12 @@ describe('DioceseController (e2e)', () => {
     expect(response.body.data.descricao).toBe(dioceseData.descricao);
     expect(response.body.data.tipoDiocese.id).toBe(dioceseData.tipoDiocese.id);
     expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
+    // Verifica se o método `emit` foi chamado com os parâmetros esperados
+    const clientRabbit = app.get('PAIS_UF_CIDADE_SERVICE');
+    expect(clientRabbit.emit).toHaveBeenCalledWith(
+      expect.any(String), // RABBIT_PATTERN_PAIS_UF_CIDADE_CREATED
+      expect.objectContaining({ enderecoId: expect.any(Number) }),
+    );
   });
 
   it(`/${principal} (POST) | deve falhar sem autenticação`, async () => {

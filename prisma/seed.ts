@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   await pais();
   await estado();
+  await cidade();
   await estadoCivil();
   await escolaridade();
   await tipoPessoa();
@@ -48,12 +49,6 @@ async function main() {
   async function tipoLocalidade() {
     await prisma.tipoLocalidade.create({
       data: {
-        descricao: 'Paróquia',
-      },
-    });
-
-    await prisma.tipoLocalidade.create({
-      data: {
         descricao: 'Centro Neocatecumenal',
       },
     });
@@ -73,18 +68,6 @@ async function main() {
     await prisma.tipoLocalidade.create({
       data: {
         descricao: 'Casa de Convivência',
-      },
-    });
-
-    await prisma.tipoLocalidade.create({
-      data: {
-        descricao: 'Arquidiocese',
-      },
-    });
-
-    await prisma.tipoLocalidade.create({
-      data: {
-        descricao: 'Diocese',
       },
     });
 
@@ -213,12 +196,6 @@ async function main() {
 
     await prisma.etapa.create({
       data: {
-        descricao: 'Pai Nosso III',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
         descricao: '3º escrutinio',
       },
     });
@@ -293,6 +270,41 @@ async function main() {
 
     console.log('---------------------------------');
     console.log('Estados (UF) preenchido com sucesso!');
+  }
+
+  async function cidade() {
+    const estadoId = (await prisma.estado.findFirst({ where: { sigla: 'MG' } }))
+      .id;
+    await prisma.cidade.create({
+      data: {
+        nome: 'Ibiraci',
+        estadoId,
+      },
+    });
+
+    await prisma.cidade.create({
+      data: {
+        nome: 'Claraval',
+        estadoId,
+      },
+    });
+
+    await prisma.cidade.create({
+      data: {
+        nome: 'Cássia',
+        estadoId,
+      },
+    });
+
+    await prisma.cidade.create({
+      data: {
+        nome: 'Belo Horizonte',
+        estadoId,
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Cidades preenchidas com sucesso!');
   }
 
   async function tipoEquipe() {

@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { QUEUE_LOCALIDADE } from 'src/commons/constants/constants';
+import { QUEUE_PAIS_UF_CIDADE } from 'src/commons/constants/constants';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: 'LOCALIDADES_SERVICE',
+        name: 'PAIS_UF_CIDADE_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL],
-          queue: QUEUE_LOCALIDADE,
+          queue: QUEUE_PAIS_UF_CIDADE,
           queueOptions: {
             durable: false,
           },

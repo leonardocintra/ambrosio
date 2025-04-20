@@ -1,5 +1,13 @@
-import { Type } from "class-transformer";
-import { IsNumber, IsObject, IsOptional, IsPositive, IsString, MaxLength, MinLength, ValidateNested } from "class-validator";
+import { Type } from 'class-transformer';
+import {
+  IsNumber,
+  IsObject,
+  IsPositive,
+  IsString,
+  MaxLength,
+  MinLength,
+  ValidateNested,
+} from 'class-validator';
 
 class PaisDto {
   @IsNumber()
@@ -26,5 +34,3 @@ export class CreateEstadoDto {
   @Type(() => PaisDto)
   pais: PaisDto;
 }
-
-

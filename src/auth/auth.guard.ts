@@ -5,9 +5,11 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { REFLECTOR_IS_PUBLIC } from 'src/commons/constants/constants';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { PrismaService } from 'src/prisma.service';
 
@@ -16,12 +18,21 @@ export class AuthGuard implements CanActivate {
   private readonly logger = new Logger(AuthGuard.name);
 
   constructor(
+    private readonly reflector: Reflector,
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
     private abilityService: CaslAbilityService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.get<boolean>(
+      REFLECTOR_IS_PUBLIC,
+      context.getHandler(),
+    );
+    if (isPublic) {
+      return true;
+    }
+
     // Para permitir somente request vindo de Restful (HTTP). E não do rabbitMQ, GPRC, Kafka, etc
     const request: Request = context.switchToHttp().getRequest();
 

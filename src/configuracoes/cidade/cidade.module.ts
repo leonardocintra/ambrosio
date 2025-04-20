@@ -6,6 +6,7 @@ import { EstadoModule } from '../estado/estado.module';
 @Module({
   controllers: [CidadeController],
   providers: [CidadeService],
-  imports: [EstadoModule]
+  imports: [EstadoModule],
+  exports: [CidadeService],
 })
-export class CidadeModule { }
+export class CidadeModule {}
