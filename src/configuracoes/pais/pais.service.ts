@@ -45,6 +45,7 @@ export class PaisService {
         return await this.findByName(createPaisDto.nome);
       } else {
         this.logger.error(error);
+        throw new HttpException('Erro ao cadastrar pais', 500);
       }
     }
   }
