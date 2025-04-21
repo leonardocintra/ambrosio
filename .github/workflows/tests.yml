@@ -47,9 +47,6 @@ jobs:
       - name: 📦 Instalar dependências
         run: npm install
 
-      - name: 🧬 Gerar Prisma Client
-        run: npx prisma generate
-
       - name: 🛠️ Rodar migrations
         run: npx prisma migrate deploy
         env:
