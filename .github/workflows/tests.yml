@@ -22,7 +22,7 @@ jobs:
           --health-retries 5
 
       rabbitmq:
-        image: rabbitmq:3.12-management
+        image: rabbitmq:4.1.0-management
         env:
           RABBITMQ_DEFAULT_USER: guest
           RABBITMQ_DEFAULT_PASS: guest
