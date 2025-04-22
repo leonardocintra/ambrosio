@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateEnderecoDto } from './dto/create-endereco.dto';
 import { UpdateEnderecoDto } from './dto/update-endereco.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -6,6 +6,8 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class EnderecoService {
+  private readonly logger = new Logger(EnderecoService.name);
+
   constructor(private prisma: PrismaService) {}
 
   async createByPessoaId(
@@ -32,6 +34,7 @@ export class EnderecoService {
       },
     });
 
+    this.logger.log(`Criado endereco ${endereco.id} para pessoa ${pessoaId}`);
     return endereco;
   }
 
