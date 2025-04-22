@@ -9,6 +9,10 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { JwtService } from '@nestjs/jwt';
 import { TipoLocalidadeService } from 'src/configuracoes/tipo-localidade/tipo-localidade.service';
 import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
+import { PaisService } from 'src/configuracoes/pais/pais.service';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
+import { EstadoService } from 'src/configuracoes/estado/estado.service';
+import { HttpModule } from '@nestjs/axios';
 
 describe('DioceseController', () => {
   let controller: DioceseController;
@@ -16,14 +20,17 @@ describe('DioceseController', () => {
   let localidadeService: LocalidadeService;
   let tipoLocalidadeService: TipoLocalidadeService;
   let tipoDioceseService: TipoDioceseService;
-  let enderecoService: EnderecoService
+  let enderecoService: EnderecoService;
+  let paisService: PaisService;
+  let cidadeService: CidadeService;
+  let estadoService: EstadoService;
   let clientRabbit: ClientProxy;
   let abilityService: CaslAbilityService;
   let jwtService: JwtService;
-  
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [HttpModule],
       controllers: [DioceseController],
       providers: [
         DioceseService,
@@ -31,6 +38,9 @@ describe('DioceseController', () => {
         TipoLocalidadeService,
         TipoDioceseService,
         EnderecoService,
+        PaisService,
+        CidadeService,
+        EstadoService,
         JwtService,
         CaslAbilityService,
         {
@@ -52,13 +62,18 @@ describe('DioceseController', () => {
     controller = module.get<DioceseController>(DioceseController);
     prismaService = module.get<PrismaService>(PrismaService);
     localidadeService = module.get<LocalidadeService>(LocalidadeService);
-    tipoLocalidadeService = module.get<TipoLocalidadeService>(TipoLocalidadeService);
+    tipoLocalidadeService = module.get<TipoLocalidadeService>(
+      TipoLocalidadeService,
+    );
     tipoDioceseService = module.get<TipoDioceseService>(TipoDioceseService);
     enderecoService = module.get<EnderecoService>(EnderecoService);
+    paisService = module.get<PaisService>(PaisService);
+    cidadeService = module.get<CidadeService>(CidadeService);
+    estadoService = module.get<EstadoService>(EstadoService);
     clientRabbit = module.get<ClientProxy>('PAIS_UF_CIDADE_SERVICE');
-    abilityService = await module.resolve<CaslAbilityService>(CaslAbilityService);
+    abilityService =
+      await module.resolve<CaslAbilityService>(CaslAbilityService);
     jwtService = module.get<JwtService>(JwtService);
-
   });
 
   it('should be defined', () => {
@@ -71,5 +86,8 @@ describe('DioceseController', () => {
     expect(clientRabbit).toBeDefined();
     expect(abilityService).toBeDefined();
     expect(jwtService).toBeDefined();
+    expect(paisService).toBeDefined();
+    expect(estadoService).toBeDefined();
+    expect(cidadeService).toBeDefined();
   });
 });

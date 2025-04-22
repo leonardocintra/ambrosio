@@ -59,11 +59,6 @@ jobs:
             sleep 5
           done
 
-      - name: 📦 Rodar seed
-        run: npm run seed
-        env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
-
       - name: 🚀 Rodar testes
         run: npm run test && npm run test:e2e
         env:
