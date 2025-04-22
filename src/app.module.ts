@@ -17,6 +17,7 @@ import { EquipesModule } from './equipes/equipes.module';
 import { LocalidadeModule } from './localidade/localidade.module';
 import { MessagingModule } from './messaging/messaging.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { PaginationInterceptor } from './commons/interceptors/pagination.interceptors';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -24,6 +25,7 @@ import { CaslModule } from './casl/casl.module';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ScheduleModule.forRoot(),
     EstadoCivilModule,
     PrismaModule,
@@ -52,7 +54,11 @@ import { CaslModule } from './casl/casl.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: PaginationInterceptor,
-    }
+    },
+    {
+      provide: APP_FILTER,
+      useClass: SentryGlobalFilter,
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {}
