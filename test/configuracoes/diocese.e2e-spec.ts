@@ -56,6 +56,19 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
+  it(`/${principal} (GET) | deve retornar diocese nao encontrada by id`, () => {
+    return request(app.getHttpServer())
+      .get(`/${principal}/4324`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(
+          `O registro de 'Diocese' não foi encontrado.`,
+        );
+        expect(res.body.statusCode).toBe(404);
+      });
+  });
+
   it(`/${principal} (GET) | deve retornar dioceses com campos obrigatórios preenchidos`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}`)
