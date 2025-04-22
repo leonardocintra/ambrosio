@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
-import { QUEUE_LOCALIDADE } from './commons/constants/constants';
+import { QUEUE_PAIS_UF_CIDADE } from './commons/constants/constants';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -21,7 +21,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   // rabbitMQ
-  const queues = [QUEUE_LOCALIDADE];
+  const queues = [QUEUE_PAIS_UF_CIDADE];
 
   for (const queue of queues) {
     await app.connectMicroservice({

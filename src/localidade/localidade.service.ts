@@ -1,10 +1,8 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateLocalidadeDto } from './dto/create-localidade.dto';
 import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
 import { PrismaService } from 'src/prisma.service';
 import { EnderecoService } from 'src/endereco/endereco.service';
-import { ClientProxy, RmqContext } from '@nestjs/microservices';
-import { RABBIT_PATTERN_LOCALIDADE_CREATED } from 'src/commons/constants/constants';
 
 @Injectable()
 export class LocalidadeService {
@@ -13,8 +11,7 @@ export class LocalidadeService {
   constructor(
     private prisma: PrismaService,
     private enderecoService: EnderecoService,
-    @Inject('LOCALIDADES_SERVICE') private clientRabbit: ClientProxy,
-  ) { }
+  ) {}
 
   async create(createLocalidadeDto: CreateLocalidadeDto) {
     const endereco = await this.enderecoService.create(
@@ -44,11 +41,6 @@ export class LocalidadeService {
         },
       });
 
-      this.clientRabbit.emit(RABBIT_PATTERN_LOCALIDADE_CREATED, {
-        localidadeId: localidade.id,
-        descricao: localidade.descricao,
-      });
-
       return localidade;
     } catch (err) {
       this.logger.error(err);
@@ -59,8 +51,8 @@ export class LocalidadeService {
   findAll() {
     return this.prisma.localidade.findMany({
       include: {
-        tipoLocalidade: true
-      }
+        tipoLocalidade: true,
+      },
     });
   }
 
@@ -70,8 +62,8 @@ export class LocalidadeService {
         id,
       },
       include: {
-        tipoLocalidade: true
-      }
+        tipoLocalidade: true,
+      },
     });
   }
 
@@ -81,28 +73,5 @@ export class LocalidadeService {
 
   remove(id: number) {
     return `This action removes a #${id} localidade`;
-  }
-
-  // Essa funcao foi criada apenas para estudo de caso usando RabbitMQ. Pode remover no futuro
-  async testeRabitao(
-    data: { localidadeId: number; descricao: string },
-    context: RmqContext,
-  ) {
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-
-    const id = data.localidadeId;
-
-    await this.prisma.localidade.update({
-      where: {
-        id,
-      },
-      data: {
-        observacao: `RabbitMQ OK! Sucesso! ${new Date()}`,
-      },
-    });
-
-    // descarta a mensagem
-    channel.ack(originalMsg);
   }
 }

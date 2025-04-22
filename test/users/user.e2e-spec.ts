@@ -32,7 +32,7 @@ describe('UserController (e2e)', () => {
 
   it('/users/1 (GET) - bloquear get users by id sem autenticacao', () => {
     return request(app.getHttpServer())
-      .get('/users')
+      .get('/users/45')
       .expect(401)
       .expect((res) => {
         expect(res.body.message).toBe('Invalid or missing token');

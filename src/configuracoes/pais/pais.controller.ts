@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { PaisService } from './pais.service';
 import { CreatePaisDto } from './dto/create-pais.dto';
-import { UpdatePaisDto } from './dto/update-pais.dto';
 
 @Controller('pais')
 export class PaisController {
@@ -20,15 +19,5 @@ export class PaisController {
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.paisService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: number, @Body() updatePaiDto: UpdatePaisDto) {
-    return this.paisService.update(+id, updatePaiDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.paisService.remove(+id);
   }
 }

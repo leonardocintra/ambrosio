@@ -2,9 +2,21 @@ import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import {
   FOREIGN_KEY_CONSTRAINT,
-  RECORD_TO_DELETE_DOES_NOT_EXIST,
+  RECORD_DOES_NOT_EXIST,
   UNIQUE_CONSTRAINT_FAILED,
 } from 'src/commons/constants/constants';
+
+const MODEL_NAME_MAP: Record<string, string> = {
+  pais: 'País',
+  pessoa: 'Pessoa',
+  diocese: 'Diocese',
+  paroquia: 'Paroquia',
+  localidade: 'Localidade',
+  user: 'Usuário',
+  estado: 'Estado',
+  cidade: 'Cidade',
+  // adicione mais conforme seu projeto for crescendo
+};
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionsFilter implements ExceptionFilter {
@@ -13,8 +25,13 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
   ): string | null {
     // Aqui você pode implementar lógicas adicionais para extrair mensagens de diferentes tipos de erros
     if (exception.meta && typeof exception.meta === 'object') {
-      const meta = exception.meta as { target?: string[]; field_name?: string; table?: string };
-      
+      const meta = exception.meta as {
+        target?: string[];
+        field_name?: string;
+        table?: string;
+        modelName: string;
+      };
+
       if (meta.target && meta.target.length) {
         return `O campo '${meta.target.join(', ')}' já existe cadastrado. Não permitimos duplicidade.`;
       }
@@ -25,6 +42,13 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
 
       if (meta.table) {
         return `O registro de '${meta.table}' não foi encontrado.`;
+      }
+
+      if (meta.modelName) {
+        const modelName = MODEL_NAME_MAP[meta.modelName.toLowerCase()];
+        if (modelName) {
+          return `O registro de '${modelName}' não foi encontrado.`;
+        }
       }
     }
     return null;
@@ -38,17 +62,29 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
     let status = 500;
     let message = 'Erro inesperado. Tente novamente mais tarde.';
 
-    if (exception.code === UNIQUE_CONSTRAINT_FAILED) {
-      status = 400;
-      message = this.extractErrorMessage(exception) ?? 'Já existe um registro com esses dados.';
-    } else if (exception.code === RECORD_TO_DELETE_DOES_NOT_EXIST) {
-      status = 404;
-      message = this.extractErrorMessage(exception) ?? 'Registro não encontrado.';
-    } else if (exception.code === FOREIGN_KEY_CONSTRAINT) {
-      status = 404;
-      message = this.extractErrorMessage(exception) ?? 'ID informado não encontrado.';
-    } else {
-      message = exception.message;
+    switch (exception.code) {
+      case UNIQUE_CONSTRAINT_FAILED:
+        status = 400;
+        message =
+          this.extractErrorMessage(exception) ??
+          'Já existe um registro com esses dados.';
+        break;
+
+      case RECORD_DOES_NOT_EXIST:
+        status = 404;
+        message =
+          this.extractErrorMessage(exception) ?? 'Registro não encontrado.';
+        break;
+
+      case FOREIGN_KEY_CONSTRAINT:
+        status = 404;
+        message =
+          this.extractErrorMessage(exception) ?? 'ID informado não encontrado.';
+        break;
+
+      default:
+        message = exception.message;
+        break;
     }
 
     response.status(status).json({

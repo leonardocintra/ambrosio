@@ -6,7 +6,7 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    app = await setupTestModule(); // Usando a configuração centralizada
+    app = await setupTestModule();
   });
 
   afterAll(async () => {
