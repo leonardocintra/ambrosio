@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { QUEUE_PAIS_UF_CIDADE } from 'src/commons/constants/constants';
 import { PaginationInterceptor } from 'src/commons/interceptors/pagination.interceptors';
-import { PrismaExceptionsFilter } from 'src/commons/prisma-exceptions/prisma-exceptions.filter';
+import { PrismaExceptionsFilter } from 'src/commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
 
 export const setupTestModule = async (): Promise<INestApplication> => {
   if (process.env.NODE_ENV === 'production') {
