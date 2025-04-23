@@ -1,5 +1,5 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
@@ -18,12 +18,11 @@ export const setupTestModule = async (): Promise<INestApplication> => {
   })
     .overrideProvider(APP_INTERCEPTOR)
     .useValue(PaginationInterceptor)
-    .overrideProvider(APP_FILTER)
-    .useValue(PrismaExceptionsFilter)
     .compile();
 
   const app = moduleFixture.createNestApplication();
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new PrismaExceptionsFilter());
 
   // rabbitMQ
   const queues = [QUEUE_PAIS_UF_CIDADE];

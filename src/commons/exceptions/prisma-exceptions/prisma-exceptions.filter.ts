@@ -2,7 +2,6 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
-  Injectable,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import {
@@ -20,10 +19,9 @@ const MODEL_NAME_MAP: Record<string, string> = {
   user: 'Usuário',
   estado: 'Estado',
   cidade: 'Cidade',
-  // adicione mais conforme seu projeto for crescendo
+  // adicione mais conforme o projeto for crescendo
 };
 
-@Injectable()
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionsFilter implements ExceptionFilter {
   private extractErrorMessage(
