@@ -1,9 +1,13 @@
+import './instrument';
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
 import { QUEUE_PAIS_UF_CIDADE } from './commons/constants/constants';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
+import { SentryGlobalFilter } from '@sentry/nestjs/setup';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +23,11 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+
+  app.useGlobalFilters(
+    app.get(SentryGlobalFilter),
+    app.get(PrismaExceptionsFilter),
+  );
 
   // rabbitMQ
   const queues = [QUEUE_PAIS_UF_CIDADE];

@@ -1,11 +1,11 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from 'src/app.module';
 import { QUEUE_PAIS_UF_CIDADE } from 'src/commons/constants/constants';
 import { PaginationInterceptor } from 'src/commons/interceptors/pagination.interceptors';
-import { PrismaExceptionsFilter } from 'src/commons/prisma-exceptions/prisma-exceptions.filter';
+import { PrismaExceptionsFilter } from 'src/commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
 
 export const setupTestModule = async (): Promise<INestApplication> => {
   if (process.env.NODE_ENV === 'production') {
@@ -18,12 +18,11 @@ export const setupTestModule = async (): Promise<INestApplication> => {
   })
     .overrideProvider(APP_INTERCEPTOR)
     .useValue(PaginationInterceptor)
-    .overrideProvider(APP_FILTER)
-    .useValue(PrismaExceptionsFilter)
     .compile();
 
   const app = moduleFixture.createNestApplication();
   app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new PrismaExceptionsFilter());
 
   // rabbitMQ
   const queues = [QUEUE_PAIS_UF_CIDADE];

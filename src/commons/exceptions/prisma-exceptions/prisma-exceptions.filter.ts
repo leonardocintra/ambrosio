@@ -1,4 +1,8 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import {
   FOREIGN_KEY_CONSTRAINT,
@@ -15,7 +19,7 @@ const MODEL_NAME_MAP: Record<string, string> = {
   user: 'Usuário',
   estado: 'Estado',
   cidade: 'Cidade',
-  // adicione mais conforme seu projeto for crescendo
+  // adicione mais conforme o projeto for crescendo
 };
 
 @Catch(Prisma.PrismaClientKnownRequestError)
@@ -24,33 +28,26 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
     exception: Prisma.PrismaClientKnownRequestError,
   ): string | null {
     // Aqui você pode implementar lógicas adicionais para extrair mensagens de diferentes tipos de erros
-    if (exception.meta && typeof exception.meta === 'object') {
-      const meta = exception.meta as {
-        target?: string[];
-        field_name?: string;
-        table?: string;
-        modelName: string;
-      };
+    const meta = exception.meta as {
+      target?: string[];
+      field_name?: string;
+      table?: string;
+      modelName: string;
+    };
 
-      if (meta.target && meta.target.length) {
-        return `O campo '${meta.target.join(', ')}' já existe cadastrado. Não permitimos duplicidade.`;
-      }
-
-      if (meta.field_name) {
-        return `O campo '${meta.field_name}' não foi encontrado. Verifique.`;
-      }
-
-      if (meta.table) {
-        return `O registro de '${meta.table}' não foi encontrado.`;
-      }
-
-      if (meta.modelName) {
-        const modelName = MODEL_NAME_MAP[meta.modelName.toLowerCase()];
-        if (modelName) {
-          return `O registro de '${modelName}' não foi encontrado.`;
-        }
+    if (meta?.target?.length) {
+      return `O campo '${meta.target.join(', ')}' já existe cadastrado. Não permitimos duplicidade.`;
+    } else if (meta?.field_name) {
+      return `O campo '${meta.field_name}' não foi encontrado. Verifique.`;
+    } else if (meta?.table) {
+      return `O registro de '${meta.table}' não foi encontrado.`;
+    } else if (meta?.modelName) {
+      const modelName = MODEL_NAME_MAP[meta.modelName.toLowerCase()];
+      if (modelName) {
+        return `O registro de '${modelName}' não foi encontrado.`;
       }
     }
+
     return null;
   }
 
