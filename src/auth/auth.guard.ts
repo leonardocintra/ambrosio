@@ -27,13 +27,17 @@ export class AuthGuard implements CanActivate {
       REFLECTOR_IS_PUBLIC,
       context.getHandler(),
     );
-    if (isPublic) return true;
+    if (isPublic) {
+      return true;
+    }
 
     const request: Request = context.switchToHttp().getRequest();
     const { path } = request.route;
 
     // Permitir criação de usuário sem autenticação
-    if (path === '/users' && request.method === 'POST') return true;
+    if (path === '/users' && request.method === 'POST') {
+      return true;
+    }
 
     const authHeader = request.headers['authorization'];
     if (!authHeader?.startsWith('Bearer ')) {
@@ -41,7 +45,9 @@ export class AuthGuard implements CanActivate {
     }
 
     const token = authHeader.substring('Bearer '.length).trim();
-    if (!token) throw new UnauthorizedException('No token provided');
+    if (!token) {
+      throw new UnauthorizedException('No token provided');
+    }
 
     const decoded = this.jwtService.decode(token) as { exp?: number };
     if (!decoded?.exp) {
