@@ -2,6 +2,7 @@ import {
   IsNumberString,
   IsOptional,
   IsString,
+  Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -34,6 +35,7 @@ export class CreateEnderecoDto {
   @MaxLength(2)
   @MinLength(2)
   @IsString()
+  @Matches(/^[A-Z]{2}$/i, { message: 'UF deve conter apenas letras' })
   UF: string;
 
   @MaxLength(250)

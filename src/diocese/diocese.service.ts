@@ -169,8 +169,19 @@ export class DioceseService {
     }
 
     try {
-      await this.paisService.create({ nome: endereco.pais });
-      this.logger.log(`Cadastrado pais de endereco id ${id} ${endereco.observacao}`);
+      const pais = await this.paisService.create({ nome: endereco.pais });
+      this.logger.log(
+        `Cadastrado pais ${pais.nome} do endereco id ${id} ${endereco.observacao}`,
+      );
+
+      const uf = await this.estadoService.create({
+        nome: endereco.UF,
+        sigla: endereco.UF,
+        pais: { id: pais.id, nome: pais.nome },
+      });
+      this.logger.log(
+        `Cadastrado estado ${uf.nome} do endereco id ${id} ${endereco.observacao}`,
+      );
     } catch (error) {
       this.logger.error(error);
     } finally {
