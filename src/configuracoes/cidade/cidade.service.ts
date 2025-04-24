@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateCidadeDto } from './dto/create-cidade.dto';
 import { PrismaService } from 'src/prisma.service';
 import { EstadoService } from '../estado/estado.service';
@@ -7,22 +7,34 @@ import { EstadoService } from '../estado/estado.service';
 export class CidadeService {
   private readonly logger = new Logger(CidadeService.name);
 
-  constructor(private prisma: PrismaService, private estadoService: EstadoService) { }
+  constructor(
+    private prisma: PrismaService,
+    private estadoService: EstadoService,
+  ) {}
 
   async create(createCidadeDto: CreateCidadeDto) {
-    const cidade = await this.findByName(createCidadeDto.nome)
+    const cidade = await this.findByName(createCidadeDto.nome);
 
     if (cidade) {
-      this.logger.warn("Cidade com esse nome já existe.")
-      throw new ConflictException('Cidade com esse nome já existe.');
+      this.logger.warn(
+        `Cidade ${createCidadeDto.nome} - ${createCidadeDto.estado.sigla} ja existe cadastrado.`,
+      );
+      return cidade;
     }
 
-    const uf = await this.estadoService.findBySigla(createCidadeDto.estado.sigla)
+    const uf = await this.estadoService.findBySigla(
+      createCidadeDto.estado.sigla,
+    );
+
+    if (!uf) {
+      throw new NotFoundException('Estado não encontrado');
+    }
+
     return this.prisma.cidade.create({
       data: {
         nome: createCidadeDto.nome,
         estadoId: uf.id,
-      }
+      },
     });
   }
 
@@ -36,7 +48,7 @@ export class CidadeService {
 
   private async findByName(nome: string) {
     return await this.prisma.cidade.findFirst({
-      where: { nome }
+      where: { nome },
     });
   }
 }

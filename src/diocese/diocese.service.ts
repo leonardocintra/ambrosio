@@ -164,7 +164,6 @@ export class DioceseService {
 
     if (!endereco) {
       this.logger.error(`Endereço id ${id} não encontrada.`);
-      // TODO: add log no sentry
       return;
     }
 
@@ -181,6 +180,14 @@ export class DioceseService {
       });
       this.logger.log(
         `Cadastrado estado ${uf.nome} do endereco id ${id} ${endereco.observacao}`,
+      );
+
+      const cidade = await this.cidadeService.create({
+        nome: endereco.cidade,
+        estado: { sigla: uf.sigla },
+      });
+      this.logger.log(
+        `Cadastrado cidade ${cidade.nome} - ${uf.sigla}. Endereco id: ${id}`,
       );
     } catch (error) {
       this.logger.error(error);
