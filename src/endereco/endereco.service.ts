@@ -14,6 +14,7 @@ export class EnderecoService {
     createEnderecoDto: CreateEnderecoDto,
     pessoaId: number,
   ) {
+    
     // TODO: validar se precisa fazer request se pessoaId existe
     const endereco = await this.prisma.endereco.create({
       data: {
@@ -23,7 +24,7 @@ export class EnderecoService {
         cidade: createEnderecoDto.cidade,
         bairro: createEnderecoDto.bairro,
         pais: createEnderecoDto.pais,
-        UF: createEnderecoDto.UF,
+        UF: createEnderecoDto.UF.toUpperCase(),
       },
     });
 
@@ -52,7 +53,7 @@ export class EnderecoService {
         cidade: createEnderecoDto.cidade,
         bairro: createEnderecoDto.bairro,
         pais: createEnderecoDto.pais,
-        UF: createEnderecoDto.UF,
+        UF: createEnderecoDto.UF.toUpperCase(),
         observacao: createEnderecoDto.observacao,
       },
     });
