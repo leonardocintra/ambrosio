@@ -12,7 +12,7 @@ export class EstadoService {
     private paisService: PaisService,
   ) {}
 
-  async create(createEstadoDto: CreateEstadoDto) {
+  async createOrSelect(createEstadoDto: CreateEstadoDto) {
     const uf = await this.prisma.estado.findFirst({
       where: {
         sigla: createEstadoDto.sigla,
@@ -20,7 +20,7 @@ export class EstadoService {
     });
 
     if (uf) {
-      this.logger.warn(`UF ${uf.nome} (${uf.sigla}) já existe cadastrado.`);
+      this.logger.warn(`Estado ${uf.nome} (${uf.sigla}) já existe cadastrado.`);
       return uf;
     }
 

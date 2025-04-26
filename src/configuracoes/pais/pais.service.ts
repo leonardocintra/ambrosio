@@ -18,7 +18,7 @@ export class PaisService {
     private readonly httpService: HttpService,
   ) {}
 
-  async create(createPaisDto: CreatePaisDto) {
+  async createOrSelect(createPaisDto: CreatePaisDto) {
     const paisOnu: IPaisOnu = await this.buscaPaisOnu(createPaisDto);
 
     try {

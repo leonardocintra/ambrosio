@@ -1,4 +1,4 @@
-import { faker, fakerPT_BR } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -659,15 +659,15 @@ async function main() {
   }
 
   async function diocese() {
+    const cidade = await prisma.cidade.findFirst();
     const endereco = await prisma.endereco.create({
       data: {
         bairro: faker.location.street(),
         cep: faker.location.zipCode('########'),
-        cidade: faker.location.city(),
         logradouro: faker.location.street(),
         numero: faker.number.int({ min: 1, max: 9000 }).toString(),
-        UF: fakerPT_BR.location.state({ abbreviated: true }),
         observacao: faker.location.streetAddress(),
+        cidadeId: cidade.id,
       },
     });
 

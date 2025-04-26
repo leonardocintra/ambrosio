@@ -12,7 +12,7 @@ export class CidadeService {
     private estadoService: EstadoService,
   ) {}
 
-  async create(createCidadeDto: CreateCidadeDto) {
+  async createOrSelect(createCidadeDto: CreateCidadeDto) {
     const cidade = await this.findByName(createCidadeDto.nome);
 
     if (cidade) {

@@ -2,7 +2,6 @@ import {
   ForbiddenException,
   HttpException,
   HttpStatus,
-  Inject,
   Injectable,
   Logger,
   NotFoundException,
@@ -14,11 +13,6 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { EnderecoService } from 'src/endereco/endereco.service';
 import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
-import { ClientProxy, RmqContext } from '@nestjs/microservices';
-import { RABBIT_PATTERN_PAIS_UF_CIDADE_CREATED } from 'src/commons/constants/constants';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
 
 @Injectable()
 export class DioceseService {
@@ -28,25 +22,17 @@ export class DioceseService {
     private prisma: PrismaService,
     private enderecoService: EnderecoService,
     private readonly tipoDioceseService: TipoDioceseService,
-    private readonly paisService: PaisService,
-    private readonly estadoService: EstadoService,
-    private readonly cidadeService: CidadeService,
     private readonly abilityService: CaslAbilityService,
-    @Inject('PAIS_UF_CIDADE_SERVICE') private clientRabbit: ClientProxy,
   ) {}
 
   async create(createDioceseDto: CreateDioceseDto) {
-    const tipoDiocese = await this.tipoDioceseService.findOne(
+    const tipoDiocese = await this.getTipoDiocese(
       createDioceseDto.tipoDiocese.id,
     );
 
-    if (!tipoDiocese) {
-      throw new NotFoundException('Tipo de diocese não encontrada');
-    }
-
     const enderecoComObservacao = {
       ...createDioceseDto.endereco,
-      observacao: `Endereço de ${tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao || ''}`,
+      observacao: `End. de ${tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao || ''}`,
     };
 
     try {
@@ -63,20 +49,25 @@ export class DioceseService {
             enderecoId: endereco.id,
           },
           include: {
-            endereco: true,
+            endereco: {
+              include: {
+                cidade: {
+                  include: {
+                    estado: {
+                      include: {
+                        pais: true,
+                      },
+                    },
+                  },
+                }
+              }
+            },
             tipoDiocese: true,
           },
         });
       });
 
-      this.clientRabbit.emit(RABBIT_PATTERN_PAIS_UF_CIDADE_CREATED, {
-        enderecoId: result.enderecoId,
-      });
-      this.logger.log(
-        `Endereço id ${result.enderecoId} enviado para fila rabbitMQ`,
-      );
-
-      return result;
+      return this.serializeResponse(result);
     } catch (error) {
       this.logger.error(error);
       throw new HttpException(
@@ -86,56 +77,118 @@ export class DioceseService {
     }
   }
 
-  findAll() {
+  async findAll() {
     const where = this.asPermissions();
-    return this.prisma.diocese.findMany({
+    const results = await this.prisma.diocese.findMany({
       where,
       include: {
         tipoDiocese: true,
-        endereco: true,
+        endereco: {
+          include: {
+            cidade: {
+              include: {
+                estado: {
+                  include: {
+                    pais: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
+
+    return results.map((result) => this.serializeResponse(result));
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
+    // TODO: apos adicionar diocese no npm "neocatecumenal" setar o retorno da promise aqui Promise<Diocese>
     const wherePermissions = this.asPermissions();
-    return this.prisma.diocese.findFirstOrThrow({
+    const diocese = await this.prisma.diocese.findFirstOrThrow({
       where: {
         AND: [{ id }, wherePermissions],
       },
       include: {
         tipoDiocese: true,
-        endereco: true,
+        endereco: {
+          include: {
+            cidade: {
+              include: {
+                estado: {
+                  include: {
+                    pais: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
+
+    return this.serializeResponse(diocese);
   }
 
   async update(id: number, updateDioceseDto: UpdateDioceseDto) {
-    return await this.prisma.diocese.update({
-      where: { id },
-      data: {
-        descricao: updateDioceseDto.descricao,
-        tipoDiocese: {
-          connect: {
-            id: updateDioceseDto.tipoDiocese.id,
+    const tipoDiocese = await this.getTipoDiocese(
+      updateDioceseDto.tipoDiocese.id,
+    );
+
+    const diocese = await this.findOne(id);
+    if (!diocese) {
+      throw new NotFoundException('Diocese não encontrada');
+    }
+
+    this.validarEnderecoPertenceDiocese(
+      diocese.endereco.id,
+      updateDioceseDto.endereco.id,
+    );
+
+    try {
+      const result = await this.prisma.$transaction(async (transaction) => {
+        const endereco = await this.enderecoService.update(
+          updateDioceseDto.endereco.id,
+          updateDioceseDto.endereco,
+          transaction,
+        );
+
+        return await transaction.diocese.update({
+          data: {
+            descricao: updateDioceseDto.descricao,
+            tipoDioceseId: tipoDiocese.id,
+            enderecoId: endereco.id,
           },
-        },
-        endereco: {
-          update: {
-            bairro: updateDioceseDto.endereco.bairro,
-            cep: updateDioceseDto.endereco.cep,
-            cidade: updateDioceseDto.endereco.cidade,
-            logradouro: updateDioceseDto.endereco.logradouro,
-            numero: updateDioceseDto.endereco.numero,
-            UF: updateDioceseDto.endereco.UF,
+          include: {
+            endereco: {
+              include: {
+                cidade: {
+                  include: {
+                    estado: {
+                      include: {
+                        pais: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            tipoDiocese: true,
           },
-        },
-      },
-      include: {
-        endereco: true,
-        tipoDiocese: true,
-      },
-    });
+          where: {
+            id,
+          },
+        });
+      });
+
+      return this.serializeResponse(result);
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException(
+        `Ocorreu um erro ao editar a diocese ${updateDioceseDto.descricao}. Erro: ${error}`,
+        HttpStatus.BAD_GATEWAY,
+      );
+    }
   }
 
   remove(id: number) {
@@ -152,47 +205,40 @@ export class DioceseService {
     return accessibleBy(ability, 'read').diocese;
   }
 
-  async processQueuePaisUfCidade(
-    data: { enderecoId: number },
-    context: RmqContext,
+  private serializeResponse(dio) {
+    return {
+      ...dio,
+      endereco: {
+        id: dio.endereco.id,
+        cep: dio.endereco.cep,
+        bairro: dio.endereco.bairro,
+        logradouro: dio.endereco.logradouro,
+        numero: dio.endereco.numero,
+        cidade: dio.endereco.cidade.nome,
+        UF: dio.endereco.cidade.estado.sigla,
+        pais: dio.endereco.cidade.estado.pais.nome,
+        observacao: dio.endereco.observacao,
+      },
+    };
+  }
+
+  private validarEnderecoPertenceDiocese(
+    enderecoDiocese: number,
+    enderecoPayload: number,
   ) {
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-
-    const id = data.enderecoId;
-    const endereco = await this.enderecoService.findOne(id);
-
-    if (!endereco) {
-      this.logger.error(`Endereço id ${id} não encontrada.`);
-      return;
+    if (enderecoDiocese !== enderecoPayload) {
+      throw new NotFoundException(
+        `Endereço id ${enderecoPayload} não encontrada para essa diocese`,
+      );
     }
+  }
 
-    try {
-      const pais = await this.paisService.create({ nome: endereco.pais });
-      this.logger.log(
-        `Cadastrado pais ${pais.nome} do endereco id ${id} ${endereco.observacao}`,
-      );
+  private async getTipoDiocese(id: number) {
+    const tipoDiocese = await this.tipoDioceseService.findOne(id);
 
-      const uf = await this.estadoService.create({
-        nome: endereco.UF,
-        sigla: endereco.UF,
-        pais: { id: pais.id, nome: pais.nome },
-      });
-      this.logger.log(
-        `Cadastrado estado ${uf.nome} do endereco id ${id} ${endereco.observacao}`,
-      );
-
-      const cidade = await this.cidadeService.create({
-        nome: endereco.cidade,
-        estado: { sigla: uf.sigla },
-      });
-      this.logger.log(
-        `Cadastrado cidade ${cidade.nome} - ${uf.sigla}. Endereco id: ${id}`,
-      );
-    } catch (error) {
-      this.logger.error(error);
-    } finally {
-      channel.ack(originalMsg);
+    if (!tipoDiocese) {
+      throw new NotFoundException('Tipo de diocese não encontrada');
     }
+    return tipoDiocese;
   }
 }

@@ -14,7 +14,6 @@ import { ParoquiaModule } from './paroquia/paroquia.module';
 import { RegioesModule } from './regioes/regioes.module';
 import { EquipesModule } from './equipes/equipes.module';
 import { LocalidadeModule } from './localidade/localidade.module';
-import { MessagingModule } from './messaging/messaging.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { PaginationInterceptor } from './commons/interceptors/pagination.interceptors';
@@ -39,7 +38,6 @@ import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/p
     RegioesModule,
     EquipesModule,
     LocalidadeModule,
-    MessagingModule,
     UsersModule,
     AuthModule,
     CaslModule,

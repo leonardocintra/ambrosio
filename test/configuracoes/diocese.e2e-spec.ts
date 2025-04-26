@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { setupTestModule } from '../test-setup';
 import request from 'supertest';
 import { faker } from '@faker-js/faker/.';
-import { of } from 'rxjs';
 
 describe('DioceseController (e2e)', () => {
   let app: INestApplication;
@@ -11,8 +10,6 @@ describe('DioceseController (e2e)', () => {
 
   beforeAll(async () => {
     app = await setupTestModule();
-    const clientRabbit = app.get('PAIS_UF_CIDADE_SERVICE');
-    jest.spyOn(clientRabbit, 'emit').mockReturnValue(of(true));
 
     const response = await request(app.getHttpServer())
       .post('/auth/login')
@@ -114,12 +111,12 @@ describe('DioceseController (e2e)', () => {
       descricao: 'Jenkins, Mosciski and Marvin',
       tipoDiocese: { id: 2, descricao: 'Diocese' },
       endereco: {
-        cep: '14403269',
-        logradouro: 'Dave Groves',
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
         numero: '32',
-        bairro: 'Granite Refined Cotton Keyboard',
+        bairro: faker.location.secondaryAddress(),
         UF: 'SP',
-        cidade: 'São Paulo',
+        cidade: 'Nuporanga',
       },
     };
 
@@ -134,12 +131,21 @@ describe('DioceseController (e2e)', () => {
     expect(response.body.data.descricao).toBe(dioceseData.descricao);
     expect(response.body.data.tipoDiocese.id).toBe(dioceseData.tipoDiocese.id);
     expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
-    // Verifica se o método `emit` foi chamado com os parâmetros esperados
-    const clientRabbit = app.get('PAIS_UF_CIDADE_SERVICE');
-    expect(clientRabbit.emit).toHaveBeenCalledWith(
-      expect.any(String), // RABBIT_PATTERN_PAIS_UF_CIDADE_CREATED
-      expect.objectContaining({ enderecoId: expect.any(Number) }),
+    expect(response.body.data.endereco.bairro).toBe(
+      dioceseData.endereco.bairro,
     );
+    expect(response.body.data.endereco.logradouro).toBe(
+      dioceseData.endereco.logradouro,
+    );
+    expect(response.body.data.endereco.numero).toBe(
+      dioceseData.endereco.numero,
+    );
+    expect(response.body.data.endereco.cidade).toBe(
+      dioceseData.endereco.cidade,
+    );
+    expect(response.body.data.endereco.UF).toBe(dioceseData.endereco.UF);
+    expect(response.body.data.endereco.pais).toBe('Brasil');
+    expect(response.body.data.endereco.observacao).toBeDefined();
   });
 
   it(`/${principal} (POST) | deve falhar sem autenticação`, async () => {
@@ -171,17 +177,18 @@ describe('DioceseController (e2e)', () => {
       descricao: faker.company.name(),
       tipoDiocese: { id: 2, descricao: 'Diocese' },
       endereco: {
+        id: 2,
         cep: faker.location.zipCode('########'),
-        logradouro: 'Dave Groves',
-        numero: '32',
-        bairro: 'Granite Refined Cotton Keyboard',
+        logradouro: faker.location.streetAddress(),
+        numero: '1226',
+        bairro: faker.location.secondaryAddress(),
+        cidade: faker.location.city(),
         UF: 'SP',
-        cidade: 'São Paulo',
       },
     };
 
     const response = await request(app.getHttpServer())
-      .patch(`/${principal}/1`)
+      .patch(`/${principal}/2`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(dioceseData)
@@ -204,5 +211,35 @@ describe('DioceseController (e2e)', () => {
       dioceseData.endereco.cidade,
     );
     expect(response.body.data.endereco.UF).toBe(dioceseData.endereco.UF);
+  });
+
+  it(`/${principal} (PATCH) | não deve atualizar uma diocese com id endereco de outra diocese`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      tipoDiocese: { id: 2, descricao: 'Diocese' },
+      endereco: {
+        id: 9874,
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '1226',
+        bairro: faker.location.secondaryAddress(),
+        cidade: faker.location.city(),
+        UF: 'SP',
+      },
+    };
+
+    await request(app.getHttpServer())
+      .patch(`/${principal}/2`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(
+          'Endereço id 9874 não encontrada para essa diocese',
+        );
+        expect(res.body.error).toBe('Not Found');
+        expect(res.body.statusCode).toBe(404);
+      });
   });
 });
