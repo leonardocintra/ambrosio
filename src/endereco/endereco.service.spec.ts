@@ -4,6 +4,7 @@ import { PrismaService } from 'src/prisma.service';
 import { PaisService } from 'src/configuracoes/pais/pais.service';
 import { EstadoService } from 'src/configuracoes/estado/estado.service';
 import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
+import { HttpModule } from '@nestjs/axios';
 
 describe('EnderecoService', () => {
   let service: EnderecoService;
@@ -14,6 +15,7 @@ describe('EnderecoService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [HttpModule],
       providers: [
         EnderecoService,
         PaisService,

@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 import { PaisService } from 'src/configuracoes/pais/pais.service';
 import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
 import { EstadoService } from 'src/configuracoes/estado/estado.service';
+import { HttpModule } from '@nestjs/axios';
 
 describe('EnderecoController', () => {
   let controller: EnderecoController;
@@ -16,6 +17,7 @@ describe('EnderecoController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EnderecoController],
+      imports: [HttpModule],
       providers: [
         EnderecoService,
         PaisService,
