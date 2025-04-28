@@ -47,7 +47,7 @@ export class EnderecoService {
     const prismaClient = transaction || this.prisma;
 
     const pais = await this.paisService.createOrSelect({
-      nome: createEnderecoDto.pais ? createEnderecoDto.pais : 'Brasil',
+      nome: createEnderecoDto.pais || 'Brasil',
     });
 
     const estado = await this.estadoService.createOrSelect({
@@ -107,7 +107,7 @@ export class EnderecoService {
     const prismaClient = transaction || this.prisma;
 
     const pais = await this.paisService.createOrSelect({
-      nome: updateEnderecoDto.pais ? updateEnderecoDto.pais : 'Brasil',
+      nome: updateEnderecoDto.pais || 'Brasil',
     });
 
     const estado = await this.estadoService.createOrSelect({
