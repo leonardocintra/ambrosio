@@ -1,4 +1,9 @@
-import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  HttpException,
+  Injectable,
+} from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -7,11 +12,16 @@ import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade
 import { SEXO_ENUM } from 'src/commons/enums/enums';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { CreateCasalDto } from './dto/create-casal.dto';
-import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants';
+import {
+  ENDERECO_INCLUDE,
+  LIMIT_DEFAULT,
+  PAGE_DEFAULT,
+} from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { Pessoa } from 'neocatecumenal';
 import { pessoa } from '@prisma/client';
+import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 
 @Injectable()
 export class PessoaService {
@@ -89,19 +99,7 @@ export class PessoaService {
         },
         enderecos: {
           include: {
-            endereco: {
-              include: {
-                cidade: {
-                  include: {
-                    estado: {
-                      include: {
-                        pais: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
+            endereco: ENDERECO_INCLUDE,
           },
         },
       },
@@ -230,19 +228,7 @@ export class PessoaService {
         },
         enderecos: {
           include: {
-            endereco: {
-              include: {
-                cidade: {
-                  include: {
-                    estado: {
-                      include: {
-                        pais: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
+            endereco: ENDERECO_INCLUDE,
           },
         },
       },
@@ -304,29 +290,7 @@ export class PessoaService {
           descricao: carisma.descricao,
         };
       }),
-      enderecos: pessoa.enderecos.map((end) => {
-        return {
-          id: end.enderecoId,
-          cep: end.endereco.cep,
-          logradouro: end.endereco.logradouro,
-          numero: end.endereco.numero,
-          bairro: end.endereco.bairro,
-          cidade: {
-            id: end.endereco.cidadeId,
-            nome: end.endereco.cidade.nome,
-          },
-          estado: {
-            id: end.endereco.cidade.estadoId,
-            sigla: end.endereco.cidade.estado.sigla,
-            nome: end.endereco.cidade.estado.nome,
-          },
-          pais: {
-            id: end.endereco.cidade.estado.paisId,
-            nome: end.endereco.cidade.estado.pais.nome,
-          },
-          observacao: end.endereco.observacao,
-        };
-      }),
+      enderecos: pessoa.enderecos.map(serializeEndereco),
     };
   }
 
@@ -375,7 +339,9 @@ export class PessoaService {
       where: { cpf },
     });
     if (pessoa) {
-      throw new HttpException(`O CPF ja registrado para ${pessoa.nome}`, 409);
+      throw new ConflictException(
+        `O CPF ja registrado para ${pessoa.nome} de id: ${pessoa.id}`,
+      );
     }
   }
 }

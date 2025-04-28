@@ -13,6 +13,7 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { EnderecoService } from 'src/endereco/endereco.service';
 import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
+import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 
 @Injectable()
 export class DioceseService {
@@ -49,19 +50,7 @@ export class DioceseService {
             enderecoId: endereco.id,
           },
           include: {
-            endereco: {
-              include: {
-                cidade: {
-                  include: {
-                    estado: {
-                      include: {
-                        pais: true,
-                      },
-                    },
-                  },
-                }
-              }
-            },
+            endereco: ENDERECO_INCLUDE,
             tipoDiocese: true,
           },
         });
@@ -83,19 +72,7 @@ export class DioceseService {
       where,
       include: {
         tipoDiocese: true,
-        endereco: {
-          include: {
-            cidade: {
-              include: {
-                estado: {
-                  include: {
-                    pais: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        endereco: ENDERECO_INCLUDE,
       },
     });
 
@@ -160,19 +137,7 @@ export class DioceseService {
             enderecoId: endereco.id,
           },
           include: {
-            endereco: {
-              include: {
-                cidade: {
-                  include: {
-                    estado: {
-                      include: {
-                        pais: true,
-                      },
-                    },
-                  },
-                },
-              },
-            },
+            endereco: ENDERECO_INCLUDE,
             tipoDiocese: true,
           },
           where: {
