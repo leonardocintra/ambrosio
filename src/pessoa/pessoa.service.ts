@@ -1,4 +1,9 @@
-import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  HttpException,
+  Injectable,
+} from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -7,9 +12,16 @@ import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade
 import { SEXO_ENUM } from 'src/commons/enums/enums';
 import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { CreateCasalDto } from './dto/create-casal.dto';
-import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants';
+import {
+  ENDERECO_INCLUDE,
+  LIMIT_DEFAULT,
+  PAGE_DEFAULT,
+} from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
+import { Pessoa } from 'neocatecumenal';
+import { pessoa } from '@prisma/client';
+import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 
 @Injectable()
 export class PessoaService {
@@ -87,7 +99,7 @@ export class PessoaService {
         },
         enderecos: {
           include: {
-            endereco: true,
+            endereco: ENDERECO_INCLUDE,
           },
         },
       },
@@ -96,7 +108,7 @@ export class PessoaService {
       },
     });
 
-    return results.map((result) => this.handleResponsePessoa(result));
+    return results.map((result) => this.serializeResponse(result));
   }
 
   async createCasal(createCasalDto: CreateCasalDto) {
@@ -203,7 +215,7 @@ export class PessoaService {
   }
 
   async findOne(id: number) {
-    const result = await this.prisma.pessoa.findUniqueOrThrow({
+    const result: pessoa = await this.prisma.pessoa.findUniqueOrThrow({
       where: { id },
       include: {
         estadoCivil: true,
@@ -216,16 +228,14 @@ export class PessoaService {
         },
         enderecos: {
           include: {
-            endereco: true,
+            endereco: ENDERECO_INCLUDE,
           },
         },
       },
     });
 
     const conjugue = await this.getConjugue(result);
-
-    const pessoa = this.handleResponsePessoa(result, conjugue);
-    return pessoa;
+    return this.serializeResponse(result, conjugue);
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
@@ -259,8 +269,8 @@ export class PessoaService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private handleResponsePessoa(pessoa: any, conjugue?: any) {
-    const response = {
+  private serializeResponse(pessoa: any, conjugue?: any): Pessoa {
+    return {
       id: pessoa.id,
       nome: pessoa.nome,
       conhecidoPor: pessoa.conhecidoPor,
@@ -273,27 +283,15 @@ export class PessoaService {
       foto: pessoa.foto,
       ativo: pessoa.ativo,
       escolaridade: pessoa.escolaridade,
-      tipoPessoa: pessoa.tipoPessoa,
+      situacaoReligiosa: pessoa.tipoPessoa,
       carismas: pessoa.pessoaCarisma.map((carisma) => {
         return {
-          id: carisma.tipoCarisma.id,
-          descricao: carisma.tipoCarisma.descricao,
+          id: carisma.id,
+          descricao: carisma.descricao,
         };
       }),
-      enderecos: pessoa.enderecos.map((end) => {
-        return {
-          id: end.endereco.id,
-          cep: end.endereco.cep,
-          logradouro: end.endereco.logradouro,
-          cidade: end.endereco.cidade,
-          UF: end.endereco.UF,
-          numero: end.endereco.numero,
-          bairro: end.endereco.bairro,
-        };
-      }),
+      enderecos: pessoa.enderecos.map(serializeEndereco),
     };
-
-    return response;
   }
 
   private async getConjugue(pessoa) {
@@ -341,7 +339,9 @@ export class PessoaService {
       where: { cpf },
     });
     if (pessoa) {
-      throw new HttpException(`O CPF ja registrado para ${pessoa.nome}`, 409);
+      throw new ConflictException(
+        `O CPF ja registrado para ${pessoa.nome} de id: ${pessoa.id}`,
+      );
     }
   }
 }

@@ -4,7 +4,6 @@ import { DioceseService } from './diocese.service';
 import { PrismaService } from 'src/prisma.service';
 import { LocalidadeService } from 'src/localidade/localidade.service';
 import { EnderecoService } from 'src/endereco/endereco.service';
-import { ClientProxy } from '@nestjs/microservices';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { JwtService } from '@nestjs/jwt';
 import { TipoLocalidadeService } from 'src/configuracoes/tipo-localidade/tipo-localidade.service';
@@ -24,7 +23,6 @@ describe('DioceseController', () => {
   let paisService: PaisService;
   let cidadeService: CidadeService;
   let estadoService: EstadoService;
-  let clientRabbit: ClientProxy;
   let abilityService: CaslAbilityService;
   let jwtService: JwtService;
 
@@ -70,7 +68,6 @@ describe('DioceseController', () => {
     paisService = module.get<PaisService>(PaisService);
     cidadeService = module.get<CidadeService>(CidadeService);
     estadoService = module.get<EstadoService>(EstadoService);
-    clientRabbit = module.get<ClientProxy>('PAIS_UF_CIDADE_SERVICE');
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
     jwtService = module.get<JwtService>(JwtService);
@@ -83,7 +80,6 @@ describe('DioceseController', () => {
     expect(tipoLocalidadeService).toBeDefined();
     expect(tipoDioceseService).toBeDefined();
     expect(enderecoService).toBeDefined();
-    expect(clientRabbit).toBeDefined();
     expect(abilityService).toBeDefined();
     expect(jwtService).toBeDefined();
     expect(paisService).toBeDefined();

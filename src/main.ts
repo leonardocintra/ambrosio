@@ -3,8 +3,6 @@ import './instrument';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import { Transport } from '@nestjs/microservices';
-import { QUEUE_PAIS_UF_CIDADE } from './commons/constants/constants';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
 import { SentryGlobalFilter } from '@sentry/nestjs/setup';
@@ -28,23 +26,6 @@ async function bootstrap() {
     app.get(SentryGlobalFilter),
     app.get(PrismaExceptionsFilter),
   );
-
-  // rabbitMQ
-  const queues = [QUEUE_PAIS_UF_CIDADE];
-
-  for (const queue of queues) {
-    await app.connectMicroservice({
-      transport: Transport.RMQ,
-      options: {
-        urls: [process.env.RABBITMQ_URL],
-        queue,
-        noAck: false,
-        queueOptions: {
-          durable: false,
-        },
-      },
-    });
-  }
 
   await app.startAllMicroservices();
   await app.listen(3005);

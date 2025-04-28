@@ -36,22 +36,22 @@ model estado {
 }
 
 model cidade {
-  id       Int     @id @default(autoincrement())
-  nome     String  @unique @db.VarChar(100)
+  id       Int        @id @default(autoincrement())
+  nome     String     @unique @db.VarChar(100)
   estadoId Int
-  estado   estado  @relation(fields: [estadoId], references: [id])
-  ativo    Boolean @default(true) @db.Boolean
+  estado   estado     @relation(fields: [estadoId], references: [id])
+  ativo    Boolean    @default(true) @db.Boolean
+  endereco endereco[]
 }
 
 model endereco {
   id         Int              @id @default(autoincrement())
   cep        String           @db.VarChar(8)
   logradouro String           @db.VarChar(50)
-  cidade     String           @db.VarChar(50)
   bairro     String           @db.VarChar(50)
   numero     String           @db.VarChar(5)
-  UF         String           @db.VarChar(2)
-  pais       String           @default("Brasil") @db.VarChar(50)
+  cidadeId   Int              @default(1)
+  cidade     cidade           @relation(fields: [cidadeId], references: [id])
   observacao String?          @db.VarChar(250)
   paroquias  paroquia[]
   pessoas    pessoaEndereco[]

@@ -4,15 +4,21 @@ export const FOREIGN_KEY_CONSTRAINT = 'P2003';
 export const RECORD_DOES_NOT_EXIST = 'P2025';
 export const NULL_CONSTRAINT_VIOLATION = 'P2011';
 
-// QUEUE RABBITMQ
-export const QUEUE_PAIS_UF_CIDADE = 'pais_uf_cidade_queue';
-
-// PATTERNS RABBITMQ
-export const RABBIT_PATTERN_PAIS_UF_CIDADE_CREATED = 'pais_uf_cidade_created';
-
 // CONTROLERS PAGINATION
 export const LIMIT_DEFAULT = 50;
 export const PAGE_DEFAULT = 1;
 
-// REFLECTOR
-export const REFLECTOR_IS_PUBLIC = 'isPublic';
+// INCLUDES PRISMA CLIENT
+export const ENDERECO_INCLUDE = {
+  include: {
+    cidade: {
+      include: {
+        estado: {
+          include: {
+            pais: true,
+          },
+        },
+      },
+    },
+  },
+};

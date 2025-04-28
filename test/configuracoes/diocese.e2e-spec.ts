@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import { setupTestModule } from '../test-setup';
 import request from 'supertest';
 import { faker } from '@faker-js/faker/.';
-import { of } from 'rxjs';
 
 describe('DioceseController (e2e)', () => {
   let app: INestApplication;
@@ -11,8 +10,6 @@ describe('DioceseController (e2e)', () => {
 
   beforeAll(async () => {
     app = await setupTestModule();
-    const clientRabbit = app.get('PAIS_UF_CIDADE_SERVICE');
-    jest.spyOn(clientRabbit, 'emit').mockReturnValue(of(true));
 
     const response = await request(app.getHttpServer())
       .post('/auth/login')
@@ -25,7 +22,7 @@ describe('DioceseController (e2e)', () => {
     await app.close();
   });
 
-  it(`/${principal} (GET) - nao pode ver diocese se nao tiver autenticado`, () => {
+  it(`/${principal} (GET) - 401 | nao pode ver diocese se nao tiver autenticado`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}`)
       .expect(401)
@@ -36,7 +33,7 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (GET) - nao pode ver diocese se nao tiver permissao`, async () => {
+  it(`/${principal} (GET) - 403 | nao pode ver diocese se nao tiver permissao`, async () => {
     const response = await request(app.getHttpServer())
       .post('/auth/login')
       .send({ email: 'ronaldinho@admin.com', password: 'admin' });
@@ -56,7 +53,7 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (GET) | deve retornar diocese nao encontrada by id`, () => {
+  it(`/${principal} (GET) - 404 | deve retornar diocese nao encontrada by id`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}/4324`)
       .set('Authorization', `Bearer ${token}`)
@@ -69,7 +66,7 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (GET) | deve retornar dioceses com campos obrigatórios preenchidos`, () => {
+  it(`/${principal} (GET) - 200 | deve retornar dioceses com campos obrigatórios preenchidos`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}`)
       .set('Authorization', `Bearer ${token}`)
@@ -86,9 +83,13 @@ describe('DioceseController (e2e)', () => {
 
         // Valida campos obrigatórios da diocese
         expect(diocese).toHaveProperty('id');
-        expect(diocese).toHaveProperty('tipoDioceseId');
         expect(diocese).toHaveProperty('descricao');
-        expect(diocese).toHaveProperty('enderecoId');
+
+        // campos que NAO devem ter no response
+        expect(diocese).not.toHaveProperty('tipoDioceseId');
+        expect(diocese).not.toHaveProperty('enderecoId');
+        expect(diocese.endereco).not.toHaveProperty('UF');
+        expect(diocese.endereco).not.toHaveProperty('pais');
 
         // Valida se 'tipoDiocese' está preenchido corretamente
         expect(diocese.tipoDiocese).toBeDefined();
@@ -101,25 +102,25 @@ describe('DioceseController (e2e)', () => {
         expect(diocese.endereco).toHaveProperty('cep');
         expect(diocese.endereco).toHaveProperty('logradouro');
         expect(diocese.endereco).toHaveProperty('cidade');
+        expect(diocese.endereco.cidade).toHaveProperty('estado');
+        expect(diocese.endereco.cidade.estado).toHaveProperty('pais');
         expect(diocese.endereco).toHaveProperty('bairro');
         expect(diocese.endereco).toHaveProperty('numero');
-        expect(diocese.endereco).toHaveProperty('UF');
-        expect(diocese.endereco).toHaveProperty('pais');
         expect(diocese.endereco).toHaveProperty('observacao');
       });
   });
 
-  it(`/${principal} (POST) | deve criar uma diocese com campos válidos`, async () => {
+  it(`/${principal} (POST) - 201 | deve criar uma diocese com campos válidos`, async () => {
     const dioceseData = {
       descricao: 'Jenkins, Mosciski and Marvin',
       tipoDiocese: { id: 2, descricao: 'Diocese' },
       endereco: {
-        cep: '14403269',
-        logradouro: 'Dave Groves',
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
         numero: '32',
-        bairro: 'Granite Refined Cotton Keyboard',
+        bairro: faker.location.secondaryAddress(),
         UF: 'SP',
-        cidade: 'São Paulo',
+        cidade: 'Nuporanga',
       },
     };
 
@@ -134,15 +135,79 @@ describe('DioceseController (e2e)', () => {
     expect(response.body.data.descricao).toBe(dioceseData.descricao);
     expect(response.body.data.tipoDiocese.id).toBe(dioceseData.tipoDiocese.id);
     expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
-    // Verifica se o método `emit` foi chamado com os parâmetros esperados
-    const clientRabbit = app.get('PAIS_UF_CIDADE_SERVICE');
-    expect(clientRabbit.emit).toHaveBeenCalledWith(
-      expect.any(String), // RABBIT_PATTERN_PAIS_UF_CIDADE_CREATED
-      expect.objectContaining({ enderecoId: expect.any(Number) }),
+    expect(response.body.data.endereco.bairro).toBe(
+      dioceseData.endereco.bairro,
     );
+    expect(response.body.data.endereco.logradouro).toBe(
+      dioceseData.endereco.logradouro,
+    );
+    expect(response.body.data.endereco.numero).toBe(
+      dioceseData.endereco.numero,
+    );
+    expect(response.body.data.endereco.cidade.nome).toBe(
+      dioceseData.endereco.cidade,
+    );
+    expect(response.body.data.endereco.cidade.estado.sigla).toBe(
+      dioceseData.endereco.UF,
+    );
+    expect(response.body.data.endereco.cidade.estado.pais.nome).toBe('Brasil');
+    expect(response.body.data.endereco.observacao).toBeDefined();
   });
 
-  it(`/${principal} (POST) | deve falhar sem autenticação`, async () => {
+  it(`/${principal} (POST) - 404 | nao deve criar uma diocese tipo diocese invalida`, async () => {
+    const dioceseData = {
+      descricao: 'Jenkins, Mosciski and Marvin',
+      tipoDiocese: { id: 489, descricao: 'Diocese Mentira' },
+      endereco: {
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '32',
+        bairro: faker.location.secondaryAddress(),
+        UF: 'SP',
+        cidade: 'Nuporanga',
+      },
+    };
+
+    await request(app.getHttpServer())
+      .post(`/${principal}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(`Tipo de diocese não encontrada`);
+        expect(res.body.error).toBe('Not Found');
+        expect(res.body.statusCode).toBe(404);
+      });
+  });
+
+  it(`/${principal} (POST) - 400 | nao deve criar uma diocese tipo diocese null`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      endereco: {
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '32',
+        bairro: faker.location.secondaryAddress(),
+        UF: 'SP',
+        cidade: 'Nuporanga',
+      },
+    };
+
+    await request(app.getHttpServer())
+      .post(`/${principal}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.message[0]).toBe(`tipoDiocese must be an object`);
+        expect(res.body.error).toBe('Bad Request');
+        expect(res.body.statusCode).toBe(400);
+      });
+  });
+
+  it(`/${principal} (POST) - 401 | deve falhar sem autenticação`, async () => {
     await request(app.getHttpServer())
       .post(`/${principal}`)
       .send({ descricao: 'Diocese sem token' })
@@ -154,7 +219,7 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
-  it(`/${principal}/1 (PATCH) | deve falhar sem autenticação`, async () => {
+  it(`/${principal}/1 (PATCH) - 401 | deve falhar sem autenticação by id`, async () => {
     await request(app.getHttpServer())
       .patch(`/${principal}/1`)
       .send({ descricao: 'Diocese sem token' })
@@ -166,22 +231,23 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (PATCH) | deve atualizar uma diocese com campos válidos`, async () => {
+  it(`/${principal} (PATCH) - 200 | deve atualizar uma diocese com campos válidos`, async () => {
     const dioceseData = {
       descricao: faker.company.name(),
       tipoDiocese: { id: 2, descricao: 'Diocese' },
       endereco: {
+        id: 2,
         cep: faker.location.zipCode('########'),
-        logradouro: 'Dave Groves',
-        numero: '32',
-        bairro: 'Granite Refined Cotton Keyboard',
+        logradouro: faker.location.streetAddress(),
+        numero: '1226',
+        bairro: faker.location.secondaryAddress(),
+        cidade: faker.location.city(),
         UF: 'SP',
-        cidade: 'São Paulo',
       },
     };
 
     const response = await request(app.getHttpServer())
-      .patch(`/${principal}/1`)
+      .patch(`/${principal}/2`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(dioceseData)
@@ -200,9 +266,41 @@ describe('DioceseController (e2e)', () => {
     expect(response.body.data.endereco.logradouro).toBe(
       dioceseData.endereco.logradouro,
     );
-    expect(response.body.data.endereco.cidade).toBe(
+    expect(response.body.data.endereco.cidade.nome).toBe(
       dioceseData.endereco.cidade,
     );
-    expect(response.body.data.endereco.UF).toBe(dioceseData.endereco.UF);
+    expect(response.body.data.endereco.cidade.estado.sigla).toBe(
+      dioceseData.endereco.UF,
+    );
+  });
+
+  it(`/${principal} (PATCH) - 404 | não deve atualizar uma diocese com id endereco de outra diocese`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      tipoDiocese: { id: 2, descricao: 'Diocese' },
+      endereco: {
+        id: 9874,
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '1226',
+        bairro: faker.location.secondaryAddress(),
+        cidade: faker.location.city(),
+        UF: 'SP',
+      },
+    };
+
+    await request(app.getHttpServer())
+      .patch(`/${principal}/2`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(
+          'Endereço id 9874 não encontrada para essa diocese',
+        );
+        expect(res.body.error).toBe('Not Found');
+        expect(res.body.statusCode).toBe(404);
+      });
   });
 });

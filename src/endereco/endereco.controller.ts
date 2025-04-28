@@ -17,11 +17,6 @@ import { ApiTags } from '@nestjs/swagger';
 export class EnderecoController {
   constructor(private readonly enderecoService: EnderecoService) {}
 
-  @Post()
-  create(@Body() createEnderecoDto: CreateEnderecoDto) {
-    return this.enderecoService.create(createEnderecoDto);
-  }
-
   @Post('/pessoa/:id')
   createByPessoaId(
     @Body() createEnderecoDto: CreateEnderecoDto,
