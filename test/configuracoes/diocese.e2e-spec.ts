@@ -83,9 +83,13 @@ describe('DioceseController (e2e)', () => {
 
         // Valida campos obrigatórios da diocese
         expect(diocese).toHaveProperty('id');
-        expect(diocese).toHaveProperty('tipoDioceseId');
         expect(diocese).toHaveProperty('descricao');
-        expect(diocese).toHaveProperty('enderecoId');
+
+        // campos que NAO devem ter no response
+        expect(diocese).not.toHaveProperty('tipoDioceseId');
+        expect(diocese).not.toHaveProperty('enderecoId');
+        expect(diocese.endereco).not.toHaveProperty('UF');
+        expect(diocese.endereco).not.toHaveProperty('pais');
 
         // Valida se 'tipoDiocese' está preenchido corretamente
         expect(diocese.tipoDiocese).toBeDefined();
@@ -98,10 +102,10 @@ describe('DioceseController (e2e)', () => {
         expect(diocese.endereco).toHaveProperty('cep');
         expect(diocese.endereco).toHaveProperty('logradouro');
         expect(diocese.endereco).toHaveProperty('cidade');
+        expect(diocese.endereco.cidade).toHaveProperty('estado');
+        expect(diocese.endereco.cidade.estado).toHaveProperty('pais');
         expect(diocese.endereco).toHaveProperty('bairro');
         expect(diocese.endereco).toHaveProperty('numero');
-        expect(diocese.endereco).toHaveProperty('UF');
-        expect(diocese.endereco).toHaveProperty('pais');
         expect(diocese.endereco).toHaveProperty('observacao');
       });
   });
@@ -140,11 +144,13 @@ describe('DioceseController (e2e)', () => {
     expect(response.body.data.endereco.numero).toBe(
       dioceseData.endereco.numero,
     );
-    expect(response.body.data.endereco.cidade).toBe(
+    expect(response.body.data.endereco.cidade.nome).toBe(
       dioceseData.endereco.cidade,
     );
-    expect(response.body.data.endereco.UF).toBe(dioceseData.endereco.UF);
-    expect(response.body.data.endereco.pais).toBe('Brasil');
+    expect(response.body.data.endereco.cidade.estado.sigla).toBe(
+      dioceseData.endereco.UF,
+    );
+    expect(response.body.data.endereco.cidade.estado.pais.nome).toBe('Brasil');
     expect(response.body.data.endereco.observacao).toBeDefined();
   });
 
@@ -260,10 +266,12 @@ describe('DioceseController (e2e)', () => {
     expect(response.body.data.endereco.logradouro).toBe(
       dioceseData.endereco.logradouro,
     );
-    expect(response.body.data.endereco.cidade).toBe(
+    expect(response.body.data.endereco.cidade.nome).toBe(
       dioceseData.endereco.cidade,
     );
-    expect(response.body.data.endereco.UF).toBe(dioceseData.endereco.UF);
+    expect(response.body.data.endereco.cidade.estado.sigla).toBe(
+      dioceseData.endereco.UF,
+    );
   });
 
   it(`/${principal} (PATCH) - 404 | não deve atualizar uma diocese com id endereco de outra diocese`, async () => {

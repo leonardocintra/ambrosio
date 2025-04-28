@@ -14,6 +14,8 @@ import { accessibleBy } from '@casl/prisma';
 import { EnderecoService } from 'src/endereco/endereco.service';
 import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
 import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
+import { Diocese } from 'neocatecumenal';
+import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 
 @Injectable()
 export class DioceseService {
@@ -26,7 +28,7 @@ export class DioceseService {
     private readonly abilityService: CaslAbilityService,
   ) {}
 
-  async create(createDioceseDto: CreateDioceseDto) {
+  async create(createDioceseDto: CreateDioceseDto): Promise<Diocese> {
     const tipoDiocese = await this.getTipoDiocese(
       createDioceseDto.tipoDiocese.id,
     );
@@ -66,7 +68,7 @@ export class DioceseService {
     }
   }
 
-  async findAll() {
+  async findAll(): Promise<Diocese[]> {
     const where = this.asPermissions();
     const results = await this.prisma.diocese.findMany({
       where,
@@ -79,7 +81,7 @@ export class DioceseService {
     return results.map((result) => this.serializeResponse(result));
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Diocese> {
     // TODO: apos adicionar diocese no npm "neocatecumenal" setar o retorno da promise aqui Promise<Diocese>
     const wherePermissions = this.asPermissions();
     const diocese = await this.prisma.diocese.findFirstOrThrow({
@@ -107,7 +109,10 @@ export class DioceseService {
     return this.serializeResponse(diocese);
   }
 
-  async update(id: number, updateDioceseDto: UpdateDioceseDto) {
+  async update(
+    id: number,
+    updateDioceseDto: UpdateDioceseDto,
+  ): Promise<Diocese> {
     const tipoDiocese = await this.getTipoDiocese(
       updateDioceseDto.tipoDiocese.id,
     );
@@ -170,20 +175,15 @@ export class DioceseService {
     return accessibleBy(ability, 'read').diocese;
   }
 
-  private serializeResponse(dio) {
+  private serializeResponse(dio): Diocese {
     return {
-      ...dio,
-      endereco: {
-        id: dio.endereco.id,
-        cep: dio.endereco.cep,
-        bairro: dio.endereco.bairro,
-        logradouro: dio.endereco.logradouro,
-        numero: dio.endereco.numero,
-        cidade: dio.endereco.cidade.nome,
-        UF: dio.endereco.cidade.estado.sigla,
-        pais: dio.endereco.cidade.estado.pais.nome,
-        observacao: dio.endereco.observacao,
+      id: dio.id,
+      descricao: dio.descricao,
+      tipoDiocese: {
+        id: dio.tipoDiocese.id,
+        descricao: dio.tipoDiocese.descricao,
       },
+      endereco: serializeEndereco(dio.endereco),
     };
   }
 
