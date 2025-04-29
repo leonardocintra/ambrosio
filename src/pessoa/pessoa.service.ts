@@ -10,7 +10,6 @@ import { PrismaService } from 'src/prisma.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { SEXO_ENUM } from 'src/commons/enums/enums';
-import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import {
   ENDERECO_INCLUDE,
@@ -19,9 +18,10 @@ import {
 } from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
-import { Pessoa } from 'neocatecumenal';
+import { CarismaVinculado, Pessoa } from 'neocatecumenal';
 import { pessoa } from '@prisma/client';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 
 @Injectable()
 export class PessoaService {
@@ -29,7 +29,7 @@ export class PessoaService {
     private prisma: PrismaService,
     private estadoCivilService: EstadoCivilService,
     private escolaridadeService: EscolaridadeService,
-    private tipoPessoaService: TipoPessoaService,
+    private situacaoReligiosaService: SituacaoReligiosaService,
     private abilityService: CaslAbilityService,
   ) {}
 
@@ -43,10 +43,12 @@ export class PessoaService {
 
     await this.analisarCPF(createPessoaDto.cpf);
 
-    const [estadoCivil, escolaridade, tipoPessoa] = await Promise.all([
+    const [estadoCivil, escolaridade, situacaoReligiosa] = await Promise.all([
       await this.estadoCivilService.findOne(createPessoaDto.estadoCivil.id),
       await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
-      await this.tipoPessoaService.findOne(createPessoaDto.tipoPessoa.id),
+      await this.situacaoReligiosaService.findOne(
+        createPessoaDto.situacaoReligiosa.id,
+      ),
     ]);
 
     return this.prisma.pessoa.create({
@@ -58,7 +60,7 @@ export class PessoaService {
         estadoCivilId: estadoCivil.id,
         foto: createPessoaDto.foto,
         escolaridadeId: escolaridade.id,
-        tipoPessoaId: tipoPessoa.id,
+        situacaoReligiosaId: situacaoReligiosa.id,
         dataNascimento: createPessoaDto.dataNascimento
           ? new Date(createPessoaDto.dataNascimento)
           : null,
@@ -91,7 +93,7 @@ export class PessoaService {
       include: {
         estadoCivil: true,
         escolaridade: true,
-        tipoPessoa: true,
+        situacaoReligiosa: true,
         pessoaCarisma: {
           include: {
             tipoCarisma: true,
@@ -220,7 +222,7 @@ export class PessoaService {
       include: {
         estadoCivil: true,
         escolaridade: true,
-        tipoPessoa: true,
+        situacaoReligiosa: true,
         pessoaCarisma: {
           include: {
             tipoCarisma: true,
@@ -239,13 +241,15 @@ export class PessoaService {
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
-    const [estadoCivil, escolaridade, tipoPessoa] = await Promise.all([
+    const [estadoCivil, escolaridade, situacaoReligiosa] = await Promise.all([
       this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
       this.escolaridadeService.findOne(updatePessoaDto.escolaridade.id),
-      this.tipoPessoaService.findOne(updatePessoaDto.tipoPessoa.id),
+      this.situacaoReligiosaService.findOne(
+        updatePessoaDto.situacaoReligiosa.id,
+      ),
     ]);
 
-    return await this.prisma.pessoa.update({
+    const pessoa = await this.prisma.pessoa.update({
       where: { id },
       data: {
         nome: updatePessoaDto.nome,
@@ -255,13 +259,16 @@ export class PessoaService {
         estadoCivilId: estadoCivil.id,
         foto: updatePessoaDto.foto,
         escolaridadeId: escolaridade.id,
-        tipoPessoaId: tipoPessoa.id,
+        situacaoReligiosaId: situacaoReligiosa.id,
         sexo:
           updatePessoaDto.sexo === 'MASCULINO'
             ? SEXO_ENUM.MASCULINO
             : SEXO_ENUM.FEMININO,
       },
     });
+
+    const conjugue = await this.getConjugue(pessoa);
+    return this.serializeResponse(pessoa, conjugue);
   }
 
   remove(id: number) {
@@ -283,14 +290,14 @@ export class PessoaService {
       foto: pessoa.foto,
       ativo: pessoa.ativo,
       escolaridade: pessoa.escolaridade,
-      situacaoReligiosa: pessoa.tipoPessoa,
-      carismas: pessoa.pessoaCarisma.map((carisma) => {
+      situacaoReligiosa: pessoa.situacaoReligiosa,
+      carismas: pessoa.pessoaCarisma?.map((carisma: CarismaVinculado) => {
         return {
           id: carisma.id,
           descricao: carisma.descricao,
         };
       }),
-      enderecos: pessoa.enderecos.map(serializeEndereco),
+      enderecos: pessoa.enderecos?.map(serializeEndereco),
     };
   }
 

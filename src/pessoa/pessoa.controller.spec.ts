@@ -4,16 +4,16 @@ import { PessoaService } from './pessoa.service';
 import { PrismaService } from 'src/prisma.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
-import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { JwtService } from '@nestjs/jwt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 
 describe('PessoaController', () => {
   let controller: PessoaController;
   let prismaService: PrismaService;
   let estadoCivilService: EstadoCivilService;
   let escolaridadeService: EscolaridadeService;
-  let tipoPessoaService: TipoPessoaService;
+  let situacaoReligiosaService: SituacaoReligiosaService;
   let jwtService: JwtService;
   let abilityService: CaslAbilityService;
 
@@ -46,7 +46,7 @@ describe('PessoaController', () => {
           },
         },
         {
-          provide: TipoPessoaService,
+          provide: SituacaoReligiosaService,
           useValue: {
             create: jest.fn(),
             findAll: jest.fn(),
@@ -62,7 +62,9 @@ describe('PessoaController', () => {
     prismaService = module.get<PrismaService>(PrismaService);
     estadoCivilService = module.get<EstadoCivilService>(EstadoCivilService);
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
-    tipoPessoaService = module.get<TipoPessoaService>(TipoPessoaService);
+    situacaoReligiosaService = module.get<SituacaoReligiosaService>(
+      SituacaoReligiosaService,
+    );
     jwtService = module.get<JwtService>(JwtService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
@@ -73,7 +75,7 @@ describe('PessoaController', () => {
     expect(prismaService).toBeDefined();
     expect(estadoCivilService).toBeDefined();
     expect(escolaridadeService).toBeDefined();
-    expect(tipoPessoaService).toBeDefined();
+    expect(situacaoReligiosaService).toBeDefined();
     expect(jwtService).toBeDefined();
     expect(abilityService).toBeDefined();
   });

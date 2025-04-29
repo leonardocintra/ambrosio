@@ -96,8 +96,8 @@ model pessoa {
   escolaridadeId       Int?
   escolaridade         escolaridade?      @relation(fields: [escolaridadeId], references: [id])
   ativo                Boolean            @default(true)
-  tipoPessoaId         Int                @default(1)
-  tipoPessoa           tipoPessoa         @relation(fields: [tipoPessoaId], references: [id])
+  situacaoReligiosaId  Int
+  situacaoReligiosa    situacaoReligiosa  @relation(fields: [situacaoReligiosaId], references: [id])
   passaportes          passaportePessoa[]
   contatos             pessoaContato[]
   paroquias            paroquiaPessoas[]
@@ -108,9 +108,10 @@ model pessoa {
   pessoaCarisma        pessoaCarisma[]
 }
 
-model tipoPessoa {
+model situacaoReligiosa {
   id        Int      @id @default(autoincrement())
-  descricao String   @unique @db.VarChar(40)
+  descricao String   @unique @db.VarChar(50)
+  sexoUnico Sexo?
   pessoa    pessoa[]
 }
 

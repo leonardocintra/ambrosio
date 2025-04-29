@@ -3,15 +3,15 @@ import { PessoaService } from './pessoa.service';
 import { PrismaService } from 'src/prisma.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
-import { TipoPessoaService } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 
 describe('PessoaService', () => {
   let service: PessoaService;
   let prismaService: PrismaService;
   let estadoCivilService: EstadoCivilService;
   let escolaridadeService: EscolaridadeService;
-  let tipoPessoaService: TipoPessoaService;
+  let situacaoReligiosaService: SituacaoReligiosaService;
   let abilityService: CaslAbilityService;
 
   beforeEach(async () => {
@@ -41,7 +41,7 @@ describe('PessoaService', () => {
           },
         },
         {
-          provide: TipoPessoaService,
+          provide: SituacaoReligiosaService,
           useValue: {
             create: jest.fn(),
             findAll: jest.fn(),
@@ -57,9 +57,11 @@ describe('PessoaService', () => {
     prismaService = module.get<PrismaService>(PrismaService);
     estadoCivilService = module.get<EstadoCivilService>(EstadoCivilService);
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
-    tipoPessoaService = module.get<TipoPessoaService>(TipoPessoaService);
-    abilityService = await module.resolve<CaslAbilityService>(CaslAbilityService);
-
+    situacaoReligiosaService = module.get<SituacaoReligiosaService>(
+      SituacaoReligiosaService,
+    );
+    abilityService =
+      await module.resolve<CaslAbilityService>(CaslAbilityService);
   });
 
   it('should be defined', () => {
@@ -67,7 +69,7 @@ describe('PessoaService', () => {
     expect(prismaService).toBeDefined();
     expect(estadoCivilService).toBeDefined();
     expect(escolaridadeService).toBeDefined();
-    expect(tipoPessoaService).toBeDefined();
+    expect(situacaoReligiosaService).toBeDefined();
     expect(abilityService).toBeDefined();
   });
 });
