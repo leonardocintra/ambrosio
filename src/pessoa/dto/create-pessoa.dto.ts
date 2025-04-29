@@ -1,4 +1,4 @@
-import { escolaridade, estadoCivil, tipoPessoa } from '@prisma/client';
+import { escolaridade, estadoCivil, situacaoReligiosa } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsDate,
@@ -37,7 +37,10 @@ export class CreatePessoaDto {
   estadoCivil: estadoCivil;
 
   @IsOptional()
-  @IsDate({ message: "A data de nascimento precisa estar no formato yyyy-mm-dd (Ex: 1994-05-15)" })
+  @IsDate({
+    message:
+      'A data de nascimento precisa estar no formato yyyy-mm-dd (Ex: 1994-05-15)',
+  })
   @Type(() => Date)
   dataNascimento: Date;
 
@@ -52,5 +55,5 @@ export class CreatePessoaDto {
   escolaridade: escolaridade;
 
   @IsNotEmpty()
-  tipoPessoa: tipoPessoa;
+  situacaoReligiosa: situacaoReligiosa;
 }

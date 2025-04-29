@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Sexo } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -9,7 +9,7 @@ async function main() {
   await cidade();
   await estadoCivil();
   await escolaridade();
-  await tipoPessoa();
+  await situacaoReligiosa();
   await tipoCarisma();
   await tipoDiocese();
   await tipoLocalidade();
@@ -81,57 +81,63 @@ async function main() {
     console.log('Tipo localidade preenchidas com sucesso!');
   }
 
-  async function tipoPessoa() {
-    await prisma.tipoPessoa.create({
+  async function situacaoReligiosa() {
+    await prisma.situacaoReligiosa.create({
       data: {
         descricao: 'Leigo',
       },
     });
 
-    await prisma.tipoPessoa.create({
+    await prisma.situacaoReligiosa.create({
       data: {
         descricao: 'Padre',
+        sexoUnico: Sexo.MASCULINO,
       },
     });
 
-    await prisma.tipoPessoa.create({
+    await prisma.situacaoReligiosa.create({
       data: {
         descricao: 'Bispo',
+        sexoUnico: Sexo.MASCULINO,
       },
     });
 
-    await prisma.tipoPessoa.create({
+    await prisma.situacaoReligiosa.create({
       data: {
         descricao: 'Arcebispo',
+        sexoUnico: Sexo.MASCULINO,
       },
     });
 
-    await prisma.tipoPessoa.create({
+    await prisma.situacaoReligiosa.create({
       data: {
         descricao: 'Seminarista',
+        sexoUnico: Sexo.MASCULINO,
       },
     });
 
-    await prisma.tipoPessoa.create({
+    await prisma.situacaoReligiosa.create({
       data: {
         descricao: 'Diácono',
+        sexoUnico: Sexo.MASCULINO,
       },
     });
 
-    await prisma.tipoPessoa.create({
+    await prisma.situacaoReligiosa.create({
       data: {
         descricao: 'Diácono Permanente',
+        sexoUnico: Sexo.MASCULINO,
       },
     });
 
-    await prisma.tipoPessoa.create({
+    await prisma.situacaoReligiosa.create({
       data: {
         descricao: 'Religioso(a)',
       },
     });
 
     console.log('---------------------------------');
-    console.log('Tipo pessoa preenchidas com sucesso!');
+    console.log('Situação Religiosa preenchidas com sucesso!');
   }
 
   async function etapa() {

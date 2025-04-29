@@ -4,8 +4,8 @@ import { PessoaService } from './pessoa.service';
 import { PessoaController } from './pessoa.controller';
 import { EstadoCivilModule } from 'src/configuracoes/estado-civil/estado-civil.module';
 import { EnderecoModule } from 'src/endereco/endereco.module';
-import { TipoPessoaModule } from 'src/configuracoes/tipo-pessoa/tipo-pessoa.module';
 import { CarismaModule } from './carisma/carisma.module';
+import { SituacaoReligiosaModule } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.module';
 
 @Module({
   controllers: [PessoaController],
@@ -13,7 +13,7 @@ import { CarismaModule } from './carisma/carisma.module';
   imports: [
     EscolaridadeModule,
     EstadoCivilModule,
-    TipoPessoaModule,
+    SituacaoReligiosaModule,
     EnderecoModule,
     CarismaModule,
   ],

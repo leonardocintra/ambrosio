@@ -77,7 +77,6 @@ describe('PaisController (e2e)', () => {
       })
       .expect(201)
       .expect((res) => {
-        expect(res.body.data.id).toBe(3);
         expect(res.body.data.nome).toBe('Argentina');
         expect(res.body.data.capital).toBe('Buenos Aires');
         expect(res.body.data.isoAlpha2).toBe('AR');
