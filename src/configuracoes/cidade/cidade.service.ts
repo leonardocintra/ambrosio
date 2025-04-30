@@ -7,6 +7,23 @@ import { EstadoService } from '../estado/estado.service';
 export class CidadeService {
   private readonly logger = new Logger(CidadeService.name);
 
+  SELECT_CIDADE = {
+    id: true,
+    nome: true,
+    estado: {
+      select: {
+        sigla: true,
+        nome: true,
+        pais: {
+          select: {
+            nome: true,
+            lingua: true,
+          },
+        },
+      },
+    },
+  };
+
   constructor(
     private prisma: PrismaService,
     private estadoService: EstadoService,
@@ -39,11 +56,16 @@ export class CidadeService {
   }
 
   findAll() {
-    return `This action returns all cidade`;
+    return this.prisma.cidade.findMany({
+      select: this.SELECT_CIDADE,
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} cidade`;
+    return this.prisma.cidade.findFirstOrThrow({
+      where: { id },
+      select: this.SELECT_CIDADE,
+    });
   }
 
   private async findByName(nome: string) {
