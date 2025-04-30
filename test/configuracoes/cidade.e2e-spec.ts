@@ -27,12 +27,12 @@ describe('CidadeController (e2e)', () => {
         expect(typeof cidade.id).toBe('number');
         expect(typeof cidade.nome).toBe('string');
 
-        const estado = cidade.estado;
+        const { estado } = cidade;
         expect(estado).toBeInstanceOf(Object);
         expect(typeof estado.sigla).toBe('string');
         expect(typeof estado.nome).toBe('string');
 
-        const pais = estado.pais;
+        const { pais } = estado;
         expect(pais).toBeInstanceOf(Object);
         expect(typeof pais.nome).toBe('string');
         expect(typeof pais.lingua).toBe('string');

@@ -7,7 +7,7 @@ import { EstadoService } from '../estado/estado.service';
 export class CidadeService {
   private readonly logger = new Logger(CidadeService.name);
 
-  SELECT_CIDADE = {
+  static readonly SELECT_CIDADE = {
     id: true,
     nome: true,
     estado: {
@@ -57,14 +57,14 @@ export class CidadeService {
 
   findAll() {
     return this.prisma.cidade.findMany({
-      select: this.SELECT_CIDADE,
+      select: CidadeService.SELECT_CIDADE,
     });
   }
 
   findOne(id: number) {
-    return this.prisma.cidade.findFirstOrThrow({
+    return this.prisma.cidade.findUniqueOrThrow({
       where: { id },
-      select: this.SELECT_CIDADE,
+      select: CidadeService.SELECT_CIDADE,
     });
   }
 
