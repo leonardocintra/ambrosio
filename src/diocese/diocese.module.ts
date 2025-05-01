@@ -8,5 +8,6 @@ import { TipoDioceseModule } from 'src/configuracoes/tipo-diocese/tipo-diocese.m
   controllers: [DioceseController],
   providers: [DioceseService],
   imports: [TipoDioceseModule, EnderecoModule],
+  exports: [DioceseService],
 })
 export class DioceseModule {}

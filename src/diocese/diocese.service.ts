@@ -16,6 +16,7 @@ import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.
 import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { Diocese } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
+import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select';
 
 @Injectable()
 export class DioceseService {
@@ -51,10 +52,7 @@ export class DioceseService {
             tipoDioceseId: tipoDiocese.id,
             enderecoId: endereco.id,
           },
-          include: {
-            endereco: ENDERECO_INCLUDE,
-            tipoDiocese: true,
-          },
+          select: DIOCESE_SELECT,
         });
       });
 
@@ -72,17 +70,13 @@ export class DioceseService {
     const where = this.asPermissions();
     const results = await this.prisma.diocese.findMany({
       where,
-      include: {
-        tipoDiocese: true,
-        endereco: ENDERECO_INCLUDE,
-      },
+      select: DIOCESE_SELECT,
     });
 
     return results.map((result) => this.serializeResponse(result));
   }
 
   async findOne(id: number): Promise<Diocese> {
-    // TODO: apos adicionar diocese no npm "neocatecumenal" setar o retorno da promise aqui Promise<Diocese>
     const wherePermissions = this.asPermissions();
     const diocese = await this.prisma.diocese.findFirstOrThrow({
       where: {
@@ -90,19 +84,7 @@ export class DioceseService {
       },
       include: {
         tipoDiocese: true,
-        endereco: {
-          include: {
-            cidade: {
-              include: {
-                estado: {
-                  include: {
-                    pais: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        endereco: ENDERECO_INCLUDE,
       },
     });
 

@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { setupTestModule } from '../test-setup';
+import { setupTestModule } from './test-setup';
 import request from 'supertest';
 import { faker } from '@faker-js/faker/.';
 
@@ -236,7 +236,7 @@ describe('DioceseController (e2e)', () => {
       descricao: faker.company.name(),
       tipoDiocese: { id: 2, descricao: 'Diocese' },
       endereco: {
-        id: 2,
+        id: 3,
         cep: faker.location.zipCode('########'),
         logradouro: faker.location.streetAddress(),
         numero: '1226',
