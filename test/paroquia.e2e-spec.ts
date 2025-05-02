@@ -85,43 +85,56 @@ describe('ParoquiaController (e2e)', () => {
       });
   });
 
-  // it(`/${principal} (GET) - 200 | deve retornar paroquias com campos obrigatórios preenchidos`, () => {
-  //   return request(app.getHttpServer())
-  //     .get(`/${principal}`)
-  //     .set('Authorization', `Bearer ${token}`)
-  //     .expect(200)
-  //     .expect((res) => {
-  //       const paroquia = res.body.data[0]; // Pega a primeira paroquia da lista
+  it(`/${principal} (GET) - 200 | deve retornar paroquias com campos obrigatórios preenchidos`, () => {
+    return request(app.getHttpServer())
+      .get(`/${principal}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect((res) => {
+        const paroquia = res.body.data[0];
 
-  //       // Verifica se a estrutura básica está correta
-  //       expect(res.body).toHaveProperty('server');
-  //       expect(res.body).toHaveProperty('total');
-  //       expect(res.body).toHaveProperty('page');
-  //       expect(res.body).toHaveProperty('limit');
-  //       expect(res.body.data).toBeInstanceOf(Array);
+        // Verifica se a estrutura básica está correta
+        expect(res.body).toHaveProperty('server');
+        expect(res.body).toHaveProperty('total');
+        expect(res.body).toHaveProperty('page');
+        expect(res.body).toHaveProperty('limit');
+        expect(res.body.data).toBeInstanceOf(Array);
 
-  //       // Valida campos obrigatórios da paroquia
-  //       expect(paroquia).toHaveProperty('id');
-  //       expect(paroquia).toHaveProperty('descricao');
+        // Valida campos obrigatórios da paroquia
+        expect(paroquia).toHaveProperty('id');
+        expect(paroquia).toHaveProperty('descricao');
 
-  //       // Valida se 'tipoDiocese' está preenchido corretamente
-  //       expect(paroquia.tipoDiocese).toBeDefined();
-  //       expect(paroquia.tipoDiocese).toHaveProperty('id');
-  //       expect(paroquia.tipoDiocese).toHaveProperty('descricao');
+        // Valida se 'endereco' está preenchido corretamente
+        expect(paroquia.endereco).toBeDefined();
+        expect(paroquia.endereco).toHaveProperty('id');
+        expect(paroquia.endereco).toHaveProperty('cep');
+        expect(paroquia.endereco).toHaveProperty('logradouro');
+        expect(paroquia.endereco).toHaveProperty('cidade');
+        expect(paroquia.endereco.cidade).toHaveProperty('estado');
+        expect(paroquia.endereco.cidade.estado).toHaveProperty('pais');
+        expect(paroquia.endereco).toHaveProperty('bairro');
+        expect(paroquia.endereco).toHaveProperty('numero');
+        expect(paroquia.endereco).toHaveProperty('observacao');
 
-  //       // Valida se 'endereco' está preenchido corretamente
-  //       expect(paroquia.endereco).toBeDefined();
-  //       expect(paroquia.endereco).toHaveProperty('id');
-  //       expect(paroquia.endereco).toHaveProperty('cep');
-  //       expect(paroquia.endereco).toHaveProperty('logradouro');
-  //       expect(paroquia.endereco).toHaveProperty('cidade');
-  //       expect(paroquia.endereco.cidade).toHaveProperty('estado');
-  //       expect(paroquia.endereco.cidade.estado).toHaveProperty('pais');
-  //       expect(paroquia.endereco).toHaveProperty('bairro');
-  //       expect(paroquia.endereco).toHaveProperty('numero');
-  //       expect(paroquia.endereco).toHaveProperty('observacao');
-  //     });
-  // });
+        // Valida se diocese esta no response
+        expect(paroquia.diocese).toHaveProperty('id');
+        expect(paroquia.diocese).toHaveProperty('descricao');
+        expect(paroquia.diocese.endereco).toBeDefined();
+        expect(paroquia.diocese.endereco).toHaveProperty('id');
+        expect(paroquia.diocese.endereco).toHaveProperty('cep');
+        expect(paroquia.diocese.endereco).toHaveProperty('logradouro');
+        expect(paroquia.diocese.endereco).toHaveProperty('cidade');
+        expect(paroquia.diocese.endereco.cidade).toHaveProperty('estado');
+        expect(paroquia.diocese.endereco.cidade.estado).toHaveProperty('pais');
+        expect(paroquia.diocese.endereco).toHaveProperty('bairro');
+        expect(paroquia.diocese.endereco).toHaveProperty('numero');
+        expect(paroquia.diocese.endereco).toHaveProperty('observacao');
+        // Valida se 'tipoDiocese' está preenchido corretamente
+        expect(paroquia.diocese.tipoDiocese).toBeDefined();
+        expect(paroquia.diocese.tipoDiocese).toHaveProperty('id');
+        expect(paroquia.diocese.tipoDiocese).toHaveProperty('descricao');
+      });
+  });
 
   // it(`/${principal} (POST) - 201 | deve criar uma diocese com campos válidos`, async () => {
   //   const dioceseData = {
