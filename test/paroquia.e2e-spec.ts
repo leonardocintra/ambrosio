@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { setupTestModule } from './test-setup';
 import request from 'supertest';
+import { faker } from '@faker-js/faker/.';
 
 describe('ParoquiaController (e2e)', () => {
   let app: INestApplication;
@@ -136,197 +137,212 @@ describe('ParoquiaController (e2e)', () => {
       });
   });
 
-  // it(`/${principal} (POST) - 201 | deve criar uma diocese com campos válidos`, async () => {
-  //   const dioceseData = {
-  //     descricao: 'Jenkins, Mosciski and Marvin',
-  //     tipoDiocese: { id: 2, descricao: 'Diocese' },
-  //     endereco: {
-  //       cep: faker.location.zipCode('########'),
-  //       logradouro: faker.location.streetAddress(),
-  //       numero: '32',
-  //       bairro: faker.location.secondaryAddress(),
-  //       UF: 'SP',
-  //       cidade: 'Nuporanga',
-  //     },
-  //   };
+  it(`/${principal} (POST) - 201 | deve criar uma paroquia com campos válidos`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      diocese: { id: 1 },
+      endereco: {
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '32',
+        bairro: faker.location.secondaryAddress(),
+        UF: 'SP',
+        cidade: 'Nuporanga',
+      },
+    };
 
-  //   const response = await request(app.getHttpServer())
-  //     .post(`/${principal}`)
-  //     .set('Authorization', `Bearer ${token}`)
-  //     .set('Content-Type', 'application/json')
-  //     .send(dioceseData)
-  //     .expect(201);
+    const response = await request(app.getHttpServer())
+      .post(`/${principal}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(201);
 
-  //   expect(response.body.data).toHaveProperty('id');
-  //   expect(response.body.data.descricao).toBe(dioceseData.descricao);
-  //   expect(response.body.data.tipoDiocese.id).toBe(dioceseData.tipoDiocese.id);
-  //   expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
-  //   expect(response.body.data.endereco.bairro).toBe(
-  //     dioceseData.endereco.bairro,
-  //   );
-  //   expect(response.body.data.endereco.logradouro).toBe(
-  //     dioceseData.endereco.logradouro,
-  //   );
-  //   expect(response.body.data.endereco.numero).toBe(
-  //     dioceseData.endereco.numero,
-  //   );
-  //   expect(response.body.data.endereco.cidade.nome).toBe(
-  //     dioceseData.endereco.cidade,
-  //   );
-  //   expect(response.body.data.endereco.cidade.estado.sigla).toBe(
-  //     dioceseData.endereco.UF,
-  //   );
-  //   expect(response.body.data.endereco.cidade.estado.pais.nome).toBe('Brasil');
-  //   expect(response.body.data.endereco.observacao).toBeDefined();
-  // });
+    expect(response.body.data).toHaveProperty('id');
+    expect(response.body.data.descricao).toBe(dioceseData.descricao);
+    expect(response.body.data.diocese.id).toBe(dioceseData.diocese.id);
+    expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
+    expect(response.body.data.endereco.bairro).toBe(
+      dioceseData.endereco.bairro,
+    );
+    expect(response.body.data.endereco.logradouro).toBe(
+      dioceseData.endereco.logradouro,
+    );
+    expect(response.body.data.endereco.numero).toBe(
+      dioceseData.endereco.numero,
+    );
+    expect(response.body.data.endereco.cidade.nome).toBe(
+      dioceseData.endereco.cidade,
+    );
+    expect(response.body.data.endereco.cidade.estado.sigla).toBe(
+      dioceseData.endereco.UF,
+    );
+    expect(response.body.data.endereco.cidade.estado.pais.nome).toBe('Brasil');
+    expect(response.body.data.endereco.observacao).toBeDefined();
+  });
 
-  // it(`/${principal} (POST) - 404 | nao deve criar uma diocese tipo diocese invalida`, async () => {
-  //   const dioceseData = {
-  //     descricao: 'Jenkins, Mosciski and Marvin',
-  //     tipoDiocese: { id: 489, descricao: 'Diocese Mentira' },
-  //     endereco: {
-  //       cep: faker.location.zipCode('########'),
-  //       logradouro: faker.location.streetAddress(),
-  //       numero: '32',
-  //       bairro: faker.location.secondaryAddress(),
-  //       UF: 'SP',
-  //       cidade: 'Nuporanga',
-  //     },
-  //   };
+  it(`/${principal} (POST) - 404 | nao deve criar uma paroquia quando diocese invalida`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      diocese: { id: 489 },
+      endereco: {
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '32',
+        bairro: faker.location.secondaryAddress(),
+        UF: 'SP',
+        cidade: 'Nuporanga',
+      },
+    };
 
-  //   await request(app.getHttpServer())
-  //     .post(`/${principal}`)
-  //     .set('Authorization', `Bearer ${token}`)
-  //     .set('Content-Type', 'application/json')
-  //     .send(dioceseData)
-  //     .expect(404)
-  //     .expect((res) => {
-  //       expect(res.body.message).toBe(`Tipo de diocese não encontrada`);
-  //       expect(res.body.error).toBe('Not Found');
-  //       expect(res.body.statusCode).toBe(404);
-  //     });
-  // });
+    await request(app.getHttpServer())
+      .post(`/${principal}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(
+          `O registro de 'Diocese' não foi encontrado.`,
+        );
+        expect(res.body.statusCode).toBe(404);
+      });
+  });
 
-  // it(`/${principal} (POST) - 400 | nao deve criar uma diocese tipo diocese null`, async () => {
-  //   const dioceseData = {
-  //     descricao: faker.company.name(),
-  //     endereco: {
-  //       cep: faker.location.zipCode('########'),
-  //       logradouro: faker.location.streetAddress(),
-  //       numero: '32',
-  //       bairro: faker.location.secondaryAddress(),
-  //       UF: 'SP',
-  //       cidade: 'Nuporanga',
-  //     },
-  //   };
+  it(`/${principal} (POST) - 400 | nao deve criar uma paroquia quando diocese null`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      endereco: {
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '32',
+        bairro: faker.location.secondaryAddress(),
+        UF: 'SP',
+        cidade: 'Nuporanga',
+      },
+    };
 
-  //   await request(app.getHttpServer())
-  //     .post(`/${principal}`)
-  //     .set('Authorization', `Bearer ${token}`)
-  //     .set('Content-Type', 'application/json')
-  //     .send(dioceseData)
-  //     .expect(400)
-  //     .expect((res) => {
-  //       expect(res.body.message[0]).toBe(`tipoDiocese must be an object`);
-  //       expect(res.body.error).toBe('Bad Request');
-  //       expect(res.body.statusCode).toBe(400);
-  //     });
-  // });
+    await request(app.getHttpServer())
+      .post(`/${principal}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.message[0]).toBe(`diocese must be an object`);
+        expect(res.body.error).toBe('Bad Request');
+        expect(res.body.statusCode).toBe(400);
+      });
+  });
 
-  // it(`/${principal} (POST) - 401 | deve falhar sem autenticação`, async () => {
-  //   await request(app.getHttpServer())
-  //     .post(`/${principal}`)
-  //     .send({ descricao: 'Diocese sem token' })
-  //     .expect(401)
-  //     .expect((res) => {
-  //       expect(res.body.message).toBe('Invalid or missing token');
-  //       expect(res.body.error).toBe('Unauthorized');
-  //       expect(res.body.statusCode).toBe(401);
-  //     });
-  // });
+  it(`/${principal} (POST) - 401 | deve falhar sem autenticação`, async () => {
+    await request(app.getHttpServer())
+      .post(`/${principal}`)
+      .send({ descricao: 'Diocese sem token' })
+      .expect(401)
+      .expect((res) => {
+        expect(res.body.message).toBe('Invalid or missing token');
+        expect(res.body.error).toBe('Unauthorized');
+        expect(res.body.statusCode).toBe(401);
+      });
+  });
 
-  // it(`/${principal}/1 (PATCH) - 401 | deve falhar sem autenticação by id`, async () => {
-  //   await request(app.getHttpServer())
-  //     .patch(`/${principal}/1`)
-  //     .send({ descricao: 'Diocese sem token' })
-  //     .expect(401)
-  //     .expect((res) => {
-  //       expect(res.body.message).toBe('Invalid or missing token');
-  //       expect(res.body.error).toBe('Unauthorized');
-  //       expect(res.body.statusCode).toBe(401);
-  //     });
-  // });
+  it(`/${principal}/1 (PATCH) - 401 | deve falhar sem autenticação by id`, async () => {
+    await request(app.getHttpServer())
+      .patch(`/${principal}/1`)
+      .send({ descricao: 'Diocese sem token' })
+      .expect(401)
+      .expect((res) => {
+        expect(res.body.message).toBe('Invalid or missing token');
+        expect(res.body.error).toBe('Unauthorized');
+        expect(res.body.statusCode).toBe(401);
+      });
+  });
 
-  // it(`/${principal} (PATCH) - 200 | deve atualizar uma diocese com campos válidos`, async () => {
-  //   const dioceseData = {
-  //     descricao: faker.company.name(),
-  //     tipoDiocese: { id: 2, descricao: 'Diocese' },
-  //     endereco: {
-  //       id: 2,
-  //       cep: faker.location.zipCode('########'),
-  //       logradouro: faker.location.streetAddress(),
-  //       numero: '1226',
-  //       bairro: faker.location.secondaryAddress(),
-  //       cidade: faker.location.city(),
-  //       UF: 'SP',
-  //     },
-  //   };
+  it(`/${principal}/4848 (PATCH) - 404 | deve falhar quando diocese nao existe`, async () => {
+    await request(app.getHttpServer())
+      .patch(`/${principal}/4848`)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ descricao: 'Diocese sem token' })
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(
+          "O registro de 'Paroquia' não foi encontrado.",
+        );
+      });
+  });
 
-  //   const response = await request(app.getHttpServer())
-  //     .patch(`/${principal}/2`)
-  //     .set('Authorization', `Bearer ${token}`)
-  //     .set('Content-Type', 'application/json')
-  //     .send(dioceseData)
-  //     .expect(200);
+  it(`/${principal} (PATCH) - 200 | deve atualizar uma paroquia com campos válidos`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      diocese: { id: 1 },
+      endereco: {
+        id: 2,
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '4848',
+        bairro: faker.location.secondaryAddress(),
+        cidade: faker.location.city(),
+        UF: 'MG',
+      },
+    };
 
-  //   expect(response.body.data).toHaveProperty('id');
-  //   expect(response.body.data.descricao).toBe(dioceseData.descricao);
-  //   expect(response.body.data.tipoDiocese.id).toBe(dioceseData.tipoDiocese.id);
-  //   expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
-  //   expect(response.body.data.endereco.bairro).toBe(
-  //     dioceseData.endereco.bairro,
-  //   );
-  //   expect(response.body.data.endereco.numero).toBe(
-  //     dioceseData.endereco.numero,
-  //   );
-  //   expect(response.body.data.endereco.logradouro).toBe(
-  //     dioceseData.endereco.logradouro,
-  //   );
-  //   expect(response.body.data.endereco.cidade.nome).toBe(
-  //     dioceseData.endereco.cidade,
-  //   );
-  //   expect(response.body.data.endereco.cidade.estado.sigla).toBe(
-  //     dioceseData.endereco.UF,
-  //   );
-  // });
+    const response = await request(app.getHttpServer())
+      .patch(`/${principal}/1`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(200);
 
-  // it(`/${principal} (PATCH) - 404 | não deve atualizar uma diocese com id endereco de outra diocese`, async () => {
-  //   const dioceseData = {
-  //     descricao: faker.company.name(),
-  //     tipoDiocese: { id: 2, descricao: 'Diocese' },
-  //     endereco: {
-  //       id: 9874,
-  //       cep: faker.location.zipCode('########'),
-  //       logradouro: faker.location.streetAddress(),
-  //       numero: '1226',
-  //       bairro: faker.location.secondaryAddress(),
-  //       cidade: faker.location.city(),
-  //       UF: 'SP',
-  //     },
-  //   };
+    expect(response.body.data).toHaveProperty('id');
+    expect(response.body.data.descricao).toBe(dioceseData.descricao);
+    expect(response.body.data.diocese.id).toBe(dioceseData.diocese.id);
+    expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
+    expect(response.body.data.endereco.bairro).toBe(
+      dioceseData.endereco.bairro,
+    );
+    expect(response.body.data.endereco.numero).toBe(
+      dioceseData.endereco.numero,
+    );
+    expect(response.body.data.endereco.logradouro).toBe(
+      dioceseData.endereco.logradouro,
+    );
+    expect(response.body.data.endereco.cidade.nome).toBe(
+      dioceseData.endereco.cidade,
+    );
+    expect(response.body.data.endereco.cidade.estado.sigla).toBe(
+      dioceseData.endereco.UF,
+    );
+  });
 
-  //   await request(app.getHttpServer())
-  //     .patch(`/${principal}/2`)
-  //     .set('Authorization', `Bearer ${token}`)
-  //     .set('Content-Type', 'application/json')
-  //     .send(dioceseData)
-  //     .expect(404)
-  //     .expect((res) => {
-  //       expect(res.body.message).toBe(
-  //         'Endereço id 9874 não encontrada para essa diocese',
-  //       );
-  //       expect(res.body.error).toBe('Not Found');
-  //       expect(res.body.statusCode).toBe(404);
-  //     });
-  // });
+  it(`/${principal} (PATCH) - 404 | não deve atualizar uma paroquia com id endereco que nao pertence a ela mesma`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      diocese: { id: 2 },
+      endereco: {
+        id: 9874,
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '1226',
+        bairro: faker.location.secondaryAddress(),
+        cidade: faker.location.city(),
+        UF: 'SP',
+      },
+    };
+
+    await request(app.getHttpServer())
+      .patch(`/${principal}/2`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(
+          'Endereço id 9874 não encontrada para essa paroquia.',
+        );
+        expect(res.body.error).toBe('Not Found');
+        expect(res.body.statusCode).toBe(404);
+      });
+  });
 });

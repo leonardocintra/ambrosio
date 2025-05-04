@@ -4,6 +4,7 @@ import {
   HttpStatus,
   Injectable,
   Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateParoquiaDto } from './dto/create-paroquia.dto';
 import { UpdateParoquiaDto } from './dto/update-paroquia.dto';
@@ -81,12 +82,67 @@ export class ParoquiaService {
     });
   }
 
-  update(id: number, updateParoquiaDto: UpdateParoquiaDto) {
-    return `This action updates a #${id} paroquia ${updateParoquiaDto.descricao}`;
+  async update(
+    id: number,
+    updateParoquiaDto: UpdateParoquiaDto,
+  ): Promise<Paroquia> {
+    const paroquia = await this.findOne(id);
+    if (!paroquia) {
+      throw new NotFoundException('Paroquia não encontrada');
+    }
+
+    const diocese = await this.dioceseService.findOne(
+      updateParoquiaDto.diocese.id,
+    );
+    if (!diocese) {
+      throw new NotFoundException('Diocese não encontrada');
+    }
+
+    this.validarEnderecoPertenceParoquia(
+      paroquia.endereco.id,
+      updateParoquiaDto.endereco.id,
+    );
+
+    try {
+      const result = await this.prisma.$transaction(async (transaction) => {
+        const endereco = await this.enderecoService.update(
+          updateParoquiaDto.endereco.id,
+          updateParoquiaDto.endereco,
+          transaction,
+        );
+
+        return await transaction.paroquia.update({
+          data: {
+            descricao: updateParoquiaDto.descricao,
+            enderecoId: endereco.id,
+            dioceseId: updateParoquiaDto.diocese.id,
+          },
+          select: PAROQUIA_SELECT,
+          where: {
+            id,
+          },
+        });
+      });
+
+      return this.serializeResponse(result);
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 
   remove(id: number) {
     return `This action removes a #${id} paroquia`;
+  }
+
+  private validarEnderecoPertenceParoquia(
+    enderecoParoquia: number,
+    enderecoPayload: number,
+  ) {
+    if (enderecoParoquia !== enderecoPayload) {
+      throw new NotFoundException(
+        `Endereço id ${enderecoPayload} não encontrada para essa paroquia.`,
+      );
+    }
   }
 
   private asPermissions() {
