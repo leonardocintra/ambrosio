@@ -120,7 +120,7 @@ describe('DioceseController (e2e)', () => {
         numero: '32',
         bairro: faker.location.secondaryAddress(),
         UF: 'SP',
-        cidade: 'Nuporanga',
+        cidade: faker.location.city(),
       },
     };
 

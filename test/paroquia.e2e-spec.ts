@@ -187,7 +187,7 @@ describe('ParoquiaController (e2e)', () => {
   });
 
   it(`/${principal} (POST) - 201 | deve criar uma paroquia com campos válidos`, async () => {
-    const dioceseData = {
+    const paroquiaData = {
       descricao: faker.company.name(),
       diocese: { id: 1 },
       endereco: {
@@ -196,7 +196,7 @@ describe('ParoquiaController (e2e)', () => {
         numero: '32',
         bairro: faker.location.secondaryAddress(),
         UF: 'SP',
-        cidade: 'Nuporanga',
+        cidade: faker.location.city(),
       },
     };
 
@@ -204,27 +204,27 @@ describe('ParoquiaController (e2e)', () => {
       .post(`/${principal}`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
-      .send(dioceseData)
+      .send(paroquiaData)
       .expect(201);
 
     expect(response.body.data).toHaveProperty('id');
-    expect(response.body.data.descricao).toBe(dioceseData.descricao);
-    expect(response.body.data.diocese.id).toBe(dioceseData.diocese.id);
-    expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
+    expect(response.body.data.descricao).toBe(paroquiaData.descricao);
+    expect(response.body.data.diocese.id).toBe(paroquiaData.diocese.id);
+    expect(response.body.data.endereco.cep).toBe(paroquiaData.endereco.cep);
     expect(response.body.data.endereco.bairro).toBe(
-      dioceseData.endereco.bairro,
+      paroquiaData.endereco.bairro,
     );
     expect(response.body.data.endereco.logradouro).toBe(
-      dioceseData.endereco.logradouro,
+      paroquiaData.endereco.logradouro,
     );
     expect(response.body.data.endereco.numero).toBe(
-      dioceseData.endereco.numero,
+      paroquiaData.endereco.numero,
     );
     expect(response.body.data.endereco.cidade.nome).toBe(
-      dioceseData.endereco.cidade,
+      paroquiaData.endereco.cidade,
     );
     expect(response.body.data.endereco.cidade.estado.sigla).toBe(
-      dioceseData.endereco.UF,
+      paroquiaData.endereco.UF,
     );
     expect(response.body.data.endereco.cidade.estado.pais.nome).toBe('Brasil');
     expect(response.body.data.endereco.observacao).toBeDefined();
