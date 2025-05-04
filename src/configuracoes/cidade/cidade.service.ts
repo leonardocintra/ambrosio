@@ -44,7 +44,7 @@ export class CidadeService {
     );
 
     if (!uf) {
-      throw new NotFoundException('Estado não encontrado');
+      throw new NotFoundException(`Estado ${createCidadeDto.estado.sigla} não encontrado`);
     }
 
     return this.prisma.cidade.create({
