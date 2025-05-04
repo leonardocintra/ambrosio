@@ -14,7 +14,7 @@ describe('ParoquiaService', () => {
   let service: ParoquiaService;
   let prismaService: PrismaService;
   let enderecoService: EnderecoService;
-  let dioceseServce: DioceseService;
+  let dioceseService: DioceseService;
   let tipoDioceseService: TipoDioceseService;
   let cidadeService: CidadeService;
   let estadoService: EstadoService;
@@ -29,9 +29,9 @@ describe('ParoquiaService', () => {
         DioceseService,
         EnderecoService,
         TipoDioceseService,
-        CidadeService,
-        EstadoService,
         PaisService,
+        EstadoService,
+        CidadeService,
         CaslAbilityService,
         {
           provide: PrismaService,
@@ -46,7 +46,7 @@ describe('ParoquiaService', () => {
     service = module.get<ParoquiaService>(ParoquiaService);
     enderecoService = module.get<EnderecoService>(EnderecoService);
     tipoDioceseService = module.get<TipoDioceseService>(TipoDioceseService);
-    dioceseServce = module.get<DioceseService>(DioceseService);
+    dioceseService = module.get<DioceseService>(DioceseService);
     cidadeService = module.get<CidadeService>(CidadeService);
     estadoService = module.get<EstadoService>(EstadoService);
     paisService = module.get<PaisService>(PaisService);
@@ -59,7 +59,7 @@ describe('ParoquiaService', () => {
     expect(service).toBeDefined();
     expect(prismaService).toBeDefined();
     expect(enderecoService).toBeDefined();
-    expect(dioceseServce).toBeDefined();
+    expect(dioceseService).toBeDefined();
     expect(cidadeService).toBeDefined();
     expect(estadoService).toBeDefined();
     expect(paisService).toBeDefined();

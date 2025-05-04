@@ -56,7 +56,7 @@ export class ParoquiaService {
     } catch (error) {
       this.logger.error(error);
       throw new HttpException(
-        `Ocorreu um erro ao cadastrar a paroquia ${createParoquiaDto.descricao}. Erro: ${error}`,
+        `Ocorreu um erro ao cadastrar a paroquia. Por favor tente novamente mais tarde. Erro: ${error}`,
         HttpStatus.BAD_GATEWAY,
       );
     }

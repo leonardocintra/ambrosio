@@ -280,8 +280,9 @@ async function main() {
   }
 
   async function cidade() {
-    const estadoId = (await prisma.estado.findFirst({ where: { sigla: 'MG' } }))
-      .id;
+    const estado = await prisma.estado.findFirst();
+    const estadoId = estado.id;
+
     await prisma.cidade.create({
       data: {
         nome: 'Ibiraci',
