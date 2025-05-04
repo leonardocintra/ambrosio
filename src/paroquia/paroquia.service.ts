@@ -16,6 +16,7 @@ import { accessibleBy } from '@casl/prisma';
 import { Paroquia } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ParoquiaService {
@@ -31,25 +32,9 @@ export class ParoquiaService {
   async create(createParoquiaDto: CreateParoquiaDto) {
     await this.dioceseService.findOne(createParoquiaDto.diocese.id);
 
-    const enderecoComObservacao = {
-      ...createParoquiaDto.endereco,
-      observacao: `End. da paróquia ${createParoquiaDto.descricao}.`,
-    };
-
     try {
       const result = await this.prisma.$transaction(async (transaction) => {
-        const endereco = await this.enderecoService.create(
-          enderecoComObservacao,
-          transaction,
-        );
-        return await transaction.paroquia.create({
-          data: {
-            descricao: createParoquiaDto.descricao,
-            dioceseId: createParoquiaDto.diocese.id,
-            enderecoId: endereco.id,
-          },
-          select: PAROQUIA_SELECT,
-        });
+        return this.createParoquiaTransaction(createParoquiaDto, transaction);
       });
 
       return this.serializeResponse(result);
@@ -161,6 +146,28 @@ export class ParoquiaService {
       );
     }
     return accessibleBy(ability, 'read').paroquia;
+  }
+
+  private async createParoquiaTransaction(
+    createParoquiaDto: CreateParoquiaDto,
+    transaction: Prisma.TransactionClient,
+  ): Promise<Paroquia> {
+    const endereco = await this.enderecoService.create(
+      {
+        ...createParoquiaDto.endereco,
+        observacao: `End. da paróquia ${createParoquiaDto.descricao}.`,
+      },
+      transaction,
+    );
+
+    return await transaction.paroquia.create({
+      data: {
+        descricao: createParoquiaDto.descricao,
+        dioceseId: createParoquiaDto.diocese.id,
+        enderecoId: endereco.id,
+      },
+      select: PAROQUIA_SELECT,
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
