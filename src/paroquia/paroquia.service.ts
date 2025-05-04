@@ -62,8 +62,16 @@ export class ParoquiaService {
     }
   }
 
-  async findAll() {
-    const where = this.asPermissions();
+  async findAll(dioceseId?: number) {
+    const permissionWhere = this.asPermissions();
+    const where = {
+      ...permissionWhere,
+    };
+
+    if (dioceseId) {
+      where.dioceseId = dioceseId;
+    }
+
     const results = await this.prisma.paroquia.findMany({
       where,
       select: PAROQUIA_SELECT,

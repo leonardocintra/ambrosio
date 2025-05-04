@@ -137,6 +137,55 @@ describe('ParoquiaController (e2e)', () => {
       });
   });
 
+  it(`/${principal}/:id (GET) - 200 | deve retornar uma única paróquia com todos os campos obrigatórios`, async () => {
+    const res = await request(app.getHttpServer())
+      .get(`/${principal}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    const paroquia = res.body.data[0];
+    const id = paroquia.id;
+
+    const singleRes = await request(app.getHttpServer())
+      .get(`/${principal}/${id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    const item = singleRes.body.data;
+
+    expect(item).toHaveProperty('id', id);
+    expect(item).toHaveProperty('descricao');
+    expect(item.endereco).toBeDefined();
+    expect(item.endereco).toHaveProperty('id');
+    expect(item.diocese).toBeDefined();
+    expect(item.diocese).toHaveProperty('id');
+  });
+
+  it(`/${principal}?dioceseId=1 (GET) - 200 | deve retornar paróquias filtradas pela diocese`, () => {
+    return request(app.getHttpServer())
+      .get(`/${principal}?dioceseId=1`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.data.length).toBeGreaterThan(0);
+        res.body.data.forEach((paroquia) => {
+          expect(paroquia.diocese).toBeDefined();
+          expect(paroquia.diocese.id).toBe(1);
+        });
+      });
+  });
+
+  it(`/${principal}?dioceseId=999 (GET) - 200 | deve retornar lista vazia se diocese não for encontrada`, () => {
+    return request(app.getHttpServer())
+      .get(`/${principal}?dioceseId=999`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.data).toBeInstanceOf(Array);
+        expect(res.body.data.length).toBe(0);
+      });
+  });
+
   it(`/${principal} (POST) - 201 | deve criar uma paroquia com campos válidos`, async () => {
     const dioceseData = {
       descricao: faker.company.name(),
@@ -332,7 +381,7 @@ describe('ParoquiaController (e2e)', () => {
     };
 
     await request(app.getHttpServer())
-      .patch(`/${principal}/2`)
+      .patch(`/${principal}/1`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(dioceseData)
