@@ -17,6 +17,7 @@ async function main() {
   await tipoEquipe();
   await etapa();
   await diocese();
+  await paroquia();
   await admin();
 
   async function admin() {
@@ -279,8 +280,9 @@ async function main() {
   }
 
   async function cidade() {
-    const estadoId = (await prisma.estado.findFirst({ where: { sigla: 'MG' } }))
-      .id;
+    const estado = await prisma.estado.findFirst();
+    const estadoId = estado.id;
+
     await prisma.cidade.create({
       data: {
         nome: 'Ibiraci',
@@ -687,6 +689,31 @@ async function main() {
 
     console.log('---------------------------------');
     console.log('Diocese preenchido com sucesso!');
+  }
+
+  async function paroquia() {
+    const cidade = await prisma.cidade.findFirst();
+    const endereco = await prisma.endereco.create({
+      data: {
+        bairro: faker.location.street(),
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.street(),
+        numero: faker.number.int({ min: 1, max: 9000 }).toString(),
+        observacao: faker.location.streetAddress(),
+        cidadeId: cidade.id,
+      },
+    });
+
+    await prisma.paroquia.create({
+      data: {
+        descricao: 'Paroquia Nossa Senhora Aparecida (Seed)',
+        dioceseId: 1,
+        enderecoId: endereco.id,
+      },
+    });
+
+    console.log('---------------------------------');
+    console.log('Paroquia preenchida com sucesso!');
   }
 }
 

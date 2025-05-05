@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ParoquiaService } from './paroquia.service';
 import { CreateParoquiaDto } from './dto/create-paroquia.dto';
@@ -14,6 +15,7 @@ import { UpdateParoquiaDto } from './dto/update-paroquia.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
+import { FindAllParoquiasQueryDto } from './dto/findAll-paroquia.dto';
 
 @ApiTags('Paróquias')
 @UseGuards(AuthGuard, RoleGuard)
@@ -27,8 +29,8 @@ export class ParoquiaController {
   }
 
   @Get()
-  findAll() {
-    return this.paroquiaService.findAll();
+  findAll(@Query() query: FindAllParoquiasQueryDto) {
+    return this.paroquiaService.findAll(+query.dioceseId);
   }
 
   @Get(':id')

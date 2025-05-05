@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { setupTestModule } from '../test-setup';
+import { setupTestModule } from './test-setup';
 import request from 'supertest';
 import { faker } from '@faker-js/faker/.';
 
@@ -120,7 +120,7 @@ describe('DioceseController (e2e)', () => {
         numero: '32',
         bairro: faker.location.secondaryAddress(),
         UF: 'SP',
-        cidade: 'Nuporanga',
+        cidade: faker.location.city(),
       },
     };
 
@@ -231,12 +231,12 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (PATCH) - 200 | deve atualizar uma diocese com campos válidos`, async () => {
+  it(`/${principal}/:id (PATCH) - 200 | deve atualizar uma diocese com campos válidos`, async () => {
     const dioceseData = {
       descricao: faker.company.name(),
       tipoDiocese: { id: 2, descricao: 'Diocese' },
       endereco: {
-        id: 2,
+        id: 1,
         cep: faker.location.zipCode('########'),
         logradouro: faker.location.streetAddress(),
         numero: '1226',
@@ -247,7 +247,7 @@ describe('DioceseController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .patch(`/${principal}/2`)
+      .patch(`/${principal}/1`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(dioceseData)

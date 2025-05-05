@@ -41,15 +41,24 @@ export class EstadoService {
   }
 
   findAll() {
-    return `This action returns all estado`;
+    return this.prisma.estado.findMany({
+      include: {
+        pais: true,
+      },
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} estado`;
+    return this.prisma.estado.findUniqueOrThrow({
+      where: { id },
+      include: {
+        pais: true,
+      },
+    });
   }
 
-  findBySigla(sigla: string) {
-    return this.prisma.estado.findFirstOrThrow({
+  async findBySigla(sigla: string) {
+    return await this.prisma.estado.findFirstOrThrow({
       where: { sigla },
     });
   }

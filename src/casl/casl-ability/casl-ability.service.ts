@@ -1,7 +1,7 @@
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
 import { Injectable, Scope } from '@nestjs/common';
-import { diocese, localidade, pessoa, user } from '@prisma/client';
+import { diocese, localidade, paroquia, pessoa, user } from '@prisma/client';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 export type PermActions = 'manage' | 'create' | 'read' | 'update' | 'delete';
@@ -11,6 +11,7 @@ export type PermissionResource =
       pessoa: pessoa;
       user: user;
       diocese: diocese;
+      paroquia: paroquia;
       localidade: localidade;
     }>
   | 'all';
@@ -38,6 +39,7 @@ const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
   NAO_IDENTIFICADO(user, { cannot }) {
     cannot('read', 'pessoa');
     cannot('read', 'diocese');
+    cannot('read', 'paroquia');
     cannot('read', 'localidade');
   },
   CATEQUISTA_NACIONAL: grantReadPessoaDiocese,
