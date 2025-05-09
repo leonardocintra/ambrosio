@@ -10,7 +10,7 @@ export class TipoDioceseService {
   }
 
   findOne(id: number) {
-    return this.prisma.tipoDiocese.findUnique({
+    return this.prisma.tipoDiocese.findFirstOrThrow({
       where: { id },
     });
   }

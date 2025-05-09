@@ -57,7 +57,7 @@ describe('PaisController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (GET) | deve retornar 404 um pais by id nao existente`, () => {
+  it(`/${principal} (GET) - 404 | deve retornar 404 um pais by id nao existente`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}/21858`)
       .expect(404)
@@ -87,7 +87,7 @@ describe('PaisController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (DELETE) | delete de pais não é permitido`, () => {
+  it(`/${principal}/:id (DELETE) | delete de pais não é permitido`, () => {
     return request(app.getHttpServer())
       .delete(`/${principal}/2`)
       .expect(404)
@@ -98,7 +98,7 @@ describe('PaisController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (PATCH) | atualizacao patch de pais não é permitido`, () => {
+  it(`/${principal}/:id (PATCH) | atualizacao patch de pais não é permitido`, () => {
     return request(app.getHttpServer())
       .patch(`/${principal}/3`)
       .expect(404)
@@ -109,7 +109,7 @@ describe('PaisController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (PUT) | atualizacao put de pessoa não é permitido`, () => {
+  it(`/${principal}/:id (PUT) | atualizacao put de pais não é permitido`, () => {
     return request(app.getHttpServer())
       .put(`/${principal}/2`)
       .expect(404)

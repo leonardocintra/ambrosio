@@ -2,9 +2,9 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { setupTestModule } from '../test-setup';
 
-describe('EstadoCivilController (e2e)', () => {
+describe('EscolaridadeController (e2e)', () => {
   let app: INestApplication;
-  const principal = 'estado-civil';
+  const principal = 'escolaridade';
 
   beforeAll(async () => {
     app = await setupTestModule();
@@ -14,30 +14,33 @@ describe('EstadoCivilController (e2e)', () => {
     await app.close();
   });
 
-  it(`/${principal} (GET) | deve retornar os estados civis`, () => {
+  it(`/${principal} (GET) - 200 | deve retornar as escolaridades cadastradas na base`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}`)
       .expect(200)
       .expect((res) => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.data).toBeInstanceOf(Array);
-        expect(res.body.data).toContainEqual({ id: 2, descricao: 'CASADO(A)' });
+        expect(res.body.data).toContainEqual({ id: 2, descricao: 'Ensino Fundamental' });
       });
   });
 
-  it(`/${principal}/:id (GET) - 200 | deve retornar o estado civil by id`, () => {
+  it(`/${principal}/:id (GET) - 200 | deve retornar a escolaridade by id`, () => {
     return request(app.getHttpServer())
       .get(`/${principal}/2`)
       .expect(200)
       .expect((res) => {
         expect(res.body.data).not.toBeInstanceOf(Array);
-        expect(res.body.data).toEqual({ id: 2, descricao: 'CASADO(A)' });
+        expect(res.body.data).toEqual({
+          id: 2,
+          descricao: 'Ensino Fundamental',
+        });
         expect(res.body.data.id).toEqual(2);
-        expect(res.body.data.descricao).toEqual('CASADO(A)');
+        expect(res.body.data.descricao).toEqual('Ensino Fundamental');
       });
   });
 
-  it(`/${principal} (POST) | cadastro de estado civil não é permitido`, () => {
+  it(`/${principal} (POST) | cadastro de escolaridade não é permitido`, () => {
     return request(app.getHttpServer())
       .post(`/${principal}`)
       .expect(404)
@@ -48,7 +51,7 @@ describe('EstadoCivilController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (DELETE) | delete de estado civil não é permitido`, () => {
+  it(`/${principal} (DELETE) | delete de escolaridade não é permitido`, () => {
     return request(app.getHttpServer())
       .delete(`/${principal}`)
       .expect(404)
@@ -59,7 +62,7 @@ describe('EstadoCivilController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (PATCH) | atualizacao patch de estado civil não é permitido`, () => {
+  it(`/${principal} (PATCH) | atualizacao patch de escolaridade não é permitido`, () => {
     return request(app.getHttpServer())
       .patch(`/${principal}`)
       .expect(404)
@@ -70,7 +73,7 @@ describe('EstadoCivilController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (PUT) | atualizacao put de estado civil não é permitido`, () => {
+  it(`/${principal} (PUT) | atualizacao put de escolaridade não é permitido`, () => {
     return request(app.getHttpServer())
       .put(`/${principal}`)
       .expect(404)
@@ -81,13 +84,13 @@ describe('EstadoCivilController (e2e)', () => {
       });
   });
 
-  it(`/${principal}/:id (GET) - 404 | deve retornar estado civil nao encontrado by id`, async () => {
+  it(`/${principal}/:id (GET) - 404 | deve retornar escolaridade nao encontrado by id`, async () => {
     return request(app.getHttpServer())
       .get(`/${principal}/23424`)
       .expect(404)
       .expect((res) => {
         expect(res.body.message).toBe(
-          `O registro de 'Estado Civil' não foi encontrado.`,
+          `O registro de 'Escolaridade' não foi encontrado.`,
         );
         expect(res.body.statusCode).toBe(404);
       });

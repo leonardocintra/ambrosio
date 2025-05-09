@@ -45,6 +45,18 @@ describe('SituacaoReligiosaController (e2e)', () => {
       });
   });
 
+  it(`/${principal}/:id (GET) - 404 | deve retornar situacao religiosa nao encontrado by id`, async () => {
+    return request(app.getHttpServer())
+      .get(`/${principal}/23424`)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(
+          `O registro de 'Situação Religiosa' não foi encontrado.`,
+        );
+        expect(res.body.statusCode).toBe(404);
+      });
+  });
+
   it(`/${principal} (POST) - 404 | cadastro de situacao religiosa não é permitido`, () => {
     return request(app.getHttpServer())
       .post(`/${principal}`)
