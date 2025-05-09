@@ -1,8 +1,4 @@
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-} from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import {
   FOREIGN_KEY_CONSTRAINT,
@@ -19,6 +15,10 @@ const MODEL_NAME_MAP: Record<string, string> = {
   user: 'Usuário',
   estado: 'Estado',
   cidade: 'Cidade',
+  estadocivil: 'Estado Civil',
+  tipodiocese: 'Tipo de Diocese',
+  endereco: 'Endereço',
+  situacaoreligiosa: 'Situação Religiosa',
   // adicione mais conforme o projeto for crescendo
 };
 

@@ -175,8 +175,7 @@ describe('DioceseController (e2e)', () => {
       .send(dioceseData)
       .expect(404)
       .expect((res) => {
-        expect(res.body.message).toBe(`Tipo de diocese não encontrada`);
-        expect(res.body.error).toBe('Not Found');
+        expect(res.body.message).toBe(`O registro de 'Tipo de Diocese' não foi encontrado.`);
         expect(res.body.statusCode).toBe(404);
       });
   });

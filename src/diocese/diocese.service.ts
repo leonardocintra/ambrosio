@@ -17,6 +17,7 @@ import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { Diocese } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DioceseService {
@@ -30,30 +31,11 @@ export class DioceseService {
   ) {}
 
   async create(createDioceseDto: CreateDioceseDto): Promise<Diocese> {
-    const tipoDiocese = await this.getTipoDiocese(
-      createDioceseDto.tipoDiocese.id,
-    );
-
-    const enderecoComObservacao = {
-      ...createDioceseDto.endereco,
-      observacao: `End. de ${tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao || ''}`,
-    };
+    await this.tipoDioceseService.findOne(createDioceseDto.tipoDiocese.id);
 
     try {
       const result = await this.prisma.$transaction(async (transaction) => {
-        const endereco = await this.enderecoService.create(
-          enderecoComObservacao,
-          transaction,
-        );
-
-        return await transaction.diocese.create({
-          data: {
-            descricao: createDioceseDto.descricao,
-            tipoDioceseId: tipoDiocese.id,
-            enderecoId: endereco.id,
-          },
-          select: DIOCESE_SELECT,
-        });
+        return this.createDioceseTransaction(createDioceseDto, transaction);
       });
 
       return this.serializeResponse(result);
@@ -95,7 +77,7 @@ export class DioceseService {
     id: number,
     updateDioceseDto: UpdateDioceseDto,
   ): Promise<Diocese> {
-    const tipoDiocese = await this.getTipoDiocese(
+    const tipoDiocese = await this.tipoDioceseService.findOne(
       updateDioceseDto.tipoDiocese.id,
     );
 
@@ -180,12 +162,26 @@ export class DioceseService {
     }
   }
 
-  private async getTipoDiocese(id: number) {
-    const tipoDiocese = await this.tipoDioceseService.findOne(id);
+  private async createDioceseTransaction(
+    createDioceseDto: CreateDioceseDto,
+    transaction: Prisma.TransactionClient,
+  ): Promise<Diocese> {
+    const endereco = await this.enderecoService.create(
+      {
+        ...createDioceseDto.endereco,
+        observacao: `End. de ${createDioceseDto.tipoDiocese.descricao} ${createDioceseDto.descricao}.
+        ${createDioceseDto.observacao || ''}`,
+      },
+      transaction,
+    );
 
-    if (!tipoDiocese) {
-      throw new NotFoundException('Tipo de diocese não encontrada');
-    }
-    return tipoDiocese;
+    return await transaction.diocese.create({
+      data: {
+        descricao: createDioceseDto.descricao,
+        tipoDioceseId: createDioceseDto.tipoDiocese.id,
+        enderecoId: endereco.id,
+      },
+      select: DIOCESE_SELECT,
+    });
   }
 }
