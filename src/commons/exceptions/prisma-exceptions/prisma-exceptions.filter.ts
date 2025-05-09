@@ -7,18 +7,20 @@ import {
 } from 'src/commons/constants/constants';
 
 const MODEL_NAME_MAP: Record<string, string> = {
-  pais: 'País',
-  pessoa: 'Pessoa',
-  diocese: 'Diocese',
-  paroquia: 'Paroquia',
-  localidade: 'Localidade',
-  user: 'Usuário',
-  estado: 'Estado',
   cidade: 'Cidade',
-  estadocivil: 'Estado Civil',
-  tipodiocese: 'Tipo de Diocese',
+  diocese: 'Diocese',
   endereco: 'Endereço',
+  escolaridade: 'Escolaridade',
+  estado: 'Estado',
+  estadocivil: 'Estado Civil',
+  localidade: 'Localidade',
+  pais: 'País',
+  paroquia: 'Paroquia',
+  pessoa: 'Pessoa',
   situacaoreligiosa: 'Situação Religiosa',
+  tipocarisma: 'Tipo de Carisma',
+  tipodiocese: 'Tipo de Diocese',
+  user: 'Usuário',
   // adicione mais conforme o projeto for crescendo
 };
 

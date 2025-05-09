@@ -17,7 +17,6 @@ import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { Diocese } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select';
-import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class DioceseService {
@@ -35,7 +34,22 @@ export class DioceseService {
 
     try {
       const result = await this.prisma.$transaction(async (transaction) => {
-        return this.createDioceseTransaction(createDioceseDto, transaction);
+        const endereco = await this.enderecoService.create(
+          {
+            ...createDioceseDto.endereco,
+            observacao: `End. de ${createDioceseDto.tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao || ''}`,
+          },
+          transaction,
+        );
+
+        return await transaction.diocese.create({
+          data: {
+            descricao: createDioceseDto.descricao,
+            tipoDioceseId: createDioceseDto.tipoDiocese.id,
+            enderecoId: endereco.id,
+          },
+          select: DIOCESE_SELECT,
+        });
       });
 
       return this.serializeResponse(result);
@@ -160,28 +174,5 @@ export class DioceseService {
         `Endereço id ${enderecoPayload} não encontrada para essa diocese`,
       );
     }
-  }
-
-  private async createDioceseTransaction(
-    createDioceseDto: CreateDioceseDto,
-    transaction: Prisma.TransactionClient,
-  ): Promise<Diocese> {
-    const endereco = await this.enderecoService.create(
-      {
-        ...createDioceseDto.endereco,
-        observacao: `End. de ${createDioceseDto.tipoDiocese.descricao} ${createDioceseDto.descricao}.
-        ${createDioceseDto.observacao || ''}`,
-      },
-      transaction,
-    );
-
-    return await transaction.diocese.create({
-      data: {
-        descricao: createDioceseDto.descricao,
-        tipoDioceseId: createDioceseDto.tipoDiocese.id,
-        enderecoId: endereco.id,
-      },
-      select: DIOCESE_SELECT,
-    });
   }
 }
