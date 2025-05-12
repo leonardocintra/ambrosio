@@ -30,26 +30,22 @@ export class DioceseService {
   ) {}
 
   async create(createDioceseDto: CreateDioceseDto): Promise<Diocese> {
-    const tipoDiocese = await this.getTipoDiocese(
-      createDioceseDto.tipoDiocese.id,
-    );
-
-    const enderecoComObservacao = {
-      ...createDioceseDto.endereco,
-      observacao: `End. de ${tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao || ''}`,
-    };
+    await this.tipoDioceseService.findOne(createDioceseDto.tipoDiocese.id);
 
     try {
       const result = await this.prisma.$transaction(async (transaction) => {
         const endereco = await this.enderecoService.create(
-          enderecoComObservacao,
+          {
+            ...createDioceseDto.endereco,
+            observacao: `End. de ${createDioceseDto.tipoDiocese.descricao} ${createDioceseDto.descricao}. ${createDioceseDto.observacao || ''}`,
+          },
           transaction,
         );
 
         return await transaction.diocese.create({
           data: {
             descricao: createDioceseDto.descricao,
-            tipoDioceseId: tipoDiocese.id,
+            tipoDioceseId: createDioceseDto.tipoDiocese.id,
             enderecoId: endereco.id,
           },
           select: DIOCESE_SELECT,
@@ -95,7 +91,7 @@ export class DioceseService {
     id: number,
     updateDioceseDto: UpdateDioceseDto,
   ): Promise<Diocese> {
-    const tipoDiocese = await this.getTipoDiocese(
+    const tipoDiocese = await this.tipoDioceseService.findOne(
       updateDioceseDto.tipoDiocese.id,
     );
 
@@ -178,14 +174,5 @@ export class DioceseService {
         `Endereço id ${enderecoPayload} não encontrada para essa diocese`,
       );
     }
-  }
-
-  private async getTipoDiocese(id: number) {
-    const tipoDiocese = await this.tipoDioceseService.findOne(id);
-
-    if (!tipoDiocese) {
-      throw new NotFoundException('Tipo de diocese não encontrada');
-    }
-    return tipoDiocese;
   }
 }
