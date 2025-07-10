@@ -48,164 +48,75 @@ async function main() {
   }
 
   async function tipoLocalidade() {
-    await prisma.tipoLocalidade.create({
-      data: {
-        descricao: 'Centro Neocatecumenal',
-      },
-    });
+    const tiposLocalidades = [
+      'Centro Neocatecumenal',
+      'Seminário',
+      'Convento',
+      'Casa de Convivência',
+      'Prelazia',
+    ];
 
-    await prisma.tipoLocalidade.create({
-      data: {
-        descricao: 'Seminário',
-      },
-    });
-
-    await prisma.tipoLocalidade.create({
-      data: {
-        descricao: 'Convento',
-      },
-    });
-
-    await prisma.tipoLocalidade.create({
-      data: {
-        descricao: 'Casa de Convivência',
-      },
-    });
-
-    await prisma.tipoLocalidade.create({
-      data: {
-        descricao: 'Prelazia',
-      },
-    });
+    for (const tipo of tiposLocalidades) {
+      await prisma.tipoLocalidade.create({
+        data: {
+          descricao: tipo,
+        },
+      });
+    }
 
     console.log('---------------------------------');
     console.log('Tipo localidade preenchidas com sucesso!');
   }
 
   async function situacaoReligiosa() {
-    await prisma.situacaoReligiosa.create({
-      data: {
-        descricao: 'Leigo',
-      },
-    });
+    // Copilot quero colocar a descricao e sexoUnico em um array e ter um for para fazer os creates
+    const situacaoReligiosas = [
+      { descricao: 'Leigo', sexoUnico: null },
+      { descricao: 'Levantado(a)', sexoUnico: null },
+      { descricao: 'Seminarista', sexoUnico: Sexo.MASCULINO },
+      { descricao: 'Religioso(a)', sexoUnico: null },
+      { descricao: 'Diácono', sexoUnico: Sexo.MASCULINO },
+      { descricao: 'Diácono Permanente', sexoUnico: Sexo.MASCULINO },
+      { descricao: 'Presbítero', sexoUnico: Sexo.MASCULINO },
+      { descricao: 'Bispo', sexoUnico: Sexo.MASCULINO },
+      { descricao: 'Arcebispo', sexoUnico: Sexo.MASCULINO },
+      { descricao: 'Cardeal', sexoUnico: Sexo.MASCULINO },
+      { descricao: 'Papa', sexoUnico: Sexo.MASCULINO },
+    ];
 
-    await prisma.situacaoReligiosa.create({
-      data: {
-        descricao: 'Padre',
-        sexoUnico: Sexo.MASCULINO,
-      },
-    });
-
-    await prisma.situacaoReligiosa.create({
-      data: {
-        descricao: 'Bispo',
-        sexoUnico: Sexo.MASCULINO,
-      },
-    });
-
-    await prisma.situacaoReligiosa.create({
-      data: {
-        descricao: 'Arcebispo',
-        sexoUnico: Sexo.MASCULINO,
-      },
-    });
-
-    await prisma.situacaoReligiosa.create({
-      data: {
-        descricao: 'Seminarista',
-        sexoUnico: Sexo.MASCULINO,
-      },
-    });
-
-    await prisma.situacaoReligiosa.create({
-      data: {
-        descricao: 'Diácono',
-        sexoUnico: Sexo.MASCULINO,
-      },
-    });
-
-    await prisma.situacaoReligiosa.create({
-      data: {
-        descricao: 'Diácono Permanente',
-        sexoUnico: Sexo.MASCULINO,
-      },
-    });
-
-    await prisma.situacaoReligiosa.create({
-      data: {
-        descricao: 'Religioso(a)',
-      },
-    });
+    for (const situacao of situacaoReligiosas) {
+      await prisma.situacaoReligiosa.create({
+        data: {
+          descricao: situacao.descricao,
+          sexoUnico: situacao.sexoUnico || null,
+        },
+      });
+    }
 
     console.log('---------------------------------');
     console.log('Situação Religiosa preenchidas com sucesso!');
   }
 
   async function etapa() {
-    await prisma.etapa.create({
-      data: {
-        descricao: 'pre-catecumenato',
-      },
-    });
+    const etapas = [
+      'pre-catecumenato',
+      '1º escrutinio',
+      'Shemá Israel',
+      '2º escrutinio',
+      'Iniciação a Oração',
+      'Tradditio Symboli',
+      'Redditio Symboli',
+      'Pai Nosso I',
+      'Pai Nosso II',
+      'Pai Nosso III',
+      '3º escrutinio',
+    ];
 
-    await prisma.etapa.create({
-      data: {
-        descricao: '1º escrutinio',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
-        descricao: 'Shemá Israel',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
-        descricao: '2º escrutinio',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
-        descricao: 'Iniciação a Oração',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
-        descricao: 'Tradditio Symboli',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
-        descricao: 'Redditio Symboli',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
-        descricao: 'Pai Nosso I',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
-        descricao: 'Pai Nosso II',
-      },
-    });
-    await prisma.etapa.create({
-      data: {
-        descricao: 'Pai Nosso III',
-      },
-    });
-
-    await prisma.etapa.create({
-      data: {
-        descricao: '3º escrutinio',
-      },
-    });
+    for (const descricao of etapas) {
+      await prisma.etapa.create({
+        data: { descricao },
+      });
+    }
 
     console.log('---------------------------------');
     console.log('Etapas preenchidas com sucesso!');
@@ -316,32 +227,22 @@ async function main() {
   }
 
   async function tipoEquipe() {
-    await prisma.tipoEquipe.create({ data: { descricao: 'Catequista' } });
-    await prisma.tipoEquipe.create({
-      data: { descricao: 'Secretários Centro Neocatecumenal' },
-    });
-    await prisma.tipoEquipe.create({
-      data: { descricao: 'Peregrinações Jovens' },
-    });
-    await prisma.tipoEquipe.create({
-      data: { descricao: 'Catequista Regional' },
-    });
-    await prisma.tipoEquipe.create({
-      data: { descricao: 'Catequista Itinerante' },
-    });
-    await prisma.tipoEquipe.create({
-      data: { descricao: 'Vocacional - Moças' },
-    });
-    await prisma.tipoEquipe.create({
-      data: { descricao: 'Vocacional - Moços' },
-    });
-    await prisma.tipoEquipe.create({
-      data: { descricao: 'Responsável GRANDE REGIAO' },
-    });
-    await prisma.tipoEquipe.create({
-      data: { descricao: 'Perscrutação Jovens' },
-    });
-    await prisma.tipoEquipe.create({ data: { descricao: 'Pós-Crisma' } });
+    const tiposEquipe = [
+      'Catequista',
+      'Secretários Centro Neocatecumenal',
+      'Peregrinações Jovens',
+      'Catequista Regional',
+      'Catequista Itinerante',
+      'Vocacional - Moças',
+      'Vocacional - Moços',
+      'Responsável GRANDE REGIAO',
+      'Perscrutação Jovens',
+      'Pós-Crisma',
+    ];
+
+    for (const descricao of tiposEquipe) {
+      await prisma.tipoEquipe.create({ data: { descricao } });
+    }
 
     console.log('---------------------------------');
     console.log('Tipo de equipes preenchido com sucesso!');
@@ -567,71 +468,25 @@ async function main() {
   }
 
   async function escolaridade() {
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Analfabeto',
-      },
-    });
+    const escolaridades = [
+      'Analfabeto',
+      'Ensino Fundamental',
+      'Ensino Fundamental Incompleto',
+      'Ensino Médio',
+      'Ensino Médio Incompleto',
+      'Ensino Superior',
+      'Ensino Superior Incompleto',
+      'Pos Graduação',
+      'Mestrado',
+      'Douturado',
+      'Pos Doutorado',
+    ];
 
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Ensino Fundamental',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Ensino Fundamental Incompleto',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Ensino Médio',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Ensino Médio Incompleto',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Ensino Superior',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Ensino Superior Incompleto',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Pos Graduação',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Mestrado',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Douturado',
-      },
-    });
-
-    await prisma.escolaridade.create({
-      data: {
-        descricao: 'Pos Doutorado',
-      },
-    });
+    for (const descricao of escolaridades) {
+      await prisma.escolaridade.create({
+        data: { descricao },
+      });
+    }
 
     console.log('---------------------------------');
     console.log('Escolaridade preenchido com sucesso!');

@@ -23,25 +23,25 @@ describe('SituacaoReligiosaController (e2e)', () => {
         expect(res.body.data).toBeInstanceOf(Array);
         expect(res.body.data).toContainEqual({
           id: 2,
-          descricao: 'Padre',
-          sexoUnico: 'MASCULINO',
+          descricao: 'Levantado(a)',
+          sexoUnico: null,
         });
       });
   });
 
   it(`/${principal} (GET) - 200 | deve retornar situacao religiosa by id`, () => {
     return request(app.getHttpServer())
-      .get(`/${principal}/2`)
+      .get(`/${principal}/7`)
       .expect(200)
       .expect((res) => {
         expect(res.body.data).not.toBeInstanceOf(Array);
         expect(res.body.data).toEqual({
-          id: 2,
-          descricao: 'Padre',
+          id: 7,
+          descricao: 'Presbítero',
           sexoUnico: 'MASCULINO',
         });
-        expect(res.body.data.id).toEqual(2);
-        expect(res.body.data.descricao).toEqual('Padre');
+        expect(res.body.data.id).toEqual(7);
+        expect(res.body.data.descricao).toEqual('Presbítero');
       });
   });
 
