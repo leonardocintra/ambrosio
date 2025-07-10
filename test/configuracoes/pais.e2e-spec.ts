@@ -119,4 +119,17 @@ describe('PaisController (e2e)', () => {
         expect(res.body.statusCode).toBe(404)
       });
   });
+
+  it(`/${principal} (POST) | deve retornar 400 ao cadastrar um pais com nome maior que 100 caracteres`, () => {
+    return request(app.getHttpServer())
+      .post(`/${principal}`)
+      .send({
+        nome: 'Argentinaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      })
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.message[0]).toBe('nome must be shorter than or equal to 100 characters');
+        expect(res.body.statusCode).toBe(400);
+      });
+  });
 });
