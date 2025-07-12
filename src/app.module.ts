@@ -20,6 +20,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
 import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
+import { SetorModule } from './mapa/setor/setor.module';
+import { MacroRegiaoModule } from './mapa/macro-regiao/macro-regiao.module';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/p
     UsersModule,
     AuthModule,
     CaslModule,
+    SetorModule,
+    MacroRegiaoModule,
   ],
   controllers: [AppController],
   providers: [
