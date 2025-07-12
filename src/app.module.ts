@@ -11,7 +11,6 @@ import { PessoaModule } from './pessoa/pessoa.module';
 import { TipoDioceseModule } from './configuracoes/tipo-diocese/tipo-diocese.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { ParoquiaModule } from './paroquia/paroquia.module';
-import { RegioesModule } from './regioes/regioes.module';
 import { EquipesModule } from './equipes/equipes.module';
 import { LocalidadeModule } from './localidade/localidade.module';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -35,7 +34,6 @@ import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/p
     TipoDioceseModule,
     ConfiguracoesModule,
     ParoquiaModule,
-    RegioesModule,
     EquipesModule,
     LocalidadeModule,
     UsersModule,
