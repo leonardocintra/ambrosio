@@ -403,65 +403,24 @@ async function main() {
   }
 
   async function tipoCarisma() {
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Seminarista',
-      },
-    });
+    const tiposCarisma = [
+      'Seminarista',
+      'Família em Missão',
+      'Vida Religiosa',
+      'Presbítero',
+      'Catequista Itinerante',
+      'Vocacionado',
+      'Pós Crisma',
+      'Catequista',
+      'Rapaz / Moça levantado Missão',
+      'Casal itinerante',
+    ];
 
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Família em Missão',
-      },
-    });
-
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Vida Religiosa',
-      },
-    });
-
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Presbítero',
-      },
-    });
-
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Catequista Itinerante',
-      },
-    });
-
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Vocacionado',
-      },
-    });
-
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Pós Crisma',
-      },
-    });
-
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Catequista',
-      },
-    });
-
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Rapaz / Moça levantado Missão',
-      },
-    });
-
-    await prisma.tipoCarisma.create({
-      data: {
-        descricao: 'Casal itinerante',
-      },
-    });
+    for (const descricao of tiposCarisma) {
+      await prisma.tipoCarisma.create({
+        data: { descricao },
+      });
+    }
 
     console.log('---------------------------------');
     console.log('Tipo de carisma preenchido com sucesso!');
@@ -493,29 +452,18 @@ async function main() {
   }
 
   async function estadoCivil() {
-    await prisma.estadoCivil.create({
-      data: {
-        descricao: 'SOLTEIRO(A)',
-      },
-    });
+    const estadosCivis = [
+      'SOLTEIRO(A)',
+      'CASADO(A)',
+      'VIUVO(A)',
+      'DIVORCIADO(A)',
+    ];
 
-    await prisma.estadoCivil.create({
-      data: {
-        descricao: 'CASADO(A)',
-      },
-    });
-
-    await prisma.estadoCivil.create({
-      data: {
-        descricao: 'VIUVO(A)',
-      },
-    });
-
-    await prisma.estadoCivil.create({
-      data: {
-        descricao: 'DIVORCIADO(A)',
-      },
-    });
+    for (const descricao of estadosCivis) {
+      await prisma.estadoCivil.create({
+        data: { descricao },
+      });
+    }
 
     console.log('---------------------------------');
     console.log('Estado Civil preenchido com sucesso!');
