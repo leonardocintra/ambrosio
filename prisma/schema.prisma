@@ -100,11 +100,9 @@ model pessoa {
   situacaoReligiosa    situacaoReligiosa  @relation(fields: [situacaoReligiosaId], references: [id])
   passaportes          passaportePessoa[]
   contatos             pessoaContato[]
-  paroquias            paroquiaPessoas[]
   casamentosComoMarido pessoaCasal[]      @relation("Marido")
   casamentosComoMulher pessoaCasal[]      @relation("Mulher")
   enderecos            pessoaEndereco[]
-  equipes              equipePessoas[]
   pessoaCarisma        pessoaCarisma[]
 }
 
@@ -182,22 +180,12 @@ model diocese {
 }
 
 model paroquia {
-  id         Int               @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   enderecoId Int
   dioceseId  Int
-  endereco   endereco          @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
-  diocese    diocese           @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
-  descricao  String            @db.VarChar(50)
-  pessoas    paroquiaPessoas[]
-}
-
-model paroquiaPessoas {
-  pessoaId   Int
-  paroquiaId Int
-  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  paroquia   paroquia @relation(fields: [paroquiaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@id([pessoaId, paroquiaId])
+  endereco   endereco @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
+  diocese    diocese  @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
+  descricao  String   @db.VarChar(50)
 }
 
 model etapa {
@@ -205,75 +193,21 @@ model etapa {
   descricao String @db.VarChar(50)
 }
 
-model regiao {
-  id               Int                @id @default(autoincrement())
-  descricao        String             @db.VarChar(50)
-  macroRegiao      Boolean            @default(false)
-  equipes          equipeRegiao[]
-  localidadeRegiao localidadeRegiao[]
-}
-
 model tipoEquipe {
-  id        Int                @id @default(autoincrement())
-  descricao String             @db.VarChar(80)
-  equipes   equipeTipoEquipe[]
-}
-
-model equipe {
-  id            Int                @id @default(autoincrement())
-  descricao     String             @db.VarChar(50)
-  regioes       equipeRegiao[]
-  equipePessoas equipePessoas[]
-  tipos         equipeTipoEquipe[]
-}
-
-model equipeTipoEquipe {
-  equipeId     Int
-  tipoEquipeId Int
-  equipe       equipe     @relation(fields: [equipeId], references: [id], onDelete: Cascade)
-  tipoEquipe   tipoEquipe @relation(fields: [tipoEquipeId], references: [id], onDelete: Restrict)
-
-  @@id([equipeId, tipoEquipeId])
-}
-
-model equipeRegiao {
-  equipeId Int
-  regiaoId Int
-  equipe   equipe @relation(fields: [equipeId], references: [id])
-  regiao   regiao @relation(fields: [regiaoId], references: [id])
-
-  @@id([equipeId, regiaoId])
-}
-
-model equipePessoas {
-  equipeId Int
-  pessoaId Int
-  equipe   equipe @relation(fields: [equipeId], references: [id])
-  pessoa   pessoa @relation(fields: [pessoaId], references: [id])
-
-  @@id([equipeId, pessoaId])
+  id        Int    @id @default(autoincrement())
+  descricao String @db.VarChar(80)
 }
 
 model localidade {
-  id               Int                @id @default(autoincrement())
-  descricao        String             @db.VarChar(80)
+  id               Int            @id @default(autoincrement())
+  descricao        String         @db.VarChar(80)
   dioceseId        Int
-  diocese          diocese            @relation(fields: [dioceseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  diocese          diocese        @relation(fields: [dioceseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   tipoLocalidadeId Int
-  tipoLocalidade   tipoLocalidade     @relation(fields: [tipoLocalidadeId], references: [id], onDelete: Restrict)
+  tipoLocalidade   tipoLocalidade @relation(fields: [tipoLocalidadeId], references: [id], onDelete: Restrict)
   observacao       String?
   enderecoId       Int
-  endereco         endereco           @relation(fields: [enderecoId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  localidadeRegiao localidadeRegiao[]
-}
-
-model localidadeRegiao {
-  localidadeId Int
-  regiaoId     Int
-  localidade   localidade @relation(fields: [localidadeId], references: [id], onDelete: Cascade)
-  regiao       regiao     @relation(fields: [regiaoId], references: [id], onDelete: Restrict)
-
-  @@id([localidadeId, regiaoId])
+  endereco         endereco       @relation(fields: [enderecoId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }
 
 model tipoLocalidade {
