@@ -11,7 +11,6 @@ import { PessoaModule } from './pessoa/pessoa.module';
 import { TipoDioceseModule } from './configuracoes/tipo-diocese/tipo-diocese.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { ParoquiaModule } from './paroquia/paroquia.module';
-import { EquipesModule } from './equipes/equipes.module';
 import { LocalidadeModule } from './localidade/localidade.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
@@ -20,6 +19,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
 import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
+import { SetorModule } from './mapa/setor/setor.module';
+import { MacroRegiaoModule } from './mapa/macro-regiao/macro-regiao.module';
 
 @Module({
   imports: [
@@ -34,11 +35,12 @@ import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/p
     TipoDioceseModule,
     ConfiguracoesModule,
     ParoquiaModule,
-    EquipesModule,
     LocalidadeModule,
     UsersModule,
     AuthModule,
     CaslModule,
+    SetorModule,
+    MacroRegiaoModule,
   ],
   controllers: [AppController],
   providers: [

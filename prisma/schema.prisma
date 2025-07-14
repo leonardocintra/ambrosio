@@ -240,3 +240,15 @@ model user {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
+
+model setor {
+  id        Int     @id @default(autoincrement())
+  descricao String  @db.VarChar(50)
+  ativo     Boolean @default(true)
+}
+
+model macroRegiao {
+  id        Int     @id @default(autoincrement())
+  descricao String  @db.VarChar(50)
+  ativo     Boolean @default(true)
+}
