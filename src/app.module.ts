@@ -11,7 +11,6 @@ import { PessoaModule } from './pessoa/pessoa.module';
 import { TipoDioceseModule } from './configuracoes/tipo-diocese/tipo-diocese.module';
 import { ConfiguracoesModule } from './configuracoes/configuracoes.module';
 import { ParoquiaModule } from './paroquia/paroquia.module';
-import { EquipesModule } from './equipes/equipes.module';
 import { LocalidadeModule } from './localidade/localidade.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
@@ -36,7 +35,6 @@ import { MacroRegiaoModule } from './mapa/macro-regiao/macro-regiao.module';
     TipoDioceseModule,
     ConfiguracoesModule,
     ParoquiaModule,
-    EquipesModule,
     LocalidadeModule,
     UsersModule,
     AuthModule,
