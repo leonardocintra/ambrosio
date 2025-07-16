@@ -59,12 +59,6 @@ model endereco {
   diocese    diocese[]
 }
 
-model tipoCarisma {
-  id            Int             @id @default(autoincrement())
-  descricao     String          @unique @db.VarChar(30)
-  pessoaCarisma pessoaCarisma[]
-}
-
 model estadoCivil {
   id        Int      @id @default(autoincrement())
   descricao String   @unique @db.VarChar(20)
@@ -83,27 +77,29 @@ enum Sexo {
 }
 
 model pessoa {
-  id                   Int                @id @default(autoincrement())
-  nome                 String             @db.VarChar(80)
-  conhecidoPor         String?            @db.VarChar(30)
-  sexo                 Sexo               @default(MASCULINO)
-  cpf                  String?            @db.VarChar(11)
-  nacionalidade        String             @db.VarChar(50)
-  dataNascimento       DateTime?          @db.Date
+  id                   Int                      @id @default(autoincrement())
+  nome                 String                   @db.VarChar(80)
+  conhecidoPor         String?                  @db.VarChar(30)
+  sexo                 Sexo                     @default(MASCULINO)
+  cpf                  String?                  @db.VarChar(11)
+  nacionalidade        String                   @db.VarChar(50)
+  dataNascimento       DateTime?                @db.Date
   estadoCivilId        Int
-  estadoCivil          estadoCivil        @relation(fields: [estadoCivilId], references: [id])
+  estadoCivil          estadoCivil              @relation(fields: [estadoCivilId], references: [id])
   foto                 String?
   escolaridadeId       Int?
-  escolaridade         escolaridade?      @relation(fields: [escolaridadeId], references: [id])
-  ativo                Boolean            @default(true)
+  escolaridade         escolaridade?            @relation(fields: [escolaridadeId], references: [id])
+  ativo                Boolean                  @default(true)
   situacaoReligiosaId  Int
-  situacaoReligiosa    situacaoReligiosa  @relation(fields: [situacaoReligiosaId], references: [id])
+  situacaoReligiosa    situacaoReligiosa        @relation(fields: [situacaoReligiosaId], references: [id])
   passaportes          passaportePessoa[]
   contatos             pessoaContato[]
-  casamentosComoMarido pessoaCasal[]      @relation("Marido")
-  casamentosComoMulher pessoaCasal[]      @relation("Mulher")
+  casamentosComoMarido pessoaCasal[]            @relation("Marido")
+  casamentosComoMulher pessoaCasal[]            @relation("Mulher")
   enderecos            pessoaEndereco[]
-  pessoaCarisma        pessoaCarisma[]
+  carismasServico      pessoaCarismaServico[]
+  carismasVinculado    pessoaCarismaVinculado[]
+  carismasPrimitivo    pessoaCarismaPrimitivo[]
 }
 
 model situacaoReligiosa {
@@ -111,6 +107,51 @@ model situacaoReligiosa {
   descricao String   @unique @db.VarChar(50)
   sexoUnico Sexo?
   pessoa    pessoa[]
+}
+
+model tipoCarismaServico {
+  id        Int                    @id @default(autoincrement())
+  descricao String                 @unique @db.VarChar(80)
+  pessoas   pessoaCarismaServico[]
+}
+
+model tipoCarismaVinculado {
+  id        Int                      @id @default(autoincrement())
+  descricao String                   @unique @db.VarChar(80)
+  pessoas   pessoaCarismaVinculado[]
+}
+
+model tipoCarismaPrimitivo {
+  id        Int                      @id @default(autoincrement())
+  descricao String                   @unique @db.VarChar(80)
+  pessoas   pessoaCarismaPrimitivo[]
+}
+
+model pessoaCarismaServico {
+  pessoaId             Int
+  tipoCarismaServicoId Int
+  pessoa               pessoa             @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
+  tipoCarismaServico   tipoCarismaServico @relation(fields: [tipoCarismaServicoId], references: [id], onDelete: Cascade)
+
+  @@id([pessoaId, tipoCarismaServicoId])
+}
+
+model pessoaCarismaVinculado {
+  pessoaId               Int
+  tipoCarismaVinculadoId Int
+  pessoa                 pessoa               @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
+  tipoCarismaVinculado   tipoCarismaVinculado @relation(fields: [tipoCarismaVinculadoId], references: [id], onDelete: Cascade)
+
+  @@id([pessoaId, tipoCarismaVinculadoId])
+}
+
+model pessoaCarismaPrimitivo {
+  pessoaId               Int
+  tipoCarismaPrimitivoId Int
+  pessoa                 pessoa               @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
+  tipoCarismaPrimitivo   tipoCarismaPrimitivo @relation(fields: [tipoCarismaPrimitivoId], references: [id], onDelete: Cascade)
+
+  @@id([pessoaId, tipoCarismaPrimitivoId])
 }
 
 model pessoaEndereco {
@@ -130,15 +171,6 @@ model pessoaCasal {
   mulher         pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([pessoaMaridoId, pessoaMulherId])
-}
-
-model pessoaCarisma {
-  pessoaId      Int
-  tipoCarismaId Int
-  pessoa        pessoa      @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  tipoCarisma   tipoCarisma @relation(fields: [tipoCarismaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@id([pessoaId, tipoCarismaId])
 }
 
 model passaportePessoa {

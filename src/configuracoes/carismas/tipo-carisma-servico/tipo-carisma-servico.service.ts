@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
-export class TipoCarismaService {
+export class TipoCarismaServicoService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.tipoCarisma.findMany();
+    return this.prisma.tipoCarismaServico.findMany();
   }
 
   findOne(id: number) {
-    return this.prisma.tipoCarisma.findFirstOrThrow({
+    return this.prisma.tipoCarismaServico.findUniqueOrThrow({
       where: { id },
     });
   }

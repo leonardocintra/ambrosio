@@ -18,10 +18,15 @@ const MODEL_NAME_MAP: Record<string, string> = {
   paroquia: 'Paroquia',
   pessoa: 'Pessoa',
   situacaoreligiosa: 'Situação Religiosa',
-  tipocarisma: 'Tipo de Carisma',
   tipodiocese: 'Tipo de Diocese',
   user: 'Usuário',
+  tipocarismaservico: 'Tipo de Carisma Serviço',
+  tipocarismavinculado: 'Tipo de Carisma Vinculado',
+  tipocarismaprimitivo: 'Tipo de Carisma Primitivo',
+  setor: 'Setor',
+  macroregiao: 'Macro Região',
   // adicione mais conforme o projeto for crescendo
+  // Atenção: os nomes devem ser tudo minúsculo e sem acentos
 };
 
 @Catch(Prisma.PrismaClientKnownRequestError)

@@ -10,7 +10,9 @@ async function main() {
   await estadoCivil();
   await escolaridade();
   await situacaoReligiosa();
-  await tipoCarisma();
+  await tipoCarismaServico();
+  await tipoCarismaVinculado();
+  await tipoCarismaPrimitivo();
   await tipoDiocese();
   await tipoLocalidade();
   await tipoEquipe();
@@ -270,28 +272,61 @@ async function main() {
     console.log('Tipo de diocese preenchido com sucesso!');
   }
 
-  async function tipoCarisma() {
-    const tiposCarisma = [
-      'Seminarista',
-      'Família em Missão',
-      'Vida Religiosa',
-      'Presbítero',
-      'Catequista Itinerante',
-      'Vocacionado',
-      'Pós Crisma',
-      'Catequista',
-      'Rapaz / Moça levantado Missão',
-      'Casal itinerante',
-    ];
+  async function tipoCarismaServico() {
+    const tiposCarisma = ['Secretário', 'Voluntário', 'Convidado'];
 
     for (const descricao of tiposCarisma) {
-      await prisma.tipoCarisma.create({
+      await prisma.tipoCarismaServico.create({
         data: { descricao },
       });
     }
 
     console.log('---------------------------------');
-    console.log('Tipo de carisma preenchido com sucesso!');
+    console.log('Tipo de carisma serviço preenchido com sucesso!');
+  }
+
+  async function tipoCarismaVinculado() {
+    const tiposCarisma = [
+      'Responsável',
+      'Co-Responsável',
+      'Salmista',
+      'Catequistas',
+      'Leitores',
+      'Ostiário',
+      'Mestre',
+      'Padeiro',
+    ];
+
+    for (const descricao of tiposCarisma) {
+      await prisma.tipoCarismaVinculado.create({
+        data: { descricao },
+      });
+    }
+
+    console.log('---------------------------------');
+    console.log('Tipo de carisma vinculado preenchido com sucesso!');
+  }
+
+  async function tipoCarismaPrimitivo() {
+    const tiposCarisma = [
+      'Vocacionado',
+      'Vocacionada',
+      'Religioso(a)',
+      'Familia em Missão',
+      'Irmãos/Irmãs em Missão',
+      'Irmãos/Irmãs Itinerantes',
+      'Familia Itinerante',
+      'Pós Crisma',
+    ];
+
+    for (const descricao of tiposCarisma) {
+      await prisma.tipoCarismaPrimitivo.create({
+        data: { descricao },
+      });
+    }
+
+    console.log('---------------------------------');
+    console.log('Tipo de carisma primitivo preenchido com sucesso!');
   }
 
   async function escolaridade() {

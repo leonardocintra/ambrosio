@@ -22,6 +22,7 @@ import { CarismaVinculado, Pessoa } from 'neocatecumenal';
 import { pessoa } from '@prisma/client';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
+import { CreateCarismasDto } from './dto/create-carisma.dto';
 
 @Injectable()
 export class PessoaService {
@@ -94,9 +95,19 @@ export class PessoaService {
         estadoCivil: true,
         escolaridade: true,
         situacaoReligiosa: true,
-        pessoaCarisma: {
+        carismasServico: {
           include: {
-            tipoCarisma: true,
+            tipoCarismaServico: true,
+          },
+        },
+        carismasPrimitivo: {
+          include: {
+            tipoCarismaPrimitivo: true,
+          },
+        },
+        carismasVinculado: {
+          include: {
+            tipoCarismaVinculado: true,
           },
         },
         enderecos: {
@@ -195,6 +206,10 @@ export class PessoaService {
     }
   }
 
+  async createCarismas(pessoaId: number, dto: CreateCarismasDto) {
+    throw new HttpException('Método createCarismas não implementado', 501);
+  }
+
   async findAllBySexoEstadoCivilCasado(sexo: string) {
     // Funcao para buscar todas as pessoas com estado civil casado que não estao vinculados marido e mulher
     const param = sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO;
@@ -223,9 +238,19 @@ export class PessoaService {
         estadoCivil: true,
         escolaridade: true,
         situacaoReligiosa: true,
-        pessoaCarisma: {
+        carismasPrimitivo: {
           include: {
-            tipoCarisma: true,
+            tipoCarismaPrimitivo: true,
+          },
+        },
+        carismasServico: {
+          include: {
+            tipoCarismaServico: true,
+          },
+        },
+        carismasVinculado: {
+          include: {
+            tipoCarismaVinculado: true,
           },
         },
         enderecos: {

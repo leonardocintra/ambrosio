@@ -17,6 +17,7 @@ import { SexoQueryParamDto } from './dto/sexo.dto';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
+import { CreateCarismasDto } from './dto/create-carisma.dto';
 
 @ApiTags('Pessoas')
 @UseGuards(AuthGuard, RoleGuard)
@@ -59,5 +60,10 @@ export class PessoaController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.pessoaService.remove(+id);
+  }
+
+  @Post(':id/carisma')
+  createCarisma(@Param('id') id: string, @Body() dto: CreateCarismasDto) {
+    return this.pessoaService.createCarismas(+id, dto);
   }
 }

@@ -5,7 +5,6 @@ import { EstadoCivilModule } from './configuracoes/estado-civil/estado-civil.mod
 import { PrismaModule } from './prisma/prisma.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { EscolaridadeModule } from './configuracoes/escolaridade/escolaridade.module';
-import { TipoCarismaModule } from './configuracoes/tipo-carisma/tipo-carisma.module';
 import { EnderecoModule } from './endereco/endereco.module';
 import { PessoaModule } from './pessoa/pessoa.module';
 import { TipoDioceseModule } from './configuracoes/tipo-diocese/tipo-diocese.module';
@@ -29,7 +28,6 @@ import { MacroRegiaoModule } from './mapa/macro-regiao/macro-regiao.module';
     EstadoCivilModule,
     PrismaModule,
     EscolaridadeModule,
-    TipoCarismaModule,
     EnderecoModule,
     PessoaModule,
     TipoDioceseModule,

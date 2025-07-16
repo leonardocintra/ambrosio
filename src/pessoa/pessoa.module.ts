@@ -4,7 +4,6 @@ import { PessoaService } from './pessoa.service';
 import { PessoaController } from './pessoa.controller';
 import { EstadoCivilModule } from 'src/configuracoes/estado-civil/estado-civil.module';
 import { EnderecoModule } from 'src/endereco/endereco.module';
-import { CarismaModule } from './carisma/carisma.module';
 import { SituacaoReligiosaModule } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.module';
 
 @Module({
@@ -15,7 +14,6 @@ import { SituacaoReligiosaModule } from 'src/configuracoes/situacao-religiosa/si
     EstadoCivilModule,
     SituacaoReligiosaModule,
     EnderecoModule,
-    CarismaModule,
   ],
 })
 export class PessoaModule {}
