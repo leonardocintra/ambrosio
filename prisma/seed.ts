@@ -20,6 +20,7 @@ async function main() {
   await diocese();
   await paroquia();
   await admin();
+  await pessoas(10);
 
   async function admin() {
     await prisma.user.create({
@@ -420,6 +421,48 @@ async function main() {
 
     console.log('---------------------------------');
     console.log('Paroquia preenchida com sucesso!');
+  }
+
+  async function pessoas(quantidade: number) {
+    const estadosCivis = await prisma.estadoCivil.findMany();
+    const escolaridades = await prisma.escolaridade.findMany();
+    const situacoesReligiosas = await prisma.situacaoReligiosa.findMany();
+
+    for (let i = 0; i < quantidade; i++) {
+      const sexo = faker.helpers.arrayElement(['MASCULINO', 'FEMININO']);
+      const nome = faker.person.fullName({
+        sex: sexo === 'MASCULINO' ? 'male' : 'female',
+      });
+      const conhecidoPor = faker.person.firstName(
+        sexo === 'MASCULINO' ? 'male' : 'female',
+      );
+      const dataNascimento = faker.date.birthdate({
+        min: 1950,
+        max: 2010,
+        mode: 'year',
+      });
+      const estadoCivil = faker.helpers.arrayElement(estadosCivis);
+      const escolaridade = faker.helpers.arrayElement(escolaridades);
+      const situacaoReligiosa = faker.helpers.arrayElement(situacoesReligiosas);
+
+      await prisma.pessoa.create({
+        data: {
+          nome,
+          conhecidoPor,
+          nacionalidade: 'brasileira',
+          cpf: String(i).padStart(11, '0'),
+          sexo,
+          dataNascimento,
+          estadoCivilId: estadoCivil.id,
+          escolaridadeId: escolaridade.id,
+          situacaoReligiosaId: situacaoReligiosa.id,
+        },
+      });
+      console.log(`- Pessoa ${i + 1} de ${quantidade} criada: ${nome}`);
+    }
+
+    console.log('---------------------------------');
+    console.log('Pessoas preenchidas com sucesso!');
   }
 }
 
