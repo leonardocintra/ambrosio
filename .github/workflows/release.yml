@@ -25,15 +25,19 @@ jobs:
         run: npm ci
 
       - name: Incrementar versão (patch)
+        id: version
         run: |
-          npm version patch -m "chore(release): %s [skip ci]"
+          VERSION=$(npm version patch -m "chore(release): %s [skip ci]")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Push da tag gerada
         run: git push --follow-tags
 
-      - name: Criar release (draft)
+      - name: Criar release draft com changelog
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.VERSION }}
           draft: true
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
