@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { PrismaClient, Sexo } from '@prisma/client';
+import { Escolaridade, EstadoCivil, SituacaoReligiosa } from 'neocatecumenal';
 
 const prisma = new PrismaClient();
 
@@ -424,45 +425,19 @@ async function main() {
   }
 
   async function pessoas(quantidade: number) {
-    const estadosCivis = await prisma.estadoCivil.findMany();
-    const escolaridades = await prisma.escolaridade.findMany();
-    const situacoesReligiosas = await prisma.situacaoReligiosa.findMany();
+    const [estadosCivis, escolaridades, situacoesReligiosas] =
+      await Promise.all([
+        prisma.estadoCivil.findMany(),
+        prisma.escolaridade.findMany(),
+        prisma.situacaoReligiosa.findMany(),
+      ]);
 
-    for (let i = 0; i < quantidade; i++) {
-      const sexo = faker.helpers.arrayElement(['MASCULINO', 'FEMININO']);
-      const nome = faker.person.fullName({
-        sex: sexo === 'MASCULINO' ? 'male' : 'female',
-      });
-      const conhecidoPor = faker.person.firstName(
-        sexo === 'MASCULINO' ? 'male' : 'female',
-      );
-      const dataNascimento = faker.date.birthdate({
-        min: 1950,
-        max: 2010,
-        mode: 'year',
-      });
-      const estadoCivil = faker.helpers.arrayElement(estadosCivis);
-      const escolaridade = faker.helpers.arrayElement(escolaridades);
-      const situacaoReligiosa = faker.helpers.arrayElement(situacoesReligiosas);
+    const payloads = Array.from({ length: quantidade }, (_, i) =>
+      _buildPessoaPayload(i, estadosCivis, escolaridades, situacoesReligiosas),
+    );
 
-      await prisma.pessoa.create({
-        data: {
-          nome,
-          conhecidoPor,
-          nacionalidade: 'brasileira',
-          cpf: String(i).padStart(11, '0'),
-          sexo,
-          dataNascimento,
-          estadoCivilId: estadoCivil.id,
-          escolaridadeId: escolaridade.id,
-          situacaoReligiosaId: situacaoReligiosa.id,
-        },
-      });
-      console.log(`- Pessoa ${i + 1} de ${quantidade} criada: ${nome}`);
-    }
-
-    console.log('---------------------------------');
-    console.log('Pessoas preenchidas com sucesso!');
+    await prisma.pessoa.createMany({ data: payloads });
+    console.log(`Criadas ${quantidade} pessoas com sucesso!`);
   }
 }
 
@@ -474,3 +449,32 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+function _buildPessoaPayload(
+  index: number,
+  estadosCivis: EstadoCivil[],
+  escolaridades: Escolaridade[],
+  situacoes: SituacaoReligiosa[],
+) {
+  const sexo = faker.helpers.arrayElement(['MASCULINO', 'FEMININO']);
+  const nome = faker.person.fullName({
+    sex: sexo === 'MASCULINO' ? 'male' : 'female',
+  });
+  return {
+    nome,
+    conhecidoPor: faker.person.firstName(
+      sexo === 'MASCULINO' ? 'male' : 'female',
+    ),
+    nacionalidade: 'brasileira',
+    cpf: String(index).padStart(11, '0'),
+    sexo,
+    dataNascimento: faker.date.birthdate({
+      min: 1950,
+      max: 2010,
+      mode: 'year',
+    }),
+    estadoCivilId: faker.helpers.arrayElement(estadosCivis).id,
+    escolaridadeId: faker.helpers.arrayElement(escolaridades).id,
+    situacaoReligiosaId: faker.helpers.arrayElement(situacoes).id,
+  };
+}
