@@ -33,11 +33,10 @@ jobs:
       - name: Push da tag gerada
         run: git push --follow-tags
 
-      - name: Criar release draft com changelog
+      - name: Criar release final com changelog
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.VERSION }}
-          draft: true
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
