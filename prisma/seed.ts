@@ -72,7 +72,6 @@ async function main() {
   }
 
   async function situacaoReligiosa() {
-    // Copilot quero colocar a descricao e sexoUnico em um array e ter um for para fazer os creates
     const situacaoReligiosas = [
       { descricao: 'Leigo', sexoUnico: null },
       { descricao: 'Levantado(a)', sexoUnico: null },
