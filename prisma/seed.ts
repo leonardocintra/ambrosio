@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { PrismaClient, Sexo } from '@prisma/client';
+import { Escolaridade, EstadoCivil, SituacaoReligiosa } from 'neocatecumenal';
 
 const prisma = new PrismaClient();
 
@@ -20,6 +21,7 @@ async function main() {
   await diocese();
   await paroquia();
   await admin();
+  await pessoas(10);
 
   async function admin() {
     await prisma.user.create({
@@ -421,6 +423,22 @@ async function main() {
     console.log('---------------------------------');
     console.log('Paroquia preenchida com sucesso!');
   }
+
+  async function pessoas(quantidade: number) {
+    const [estadosCivis, escolaridades, situacoesReligiosas] =
+      await Promise.all([
+        prisma.estadoCivil.findMany(),
+        prisma.escolaridade.findMany(),
+        prisma.situacaoReligiosa.findMany(),
+      ]);
+
+    const payloads = Array.from({ length: quantidade }, (_, i) =>
+      _buildPessoaPayload(i, estadosCivis, escolaridades, situacoesReligiosas),
+    );
+
+    await prisma.pessoa.createMany({ data: payloads });
+    console.log(`Criadas ${quantidade} pessoas com sucesso!`);
+  }
 }
 
 main()
@@ -431,3 +449,32 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+function _buildPessoaPayload(
+  index: number,
+  estadosCivis: EstadoCivil[],
+  escolaridades: Escolaridade[],
+  situacoes: SituacaoReligiosa[],
+) {
+  const sexo = faker.helpers.arrayElement(['MASCULINO', 'FEMININO']);
+  const nome = faker.person.fullName({
+    sex: sexo === 'MASCULINO' ? 'male' : 'female',
+  });
+  return {
+    nome,
+    conhecidoPor: faker.person.firstName(
+      sexo === 'MASCULINO' ? 'male' : 'female',
+    ),
+    nacionalidade: 'brasileira',
+    cpf: String(index).padStart(11, '0'),
+    sexo,
+    dataNascimento: faker.date.birthdate({
+      min: 1950,
+      max: 2010,
+      mode: 'year',
+    }),
+    estadoCivilId: faker.helpers.arrayElement(estadosCivis).id,
+    escolaridadeId: faker.helpers.arrayElement(escolaridades).id,
+    situacaoReligiosaId: faker.helpers.arrayElement(situacoes).id,
+  };
+}
