@@ -61,7 +61,7 @@ $ npm run test:cov
 
 ## Stay in touch
 
-- Author - [Leonardo Cintra](https://instagram.com/leonardoncintra)
+- Author - [Leonardo Cintra](https://leonardoncintra.com.br)
 
 ## License
 
