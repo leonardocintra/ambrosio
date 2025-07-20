@@ -3,6 +3,7 @@ import {
   ForbiddenException,
   HttpException,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
@@ -22,15 +23,23 @@ import { CarismaVinculado, Pessoa } from 'neocatecumenal';
 import { pessoa } from '@prisma/client';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
-import { CreateCarismasDto } from './dto/create-carisma.dto';
+import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
+import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
+import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
+import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 
 @Injectable()
 export class PessoaService {
+  private readonly logger = new Logger(PessoaService.name);
+
   constructor(
     private prisma: PrismaService,
     private estadoCivilService: EstadoCivilService,
     private escolaridadeService: EscolaridadeService,
     private situacaoReligiosaService: SituacaoReligiosaService,
+    private carismaVinculadoService: TipoCarismaVinculadoService,
+    private carismaPrimitivoService: TipoCarismaPrimitivoService,
+    private carismaServicoService: TipoCarismaServicoService,
     private abilityService: CaslAbilityService,
   ) {}
 
@@ -206,8 +215,43 @@ export class PessoaService {
     }
   }
 
-  async createCarismas(pessoaId: number, dto: CreateCarismasDto) {
-    throw new HttpException('Método createCarismas não implementado', 501);
+  async createCarismas(pessoaId: number, dto: CreatePessoaCarismasDto) {
+    await this.findOne(pessoaId);
+
+    const primitivos =
+      await this.carismaPrimitivoService.registerCarismaPrimitivoPessoa({
+        pessoaId,
+        carismas: dto.carismas.primitivos || [],
+      });
+    this.logger.log(
+      `Carismas primitivos registrados para a pessoa com ID ${pessoaId}`,
+    );
+
+    const servicos =
+      await this.carismaServicoService.registerCarismaServicoPessoa({
+        pessoaId,
+        carismas: dto.carismas.servicos || [],
+      });
+    this.logger.log(
+      `Carismas serviços registrados para a pessoa com ID ${pessoaId}`,
+    );
+
+    const vinculados =
+      await this.carismaVinculadoService.registerCarismaVinculadoPessoa({
+        pessoaId,
+        carismas: dto.carismas.vinculados || [],
+      });
+    this.logger.log(
+      `Carismas vinculados registrados para a pessoa com ID ${pessoaId}`,
+    );
+
+    return {
+      carismas: {
+        primitivos,
+        servicos,
+        vinculados,
+      },
+    };
   }
 
   async findAllBySexoEstadoCivilCasado(sexo: string) {

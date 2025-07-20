@@ -7,6 +7,9 @@ import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade
 import { JwtService } from '@nestjs/jwt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
+import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
+import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
+import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
 
 describe('PessoaController', () => {
   let controller: PessoaController;
@@ -14,6 +17,9 @@ describe('PessoaController', () => {
   let estadoCivilService: EstadoCivilService;
   let escolaridadeService: EscolaridadeService;
   let situacaoReligiosaService: SituacaoReligiosaService;
+  let tipoCarismaVinculadoService: TipoCarismaVinculadoService;
+  let tipoCarismaServicoService: TipoCarismaServicoService;
+  let tipoCarismaPrimitivoService: TipoCarismaPrimitivoService;
   let jwtService: JwtService;
   let abilityService: CaslAbilityService;
 
@@ -55,6 +61,30 @@ describe('PessoaController', () => {
             remove: jest.fn(),
           },
         },
+        {
+          provide: TipoCarismaVinculadoService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            registerCarismaVinculadoPessoa: jest.fn(),
+          },
+        },
+        {
+          provide: TipoCarismaServicoService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            registerCarismaServicoPessoa: jest.fn(),
+          },
+        },
+        {
+          provide: TipoCarismaPrimitivoService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            registerCarismaPrimitivoPessoa: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -64,6 +94,15 @@ describe('PessoaController', () => {
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
     situacaoReligiosaService = module.get<SituacaoReligiosaService>(
       SituacaoReligiosaService,
+    );
+    tipoCarismaVinculadoService = module.get<TipoCarismaVinculadoService>(
+      TipoCarismaVinculadoService,
+    );
+    tipoCarismaServicoService = module.get<TipoCarismaServicoService>(
+      TipoCarismaServicoService,
+    );
+    tipoCarismaPrimitivoService = module.get<TipoCarismaPrimitivoService>(
+      TipoCarismaPrimitivoService,
     );
     jwtService = module.get<JwtService>(JwtService);
     abilityService =
@@ -78,5 +117,8 @@ describe('PessoaController', () => {
     expect(situacaoReligiosaService).toBeDefined();
     expect(jwtService).toBeDefined();
     expect(abilityService).toBeDefined();
+    expect(tipoCarismaVinculadoService).toBeDefined();
+    expect(tipoCarismaServicoService).toBeDefined();
+    expect(tipoCarismaPrimitivoService).toBeDefined();
   });
 });
