@@ -1,7 +1,16 @@
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
 import { Injectable, Scope } from '@nestjs/common';
-import { diocese, localidade, paroquia, pessoa, user } from '@prisma/client';
+import {
+  diocese,
+  localidade,
+  paroquia,
+  pessoa,
+  pessoaCarismaPrimitivo,
+  pessoaCarismaServico,
+  pessoaCarismaVinculado,
+  user,
+} from '@prisma/client';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 export type PermActions = 'manage' | 'create' | 'read' | 'update' | 'delete';
@@ -13,6 +22,9 @@ export type PermissionResource =
       diocese: diocese;
       paroquia: paroquia;
       localidade: localidade;
+      pessoaCarismaPrimitivo: pessoaCarismaPrimitivo;
+      pessoaCarismaVinculado: pessoaCarismaVinculado;
+      pessoaCarismaServico: pessoaCarismaServico;
     }>
   | 'all';
 

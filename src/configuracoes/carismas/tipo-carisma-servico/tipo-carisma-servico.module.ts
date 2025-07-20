@@ -5,5 +5,6 @@ import { TipoCarismaServicoController } from './tipo-carisma-servico.controller'
 @Module({
   controllers: [TipoCarismaServicoController],
   providers: [TipoCarismaServicoService],
+  exports: [TipoCarismaServicoService],
 })
 export class TipoCarismaServicoModule {}

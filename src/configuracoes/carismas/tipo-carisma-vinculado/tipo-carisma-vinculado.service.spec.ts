@@ -1,16 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TipoCarismaVinculadoService } from './tipo-carisma-vinculado.service';
 import { PrismaService } from 'src/prisma.service';
+import { CreateCarismaDto } from '../dto/create-carisma.dto';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 
 describe('TipoCarismaVinculadoService', () => {
   let service: TipoCarismaVinculadoService;
   let prismaService: PrismaService;
+  let abilityService: CaslAbilityService;
 
   // Mock do PrismaService
   const mockPrismaService = {
     tipoCarismaVinculado: {
       findMany: jest.fn(),
       findUniqueOrThrow: jest.fn(),
+    },
+    pessoaCarismaVinculado: {
+      createMany: jest.fn(),
     },
   };
 
@@ -19,6 +25,14 @@ describe('TipoCarismaVinculadoService', () => {
       providers: [
         TipoCarismaVinculadoService,
         { provide: PrismaService, useValue: mockPrismaService },
+        {
+          provide: CaslAbilityService,
+          useValue: {
+            ability: {
+              can: jest.fn().mockReturnValue(true),
+            },
+          },
+        },
       ],
     }).compile();
 
@@ -26,6 +40,8 @@ describe('TipoCarismaVinculadoService', () => {
       TipoCarismaVinculadoService,
     );
     prismaService = module.get<PrismaService>(PrismaService);
+    abilityService =
+      await module.resolve<CaslAbilityService>(CaslAbilityService);
   });
 
   afterEach(() => {
@@ -36,6 +52,7 @@ describe('TipoCarismaVinculadoService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
     expect(prismaService).toBeDefined();
+    expect(abilityService).toBeDefined();
   });
 
   it('should return all tipo carisma vinculado', async () => {
@@ -93,5 +110,58 @@ describe('TipoCarismaVinculadoService', () => {
     ).toHaveBeenCalledWith({
       where: { id },
     });
+  });
+
+  it('should register carisma vinculado pessoa with correct data', async () => {
+    // Mock do método createMany
+    mockPrismaService.pessoaCarismaVinculado = {
+      createMany: jest.fn().mockResolvedValue({ count: 2 }),
+    };
+
+    const createCarismaDto: CreateCarismaDto = {
+      pessoaId: 10,
+      carismas: [
+        { id: 1, descricao: 'Vinculado 1' },
+        { id: 2, descricao: 'Vinculado 2' },
+      ],
+    };
+
+    const expectedData = [
+      { pessoaId: 10, tipoCarismaVinculadoId: 1 },
+      { pessoaId: 10, tipoCarismaVinculadoId: 2 },
+    ];
+
+    const result =
+      await service.registerCarismaVinculadoPessoa(createCarismaDto);
+
+    expect(
+      mockPrismaService.pessoaCarismaVinculado.createMany,
+    ).toHaveBeenCalledWith({
+      data: expectedData,
+      skipDuplicates: true,
+    });
+    expect(result).toEqual({ count: 2 });
+  });
+
+  it('should handle empty carismas array in registerCarismaVinculadoPessoa', async () => {
+    mockPrismaService.pessoaCarismaVinculado = {
+      createMany: jest.fn().mockResolvedValue({ count: 0 }),
+    };
+
+    const createCarismaDto = {
+      pessoaId: 20,
+      carismas: [],
+    };
+
+    const result =
+      await service.registerCarismaVinculadoPessoa(createCarismaDto);
+
+    expect(
+      mockPrismaService.pessoaCarismaVinculado.createMany,
+    ).toHaveBeenCalledWith({
+      data: [],
+      skipDuplicates: true,
+    });
+    expect(result).toEqual({ count: 0 });
   });
 });

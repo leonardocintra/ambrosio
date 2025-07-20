@@ -5,6 +5,9 @@ import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
+import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
+import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
+import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
 
 describe('PessoaService', () => {
   let service: PessoaService;
@@ -12,6 +15,9 @@ describe('PessoaService', () => {
   let estadoCivilService: EstadoCivilService;
   let escolaridadeService: EscolaridadeService;
   let situacaoReligiosaService: SituacaoReligiosaService;
+  let tipoCarismaVinculadoService: TipoCarismaVinculadoService;
+  let tipoCarismaServicoService: TipoCarismaServicoService;
+  let tipoCarismaPrimitivoService: TipoCarismaPrimitivoService;
   let abilityService: CaslAbilityService;
 
   beforeEach(async () => {
@@ -50,6 +56,30 @@ describe('PessoaService', () => {
             remove: jest.fn(),
           },
         },
+        {
+          provide: TipoCarismaVinculadoService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            registerCarismaVinculadoPessoa: jest.fn(),
+          },
+        },
+        {
+          provide: TipoCarismaPrimitivoService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            registerCarismaPrimitivoPessoa: jest.fn(),
+          },
+        },
+        {
+          provide: TipoCarismaServicoService,
+          useValue: {
+            findAll: jest.fn(),
+            findOne: jest.fn(),
+            registerCarismaServicoPessoa: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -59,6 +89,15 @@ describe('PessoaService', () => {
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
     situacaoReligiosaService = module.get<SituacaoReligiosaService>(
       SituacaoReligiosaService,
+    );
+    tipoCarismaVinculadoService = module.get<TipoCarismaVinculadoService>(
+      TipoCarismaVinculadoService,
+    );
+    tipoCarismaServicoService = module.get<TipoCarismaServicoService>(
+      TipoCarismaServicoService,
+    );
+    tipoCarismaPrimitivoService = module.get<TipoCarismaPrimitivoService>(
+      TipoCarismaPrimitivoService,
     );
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
@@ -70,6 +109,9 @@ describe('PessoaService', () => {
     expect(estadoCivilService).toBeDefined();
     expect(escolaridadeService).toBeDefined();
     expect(situacaoReligiosaService).toBeDefined();
+    expect(tipoCarismaVinculadoService).toBeDefined();
+    expect(tipoCarismaServicoService).toBeDefined();
+    expect(tipoCarismaPrimitivoService).toBeDefined();
     expect(abilityService).toBeDefined();
   });
 });
