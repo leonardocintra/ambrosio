@@ -19,7 +19,7 @@ import {
 } from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
-import { CarismaVinculado, Pessoa } from 'neocatecumenal';
+import { Pessoa } from 'neocatecumenal';
 import { pessoa } from '@prisma/client';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
@@ -360,12 +360,20 @@ export class PessoaService {
       ativo: pessoa.ativo,
       escolaridade: pessoa.escolaridade,
       situacaoReligiosa: pessoa.situacaoReligiosa,
-      carismas: pessoa.pessoaCarisma?.map((carisma: CarismaVinculado) => {
-        return {
-          id: carisma.id,
-          descricao: carisma.descricao,
-        };
-      }),
+      carismas: {
+        primitivos: pessoa.carismasPrimitivo?.map((carisma) => ({
+          id: carisma.tipoCarismaPrimitivo.id,
+          descricao: carisma.tipoCarismaPrimitivo.descricao,
+        })),
+        servicos: pessoa.carismasServico?.map((carisma) => ({
+          id: carisma.tipoCarismaServico.id,
+          descricao: carisma.tipoCarismaServico.descricao,
+        })),
+        vinculados: pessoa.carismasVinculado?.map((carisma) => ({
+          id: carisma.tipoCarismaVinculado.id,
+          descricao: carisma.tipoCarismaVinculado.descricao,
+        })),
+      },
       enderecos: pessoa.enderecos?.map(serializeEndereco),
     };
   }
