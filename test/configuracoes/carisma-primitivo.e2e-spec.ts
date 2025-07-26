@@ -33,7 +33,7 @@ describe('CarismaPrimitivoController (e2e)', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.data.id).toBe(2);
-        expect(res.body.data.descricao).toBe('Vocacionada');
+        expect(res.body.data.descricao).toBe('Religioso(a)');
       });
   });
 
