@@ -74,7 +74,6 @@ async function main() {
   async function situacaoReligiosa() {
     const situacaoReligiosas = [
       { descricao: 'Leigo', sexoUnico: null },
-      { descricao: 'Levantado(a)', sexoUnico: null },
       { descricao: 'Seminarista', sexoUnico: Sexo.MASCULINO },
       { descricao: 'Religioso(a)', sexoUnico: null },
       { descricao: 'Diácono', sexoUnico: Sexo.MASCULINO },
@@ -310,14 +309,15 @@ async function main() {
 
   async function tipoCarismaPrimitivo() {
     const tiposCarisma = [
-      'Vocacionado',
-      'Vocacionada',
+      'Vocacionado(a)',
       'Religioso(a)',
       'Familia em Missão',
       'Irmãos/Irmãs em Missão',
       'Irmãos/Irmãs Itinerantes',
       'Familia Itinerante',
       'Pós Crisma',
+      'Presbítero',
+      'Freira',
     ];
 
     for (const descricao of tiposCarisma) {

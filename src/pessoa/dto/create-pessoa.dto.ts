@@ -51,7 +51,7 @@ export class CreatePessoaDto {
   @IsOptional()
   sexo: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   escolaridade: escolaridade;
 
   @IsNotEmpty()
