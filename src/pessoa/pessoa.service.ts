@@ -20,7 +20,12 @@ import {
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { Pessoa } from 'neocatecumenal';
-import { pessoa } from '@prisma/client';
+import {
+  escolaridade,
+  estadoCivil,
+  pessoa,
+  situacaoReligiosa,
+} from '@prisma/client';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
@@ -53,13 +58,8 @@ export class PessoaService {
 
     await this.analisarCPF(createPessoaDto.cpf);
 
-    const [estadoCivil, escolaridade, situacaoReligiosa] = await Promise.all([
-      await this.estadoCivilService.findOne(createPessoaDto.estadoCivil.id),
-      await this.escolaridadeService.findOne(createPessoaDto.escolaridade.id),
-      await this.situacaoReligiosaService.findOne(
-        createPessoaDto.situacaoReligiosa.id,
-      ),
-    ]);
+    const [estadoCivil, escolaridade, situacaoReligiosa] =
+      await this.getEstadoCivilEscolaridadeSituacaoReligiosa(createPessoaDto);
 
     return this.prisma.pessoa.create({
       data: {
@@ -69,7 +69,7 @@ export class PessoaService {
         nacionalidade: createPessoaDto.nacionalidade,
         estadoCivilId: estadoCivil.id,
         foto: createPessoaDto.foto,
-        escolaridadeId: escolaridade.id,
+        escolaridadeId: escolaridade?.id,
         situacaoReligiosaId: situacaoReligiosa.id,
         dataNascimento: createPessoaDto.dataNascimento
           ? new Date(createPessoaDto.dataNascimento)
@@ -310,13 +310,8 @@ export class PessoaService {
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
-    const [estadoCivil, escolaridade, situacaoReligiosa] = await Promise.all([
-      this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
-      this.escolaridadeService.findOne(updatePessoaDto.escolaridade.id),
-      this.situacaoReligiosaService.findOne(
-        updatePessoaDto.situacaoReligiosa.id,
-      ),
-    ]);
+    const [estadoCivil, escolaridade, situacaoReligiosa] =
+      await this.getEstadoCivilEscolaridadeSituacaoReligiosa(updatePessoaDto);
 
     const pessoa = await this.prisma.pessoa.update({
       where: { id },
@@ -327,7 +322,7 @@ export class PessoaService {
         nacionalidade: updatePessoaDto.nacionalidade,
         estadoCivilId: estadoCivil.id,
         foto: updatePessoaDto.foto,
-        escolaridadeId: escolaridade.id,
+        escolaridadeId: escolaridade ? escolaridade.id : null,
         situacaoReligiosaId: situacaoReligiosa.id,
         sexo:
           updatePessoaDto.sexo === 'MASCULINO'
@@ -378,7 +373,7 @@ export class PessoaService {
     };
   }
 
-  private async getConjugue(pessoa) {
+  private async getConjugue(pessoa: pessoa) {
     if (pessoa.estadoCivilId !== Number(process.env.ESTADO_CIVIL_CASADO_ID)) {
       return;
     }
@@ -427,5 +422,21 @@ export class PessoaService {
         `O CPF ja registrado para ${pessoa.nome} de id: ${pessoa.id}`,
       );
     }
+  }
+
+  private async getEscolaridadeById(id: number): Promise<escolaridade | null> {
+    return id ? this.escolaridadeService.findOne(id) : Promise.resolve(null);
+  }
+
+  private async getEstadoCivilEscolaridadeSituacaoReligiosa(
+    updatePessoaDto: UpdatePessoaDto,
+  ): Promise<[estadoCivil, escolaridade, situacaoReligiosa]> {
+    return await Promise.all([
+      this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
+      this.getEscolaridadeById(updatePessoaDto?.escolaridade?.id),
+      this.situacaoReligiosaService.findOne(
+        updatePessoaDto.situacaoReligiosa.id,
+      ),
+    ]);
   }
 }
