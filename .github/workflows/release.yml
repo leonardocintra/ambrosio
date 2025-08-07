@@ -40,3 +40,7 @@ jobs:
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Acionar deploy automático
+        run: |
+          curl -X GET "${{ secrets.EASY_PANEL_DEPLOY_AUTOMATIC }}"
