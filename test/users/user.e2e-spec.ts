@@ -53,7 +53,7 @@ describe('UserController (e2e)', () => {
     expect(response.body).toMatchObject({
       server: '127.0.0.1/users',
       page: 1,
-      limit: 50,
+      limit: 1,
       data: {
         email,
         name,
