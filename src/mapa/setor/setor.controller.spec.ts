@@ -17,7 +17,7 @@ describe('SetorController', () => {
           useValue: {
             setor: {
               findMany: jest.fn(),
-              findUnique: jest.fn(),
+              findUniqueOrThrow: jest.fn(),
             },
           },
         },
@@ -35,8 +35,8 @@ describe('SetorController', () => {
 
   it('should return all setores', async () => {
     const setores = [
-      { id: 1, descricao: 'Setor 1', ativo: true },
-      { id: 2, descricao: 'Setor 2', ativo: false },
+      { id: 1, descricao: 'Setor 1', ativo: true, macroRegiaoId: 1 },
+      { id: 2, descricao: 'Setor 2', ativo: false, macroRegiaoId: 2 },
     ];
     jest.spyOn(prisma.setor, 'findMany').mockResolvedValue(setores);
 
@@ -44,14 +44,19 @@ describe('SetorController', () => {
   });
 
   it('should return a setor by id', async () => {
-    const setor = { id: 1, descricao: 'Setor 1', ativo: true };
-    jest.spyOn(prisma.setor, 'findUnique').mockResolvedValue(setor);
+    const setor = {
+      id: 1,
+      descricao: 'Setor 1',
+      ativo: true,
+      macroRegiaoId: 1,
+    };
+    jest.spyOn(prisma.setor, 'findUniqueOrThrow').mockResolvedValue(setor);
 
     expect(await controller.findOne('1')).toEqual(setor);
   });
 
   it('should return undefined for a non-existing setor', async () => {
-    jest.spyOn(prisma.setor, 'findUnique').mockResolvedValue(null);
+    jest.spyOn(prisma.setor, 'findUniqueOrThrow').mockResolvedValue(null);
 
     expect(await controller.findOne('999')).toBeNull();
   });

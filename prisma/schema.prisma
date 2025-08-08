@@ -274,13 +274,16 @@ model user {
 }
 
 model setor {
-  id        Int     @id @default(autoincrement())
-  descricao String  @db.VarChar(50)
-  ativo     Boolean @default(true)
+  id            Int         @id @default(autoincrement())
+  descricao     String      @db.VarChar(50)
+  macroRegiaoId Int
+  macroRegiao   macroRegiao @relation(fields: [macroRegiaoId], references: [id], onDelete: Restrict)
+  ativo         Boolean     @default(true)
 }
 
 model macroRegiao {
   id        Int     @id @default(autoincrement())
   descricao String  @db.VarChar(50)
   ativo     Boolean @default(true)
+  setor     setor[]
 }

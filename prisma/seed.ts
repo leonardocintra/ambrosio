@@ -8,6 +8,8 @@ async function main() {
   await pais();
   await estado();
   await cidade();
+  await macroRegiao();
+  await setor();
   await estadoCivil();
   await escolaridade();
   await situacaoReligiosa();
@@ -189,6 +191,86 @@ async function main() {
 
     console.log('---------------------------------');
     console.log('Estados (UF) preenchido com sucesso!');
+  }
+
+  async function macroRegiao() {
+    const macrosRegiao = ['Franca', 'Brasília', 'Goiás'];
+
+    for (const macro of macrosRegiao) {
+      await prisma.macroRegiao.create({
+        data: {
+          descricao: macro,
+        },
+      });
+    }
+
+    console.log('---------------------------------');
+    console.log('Macro Regiões preenchidas com sucesso!');
+  }
+
+  async function setor() {
+    const setores = [
+      {
+        macroRegiaoId: 1,
+        descricao: 'Anhaguera - Setor 1',
+      },
+      {
+        macroRegiaoId: 1,
+        descricao: 'Anhaguera - Setor 2',
+      },
+      {
+        macroRegiaoId: 1,
+        descricao: 'Portinari - Setor 1',
+      },
+      {
+        macroRegiaoId: 1,
+        descricao: 'Portinari - Setor 2',
+      },
+      {
+        macroRegiaoId: 2,
+        descricao: 'Brasilia - Setor 1',
+      },
+      {
+        macroRegiaoId: 2,
+        descricao: 'Brasilia - Setor 2',
+      },
+      {
+        macroRegiaoId: 2,
+        descricao: 'Brasilia - Setor 3',
+      },
+      {
+        macroRegiaoId: 2,
+        descricao: 'Brasilia - Setor 4',
+      },
+      {
+        macroRegiaoId: 2,
+        descricao: 'Brasilia - Setor 5',
+      },
+      {
+        macroRegiaoId: 3,
+        descricao: 'Centro Oeste - GO 1',
+      },
+      {
+        macroRegiaoId: 3,
+        descricao: 'Centro Oeste - GO 2',
+      },
+      {
+        macroRegiaoId: 3,
+        descricao: 'Centro Oeste - GO 3',
+      },
+    ];
+
+    for (const setor of setores) {
+      await prisma.setor.create({
+        data: {
+          descricao: setor.descricao,
+          macroRegiaoId: setor.macroRegiaoId,
+        },
+      });
+    }
+
+    console.log('---------------------------------');
+    console.log('Setores preenchidos com sucesso!');
   }
 
   async function cidade() {
