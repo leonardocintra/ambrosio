@@ -32,17 +32,21 @@ jobs:
       - name: 📦 Instalar dependências
         run: npm install
 
-      - name: 🛠️ Rodar migrations
-        run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
-
       - name: ⏳ Aguardar banco estar pronto
         run: |
           until pg_isready -h localhost -p 5432 -U user; do
             echo "Aguardando o PostgreSQL iniciar..."
             sleep 5
           done
+
+      - name: 🏗️ Criar schema do banco
+        run: |
+          PGPASSWORD=password psql -h localhost -U user -d mydb -c "CREATE SCHEMA IF NOT EXISTS ambrosio;"
+
+      - name: 🛠️ Rodar migrations
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
       - name: 🚀 Rodar testes
         run: npm run test && npm run test:e2e
