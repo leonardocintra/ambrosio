@@ -1,8 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { setupTestModule } from '../test-setup';
-import { faker } from '@faker-js/faker/.';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
+import { faker } from '@faker-js/faker/locale/pt_BR';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;

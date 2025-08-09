@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { setupTestModule } from './test-setup';
 import request from 'supertest';
-import { faker } from '@faker-js/faker/.';
+import { faker } from '@faker-js/faker/locale/pt_BR';
 
 describe('DioceseController (e2e)', () => {
   let app: INestApplication;
@@ -175,7 +175,9 @@ describe('DioceseController (e2e)', () => {
       .send(dioceseData)
       .expect(404)
       .expect((res) => {
-        expect(res.body.message).toBe(`O registro de 'Tipo de Diocese' não foi encontrado.`);
+        expect(res.body.message).toBe(
+          `O registro de 'Tipo de Diocese' não foi encontrado.`,
+        );
         expect(res.body.statusCode).toBe(404);
       });
   });

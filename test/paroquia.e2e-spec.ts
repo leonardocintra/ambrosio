@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { setupTestModule } from './test-setup';
 import request from 'supertest';
-import { faker } from '@faker-js/faker/.';
+import { faker } from '@faker-js/faker/locale/pt_BR';
 
 describe('ParoquiaController (e2e)', () => {
   let app: INestApplication;
@@ -195,7 +195,7 @@ describe('ParoquiaController (e2e)', () => {
         logradouro: faker.location.streetAddress(),
         numero: '32',
         bairro: faker.location.secondaryAddress(),
-        UF: 'SP',
+        UF: faker.location.state({ abbreviated: true }),
         cidade: faker.location.city(),
       },
     };
@@ -368,7 +368,7 @@ describe('ParoquiaController (e2e)', () => {
   it(`/${principal} (PATCH) - 404 | não deve atualizar uma paroquia com id endereco que nao pertence a ela mesma`, async () => {
     const dioceseData = {
       descricao: faker.company.name(),
-      diocese: { id: 2 },
+      diocese: { id: 1 },
       endereco: {
         id: 9874,
         cep: faker.location.zipCode('########'),
