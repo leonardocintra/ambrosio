@@ -34,13 +34,13 @@ describe('MacroRegiaoController', () => {
 
   it('should return a macro-regiao by id', async () => {
     const macroRegiao = { id: 1, descricao: 'Macro Região 1', ativo: true };
-    jest.spyOn(prisma.macroRegiao, 'findUnique').mockResolvedValue(macroRegiao);
+    jest.spyOn(prisma.macroRegiao, 'findUniqueOrThrow').mockResolvedValue(macroRegiao);
 
     expect(await controller.findOne('1')).toEqual(macroRegiao);
   });
 
   it('should return null for a non-existing macro-regiao', async () => {
-    jest.spyOn(prisma.macroRegiao, 'findUnique').mockResolvedValue(null);
+    jest.spyOn(prisma.macroRegiao, 'findUniqueOrThrow').mockResolvedValue(null);
 
     expect(await controller.findOne('999')).toBeNull();
   });

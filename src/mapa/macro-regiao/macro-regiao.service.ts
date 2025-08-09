@@ -10,7 +10,7 @@ export class MacroRegiaoService {
   }
 
   findOne(id: number) {
-    return this.prisma.macroRegiao.findUnique({
+    return this.prisma.macroRegiao.findUniqueOrThrow({
       where: { id },
     });
   }

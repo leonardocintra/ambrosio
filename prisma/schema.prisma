@@ -11,6 +11,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["ambrosio"]
 }
 
 model pais {
@@ -23,6 +24,8 @@ model pais {
   lingua              String   @db.VarChar(50)
   capital             String   @db.VarChar(100)
   estado              estado[]
+
+  @@schema("ambrosio")
 }
 
 model estado {
@@ -33,6 +36,8 @@ model estado {
   paisId Int
   pais   pais     @relation(fields: [paisId], references: [id])
   cidade cidade[]
+
+  @@schema("ambrosio")
 }
 
 model cidade {
@@ -42,6 +47,8 @@ model cidade {
   estado   estado     @relation(fields: [estadoId], references: [id])
   ativo    Boolean    @default(true) @db.Boolean
   endereco endereco[]
+
+  @@schema("ambrosio")
 }
 
 model endereco {
@@ -57,23 +64,31 @@ model endereco {
   pessoas    pessoaEndereco[]
   localidade localidade[]
   diocese    diocese[]
+
+  @@schema("ambrosio")
 }
 
 model estadoCivil {
   id        Int      @id @default(autoincrement())
   descricao String   @unique @db.VarChar(20)
   pessoas   pessoa[]
+
+  @@schema("ambrosio")
 }
 
 model escolaridade {
   id        Int      @id @default(autoincrement())
   descricao String   @unique @db.VarChar(30)
   pessoas   pessoa[]
+
+  @@schema("ambrosio")
 }
 
 enum Sexo {
   MASCULINO
   FEMININO
+
+  @@schema("ambrosio")
 }
 
 model pessoa {
@@ -100,6 +115,8 @@ model pessoa {
   carismasServico      pessoaCarismaServico[]
   carismasVinculado    pessoaCarismaVinculado[]
   carismasPrimitivo    pessoaCarismaPrimitivo[]
+
+  @@schema("ambrosio")
 }
 
 model situacaoReligiosa {
@@ -107,24 +124,32 @@ model situacaoReligiosa {
   descricao String   @unique @db.VarChar(50)
   sexoUnico Sexo?
   pessoa    pessoa[]
+
+  @@schema("ambrosio")
 }
 
 model tipoCarismaServico {
   id        Int                    @id @default(autoincrement())
   descricao String                 @unique @db.VarChar(80)
   pessoas   pessoaCarismaServico[]
+
+  @@schema("ambrosio")
 }
 
 model tipoCarismaVinculado {
   id        Int                      @id @default(autoincrement())
   descricao String                   @unique @db.VarChar(80)
   pessoas   pessoaCarismaVinculado[]
+
+  @@schema("ambrosio")
 }
 
 model tipoCarismaPrimitivo {
   id        Int                      @id @default(autoincrement())
   descricao String                   @unique @db.VarChar(80)
   pessoas   pessoaCarismaPrimitivo[]
+
+  @@schema("ambrosio")
 }
 
 model pessoaCarismaServico {
@@ -134,6 +159,7 @@ model pessoaCarismaServico {
   tipoCarismaServico   tipoCarismaServico @relation(fields: [tipoCarismaServicoId], references: [id], onDelete: Cascade)
 
   @@id([pessoaId, tipoCarismaServicoId])
+  @@schema("ambrosio")
 }
 
 model pessoaCarismaVinculado {
@@ -143,6 +169,7 @@ model pessoaCarismaVinculado {
   tipoCarismaVinculado   tipoCarismaVinculado @relation(fields: [tipoCarismaVinculadoId], references: [id], onDelete: Cascade)
 
   @@id([pessoaId, tipoCarismaVinculadoId])
+  @@schema("ambrosio")
 }
 
 model pessoaCarismaPrimitivo {
@@ -152,6 +179,7 @@ model pessoaCarismaPrimitivo {
   tipoCarismaPrimitivo   tipoCarismaPrimitivo @relation(fields: [tipoCarismaPrimitivoId], references: [id], onDelete: Cascade)
 
   @@id([pessoaId, tipoCarismaPrimitivoId])
+  @@schema("ambrosio")
 }
 
 model pessoaEndereco {
@@ -161,6 +189,7 @@ model pessoaEndereco {
   endereco   endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([pessoaId, enderecoId])
+  @@schema("ambrosio")
 }
 
 model pessoaCasal {
@@ -171,6 +200,7 @@ model pessoaCasal {
   mulher         pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([pessoaMaridoId, pessoaMulherId])
+  @@schema("ambrosio")
 }
 
 model passaportePessoa {
@@ -181,6 +211,8 @@ model passaportePessoa {
   renovado      Boolean   @default(false)
   dataRenovacao DateTime?
   pessoa        pessoa    @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
+
+  @@schema("ambrosio")
 }
 
 model pessoaContato {
@@ -192,12 +224,16 @@ model pessoaContato {
   email               String?
   pessoaId            Int
   pessoa              pessoa  @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@schema("ambrosio")
 }
 
 model tipoDiocese {
   id        Int       @id @default(autoincrement())
   descricao String    @db.VarChar(50)
   dioceses  diocese[]
+
+  @@schema("ambrosio")
 }
 
 model diocese {
@@ -209,6 +245,8 @@ model diocese {
   endereco      endereco     @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
   paroquias     paroquia[]
   localidade    localidade[]
+
+  @@schema("ambrosio")
 }
 
 model paroquia {
@@ -218,16 +256,22 @@ model paroquia {
   endereco   endereco @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
   diocese    diocese  @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
   descricao  String   @db.VarChar(50)
+
+  @@schema("ambrosio")
 }
 
 model etapa {
   id        Int    @id @default(autoincrement())
   descricao String @db.VarChar(50)
+
+  @@schema("ambrosio")
 }
 
 model tipoEquipe {
   id        Int    @id @default(autoincrement())
   descricao String @db.VarChar(80)
+
+  @@schema("ambrosio")
 }
 
 model localidade {
@@ -240,12 +284,16 @@ model localidade {
   observacao       String?
   enderecoId       Int
   endereco         endereco       @relation(fields: [enderecoId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@schema("ambrosio")
 }
 
 model tipoLocalidade {
   id         Int          @id @default(autoincrement())
   descricao  String       @db.VarChar(80)
   localidade localidade[]
+
+  @@schema("ambrosio")
 }
 
 enum roles {
@@ -258,6 +306,8 @@ enum roles {
   SECRETARIA_CNC
   SECRETARIA_PAROQUIA
   NAO_IDENTIFICADO
+
+  @@schema("ambrosio")
 }
 
 model user {
@@ -265,22 +315,31 @@ model user {
   name             String
   email            String   @unique
   password         String
-  role             roles    @default(SECRETARIA_PAROQUIA)
+  role             roles    @default(NAO_IDENTIFICADO)
   whatsapp         String?  @db.VarChar(20)
   verifiedWhatsapp Boolean  @default(false)
   active           Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@schema("ambrosio")
 }
 
 model setor {
-  id        Int     @id @default(autoincrement())
-  descricao String  @db.VarChar(50)
-  ativo     Boolean @default(true)
+  id            Int         @id @default(autoincrement())
+  descricao     String      @db.VarChar(50)
+  macroRegiaoId Int
+  macroRegiao   macroRegiao @relation(fields: [macroRegiaoId], references: [id], onDelete: Restrict)
+  ativo         Boolean     @default(true)
+
+  @@schema("ambrosio")
 }
 
 model macroRegiao {
   id        Int     @id @default(autoincrement())
   descricao String  @db.VarChar(50)
   ativo     Boolean @default(true)
+  setor     setor[]
+
+  @@schema("ambrosio")
 }

@@ -15,7 +15,7 @@ describe('SetorService', () => {
   const prismaMock = {
     setor: {
       findMany: jest.fn().mockResolvedValue(mockSetorArray),
-      findUnique: jest
+      findUniqueOrThrow: jest
         .fn()
         .mockImplementation(({ where: { id } }) =>
           Promise.resolve(mockSetorArray.find((setor) => setor.id === id)),
@@ -51,16 +51,18 @@ describe('SetorService', () => {
   describe('findOne', () => {
     it('should return a setor by id', async () => {
       const result = await service.findOne(1);
-      expect(prisma.setor.findUnique).toHaveBeenCalledWith({
+      expect(prisma.setor.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: 1 },
+        include: { macroRegiao: true },
       });
       expect(result).toEqual(mockSetor);
     });
 
     it('should return undefined if setor not found', async () => {
       const result = await service.findOne(999);
-      expect(prisma.setor.findUnique).toHaveBeenCalledWith({
+      expect(prisma.setor.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: 999 },
+        include: { macroRegiao: true },
       });
       expect(result).toBeUndefined();
     });

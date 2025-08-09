@@ -5,13 +5,21 @@ import { PrismaService } from 'src/prisma.service';
 export class SetorService {
   constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.setor.findMany();
+  findAll(macroRegiaoId?: number) {
+    return this.prisma.setor.findMany({
+      where: macroRegiaoId ? { macroRegiaoId } : undefined,
+      include: {
+        macroRegiao: true,
+      },
+    });
   }
 
   findOne(id: number) {
-    return this.prisma.setor.findUnique({
+    return this.prisma.setor.findUniqueOrThrow({
       where: { id },
+      include: {
+        macroRegiao: true,
+      },
     });
   }
 }
