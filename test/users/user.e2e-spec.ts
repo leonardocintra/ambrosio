@@ -8,6 +8,7 @@ describe('UserController (e2e)', () => {
   let app: INestApplication;
   const email = faker.internet.email();
   const name = faker.person.fullName();
+  const cpf = '07244455569';
   const password = faker.internet.password();
   const whatsapp = '16999999999';
 
@@ -44,6 +45,7 @@ describe('UserController (e2e)', () => {
   it('/users (POST) - Deve criar um usuário com sucesso', async () => {
     const response = await request(app.getHttpServer()).post('/users').send({
       email,
+      cpf,
       password,
       name,
       whatsapp,
@@ -57,6 +59,7 @@ describe('UserController (e2e)', () => {
       data: {
         email,
         name,
+        cpf,
         role: ROLE_ENUM.NAO_IDENTIFICADO,
         whatsapp,
         verifiedWhatsapp: false,
@@ -76,6 +79,7 @@ describe('UserController (e2e)', () => {
   it('/users (POST) - Não deve permitir e-mail duplicado', async () => {
     const response = await request(app.getHttpServer()).post('/users').send({
       email,
+      cpf: '07211133215',
       password: 'admin',
       name,
       whatsapp,
@@ -84,6 +88,21 @@ describe('UserController (e2e)', () => {
     expect(response.status).toBe(400);
     expect(response.body.message).toContain(
       `O campo 'email' já existe cadastrado. Não permitimos duplicidade.`,
+    );
+  });
+
+  it('/users (POST) - Não deve permitir CPF duplicado', async () => {
+    const response = await request(app.getHttpServer()).post('/users').send({
+      email,
+      cpf,
+      password: 'admin',
+      name,
+      whatsapp,
+    });
+
+    expect(response.status).toBe(409);
+    expect(response.body.message).toContain(
+      `Já tem um usuario com esse CPF ${cpf}`,
     );
   });
 
