@@ -30,6 +30,12 @@ export class ParoquiaService {
   ) {}
 
   async create(createParoquiaDto: CreateParoquiaDto) {
+    const { ability } = this.abilityService;
+    if (!ability.can('create', 'paroquia')) {
+      throw new ForbiddenException(
+        'Você não tem permissão para criar paróquias',
+      );
+    }
     await this.dioceseService.findOne(createParoquiaDto.diocese.id);
 
     try {

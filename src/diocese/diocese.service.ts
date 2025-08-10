@@ -30,6 +30,12 @@ export class DioceseService {
   ) {}
 
   async create(createDioceseDto: CreateDioceseDto): Promise<Diocese> {
+    const { ability } = this.abilityService;
+    if (!ability.can('create', 'diocese')) {
+      throw new ForbiddenException(
+        'Você não tem permissão para criar dioceses',
+      );
+    }
     await this.tipoDioceseService.findOne(createDioceseDto.tipoDiocese.id);
 
     try {
@@ -63,7 +69,7 @@ export class DioceseService {
   }
 
   async findAll(): Promise<Diocese[]> {
-    const where = this.asPermissions();
+    const where = this.asPermissionsRead();
     const results = await this.prisma.diocese.findMany({
       where,
       select: DIOCESE_SELECT,
@@ -73,7 +79,7 @@ export class DioceseService {
   }
 
   async findOne(id: number): Promise<Diocese> {
-    const wherePermissions = this.asPermissions();
+    const wherePermissions = this.asPermissionsRead();
     const diocese = await this.prisma.diocese.findFirstOrThrow({
       where: {
         AND: [{ id }, wherePermissions],
@@ -143,7 +149,7 @@ export class DioceseService {
     return `This action removes a #${id} diocese`;
   }
 
-  private asPermissions() {
+  private asPermissionsRead() {
     const { ability } = this.abilityService;
     if (!ability.can('read', 'diocese')) {
       throw new ForbiddenException(

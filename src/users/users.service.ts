@@ -1,22 +1,48 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
+import { PessoaService } from 'src/pessoa/pessoa.service';
 
 @Injectable()
 export class UsersService {
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(
     private readonly prismaService: PrismaService,
     private readonly abilityService: CaslAbilityService,
+    private readonly pessoaService: PessoaService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
+    await this.pessoaService.analisarCPF(createUserDto.cpf);
+
+    let pessoaId: number | null = null;
+
+    try {
+      const pessoa = await this.pessoaService.findOneByCpf(createUserDto.cpf);
+      pessoaId = pessoa?.id || null;
+    } catch {
+      this.logger.log(
+        `Pessoa ${createUserDto.cpf} não encontrada, criando usuário sem vínculo`,
+      );
+    }
+
+    await this.validateUniqueCpf(createUserDto.cpf);
+
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
     return this.prismaService.user.create({
       data: {
+        pessoaId,
         ...createUserDto,
         password: hashedPassword,
         role: ROLE_ENUM.NAO_IDENTIFICADO,
@@ -53,5 +79,15 @@ export class UsersService {
     return this.prismaService.user.delete({
       where: { id },
     });
+  }
+
+  private async validateUniqueCpf(cpf: string) {
+    const cpfAlreadyExists = await this.prismaService.user.findFirst({
+      where: { cpf },
+    });
+
+    if (cpfAlreadyExists) {
+      throw new ConflictException(`Já tem um usuario com esse CPF ${cpf}`);
+    }
   }
 }

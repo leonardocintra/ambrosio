@@ -275,6 +275,12 @@ export class PessoaService {
     );
   }
 
+  async findOneByCpf(cpf: string) {
+    return await this.prisma.pessoa.findFirst({
+      where: { cpf },
+    });
+  }
+
   async findOne(id: number) {
     const result: pessoa = await this.prisma.pessoa.findUniqueOrThrow({
       where: { id },
@@ -407,16 +413,14 @@ export class PessoaService {
     }
   }
 
-  private async analisarCPF(cpf: string) {
+  async analisarCPF(cpf: string) {
     // TODO: colocar validacao de CPF aqui
 
     if (cpf === undefined || cpf === '') {
       return;
     }
 
-    const pessoa = await this.prisma.pessoa.findFirst({
-      where: { cpf },
-    });
+    const pessoa = await this.findOneByCpf(cpf);
     if (pessoa) {
       throw new ConflictException(
         `O CPF ja registrado para ${pessoa.nome} de id: ${pessoa.id}`,
