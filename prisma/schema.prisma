@@ -115,6 +115,7 @@ model pessoa {
   carismasServico      pessoaCarismaServico[]
   carismasVinculado    pessoaCarismaVinculado[]
   carismasPrimitivo    pessoaCarismaPrimitivo[]
+  user                 user[]
 
   @@schema("ambrosio")
 }
@@ -317,6 +318,9 @@ model user {
   password         String
   role             roles    @default(NAO_IDENTIFICADO)
   whatsapp         String?  @db.VarChar(20)
+  cpf              String?  @db.VarChar(11)
+  pessoaId         Int?
+  pessoa           pessoa?  @relation(fields: [pessoaId], references: [id])
   verifiedWhatsapp Boolean  @default(false)
   active           Boolean  @default(false)
   createdAt        DateTime @default(now())

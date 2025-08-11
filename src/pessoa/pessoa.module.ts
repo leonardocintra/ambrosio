@@ -12,6 +12,7 @@ import { TipoCarismaServicoModule } from 'src/configuracoes/carismas/tipo-carism
 @Module({
   controllers: [PessoaController],
   providers: [PessoaService],
+  exports: [PessoaService],
   imports: [
     EscolaridadeModule,
     EstadoCivilModule,
