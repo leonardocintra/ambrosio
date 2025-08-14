@@ -20,7 +20,7 @@ export class EstadoService {
     });
 
     if (uf) {
-      this.logger.warn(`Estado ${uf.nome} (${uf.sigla}) já existe cadastrado.`);
+      this.logger.log(`Estado ${uf.nome} (${uf.sigla}) já existe cadastrado.`);
       return uf;
     }
 

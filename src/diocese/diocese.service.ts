@@ -17,26 +17,27 @@ import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { Diocese } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select';
+import { SetorService } from 'src/mapa/setor/setor.service';
+import { BaseService } from 'src/commons/base.service';
 
 @Injectable()
-export class DioceseService {
+export class DioceseService extends BaseService {
   private readonly logger = new Logger(DioceseService.name);
 
   constructor(
     private prisma: PrismaService,
     private enderecoService: EnderecoService,
     private readonly tipoDioceseService: TipoDioceseService,
-    private readonly abilityService: CaslAbilityService,
-  ) {}
+    private readonly setorService: SetorService,
+    protected readonly abilityService: CaslAbilityService,
+  ) {
+    super(abilityService);
+  }
 
   async create(createDioceseDto: CreateDioceseDto): Promise<Diocese> {
-    const { ability } = this.abilityService;
-    if (!ability.can('create', 'diocese')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para criar dioceses',
-      );
-    }
+    this.validateCreateAbility('diocese');
     await this.tipoDioceseService.findOne(createDioceseDto.tipoDiocese.id);
+    await this.setorService.findOne(createDioceseDto.setor.id);
 
     try {
       const result = await this.prisma.$transaction(async (transaction) => {
@@ -53,6 +54,7 @@ export class DioceseService {
             descricao: createDioceseDto.descricao,
             tipoDioceseId: createDioceseDto.tipoDiocese.id,
             enderecoId: endereco.id,
+            setorId: createDioceseDto.setor.id,
           },
           select: DIOCESE_SELECT,
         });
@@ -84,10 +86,7 @@ export class DioceseService {
       where: {
         AND: [{ id }, wherePermissions],
       },
-      include: {
-        tipoDiocese: true,
-        endereco: ENDERECO_INCLUDE,
-      },
+      select: DIOCESE_SELECT,
     });
 
     return this.serializeResponse(diocese);
@@ -97,13 +96,21 @@ export class DioceseService {
     id: number,
     updateDioceseDto: UpdateDioceseDto,
   ): Promise<Diocese> {
-    const tipoDiocese = await this.tipoDioceseService.findOne(
-      updateDioceseDto.tipoDiocese.id,
-    );
+    this.validateUpdateAbility('diocese');
 
     const diocese = await this.findOne(id);
-    if (!diocese) {
-      throw new NotFoundException('Diocese não encontrada');
+
+    let setorId = diocese.setor.id;
+    let tipoDioceseId = diocese.tipoDiocese.id;
+
+    if (updateDioceseDto.setor) {
+      await this.setorService.findOne(updateDioceseDto.setor.id);
+      setorId = updateDioceseDto.setor.id;
+    }
+
+    if (updateDioceseDto.tipoDiocese) {
+      await this.tipoDioceseService.findOne(updateDioceseDto.tipoDiocese.id);
+      tipoDioceseId = updateDioceseDto.tipoDiocese.id;
     }
 
     this.validarEnderecoPertenceDiocese(
@@ -122,12 +129,18 @@ export class DioceseService {
         return await transaction.diocese.update({
           data: {
             descricao: updateDioceseDto.descricao,
-            tipoDioceseId: tipoDiocese.id,
+            tipoDioceseId,
+            setorId,
             enderecoId: endereco.id,
           },
           include: {
             endereco: ENDERECO_INCLUDE,
             tipoDiocese: true,
+            setor: {
+              include: {
+                macroRegiao: true,
+              },
+            },
           },
           where: {
             id,
@@ -137,7 +150,7 @@ export class DioceseService {
 
       return this.serializeResponse(result);
     } catch (error) {
-      this.logger.error(error);
+      this.logger.error(error.message, error.stack);
       throw new HttpException(
         `Ocorreu um erro ao editar a diocese ${updateDioceseDto.descricao}. Erro: ${error}`,
         HttpStatus.BAD_GATEWAY,
@@ -166,6 +179,16 @@ export class DioceseService {
       tipoDiocese: {
         id: dio.tipoDiocese.id,
         descricao: dio.tipoDiocese.descricao,
+      },
+      setor: {
+        id: dio.setor.id,
+        descricao: dio.setor.descricao,
+        ativo: dio.setor.ativo,
+        macroRegiao: {
+          id: dio.setor.macroRegiao.id,
+          descricao: dio.setor.macroRegiao.descricao,
+          ativo: dio.setor.macroRegiao.ativo,
+        },
       },
       endereco: serializeEndereco(dio.endereco),
     };

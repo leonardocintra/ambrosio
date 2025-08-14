@@ -1,4 +1,4 @@
-import { ENDERECO_SELECT } from "./endereco.select";
+import { ENDERECO_SELECT } from './endereco.select';
 
 export const DIOCESE_SELECT = {
   id: true,
@@ -10,6 +10,14 @@ export const DIOCESE_SELECT = {
     select: {
       id: true,
       descricao: true,
+    },
+  },
+  setor: {
+    select: {
+      id: true,
+      descricao: true,
+      ativo: true,
+      macroRegiao: true,
     },
   },
 };

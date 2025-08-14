@@ -53,6 +53,7 @@ const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
     cannot('read', 'diocese');
     cannot('read', 'paroquia');
     cannot('read', 'localidade');
+    cannot('read', 'user');
   },
   CATEQUISTA_NACIONAL: grantReadPessoaDiocese,
   CATEQUISTA_GRANDE_REGIAO: grantReadPessoaDiocese,

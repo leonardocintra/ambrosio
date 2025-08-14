@@ -473,6 +473,7 @@ async function main() {
         descricao: 'Diocese de teste Se Catedral',
         tipoDioceseId: 1,
         enderecoId: endereco.id,
+        setorId: 1,
       },
     });
 

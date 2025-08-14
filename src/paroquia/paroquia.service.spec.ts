@@ -9,6 +9,7 @@ import { EstadoService } from 'src/configuracoes/estado/estado.service';
 import { PaisService } from 'src/configuracoes/pais/pais.service';
 import { HttpModule } from '@nestjs/axios';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { SetorService } from 'src/mapa/setor/setor.service';
 
 describe('ParoquiaService', () => {
   let service: ParoquiaService;
@@ -18,6 +19,7 @@ describe('ParoquiaService', () => {
   let tipoDioceseService: TipoDioceseService;
   let cidadeService: CidadeService;
   let estadoService: EstadoService;
+  let setorService: SetorService;
   let paisService: PaisService;
   let abilityService: CaslAbilityService;
 
@@ -32,6 +34,7 @@ describe('ParoquiaService', () => {
         PaisService,
         EstadoService,
         CidadeService,
+        SetorService,
         CaslAbilityService,
         {
           provide: PrismaService,
@@ -50,6 +53,7 @@ describe('ParoquiaService', () => {
     cidadeService = module.get<CidadeService>(CidadeService);
     estadoService = module.get<EstadoService>(EstadoService);
     paisService = module.get<PaisService>(PaisService);
+    setorService = module.get<SetorService>(SetorService);
     prismaService = module.get<PrismaService>(PrismaService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
@@ -62,6 +66,7 @@ describe('ParoquiaService', () => {
     expect(dioceseService).toBeDefined();
     expect(cidadeService).toBeDefined();
     expect(estadoService).toBeDefined();
+    expect(setorService).toBeDefined();
     expect(paisService).toBeDefined();
     expect(tipoDioceseService).toBeDefined();
     expect(abilityService).toBeDefined();
