@@ -12,7 +12,13 @@ import {
 import { PessoaService } from './pessoa.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConflictResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { SexoQueryParamDto } from './dto/sexo.dto';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -26,11 +32,55 @@ export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}
 
   @Post()
+  @ApiOkResponse({ description: 'Cria uma pessoa' })
+  @ApiConflictResponse({
+    description: 'O CPF ja registrado para {pessoa.nome} de id: {pessoa.id}',
+  })
+  @ApiBody({
+    description: 'Dados para criação de uma pessoa',
+    examples: {
+      pessoa: {
+        summary: 'Pessoa padrão',
+        value: {
+          nome: 'Maria Silva Santos',
+          conhecidoPor: 'Maria',
+          nacionalidade: 'brasileira',
+          cpf: '12345678901',
+          sexo: 'FEMININO',
+          dataNascimento: '1994-02-23',
+          estadoCivil: {
+            id: 2,
+            descricao: 'CASADO',
+          },
+          situacaoReligiosa: {
+            id: 1,
+            descricao: 'LEIGO',
+          },
+        },
+      },
+    },
+  })
   create(@Body() createPessoaDto: CreatePessoaDto) {
     return this.pessoaService.create(createPessoaDto);
   }
 
   @Post('/casal')
+  @ApiOkResponse({ description: 'Cria um casal' })
+  @ApiBadRequestResponse({
+    description: 'Não é possivel criar casais do mesmo sexo',
+  })
+  @ApiBody({
+    description: 'Adicionar os casais use os seguintes parametros',
+    examples: {
+      casal: {
+        summary: 'Casal padrão',
+        value: {
+          pessoaId: 1,
+          conjugueId: 2,
+        },
+      },
+    },
+  })
   createCasal(@Body() createCasalDto: CreateCasalDto) {
     return this.pessoaService.createCasal(createCasalDto);
   }
