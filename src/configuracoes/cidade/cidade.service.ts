@@ -33,7 +33,7 @@ export class CidadeService {
     const cidade = await this.findByName(createCidadeDto.nome);
 
     if (cidade) {
-      this.logger.warn(
+      this.logger.log(
         `Cidade ${createCidadeDto.nome} - ${createCidadeDto.estado.sigla} ja existe cadastrado.`,
       );
       return cidade;

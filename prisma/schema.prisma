@@ -244,6 +244,10 @@ model diocese {
   descricao     String       @db.VarChar(90)
   enderecoId    Int
   endereco      endereco     @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
+  setorId       Int          @default(1)
+  setor         setor        @relation(fields: [setorId], references: [id], onDelete: Restrict)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @default(now()) @updatedAt
   paroquias     paroquia[]
   localidade    localidade[]
 
@@ -335,6 +339,7 @@ model setor {
   macroRegiaoId Int
   macroRegiao   macroRegiao @relation(fields: [macroRegiaoId], references: [id], onDelete: Restrict)
   ativo         Boolean     @default(true)
+  diocese       diocese[]
 
   @@schema("ambrosio")
 }

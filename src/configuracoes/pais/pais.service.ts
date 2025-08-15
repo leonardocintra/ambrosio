@@ -39,7 +39,7 @@ export class PaisService {
         error instanceof PrismaClientKnownRequestError &&
         error.code === UNIQUE_CONSTRAINT_FAILED
       ) {
-        this.logger.warn(
+        this.logger.log(
           `Pais ${createPaisDto.nome} ja existe cadastrado no banco de dados.`,
         );
         return await this.findByName(createPaisDto.nome);

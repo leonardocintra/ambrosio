@@ -1,7 +1,7 @@
-import { CreateEnderecoDto } from './create-endereco.dto';
 import { IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
+import { CreateSetorDto } from './create-setor.dto';
 
-export class UpdateEnderecoDto extends CreateEnderecoDto {
+export class UpdateSetorDto extends CreateSetorDto {
   @IsNotEmpty()
   @IsNumber()
   @IsPositive()

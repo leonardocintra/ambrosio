@@ -190,6 +190,12 @@ export class ParoquiaService {
           id: paroquia.diocese.tipoDiocese.id,
           descricao: paroquia.diocese.tipoDiocese.descricao,
         },
+        setor: {
+          id: paroquia.diocese.setor.id,
+          descricao: paroquia.diocese.setor.descricao,
+          ativo: paroquia.diocese.setor.ativo,
+          macroRegiao: paroquia.diocese.setor.macroRegiao,
+        },
       },
     };
   }
