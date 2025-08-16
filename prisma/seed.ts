@@ -460,9 +460,9 @@ async function main() {
     const endereco = await prisma.endereco.create({
       data: {
         bairro: faker.location.street(),
-        cep: faker.location.zipCode('########'),
-        logradouro: faker.location.street(),
-        numero: faker.number.int({ min: 1, max: 9000 }).toString(),
+        cep: '86060340',
+        logradouro: 'Rua Dom Bosco',
+        numero: '145',
         observacao: faker.location.streetAddress(),
         cidadeId: cidade.id,
       },
@@ -470,7 +470,7 @@ async function main() {
 
     await prisma.diocese.create({
       data: {
-        descricao: 'Diocese de teste Se Catedral',
+        descricao: 'Diocese de Londrina',
         tipoDioceseId: 1,
         enderecoId: endereco.id,
         setorId: 1,
