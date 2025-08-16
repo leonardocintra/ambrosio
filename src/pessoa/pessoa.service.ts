@@ -375,7 +375,9 @@ export class PessoaService {
           descricao: carisma.tipoCarismaVinculado.descricao,
         })),
       },
-      enderecos: pessoa.enderecos?.map(serializeEndereco),
+      enderecos: pessoa.enderecos?.map((pessoaEndereco) =>
+        serializeEndereco(pessoaEndereco.endereco),
+      ),
     };
   }
 

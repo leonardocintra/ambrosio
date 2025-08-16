@@ -244,7 +244,7 @@ model diocese {
   descricao     String       @db.VarChar(90)
   enderecoId    Int
   endereco      endereco     @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
-  setorId       Int          @default(1)
+  setorId       Int
   setor         setor        @relation(fields: [setorId], references: [id], onDelete: Restrict)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @default(now()) @updatedAt
