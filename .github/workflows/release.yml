@@ -27,7 +27,7 @@ jobs:
       - name: Incrementar versão (minor)
         id: version
         run: |
-          VERSION=$(npm version minor -m "chore(release): %s [skip ci]")
+          VERSION=$(npm version minor -m "chore(release): %s 🎉 [nova-versao]")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Push da tag gerada
