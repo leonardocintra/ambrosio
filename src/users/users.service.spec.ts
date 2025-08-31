@@ -9,11 +9,13 @@ import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade
 import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
 import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 
 describe('UsersService', () => {
   let service: UsersService;
   let prismaService: PrismaService;
   let abilityService: CaslAbilityService;
+  let saoPedroPessoaService: SaoPedroPessoaService;
   let pessoaService: PessoaService;
 
   beforeEach(async () => {
@@ -52,11 +54,23 @@ describe('UsersService', () => {
           provide: TipoCarismaServicoService,
           useValue: {},
         },
+        {
+          provide: SaoPedroPessoaService,
+          useValue: {
+            getPessoas: jest.fn().mockResolvedValue([]),
+            postExternalPessoa: jest
+              .fn()
+              .mockResolvedValue({ id: 1, nome: 'João' }),
+          },
+        },
       ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);
     pessoaService = module.get<PessoaService>(PessoaService);
+    saoPedroPessoaService = module.get<SaoPedroPessoaService>(
+      SaoPedroPessoaService,
+    );
     prismaService = module.get<PrismaService>(PrismaService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
@@ -67,5 +81,6 @@ describe('UsersService', () => {
     expect(prismaService).toBeDefined();
     expect(abilityService).toBeDefined();
     expect(pessoaService).toBeDefined();
+    expect(saoPedroPessoaService).toBeDefined();
   });
 });

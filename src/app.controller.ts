@@ -22,4 +22,12 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get('health')
+  @ApiOkResponse({
+    description: 'Retorna uma resposta de verificação de saúde',
+  })
+  health(): string {
+    return this.appService.getPing();
+  }
 }

@@ -8,6 +8,7 @@ import { SituacaoReligiosaModule } from 'src/configuracoes/situacao-religiosa/si
 import { TipoCarismaVinculadoModule } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.module';
 import { TipoCarismaPrimitivoModule } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.module';
 import { TipoCarismaServicoModule } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.module';
+import { SaoPedroModule } from 'src/external/sao-pedro/sao-pedro.module';
 
 @Module({
   controllers: [PessoaController],
@@ -21,6 +22,7 @@ import { TipoCarismaServicoModule } from 'src/configuracoes/carismas/tipo-carism
     TipoCarismaVinculadoModule,
     TipoCarismaPrimitivoModule,
     TipoCarismaServicoModule,
+    SaoPedroModule,
   ],
 })
 export class PessoaModule {}

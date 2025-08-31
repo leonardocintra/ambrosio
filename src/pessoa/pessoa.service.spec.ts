@@ -8,6 +8,7 @@ import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/s
 import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 
 describe('PessoaService', () => {
   let service: PessoaService;
@@ -18,6 +19,7 @@ describe('PessoaService', () => {
   let tipoCarismaVinculadoService: TipoCarismaVinculadoService;
   let tipoCarismaServicoService: TipoCarismaServicoService;
   let tipoCarismaPrimitivoService: TipoCarismaPrimitivoService;
+  let saoPedroPessoaService: SaoPedroPessoaService;
   let abilityService: CaslAbilityService;
 
   beforeEach(async () => {
@@ -80,11 +82,23 @@ describe('PessoaService', () => {
             registerCarismaServicoPessoa: jest.fn(),
           },
         },
+        {
+          provide: SaoPedroPessoaService,
+          useValue: {
+            getPessoas: jest.fn().mockResolvedValue([]),
+            postExternalPessoa: jest
+              .fn()
+              .mockResolvedValue({ id: 1, nome: 'João' }),
+          },
+        },
       ],
     }).compile();
 
     service = module.get<PessoaService>(PessoaService);
     prismaService = module.get<PrismaService>(PrismaService);
+    saoPedroPessoaService = module.get<SaoPedroPessoaService>(
+      SaoPedroPessoaService,
+    );
     estadoCivilService = module.get<EstadoCivilService>(EstadoCivilService);
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
     situacaoReligiosaService = module.get<SituacaoReligiosaService>(
@@ -113,5 +127,6 @@ describe('PessoaService', () => {
     expect(tipoCarismaServicoService).toBeDefined();
     expect(tipoCarismaPrimitivoService).toBeDefined();
     expect(abilityService).toBeDefined();
+    expect(saoPedroPessoaService).toBeDefined();
   });
 });

@@ -14,3 +14,33 @@ export enum ROLE_ENUM {
   SECRETARIA_PAROQUIA = 'SECRETARIA_PAROQUIA',
   NAO_IDENTIFICADO = 'NAO_IDENTIFICADO',
 }
+
+export enum ESCOLARIDADE_ENUM {
+  NAO_INFORMADO = 'nao_informado',
+  ANALFABETO = 'analfabeto',
+  FUNDAMENTAL = 'fundamental',
+  FUNDAMENTAL_INCOMPLETO = 'fundamental_incompleto',
+  MEDIO = 'medio',
+  MEDIO_INCOMPLETO = 'medio_incompleto',
+  SUPERIOR = 'superior',
+  SUPERIOR_INCOMPLETO = 'superior_incompleto',
+  POS_GRADUACAO = 'pos_graduacao',
+  MESTRADO = 'mestrado',
+  DOUTORADO = 'doutorado',
+  POS_DOUTORADO = 'pos_doutorado',
+}
+
+// Mapeamento para converter descricao para enum
+export const ESCOLARIDADE_MAP: Record<string, ESCOLARIDADE_ENUM> = {
+  Analfabeto: ESCOLARIDADE_ENUM.ANALFABETO,
+  'Ensino Fundamental': ESCOLARIDADE_ENUM.FUNDAMENTAL,
+  'Ensino Fundamental Incompleto': ESCOLARIDADE_ENUM.FUNDAMENTAL_INCOMPLETO,
+  'Ensino Médio': ESCOLARIDADE_ENUM.MEDIO,
+  'Ensino Médio Incompleto': ESCOLARIDADE_ENUM.MEDIO_INCOMPLETO,
+  'Ensino Superior': ESCOLARIDADE_ENUM.SUPERIOR,
+  'Ensino Superior Incompleto': ESCOLARIDADE_ENUM.SUPERIOR_INCOMPLETO,
+  'Pos Graduação': ESCOLARIDADE_ENUM.POS_GRADUACAO,
+  Mestrado: ESCOLARIDADE_ENUM.MESTRADO,
+  Douturado: ESCOLARIDADE_ENUM.DOUTORADO,
+  'Pos Doutorado': ESCOLARIDADE_ENUM.POS_DOUTORADO,
+};

@@ -11,6 +11,7 @@ import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-car
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -18,6 +19,7 @@ describe('UsersController', () => {
   let jwtservice: JwtService;
   let abilityService: CaslAbilityService;
   let pessoaService: PessoaService;
+  let saoPedroPessoaService: SaoPedroPessoaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,12 +36,24 @@ describe('UsersController', () => {
         TipoCarismaServicoService,
         EscolaridadeService,
         SituacaoReligiosaService,
+        {
+          provide: SaoPedroPessoaService,
+          useValue: {
+            getPessoas: jest.fn().mockResolvedValue([]),
+            postExternalPessoa: jest
+              .fn()
+              .mockResolvedValue({ id: 1, nome: 'João' }),
+          },
+        },
       ],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
     pessoaService = module.get<PessoaService>(PessoaService);
     prismaService = module.get<PrismaService>(PrismaService);
+    saoPedroPessoaService = module.get<SaoPedroPessoaService>(
+      SaoPedroPessoaService,
+    );
     jwtservice = module.get<JwtService>(JwtService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
@@ -51,5 +65,6 @@ describe('UsersController', () => {
     expect(jwtservice).toBeDefined();
     expect(abilityService).toBeDefined();
     expect(pessoaService).toBeDefined();
+    expect(saoPedroPessoaService).toBeDefined();
   });
 });
