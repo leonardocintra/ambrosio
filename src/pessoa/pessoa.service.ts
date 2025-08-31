@@ -83,11 +83,16 @@ export class PessoaService {
       },
     });
 
-    await this.saoPedroPessoaService.postExternalPessoa(
-      createPessoaDto,
-      escolaridade?.descricao,
-      estadoCivil.descricao,
-    );
+    try {
+      await this.saoPedroPessoaService.postExternalPessoa(
+        createPessoaDto,
+        escolaridade?.descricao,
+        estadoCivil.descricao,
+      );
+    } catch (error) {
+      this.logger.error('Error posting external pessoa', error);
+    }
+
     return pessoa;
   }
 
