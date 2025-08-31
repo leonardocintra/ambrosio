@@ -19,8 +19,19 @@ $ npm install
 Rename `.env-sample` to .env
 
 ### development
-```bash
 
+#### São Pedro API (api de pessoas)
+Primeiro você precisa "subir" essa api, ou usar a url de homologação:
+
+##### Usar São Pedro de homologação
+Stage: `https://saopedro-api.ypg4r9.easypanel.host` (precisa das credenciais)
+
+##### Usar São Pedro localhost
+Seguir as instruções em https://github.com/leonardocintra/sao-pedro
+
+#### Passos Ambrosio abaixo
+
+```bash
 $ sudo docker compose up -d
 $ npx prisma migrate dev
 $ npm run seed

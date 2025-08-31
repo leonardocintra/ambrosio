@@ -32,6 +32,7 @@ import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
 import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
 import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 
 @Injectable()
 export class PessoaService {
@@ -46,6 +47,7 @@ export class PessoaService {
     private carismaPrimitivoService: TipoCarismaPrimitivoService,
     private carismaServicoService: TipoCarismaServicoService,
     private abilityService: CaslAbilityService,
+    private readonly saoPedroPessoaService: SaoPedroPessoaService,
   ) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
@@ -61,7 +63,7 @@ export class PessoaService {
     const [estadoCivil, escolaridade, situacaoReligiosa] =
       await this.getEstadoCivilEscolaridadeSituacaoReligiosa(createPessoaDto);
 
-    return this.prisma.pessoa.create({
+    const pessoa = await this.prisma.pessoa.create({
       data: {
         nome: createPessoaDto.nome,
         conhecidoPor: createPessoaDto.conhecidoPor,
@@ -80,6 +82,13 @@ export class PessoaService {
             : SEXO_ENUM.FEMININO,
       },
     });
+
+    await this.saoPedroPessoaService.postExternalPessoa(
+      createPessoaDto,
+      escolaridade?.descricao,
+      estadoCivil.descricao,
+    );
+    return pessoa;
   }
 
   async findAll(page: number, limit: number) {
@@ -310,7 +319,6 @@ export class PessoaService {
         },
       },
     });
-
     const conjugue = await this.getConjugue(result);
     return this.serializeResponse(result, conjugue);
   }
@@ -375,7 +383,9 @@ export class PessoaService {
           descricao: carisma.tipoCarismaVinculado.descricao,
         })),
       },
-      enderecos: pessoa.enderecos?.map(serializeEndereco),
+      enderecos: pessoa.enderecos?.map(({ endereco }) =>
+        serializeEndereco(endereco),
+      ),
     };
   }
 

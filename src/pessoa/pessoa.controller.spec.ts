@@ -10,6 +10,7 @@ import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/s
 import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 
 describe('PessoaController', () => {
   let controller: PessoaController;
@@ -20,6 +21,7 @@ describe('PessoaController', () => {
   let tipoCarismaVinculadoService: TipoCarismaVinculadoService;
   let tipoCarismaServicoService: TipoCarismaServicoService;
   let tipoCarismaPrimitivoService: TipoCarismaPrimitivoService;
+  let saoPedroPessoaService: SaoPedroPessoaService;
   let jwtService: JwtService;
   let abilityService: CaslAbilityService;
 
@@ -85,11 +87,23 @@ describe('PessoaController', () => {
             registerCarismaPrimitivoPessoa: jest.fn(),
           },
         },
+        {
+          provide: SaoPedroPessoaService,
+          useValue: {
+            getPessoas: jest.fn().mockResolvedValue([]),
+            postExternalPessoa: jest
+              .fn()
+              .mockResolvedValue({ id: 1, nome: 'João' }),
+          },
+        },
       ],
     }).compile();
 
     controller = module.get<PessoaController>(PessoaController);
     prismaService = module.get<PrismaService>(PrismaService);
+    saoPedroPessoaService = module.get<SaoPedroPessoaService>(
+      SaoPedroPessoaService,
+    );
     estadoCivilService = module.get<EstadoCivilService>(EstadoCivilService);
     escolaridadeService = module.get<EscolaridadeService>(EscolaridadeService);
     situacaoReligiosaService = module.get<SituacaoReligiosaService>(
@@ -120,5 +134,6 @@ describe('PessoaController', () => {
     expect(tipoCarismaVinculadoService).toBeDefined();
     expect(tipoCarismaServicoService).toBeDefined();
     expect(tipoCarismaPrimitivoService).toBeDefined();
+    expect(saoPedroPessoaService).toBeDefined();
   });
 });
