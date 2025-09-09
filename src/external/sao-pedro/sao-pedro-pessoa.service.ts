@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { SaoPedroAuthService } from './sao-pedro-auth.service';
@@ -24,10 +25,32 @@ export class SaoPedroPessoaService {
     escolaridade: string,
     estadoCivil: string,
   ): Promise<Pessoa> {
-    let token = await this.authService.getAccessToken();
+    const token = await this.authService.getAccessToken();
+    const payload = this.buildPayload(
+      createPessoaDto,
+      escolaridade,
+      estadoCivil,
+    );
 
-    // corpo da requisição, para evitar duplicar código
-    const payload = {
+    this.logger.log(
+      `Posting external pessoa with payload: ${JSON.stringify(payload)}`,
+    );
+
+    const responseData = await this.tryPostPessoa(payload, token);
+
+    this.logger.log(
+      `External pessoa created with response: ${JSON.stringify(responseData)}`,
+    );
+
+    return this.serializePessoa(responseData);
+  }
+
+  private buildPayload(
+    createPessoaDto: CreatePessoaDto,
+    escolaridade: string,
+    estadoCivil: string,
+  ) {
+    return {
       ...createPessoaDto,
       sexo: createPessoaDto.sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
       data_nascimento: createPessoaDto.dataNascimento,
@@ -35,7 +58,9 @@ export class SaoPedroPessoaService {
       escolaridade:
         ESCOLARIDADE_MAP[escolaridade] || ESCOLARIDADE_ENUM.NAO_INFORMADO,
     };
+  }
 
+  private async tryPostPessoa(payload: any, token: string): Promise<any> {
     try {
       const response = await firstValueFrom(
         this.httpService.post(
@@ -49,15 +74,13 @@ export class SaoPedroPessoaService {
           },
         ),
       );
-      return response.data.data;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return response.data;
     } catch (err: any) {
       if (err.response?.status === 401) {
         // token expirou → pega um novo
         token = await this.authService.handleExpiredToken();
-        this.logger.log('Token expirado. Novo token obtido.');
+        this.logger.warn('Token expirado. Novo token obtido.');
 
-        // repete o POST agora com o token válido
         const response = await firstValueFrom(
           this.httpService.post(
             `${process.env.SAO_PEDRO_API_URL}/api/pessoas/`,
@@ -70,9 +93,26 @@ export class SaoPedroPessoaService {
             },
           ),
         );
-        return response.data.data;
+        return response.data;
       }
       throw err;
     }
+  }
+
+  private serializePessoa(data: any): Pessoa {
+    return {
+      id: data.id,
+      nome: data.nome,
+      cpf: data.cpf,
+      ativo: data.ativo,
+      conhecidoPor: data.conhecidoPor,
+      dataNascimento: data.data_nascimento,
+      escolaridade: data.escolaridade,
+      estadoCivil: data.estado_civil,
+      nacionalidade: data.nacionalidade,
+      sexo: data.sexo,
+      situacaoReligiosa: data.situacao_religiosa,
+      foto: data.foto,
+    };
   }
 }

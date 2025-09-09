@@ -432,11 +432,13 @@ export class PessoaService {
     // TODO: colocar validacao de CPF aqui
 
     if (cpf === undefined || cpf === '') {
+      this.logger.log('CPF não informado');
       return;
     }
 
     const pessoa = await this.findOneByCpf(cpf);
     if (pessoa) {
+      this.logger.warn(`CPF ${cpf} já está cadastrado`);
       throw new ConflictException(
         `O CPF ja registrado para ${pessoa.nome} de id: ${pessoa.id}`,
       );
