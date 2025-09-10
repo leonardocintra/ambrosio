@@ -10,6 +10,8 @@ import {
   ESCOLARIDADE_MAP,
   SEXO_ENUM,
 } from 'src/commons/enums/enums';
+import { ExternalCreatePessoaDto } from './dto/external-create-pessoa.dto';
+import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto';
 
 @Injectable()
 export class SaoPedroPessoaService {
@@ -26,7 +28,7 @@ export class SaoPedroPessoaService {
     estadoCivil: string,
   ): Promise<Pessoa> {
     const token = await this.authService.getAccessToken();
-    const payload = this.buildPayload(
+    const payload: ExternalCreatePessoaDto = this.buildPayload(
       createPessoaDto,
       escolaridade,
       estadoCivil,
@@ -49,18 +51,21 @@ export class SaoPedroPessoaService {
     createPessoaDto: CreatePessoaDto,
     escolaridade: string,
     estadoCivil: string,
-  ) {
+  ): ExternalCreatePessoaDto {
     return {
       ...createPessoaDto,
       sexo: createPessoaDto.sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
-      data_nascimento: createPessoaDto.dataNascimento,
-      estado_civil: estadoCivil.substring(0, 1).toUpperCase(),
+      dataNascimento: createPessoaDto.dataNascimento,
+      estadoCivil: estadoCivil.substring(0, 1).toUpperCase(),
       escolaridade:
         ESCOLARIDADE_MAP[escolaridade] || ESCOLARIDADE_ENUM.NAO_INFORMADO,
     };
   }
 
-  private async tryPostPessoa(payload: any, token: string): Promise<any> {
+  private async tryPostPessoa(
+    payload: ExternalCreatePessoaDto,
+    token: string,
+  ): Promise<ExternalResponsePessoaDto> {
     try {
       const response = await firstValueFrom(
         this.httpService.post(
@@ -99,7 +104,7 @@ export class SaoPedroPessoaService {
     }
   }
 
-  private serializePessoa(data: any): Pessoa {
+  private serializePessoa(data: ExternalResponsePessoaDto): Pessoa {
     return {
       id: data.id,
       externalId: data.uuid,
@@ -107,12 +112,12 @@ export class SaoPedroPessoaService {
       cpf: data.cpf,
       ativo: data.ativo,
       conhecidoPor: data.conhecidoPor,
-      dataNascimento: data.data_nascimento,
+      dataNascimento: data.dataNascimento,
       escolaridade: data.escolaridade,
-      estadoCivil: data.estado_civil,
+      estadoCivil: data.estadoCivil,
       nacionalidade: data.nacionalidade,
       sexo: data.sexo,
-      situacaoReligiosa: data.situacao_religiosa,
+      situacaoReligiosa: data.situacaoReligiosa,
       foto: data.foto,
     };
   }
