@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { SaoPedroAuthService } from './sao-pedro-auth.service';
@@ -9,6 +10,8 @@ import {
   ESCOLARIDADE_MAP,
   SEXO_ENUM,
 } from 'src/commons/enums/enums';
+import { ExternalCreatePessoaDto } from './dto/external-create-pessoa.dto';
+import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto';
 
 @Injectable()
 export class SaoPedroPessoaService {
@@ -24,18 +27,45 @@ export class SaoPedroPessoaService {
     escolaridade: string,
     estadoCivil: string,
   ): Promise<Pessoa> {
-    let token = await this.authService.getAccessToken();
+    const token = await this.authService.getAccessToken();
+    const payload: ExternalCreatePessoaDto = this.buildPayload(
+      createPessoaDto,
+      escolaridade,
+      estadoCivil,
+    );
 
-    // corpo da requisição, para evitar duplicar código
-    const payload = {
+    this.logger.log(
+      `Posting external pessoa with payload: ${JSON.stringify(payload)}`,
+    );
+
+    const responseData = await this.tryPostPessoa(payload, token);
+
+    this.logger.log(
+      `External pessoa created with response: ${JSON.stringify(responseData)}`,
+    );
+
+    return this.serializePessoa(responseData);
+  }
+
+  private buildPayload(
+    createPessoaDto: CreatePessoaDto,
+    escolaridade: string,
+    estadoCivil: string,
+  ): ExternalCreatePessoaDto {
+    return {
       ...createPessoaDto,
       sexo: createPessoaDto.sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
-      data_nascimento: createPessoaDto.dataNascimento,
-      estado_civil: estadoCivil.substring(0, 1).toUpperCase(),
+      dataNascimento: createPessoaDto.dataNascimento,
+      estadoCivil: estadoCivil.substring(0, 1).toUpperCase(),
       escolaridade:
         ESCOLARIDADE_MAP[escolaridade] || ESCOLARIDADE_ENUM.NAO_INFORMADO,
     };
+  }
 
+  private async tryPostPessoa(
+    payload: ExternalCreatePessoaDto,
+    token: string,
+  ): Promise<ExternalResponsePessoaDto> {
     try {
       const response = await firstValueFrom(
         this.httpService.post(
@@ -49,15 +79,13 @@ export class SaoPedroPessoaService {
           },
         ),
       );
-      return response.data.data;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return response.data;
     } catch (err: any) {
       if (err.response?.status === 401) {
         // token expirou → pega um novo
         token = await this.authService.handleExpiredToken();
-        this.logger.log('Token expirado. Novo token obtido.');
+        this.logger.warn('Token expirado. Novo token obtido.');
 
-        // repete o POST agora com o token válido
         const response = await firstValueFrom(
           this.httpService.post(
             `${process.env.SAO_PEDRO_API_URL}/api/pessoas/`,
@@ -70,9 +98,27 @@ export class SaoPedroPessoaService {
             },
           ),
         );
-        return response.data.data;
+        return response.data;
       }
       throw err;
     }
+  }
+
+  private serializePessoa(data: ExternalResponsePessoaDto): Pessoa {
+    return {
+      id: data.id,
+      externalId: data.uuid,
+      nome: data.nome,
+      cpf: data.cpf,
+      ativo: data.ativo,
+      conhecidoPor: data.conhecidoPor,
+      dataNascimento: data.dataNascimento,
+      escolaridade: data.escolaridade,
+      estadoCivil: data.estadoCivil,
+      nacionalidade: data.nacionalidade,
+      sexo: data.sexo,
+      situacaoReligiosa: data.situacaoReligiosa,
+      foto: data.foto,
+    };
   }
 }
