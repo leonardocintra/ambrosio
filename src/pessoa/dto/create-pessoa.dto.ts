@@ -14,11 +14,11 @@ import { SEXO_ENUM } from 'src/commons/enums/enums';
 
 export class CreatePessoaDto {
   @IsNotEmpty()
-  @MaxLength(50)
+  @MaxLength(150)
   @IsString()
   nome: string;
 
-  @MaxLength(50)
+  @MaxLength(100)
   @IsString()
   @IsOptional()
   conhecidoPor: string;

@@ -102,6 +102,7 @@ export class SaoPedroPessoaService {
   private serializePessoa(data: any): Pessoa {
     return {
       id: data.id,
+      externalId: data.uuid,
       nome: data.nome,
       cpf: data.cpf,
       ativo: data.ativo,

@@ -58,42 +58,42 @@ export class PessoaService {
       );
     }
 
-    await this.analisarCPF(createPessoaDto.cpf);
-
     const [estadoCivil, escolaridade, situacaoReligiosa] =
       await this.getEstadoCivilEscolaridadeSituacaoReligiosa(createPessoaDto);
 
-    const pessoa = await this.prisma.pessoa.create({
-      data: {
-        nome: createPessoaDto.nome,
-        conhecidoPor: createPessoaDto.conhecidoPor,
-        cpf: createPessoaDto.cpf,
-        nacionalidade: createPessoaDto.nacionalidade,
-        estadoCivilId: estadoCivil.id,
-        foto: createPessoaDto.foto,
-        escolaridadeId: escolaridade?.id,
-        situacaoReligiosaId: situacaoReligiosa.id,
-        dataNascimento: createPessoaDto.dataNascimento
-          ? new Date(createPessoaDto.dataNascimento)
-          : null,
-        sexo:
-          createPessoaDto.sexo === 'MASCULINO'
-            ? SEXO_ENUM.MASCULINO
-            : SEXO_ENUM.FEMININO,
-      },
-    });
-
     try {
-      await this.saoPedroPessoaService.postExternalPessoa(
+      const external = await this.saoPedroPessoaService.postExternalPessoa(
         createPessoaDto,
         escolaridade?.descricao,
         estadoCivil.descricao,
       );
+      await this.analisarCPF(createPessoaDto.cpf);
+
+      const pessoa = await this.prisma.pessoa.create({
+        data: {
+          nome: createPessoaDto.nome,
+          externalId: external.externalId,
+          conhecidoPor: createPessoaDto.conhecidoPor,
+          cpf: createPessoaDto.cpf,
+          nacionalidade: createPessoaDto.nacionalidade,
+          estadoCivilId: estadoCivil.id,
+          foto: createPessoaDto.foto,
+          escolaridadeId: escolaridade?.id,
+          situacaoReligiosaId: situacaoReligiosa.id,
+          dataNascimento: createPessoaDto.dataNascimento
+            ? new Date(createPessoaDto.dataNascimento)
+            : null,
+          sexo:
+            createPessoaDto.sexo === 'MASCULINO'
+              ? SEXO_ENUM.MASCULINO
+              : SEXO_ENUM.FEMININO,
+        },
+      });
+      this.logger.log(`Pessoa ${external.nome} UUID: ${external.externalId} criada com ID ${pessoa.id}`);
+      return pessoa;
     } catch (error) {
       this.logger.error('Error posting external pessoa', error);
     }
-
-    return pessoa;
   }
 
   async findAll(page: number, limit: number) {

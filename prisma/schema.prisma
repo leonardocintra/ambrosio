@@ -93,6 +93,7 @@ enum Sexo {
 
 model pessoa {
   id                   Int                      @id @default(autoincrement())
+  externalId           String?                  @unique @db.VarChar(36)
   nome                 String                   @db.VarChar(80)
   conhecidoPor         String?                  @db.VarChar(30)
   sexo                 Sexo                     @default(MASCULINO)
@@ -117,6 +118,7 @@ model pessoa {
   carismasPrimitivo    pessoaCarismaPrimitivo[]
   user                 user[]
 
+  @@index([externalId])
   @@schema("ambrosio")
 }
 
