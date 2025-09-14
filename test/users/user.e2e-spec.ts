@@ -1,19 +1,42 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { setupTestModule } from '../test-setup';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { faker } from '@faker-js/faker/locale/pt_BR';
+import { PessoaService } from 'src/pessoa/pessoa.service';
+import { setupTestModule } from '../test-setup';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
   const email = faker.internet.email();
   const name = faker.person.fullName();
-  const cpf = '07244455569';
+  const cpf = '14147855632';
   const password = faker.internet.password();
   const whatsapp = '16999999999';
 
   beforeAll(async () => {
-    app = await setupTestModule();
+    app = await setupTestModule([
+      {
+        provider: PessoaService,
+        value: {
+          findOneByCpf: async (cpf: string) => ({
+            id: 1,
+            externalId: 'external-123-468488',
+            nome: 'Pessoa Mock',
+            cpf,
+            estadoCivil: { id: 2, descricao: 'Casado' },
+            situacaoReligiosa: { id: 1, descricao: 'LEIGO' },
+            escolaridade: { id: 6, descricao: 'Ensino Superior' },
+            nacionalidade: 'brasileira',
+            sexo: 'FEMININO',
+            conhecidoPor: 'Mock',
+            foto: null,
+            ativo: true,
+            dataNascimento: new Date('1994-02-23'),
+          }),
+          // Adicione outros métodos se necessário
+        },
+      },
+    ]);
   });
 
   afterAll(async () => {
@@ -79,7 +102,7 @@ describe('UserController (e2e)', () => {
   it('/users (POST) - Não deve permitir e-mail duplicado', async () => {
     const response = await request(app.getHttpServer()).post('/users').send({
       email,
-      cpf: '07211133215',
+      cpf: '74147855632',
       password: 'admin',
       name,
       whatsapp,

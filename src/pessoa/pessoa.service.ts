@@ -20,7 +20,6 @@ import {
   pessoa,
   situacaoReligiosa,
 } from '@prisma/client';
-import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
 import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
@@ -28,6 +27,7 @@ import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-car
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { BaseService } from 'src/commons/base.service';
+import { serializePessoaResponse } from './pessoa.serializer';
 
 @Injectable()
 export class PessoaService extends BaseService {
@@ -132,7 +132,7 @@ export class PessoaService extends BaseService {
       },
     });
 
-    return results.map((result) => this.serializeResponse(result));
+    return results.map((result) => serializePessoaResponse(result));
   }
 
   async createCasal(createCasalDto: CreateCasalDto) {
@@ -278,7 +278,15 @@ export class PessoaService extends BaseService {
   }
 
   async findOneByCpf(cpf: string): Promise<Pessoa> {
-    return await this.saoPedroPessoaService.getExternalPessoaByCpf(cpf);
+    const externalPessoa =
+      await this.saoPedroPessoaService.getExternalPessoaByCpf(cpf);
+    if (externalPessoa) {
+      const pessoa = await this.prisma.pessoa.findUnique({
+        where: { externalId: externalPessoa.externalId },
+      });
+      return pessoa ? serializePessoaResponse(pessoa) : null;
+    }
+    return null;
   }
 
   async findOne(id: number) {
@@ -311,7 +319,7 @@ export class PessoaService extends BaseService {
       },
     });
     const conjugue = await this.getConjugue(result);
-    return this.serializeResponse(result, conjugue);
+    return serializePessoaResponse(result, conjugue);
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
@@ -337,47 +345,11 @@ export class PessoaService extends BaseService {
     });
 
     const conjugue = await this.getConjugue(pessoa);
-    return this.serializeResponse(pessoa, conjugue);
+    return serializePessoaResponse(pessoa, conjugue);
   }
 
   remove(id: number) {
     return `This action removes a #${id} pessoa`;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private serializeResponse(pessoa: any, conjugue?: any): Pessoa {
-    return {
-      id: pessoa.id,
-      nome: pessoa.nome,
-      conhecidoPor: pessoa.conhecidoPor,
-      cpf: pessoa.cpf,
-      sexo: pessoa.sexo,
-      nacionalidade: pessoa.nacionalidade,
-      estadoCivil: pessoa.estadoCivil,
-      dataNascimento: pessoa.dataNascimento,
-      conjugue,
-      foto: pessoa.foto,
-      ativo: pessoa.ativo,
-      escolaridade: pessoa.escolaridade,
-      situacaoReligiosa: pessoa.situacaoReligiosa,
-      carismas: {
-        primitivos: pessoa.carismasPrimitivo?.map((carisma) => ({
-          id: carisma.tipoCarismaPrimitivo.id,
-          descricao: carisma.tipoCarismaPrimitivo.descricao,
-        })),
-        servicos: pessoa.carismasServico?.map((carisma) => ({
-          id: carisma.tipoCarismaServico.id,
-          descricao: carisma.tipoCarismaServico.descricao,
-        })),
-        vinculados: pessoa.carismasVinculado?.map((carisma) => ({
-          id: carisma.tipoCarismaVinculado.id,
-          descricao: carisma.tipoCarismaVinculado.descricao,
-        })),
-      },
-      enderecos: pessoa.enderecos?.map(({ endereco }) =>
-        serializeEndereco(endereco),
-      ),
-    };
   }
 
   private async getConjugue(pessoa: pessoa) {
@@ -422,12 +394,7 @@ export class PessoaService extends BaseService {
     }
 
     const pessoa = await this.findOneByCpf(cpf);
-    const externalPessoa =
-      await this.saoPedroPessoaService.getExternalPessoaByCpf(cpf);
-
-    this.logger.log(
-      `External pessoa fetched: ${JSON.stringify(externalPessoa)}`,
-    );
+    this.logger.log(`External pessoa fetched: ${JSON.stringify(pessoa)}`);
 
     if (pessoa) {
       this.logger.warn(`CPF ${cpf} já está cadastrado`);

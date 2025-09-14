@@ -23,7 +23,7 @@ async function main() {
   await diocese();
   await paroquia();
   await admin();
-  await pessoas(10);
+  await pessoas(5);
 
   async function admin() {
     await prisma.user.create({
@@ -519,7 +519,35 @@ async function main() {
     );
 
     await prisma.pessoa.createMany({ data: payloads });
-    console.log(`Criadas ${quantidade} pessoas com sucesso!`);
+    await prisma.pessoa.create({
+      data: {
+        nome: 'João da Silva',
+        externalId: 'external-123-468488',
+        conhecidoPor: 'João usuario do sistema teste',
+        nacionalidade: 'brasileira',
+        cpf: '14147855632',
+        sexo: 'MASCULINO',
+        dataNascimento: new Date('1990-01-01'),
+        estadoCivilId: estadosCivis[0].id,
+        escolaridadeId: escolaridades[4].id,
+        situacaoReligiosaId: situacoesReligiosas[0].id,
+      },
+    });
+    await prisma.pessoa.create({
+      data: {
+        nome: faker.person.fullName(),
+        externalId: 'external-789-468488',
+        conhecidoPor: 'Maria usuario do sistema teste',
+        nacionalidade: 'brasileira',
+        cpf: '74147855632',
+        sexo: 'FEMININO',
+        dataNascimento: new Date('1990-01-01'),
+        estadoCivilId: estadosCivis[0].id,
+        escolaridadeId: escolaridades[4].id,
+        situacaoReligiosaId: situacoesReligiosas[0].id,
+      },
+    });
+    console.log(`Criadas ${quantidade + 2} pessoas com sucesso!`);
   }
 }
 

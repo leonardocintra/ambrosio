@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -19,15 +23,17 @@ export class UsersService extends BaseService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    await this.pessoaService.analisarCPF(createUserDto.cpf);
-    await this.validateUniqueCpfForUser(createUserDto.cpf);
     const pessoa = await this.pessoaService.findOneByCpf(createUserDto.cpf);
+    this.logger.log(
+      `Pessoa para esse usuario encontrada: ${JSON.stringify(pessoa)}`,
+    );
 
     if (!pessoa) {
-      throw new ConflictException(
+      throw new NotFoundException(
         `Não é possível criar um usuário sem uma pessoa vinculada. CPF ${createUserDto.cpf} não encontrado na base de pessoas.`,
       );
     }
+    await this.validateUniqueCpfForUser(createUserDto.cpf, pessoa.nome);
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
@@ -67,16 +73,15 @@ export class UsersService extends BaseService {
     });
   }
 
-  private async validateUniqueCpfForUser(cpf: string) {
+  private async validateUniqueCpfForUser(cpf: string, nomeDaPessoa: string) {
     const cpfAlreadyExists = await this.prismaService.user.findFirst({
       where: { cpf },
     });
 
     if (cpfAlreadyExists) {
-      this.logger.warn(
-        `Tentativa de criar usuário com CPF já existente: ${cpf}`,
+      throw new ConflictException(
+        `Já tem um usuario com esse CPF ${cpf} - Pessoa: ${nomeDaPessoa}`,
       );
-      throw new ConflictException(`Já tem um usuario com esse CPF ${cpf}`);
     }
   }
 }

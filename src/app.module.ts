@@ -31,7 +31,12 @@ import * as rTracer from 'cls-rtracer';
   imports: [
     LoggerModule.forRoot({
       pinoHttp: {
-        level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+        level:
+          process.env.NODE_ENV === 'test'
+            ? 'silent'
+            : process.env.NODE_ENV === 'production'
+            ? 'info'
+            : 'debug',
         transport: {
           target: 'pino-pretty',
           options: {
@@ -44,26 +49,18 @@ import * as rTracer from 'cls-rtracer';
           req: IncomingMessage,
           res: ServerResponse<IncomingMessage>,
         ): string => {
-          // tenta pegar o id do cls-rtracer
           const id = rTracer.id();
           if (id) return String(id);
-
-          // se req já tiver um id (alguns frameworks colocam)
           if ('id' in req && typeof (req as any).id !== 'undefined') {
             return String((req as any).id);
           }
-
-          // fallback: gera um UUID v4
           return crypto.randomUUID();
         },
-
-        customProps: (req): Record<string, any> => {
-          return {
-            context: 'HTTP',
-            requestId: rTracer.id?.(),
-            body: (req as any).body,
-          };
-        },
+        customProps: (req): Record<string, any> => ({
+          context: 'HTTP',
+          requestId: rTracer.id?.(),
+          body: (req as any).body,
+        }),
       },
     }),
     SentryModule.forRoot(),
