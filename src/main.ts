@@ -10,6 +10,8 @@ import * as rTracer from 'cls-rtracer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // Middleware para rastrear cada request com um requestId único
+  app.use(rTracer.expressMiddleware());
 
   // Swagger configuration
   const config = new DocumentBuilder()
@@ -23,8 +25,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  // Middleware para rastrear cada request com um requestId único
-  app.use(rTracer.expressMiddleware());
 
   app.useGlobalFilters(
     app.get(SentryGlobalFilter),
