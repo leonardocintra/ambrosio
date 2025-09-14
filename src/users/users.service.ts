@@ -23,7 +23,7 @@ export class UsersService extends BaseService {
     await this.validateUniqueCpfForUser(createUserDto.cpf);
     const pessoa = await this.pessoaService.findOneByCpf(createUserDto.cpf);
 
-    if (pessoa) {
+    if (!pessoa) {
       throw new ConflictException(
         `Não é possível criar um usuário sem uma pessoa vinculada. CPF ${createUserDto.cpf} não encontrado na base de pessoas.`,
       );
