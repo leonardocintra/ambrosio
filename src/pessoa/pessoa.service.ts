@@ -1,10 +1,4 @@
-import {
-  ConflictException,
-  ForbiddenException,
-  HttpException,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { ConflictException, HttpException, Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -33,11 +27,10 @@ import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-car
 import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { BaseService } from 'src/commons/base.service';
 
 @Injectable()
-export class PessoaService {
-  private readonly logger = new Logger(PessoaService.name);
-
+export class PessoaService extends BaseService {
   constructor(
     private prisma: PrismaService,
     private estadoCivilService: EstadoCivilService,
@@ -46,20 +39,18 @@ export class PessoaService {
     private carismaVinculadoService: TipoCarismaVinculadoService,
     private carismaPrimitivoService: TipoCarismaPrimitivoService,
     private carismaServicoService: TipoCarismaServicoService,
-    private abilityService: CaslAbilityService,
     private readonly saoPedroPessoaService: SaoPedroPessoaService,
-  ) {}
+    abilityService: CaslAbilityService,
+  ) {
+    super(abilityService);
+  }
 
   async create(createPessoaDto: CreatePessoaDto) {
-    const { ability } = this.abilityService;
-    if (!ability.can('create', 'pessoa')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para criar uma pessoa',
-      );
-    }
+    this.validateCreateAbility('pessoa');
 
     const [estadoCivil, escolaridade, situacaoReligiosa] =
       await this.getEstadoCivilEscolaridadeSituacaoReligiosa(createPessoaDto);
+    await this.analisarCPF(createPessoaDto.cpf);
 
     try {
       const external = await this.saoPedroPessoaService.postExternalPessoa(
@@ -67,7 +58,6 @@ export class PessoaService {
         escolaridade?.descricao,
         estadoCivil.descricao,
       );
-      await this.analisarCPF(createPessoaDto.cpf);
 
       const pessoa = await this.prisma.pessoa.create({
         data: {
@@ -89,7 +79,9 @@ export class PessoaService {
               : SEXO_ENUM.FEMININO,
         },
       });
-      this.logger.log(`Pessoa ${external.nome} UUID: ${external.externalId} criada com ID ${pessoa.id}`);
+      this.logger.log(
+        `Pessoa ${external.nome} UUID: ${external.externalId} criada com ID ${pessoa.id}`,
+      );
       return pessoa;
     } catch (error) {
       this.logger.error('Error posting external pessoa', error);
@@ -97,12 +89,8 @@ export class PessoaService {
   }
 
   async findAll(page: number, limit: number) {
+    this.validateReadAbility('pessoa');
     const { ability } = this.abilityService;
-    if (!ability.can('read', 'pessoa')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para listar pessoas',
-      );
-    }
     const where = accessibleBy(ability, 'read').pessoa;
 
     if (!page) page = PAGE_DEFAULT;
@@ -289,10 +277,8 @@ export class PessoaService {
     );
   }
 
-  async findOneByCpf(cpf: string) {
-    return await this.prisma.pessoa.findFirst({
-      where: { cpf },
-    });
+  async findOneByCpf(cpf: string): Promise<Pessoa> {
+    return await this.saoPedroPessoaService.getExternalPessoaByCpf(cpf);
   }
 
   async findOne(id: number) {
@@ -430,13 +416,19 @@ export class PessoaService {
 
   async analisarCPF(cpf: string) {
     // TODO: colocar validacao de CPF aqui
-
     if (cpf === undefined || cpf === '') {
       this.logger.log('CPF não informado');
       return;
     }
 
     const pessoa = await this.findOneByCpf(cpf);
+    const externalPessoa =
+      await this.saoPedroPessoaService.getExternalPessoaByCpf(cpf);
+
+    this.logger.log(
+      `External pessoa fetched: ${JSON.stringify(externalPessoa)}`,
+    );
+
     if (pessoa) {
       this.logger.warn(`CPF ${cpf} já está cadastrado`);
       throw new ConflictException(

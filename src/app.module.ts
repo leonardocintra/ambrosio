@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -21,9 +23,49 @@ import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/p
 import { SetorModule } from './mapa/setor/setor.module';
 import { MacroRegiaoModule } from './mapa/macro-regiao/macro-regiao.module';
 import { SaoPedroModule } from './external/sao-pedro/sao-pedro.module';
+import { LoggerModule } from 'nestjs-pino';
+import { IncomingMessage, ServerResponse } from 'http';
+import * as rTracer from 'cls-rtracer';
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            colorize: true,
+            translateTime: 'SYS:standard',
+            ignore: 'pid,hostname',
+          },
+        },
+        genReqId: (
+          req: IncomingMessage,
+          res: ServerResponse<IncomingMessage>,
+        ): string => {
+          // tenta pegar o id do cls-rtracer
+          const id = rTracer.id();
+          if (id) return String(id);
+
+          // se req já tiver um id (alguns frameworks colocam)
+          if ('id' in req && typeof (req as any).id !== 'undefined') {
+            return String((req as any).id);
+          }
+
+          // fallback: gera um UUID v4
+          return crypto.randomUUID();
+        },
+
+        customProps: (req): Record<string, any> => {
+          return {
+            context: 'HTTP',
+            requestId: rTracer.id?.(),
+            body: (req as any).body,
+          };
+        },
+      },
+    }),
     SentryModule.forRoot(),
     ScheduleModule.forRoot(),
     EstadoCivilModule,

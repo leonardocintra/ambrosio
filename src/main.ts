@@ -6,6 +6,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
 import { SentryGlobalFilter } from '@sentry/nestjs/setup';
+import * as rTracer from 'cls-rtracer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,6 +22,9 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe());
+
+  // Middleware para rastrear cada request com um requestId único
+  app.use(rTracer.expressMiddleware());
 
   app.useGlobalFilters(
     app.get(SentryGlobalFilter),
