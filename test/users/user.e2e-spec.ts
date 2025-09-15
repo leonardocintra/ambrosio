@@ -2,8 +2,8 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { faker } from '@faker-js/faker/locale/pt_BR';
-import { PessoaService } from 'src/pessoa/pessoa.service';
 import { setupTestModule } from '../test-setup';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -16,9 +16,9 @@ describe('UserController (e2e)', () => {
   beforeAll(async () => {
     app = await setupTestModule([
       {
-        provider: PessoaService,
+        provider: SaoPedroPessoaService,
         value: {
-          findOneByCpf: async (cpf: string) => ({
+          getExternalPessoaByCpf: async (cpf: string) => ({
             id: 1,
             externalId: 'external-123-468488',
             nome: 'Pessoa Mock',

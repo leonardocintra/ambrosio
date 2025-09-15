@@ -2,6 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { setupTestModule } from '../test-setup';
 import { pessoaMock } from './mock';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 
 describe('PessoaCreateController (e2e)', () => {
   let app: INestApplication;
@@ -9,7 +10,28 @@ describe('PessoaCreateController (e2e)', () => {
   let token = '';
 
   beforeAll(async () => {
-    app = await setupTestModule();
+    app = await setupTestModule([
+      {
+        provider: SaoPedroPessoaService,
+        value: {
+          postExternalPessoa: async () => ({
+            id: 20,
+            externalId: '123-external-fdsfa151888',
+            nome: pessoaMock.nome,
+            cpf: pessoaMock.cpf,
+            conhecidoPor: pessoaMock.conhecidoPor,
+            nacionalidade: pessoaMock.nacionalidade,
+            sexo: pessoaMock.sexo,
+            dataNascimento: pessoaMock.dataNascimento,
+            estadoCivil: pessoaMock.estadoCivil,
+            situacaoReligiosa: pessoaMock.situacaoReligiosa,
+            ativo: true,
+          }),
+          getExternalPessoaByCpf: async () => null,
+          // Adicione outros métodos se necessário
+        },
+      },
+    ]);
 
     const response = await request(app.getHttpServer())
       .post('/auth/login')
