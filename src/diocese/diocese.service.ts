@@ -3,7 +3,6 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateDioceseDto } from './dto/create-diocese.dto';
@@ -22,8 +21,6 @@ import { BaseService } from 'src/commons/base.service';
 
 @Injectable()
 export class DioceseService extends BaseService {
-  private readonly logger = new Logger(DioceseService.name);
-
   constructor(
     private prisma: PrismaService,
     private enderecoService: EnderecoService,

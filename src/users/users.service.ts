@@ -1,8 +1,7 @@
 import {
   ConflictException,
-  ForbiddenException,
   Injectable,
-  Logger,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,38 +10,36 @@ import * as bcrypt from 'bcrypt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { PessoaService } from 'src/pessoa/pessoa.service';
+import { BaseService } from 'src/commons/base.service';
 
 @Injectable()
-export class UsersService {
-  private readonly logger = new Logger(UsersService.name);
-
+export class UsersService extends BaseService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly abilityService: CaslAbilityService,
+    abilityService: CaslAbilityService,
     private readonly pessoaService: PessoaService,
-  ) {}
+  ) {
+    super(abilityService);
+  }
 
   async create(createUserDto: CreateUserDto) {
-    await this.pessoaService.analisarCPF(createUserDto.cpf);
+    const pessoa = await this.pessoaService.findOneByCpf(createUserDto.cpf);
+    this.logger.log(
+      `Pessoa para esse usuario encontrada: ${JSON.stringify(pessoa)}`,
+    );
 
-    let pessoaId: number | null = null;
-
-    try {
-      const pessoa = await this.pessoaService.findOneByCpf(createUserDto.cpf);
-      pessoaId = pessoa?.id || null;
-    } catch {
-      this.logger.log(
-        `Pessoa ${createUserDto.cpf} não encontrada, criando usuário sem vínculo`,
+    if (!pessoa) {
+      throw new NotFoundException(
+        `Não é possível criar um usuário sem uma pessoa vinculada. CPF ${createUserDto.cpf} não encontrado na base de pessoas.`,
       );
     }
-
-    await this.validateUniqueCpf(createUserDto.cpf);
+    await this.validateUniqueCpfForUser(createUserDto.cpf, pessoa.nome);
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
     return this.prismaService.user.create({
       data: {
-        pessoaId,
+        pessoaId: pessoa.id,
         ...createUserDto,
         password: hashedPassword,
         role: ROLE_ENUM.NAO_IDENTIFICADO,
@@ -51,12 +48,7 @@ export class UsersService {
   }
 
   findAll() {
-    const { ability } = this.abilityService;
-    if (!ability.can('read', 'user')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para listar usuários',
-      );
-    }
+    this.validateReadAbility('user');
     return this.prismaService.user.findMany();
   }
 
@@ -81,13 +73,15 @@ export class UsersService {
     });
   }
 
-  private async validateUniqueCpf(cpf: string) {
+  private async validateUniqueCpfForUser(cpf: string, nomeDaPessoa: string) {
     const cpfAlreadyExists = await this.prismaService.user.findFirst({
       where: { cpf },
     });
 
     if (cpfAlreadyExists) {
-      throw new ConflictException(`Já tem um usuario com esse CPF ${cpf}`);
+      throw new ConflictException(
+        `Já tem um usuario com esse CPF ${cpf} - Pessoa: ${nomeDaPessoa}`,
+      );
     }
   }
 }

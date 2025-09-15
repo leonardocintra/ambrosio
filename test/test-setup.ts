@@ -1,22 +1,24 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'src/app.module';
-import { PaginationInterceptor } from 'src/commons/interceptors/pagination.interceptors';
-import { PrismaExceptionsFilter } from 'src/commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
+import { INestApplication, Type } from '@nestjs/common';
+import { TestingModule, Test } from '@nestjs/testing';
+import { AppModule } from '../src/app.module';
+import { ValidationPipe } from '@nestjs/common';
+import { PrismaExceptionsFilter } from '../src/commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
 
-export const setupTestModule = async (): Promise<INestApplication> => {
-  if (process.env.NODE_ENV === 'production') {
-    console.error('Não é permitido rodar testes em produção!');
-    process.exit(1); // Encerra o processo se estiver em produção
-  }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Override = { provider: Type<any>; value: any };
 
-  const moduleFixture: TestingModule = await Test.createTestingModule({
-    imports: [AppModule], // Aqui você importa o AppModule, sem necessidade de repetir os módulos
-  })
-    .overrideProvider(APP_INTERCEPTOR)
-    .useValue(PaginationInterceptor)
-    .compile();
+export const setupTestModule = async (
+  overrides: Override[] = [],
+): Promise<INestApplication> => {
+  const moduleBuilder = Test.createTestingModule({
+    imports: [AppModule],
+  });
+
+  overrides.forEach(({ provider, value }) => {
+    moduleBuilder.overrideProvider(provider).useValue(value);
+  });
+
+  const moduleFixture: TestingModule = await moduleBuilder.compile();
 
   const app = moduleFixture.createNestApplication();
   app.useGlobalPipes(new ValidationPipe());

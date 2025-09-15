@@ -1,10 +1,4 @@
-import {
-  ConflictException,
-  ForbiddenException,
-  HttpException,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { ConflictException, HttpException, Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -26,18 +20,17 @@ import {
   pessoa,
   situacaoReligiosa,
 } from '@prisma/client';
-import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
 import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
 import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { BaseService } from 'src/commons/base.service';
+import { serializePessoaResponse } from './pessoa.serializer';
 
 @Injectable()
-export class PessoaService {
-  private readonly logger = new Logger(PessoaService.name);
-
+export class PessoaService extends BaseService {
   constructor(
     private prisma: PrismaService,
     private estadoCivilService: EstadoCivilService,
@@ -46,20 +39,18 @@ export class PessoaService {
     private carismaVinculadoService: TipoCarismaVinculadoService,
     private carismaPrimitivoService: TipoCarismaPrimitivoService,
     private carismaServicoService: TipoCarismaServicoService,
-    private abilityService: CaslAbilityService,
     private readonly saoPedroPessoaService: SaoPedroPessoaService,
-  ) {}
+    abilityService: CaslAbilityService,
+  ) {
+    super(abilityService);
+  }
 
   async create(createPessoaDto: CreatePessoaDto) {
-    const { ability } = this.abilityService;
-    if (!ability.can('create', 'pessoa')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para criar uma pessoa',
-      );
-    }
+    this.validateCreateAbility('pessoa');
 
     const [estadoCivil, escolaridade, situacaoReligiosa] =
       await this.getEstadoCivilEscolaridadeSituacaoReligiosa(createPessoaDto);
+    await this.analisarCPF(createPessoaDto.cpf);
 
     try {
       const external = await this.saoPedroPessoaService.postExternalPessoa(
@@ -67,7 +58,6 @@ export class PessoaService {
         escolaridade?.descricao,
         estadoCivil.descricao,
       );
-      await this.analisarCPF(createPessoaDto.cpf);
 
       const pessoa = await this.prisma.pessoa.create({
         data: {
@@ -89,7 +79,9 @@ export class PessoaService {
               : SEXO_ENUM.FEMININO,
         },
       });
-      this.logger.log(`Pessoa ${external.nome} UUID: ${external.externalId} criada com ID ${pessoa.id}`);
+      this.logger.log(
+        `Pessoa ${external.nome} UUID: ${external.externalId} criada com ID ${pessoa.id}`,
+      );
       return pessoa;
     } catch (error) {
       this.logger.error('Error posting external pessoa', error);
@@ -97,12 +89,8 @@ export class PessoaService {
   }
 
   async findAll(page: number, limit: number) {
+    this.validateReadAbility('pessoa');
     const { ability } = this.abilityService;
-    if (!ability.can('read', 'pessoa')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para listar pessoas',
-      );
-    }
     const where = accessibleBy(ability, 'read').pessoa;
 
     if (!page) page = PAGE_DEFAULT;
@@ -144,7 +132,7 @@ export class PessoaService {
       },
     });
 
-    return results.map((result) => this.serializeResponse(result));
+    return results.map((result) => serializePessoaResponse(result));
   }
 
   async createCasal(createCasalDto: CreateCasalDto) {
@@ -289,10 +277,16 @@ export class PessoaService {
     );
   }
 
-  async findOneByCpf(cpf: string) {
-    return await this.prisma.pessoa.findFirst({
-      where: { cpf },
-    });
+  async findOneByCpf(cpf: string): Promise<Pessoa> {
+    const externalPessoa =
+      await this.saoPedroPessoaService.getExternalPessoaByCpf(cpf);
+    if (externalPessoa) {
+      const pessoa = await this.prisma.pessoa.findUnique({
+        where: { externalId: externalPessoa.externalId },
+      });
+      return pessoa ? serializePessoaResponse(pessoa) : null;
+    }
+    return null;
   }
 
   async findOne(id: number) {
@@ -325,7 +319,7 @@ export class PessoaService {
       },
     });
     const conjugue = await this.getConjugue(result);
-    return this.serializeResponse(result, conjugue);
+    return serializePessoaResponse(result, conjugue);
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
@@ -351,47 +345,11 @@ export class PessoaService {
     });
 
     const conjugue = await this.getConjugue(pessoa);
-    return this.serializeResponse(pessoa, conjugue);
+    return serializePessoaResponse(pessoa, conjugue);
   }
 
   remove(id: number) {
     return `This action removes a #${id} pessoa`;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private serializeResponse(pessoa: any, conjugue?: any): Pessoa {
-    return {
-      id: pessoa.id,
-      nome: pessoa.nome,
-      conhecidoPor: pessoa.conhecidoPor,
-      cpf: pessoa.cpf,
-      sexo: pessoa.sexo,
-      nacionalidade: pessoa.nacionalidade,
-      estadoCivil: pessoa.estadoCivil,
-      dataNascimento: pessoa.dataNascimento,
-      conjugue,
-      foto: pessoa.foto,
-      ativo: pessoa.ativo,
-      escolaridade: pessoa.escolaridade,
-      situacaoReligiosa: pessoa.situacaoReligiosa,
-      carismas: {
-        primitivos: pessoa.carismasPrimitivo?.map((carisma) => ({
-          id: carisma.tipoCarismaPrimitivo.id,
-          descricao: carisma.tipoCarismaPrimitivo.descricao,
-        })),
-        servicos: pessoa.carismasServico?.map((carisma) => ({
-          id: carisma.tipoCarismaServico.id,
-          descricao: carisma.tipoCarismaServico.descricao,
-        })),
-        vinculados: pessoa.carismasVinculado?.map((carisma) => ({
-          id: carisma.tipoCarismaVinculado.id,
-          descricao: carisma.tipoCarismaVinculado.descricao,
-        })),
-      },
-      enderecos: pessoa.enderecos?.map(({ endereco }) =>
-        serializeEndereco(endereco),
-      ),
-    };
   }
 
   private async getConjugue(pessoa: pessoa) {
@@ -430,13 +388,14 @@ export class PessoaService {
 
   async analisarCPF(cpf: string) {
     // TODO: colocar validacao de CPF aqui
-
     if (cpf === undefined || cpf === '') {
       this.logger.log('CPF não informado');
       return;
     }
 
     const pessoa = await this.findOneByCpf(cpf);
+    this.logger.log(`External pessoa fetched: ${JSON.stringify(pessoa)}`);
+
     if (pessoa) {
       this.logger.warn(`CPF ${cpf} já está cadastrado`);
       throw new ConflictException(
