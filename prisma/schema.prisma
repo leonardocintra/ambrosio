@@ -347,10 +347,22 @@ model setor {
 }
 
 model macroRegiao {
-  id        Int     @id @default(autoincrement())
-  descricao String  @db.VarChar(50)
-  ativo     Boolean @default(true)
+  id        Int      @id @default(autoincrement())
+  descricao String   @db.VarChar(50)
+  ativo     Boolean  @default(true)
   setor     setor[]
+  regiao    regiao[]
 
+  @@schema("ambrosio")
+}
+
+model regiao {
+  id            Int         @id @default(autoincrement())
+  descricao     String      @unique @db.VarChar(100)
+  macroRegiaoId Int
+  macroRegiao   macroRegiao @relation(fields: [macroRegiaoId], references: [id], onDelete: Restrict)
+  ativo         Boolean     @default(true)
+
+  @@unique([descricao, macroRegiaoId])
   @@schema("ambrosio")
 }
