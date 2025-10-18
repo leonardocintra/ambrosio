@@ -15,6 +15,12 @@ class DioceseDto {
   id: number;
 }
 
+class SetorDto {
+  @IsNumber()
+  @IsPositive()
+  id: number;
+}
+
 export class CreateParoquiaDto {
   @IsString()
   @MaxLength(50)
@@ -24,6 +30,11 @@ export class CreateParoquiaDto {
   @ValidateNested({ each: true })
   @Type(() => DioceseDto)
   diocese: DioceseDto;
+
+  @IsObject()
+  @ValidateNested({ each: true })
+  @Type(() => SetorDto)
+  setor: SetorDto;
 
   @IsObject()
   @ValidateNested({ each: true })

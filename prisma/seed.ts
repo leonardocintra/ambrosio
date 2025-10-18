@@ -9,6 +9,7 @@ async function main() {
   await estado();
   await cidade();
   await macroRegiao();
+  await regiao();
   await setor();
   await estadoCivil();
   await escolaridade();
@@ -208,54 +209,75 @@ async function main() {
     console.log('Macro Regiões preenchidas com sucesso!');
   }
 
+  async function regiao() {
+    await prisma.regiao.create({
+      data: { descricao: 'Centro-Oeste', macroRegiaoId: 1 },
+    });
+
+    await prisma.regiao.create({
+      data: { descricao: 'Nordeste', macroRegiaoId: 2 },
+    });
+
+    await prisma.regiao.create({
+      data: { descricao: 'Norte', macroRegiaoId: 3 },
+    });
+
+    await prisma.regiao.create({
+      data: { descricao: 'Sudeste', macroRegiaoId: 1 },
+    });
+
+    console.log('---------------------------------');
+    console.log('Regiões preenchidas com sucesso!');
+  }
+
   async function setor() {
     const setores = [
       {
-        macroRegiaoId: 1,
+        regiaoId: 1,
         descricao: 'Anhaguera - Setor 1',
       },
       {
-        macroRegiaoId: 1,
+        regiaoId: 1,
         descricao: 'Anhaguera - Setor 2',
       },
       {
-        macroRegiaoId: 1,
+        regiaoId: 1,
         descricao: 'Portinari - Setor 1',
       },
       {
-        macroRegiaoId: 1,
+        regiaoId: 1,
         descricao: 'Portinari - Setor 2',
       },
       {
-        macroRegiaoId: 2,
+        regiaoId: 2,
         descricao: 'Brasilia - Setor 1',
       },
       {
-        macroRegiaoId: 2,
+        regiaoId: 2,
         descricao: 'Brasilia - Setor 2',
       },
       {
-        macroRegiaoId: 2,
+        regiaoId: 2,
         descricao: 'Brasilia - Setor 3',
       },
       {
-        macroRegiaoId: 2,
+        regiaoId: 2,
         descricao: 'Brasilia - Setor 4',
       },
       {
-        macroRegiaoId: 2,
+        regiaoId: 2,
         descricao: 'Brasilia - Setor 5',
       },
       {
-        macroRegiaoId: 3,
+        regiaoId: 3,
         descricao: 'Centro Oeste - GO 1',
       },
       {
-        macroRegiaoId: 3,
+        regiaoId: 3,
         descricao: 'Centro Oeste - GO 2',
       },
       {
-        macroRegiaoId: 3,
+        regiaoId: 3,
         descricao: 'Centro Oeste - GO 3',
       },
     ];
@@ -264,7 +286,7 @@ async function main() {
       await prisma.setor.create({
         data: {
           descricao: setor.descricao,
-          macroRegiaoId: setor.macroRegiaoId,
+          regiaoId: setor.regiaoId,
         },
       });
     }
@@ -473,7 +495,6 @@ async function main() {
         descricao: 'Diocese de Londrina',
         tipoDioceseId: 1,
         enderecoId: endereco.id,
-        setorId: 1,
       },
     });
 
@@ -499,6 +520,7 @@ async function main() {
         descricao: 'Paroquia Nossa Senhora Aparecida (Seed)',
         dioceseId: 1,
         enderecoId: endereco.id,
+        setorId: 1,
       },
     });
 

@@ -12,7 +12,6 @@ import { PaisService } from 'src/configuracoes/pais/pais.service';
 import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
 import { EstadoService } from 'src/configuracoes/estado/estado.service';
 import { HttpModule } from '@nestjs/axios';
-import { SetorService } from 'src/mapa/setor/setor.service';
 
 describe('DioceseController', () => {
   let controller: DioceseController;
@@ -21,7 +20,6 @@ describe('DioceseController', () => {
   let tipoLocalidadeService: TipoLocalidadeService;
   let tipoDioceseService: TipoDioceseService;
   let enderecoService: EnderecoService;
-  let setorService: SetorService;
   let paisService: PaisService;
   let cidadeService: CidadeService;
   let estadoService: EstadoService;
@@ -41,7 +39,6 @@ describe('DioceseController', () => {
         PaisService,
         CidadeService,
         EstadoService,
-        SetorService,
         JwtService,
         CaslAbilityService,
         {
@@ -71,7 +68,6 @@ describe('DioceseController', () => {
     paisService = module.get<PaisService>(PaisService);
     cidadeService = module.get<CidadeService>(CidadeService);
     estadoService = module.get<EstadoService>(EstadoService);
-    setorService = module.get<SetorService>(SetorService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
     jwtService = module.get<JwtService>(JwtService);
@@ -89,6 +85,5 @@ describe('DioceseController', () => {
     expect(paisService).toBeDefined();
     expect(estadoService).toBeDefined();
     expect(cidadeService).toBeDefined();
-    expect(setorService).toBeDefined();
   });
 });

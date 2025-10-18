@@ -7,10 +7,14 @@ describe('SetorService', () => {
   let prisma: PrismaService;
 
   const mockSetorArray = [
-    { id: 1, name: 'Portinari I' },
-    { id: 2, name: 'Anhaguera' },
+    { id: 1, name: 'Portinari I', regiao: { id: 1, name: 'Região 1' } },
+    { id: 2, name: 'Anhaguera', regiao: { id: 2, name: 'Região 2' } },
   ];
-  const mockSetor = { id: 1, name: 'Portinari I' };
+  const mockSetor = {
+    id: 1,
+    name: 'Portinari I',
+    regiao: { id: 1, name: 'Região 1' },
+  };
 
   const prismaMock = {
     setor: {
@@ -53,7 +57,7 @@ describe('SetorService', () => {
       const result = await service.findOne(1);
       expect(prisma.setor.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: 1 },
-        include: { macroRegiao: true },
+        include: { regiao: true },
       });
       expect(result).toEqual(mockSetor);
     });
@@ -62,7 +66,7 @@ describe('SetorService', () => {
       const result = await service.findOne(999);
       expect(prisma.setor.findUniqueOrThrow).toHaveBeenCalledWith({
         where: { id: 999 },
-        include: { macroRegiao: true },
+        include: { regiao: true },
       });
       expect(result).toBeUndefined();
     });

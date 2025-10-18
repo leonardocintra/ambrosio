@@ -17,6 +17,7 @@ import { Paroquia } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
 import { Prisma } from '@prisma/client';
+import { SetorService } from 'src/mapa/setor/setor.service';
 
 @Injectable()
 export class ParoquiaService {
@@ -26,6 +27,7 @@ export class ParoquiaService {
     private readonly prisma: PrismaService,
     private readonly dioceseService: DioceseService,
     private readonly enderecoService: EnderecoService,
+    private readonly setorService: SetorService,
     private readonly abilityService: CaslAbilityService,
   ) {}
 
@@ -37,6 +39,7 @@ export class ParoquiaService {
       );
     }
     await this.dioceseService.findOne(createParoquiaDto.diocese.id);
+    await this.setorService.findOne(createParoquiaDto.setor.id);
 
     try {
       const result = await this.prisma.$transaction(async (transaction) => {
@@ -166,14 +169,16 @@ export class ParoquiaService {
       transaction,
     );
 
-    return await transaction.paroquia.create({
+    const paroquia = await transaction.paroquia.create({
       data: {
         descricao: createParoquiaDto.descricao,
-        dioceseId: createParoquiaDto.diocese.id,
         enderecoId: endereco.id,
+        dioceseId: createParoquiaDto.diocese.id,
+        setorId: createParoquiaDto.setor.id,
       },
       select: PAROQUIA_SELECT,
     });
+    return this.serializeResponse(paroquia);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -182,6 +187,12 @@ export class ParoquiaService {
       id: paroquia.id,
       descricao: paroquia.descricao,
       endereco: serializeEndereco(paroquia.endereco),
+      setor: {
+        id: paroquia.setor.id,
+        descricao: paroquia.setor.descricao,
+        ativo: paroquia.setor.ativo,
+        regiao: null,
+      },
       diocese: {
         id: paroquia.diocese.id,
         descricao: paroquia.diocese.descricao,
@@ -189,12 +200,6 @@ export class ParoquiaService {
         tipoDiocese: {
           id: paroquia.diocese.tipoDiocese.id,
           descricao: paroquia.diocese.tipoDiocese.descricao,
-        },
-        setor: {
-          id: paroquia.diocese.setor.id,
-          descricao: paroquia.diocese.setor.descricao,
-          ativo: paroquia.diocese.setor.ativo,
-          macroRegiao: paroquia.diocese.setor.macroRegiao,
         },
       },
     };
