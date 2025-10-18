@@ -12,12 +12,4 @@ export const DIOCESE_SELECT = {
       descricao: true,
     },
   },
-  setor: {
-    select: {
-      id: true,
-      descricao: true,
-      ativo: true,
-      macroRegiao: true,
-    },
-  },
 };

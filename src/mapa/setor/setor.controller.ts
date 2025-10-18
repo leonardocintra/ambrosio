@@ -6,9 +6,9 @@ export class SetorController {
   constructor(private readonly setorService: SetorService) {}
 
   @Get()
-  findAll(@Query('macroRegiaoId') macroRegiaoId?: string) {
-    const macroRegiaoIdNumber = macroRegiaoId ? +macroRegiaoId : undefined;
-    return this.setorService.findAll(macroRegiaoIdNumber);
+  findAll(@Query('regiaoId') regiaoId?: string) {
+    const regiaoIdNumber = regiaoId ? +regiaoId : undefined;
+    return this.setorService.findAll(regiaoIdNumber);
   }
 
   @Get(':id')

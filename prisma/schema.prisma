@@ -246,8 +246,6 @@ model diocese {
   descricao     String       @db.VarChar(90)
   enderecoId    Int
   endereco      endereco     @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
-  setorId       Int
-  setor         setor        @relation(fields: [setorId], references: [id], onDelete: Restrict)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @default(now()) @updatedAt
   paroquias     paroquia[]
@@ -263,6 +261,8 @@ model paroquia {
   endereco   endereco @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
   diocese    diocese  @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
   descricao  String   @db.VarChar(50)
+  setorId    Int      @default(1)
+  setor      setor    @relation(fields: [setorId], references: [id], onDelete: Restrict)
 
   @@schema("ambrosio")
 }
@@ -336,13 +336,14 @@ model user {
 }
 
 model setor {
-  id            Int         @id @default(autoincrement())
-  descricao     String      @db.VarChar(50)
-  macroRegiaoId Int
-  macroRegiao   macroRegiao @relation(fields: [macroRegiaoId], references: [id], onDelete: Restrict)
-  ativo         Boolean     @default(true)
-  diocese       diocese[]
+  id        Int        @id @default(autoincrement())
+  descricao String     @unique @db.VarChar(50)
+  regiaoId  Int        @default(1)
+  regiao    regiao     @relation(fields: [regiaoId], references: [id], onDelete: Restrict)
+  ativo     Boolean    @default(true)
+  paroquia  paroquia[]
 
+  @@unique([descricao, regiaoId])
   @@schema("ambrosio")
 }
 
@@ -350,7 +351,6 @@ model macroRegiao {
   id        Int      @id @default(autoincrement())
   descricao String   @db.VarChar(50)
   ativo     Boolean  @default(true)
-  setor     setor[]
   regiao    regiao[]
 
   @@schema("ambrosio")
@@ -362,6 +362,7 @@ model regiao {
   macroRegiaoId Int
   macroRegiao   macroRegiao @relation(fields: [macroRegiaoId], references: [id], onDelete: Restrict)
   ativo         Boolean     @default(true)
+  setor         setor[]
 
   @@unique([descricao, macroRegiaoId])
   @@schema("ambrosio")

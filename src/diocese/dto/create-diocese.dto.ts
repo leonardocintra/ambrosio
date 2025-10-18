@@ -8,7 +8,6 @@ import {
 } from 'class-validator';
 import { CreateTipoDioceseDto } from 'src/configuracoes/tipo-diocese/dto/create-tipo-diocese.dto';
 import { CreateEnderecoDto } from 'src/endereco/dto/create-endereco.dto';
-import { CreateSetorDto } from 'src/mapa/setor/dto/create-setor.dto';
 
 export class CreateDioceseDto {
   @IsString()
@@ -24,11 +23,6 @@ export class CreateDioceseDto {
   @ValidateNested({ each: true })
   @Type(() => CreateEnderecoDto)
   endereco: CreateEnderecoDto;
-
-  @IsObject()
-  @ValidateNested({ each: true })
-  @Type(() => CreateSetorDto)
-  setor: CreateSetorDto;
 
   @MaxLength(200)
   @IsOptional()

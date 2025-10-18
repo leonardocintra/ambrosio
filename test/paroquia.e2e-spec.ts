@@ -134,6 +134,7 @@ describe('ParoquiaController (e2e)', () => {
         expect(paroquia.diocese.tipoDiocese).toBeDefined();
         expect(paroquia.diocese.tipoDiocese).toHaveProperty('id');
         expect(paroquia.diocese.tipoDiocese).toHaveProperty('descricao');
+        expect(paroquia.setor).toHaveProperty('id');
       });
   });
 
@@ -190,6 +191,7 @@ describe('ParoquiaController (e2e)', () => {
     const paroquiaData = {
       descricao: faker.company.name(),
       diocese: { id: 1 },
+      setor: { id: 1 },
       endereco: {
         cep: faker.location.zipCode('########'),
         logradouro: faker.location.streetAddress(),
@@ -228,12 +230,14 @@ describe('ParoquiaController (e2e)', () => {
     );
     expect(response.body.data.endereco.cidade.estado.pais.nome).toBe('Brasil');
     expect(response.body.data.endereco.observacao).toBeDefined();
+    expect(response.body.data.setor.id).toBe(1);
   });
 
   it(`/${principal} (POST) - 404 | nao deve criar uma paroquia quando diocese invalida`, async () => {
     const dioceseData = {
       descricao: faker.company.name(),
       diocese: { id: 489 },
+      setor: { id: 1 },
       endereco: {
         cep: faker.location.zipCode('########'),
         logradouro: faker.location.streetAddress(),
@@ -253,6 +257,35 @@ describe('ParoquiaController (e2e)', () => {
       .expect((res) => {
         expect(res.body.message).toBe(
           `O registro de 'Diocese' não foi encontrado.`,
+        );
+        expect(res.body.statusCode).toBe(404);
+      });
+  });
+
+  it(`/${principal} (POST) - 404 | nao deve criar uma paroquia quando setor nao existe`, async () => {
+    const dioceseData = {
+      descricao: faker.company.name(),
+      diocese: { id: 1 },
+      setor: { id: 516 },
+      endereco: {
+        cep: faker.location.zipCode('########'),
+        logradouro: faker.location.streetAddress(),
+        numero: '32',
+        bairro: faker.location.secondaryAddress(),
+        UF: 'SP',
+        cidade: 'Nuporanga',
+      },
+    };
+
+    await request(app.getHttpServer())
+      .post(`/${principal}`)
+      .set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .send(dioceseData)
+      .expect(404)
+      .expect((res) => {
+        expect(res.body.message).toBe(
+          `O registro de 'Setor' não foi encontrado.`,
         );
         expect(res.body.statusCode).toBe(404);
       });

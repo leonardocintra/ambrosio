@@ -30,133 +30,145 @@ describe('SetorController (e2e)', () => {
           {
             id: 1,
             descricao: 'Anhaguera - Setor 1',
-            macroRegiaoId: 1,
+            regiaoId: 1,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 1,
-              descricao: 'Franca',
+              descricao: 'Centro-Oeste',
               ativo: true,
+              macroRegiaoId: 1,
             },
           },
           {
             id: 2,
             descricao: 'Anhaguera - Setor 2',
-            macroRegiaoId: 1,
+            regiaoId: 1,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 1,
-              descricao: 'Franca',
+              descricao: 'Centro-Oeste',
               ativo: true,
+              macroRegiaoId: 1,
             },
           },
           {
             id: 3,
             descricao: 'Portinari - Setor 1',
-            macroRegiaoId: 1,
+            regiaoId: 1,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 1,
-              descricao: 'Franca',
+              descricao: 'Centro-Oeste',
               ativo: true,
+              macroRegiaoId: 1,
             },
           },
           {
             id: 4,
             descricao: 'Portinari - Setor 2',
-            macroRegiaoId: 1,
+            regiaoId: 1,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 1,
-              descricao: 'Franca',
+              descricao: 'Centro-Oeste',
               ativo: true,
+              macroRegiaoId: 1,
             },
           },
           {
             id: 5,
             descricao: 'Brasilia - Setor 1',
-            macroRegiaoId: 2,
+            regiaoId: 2,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 2,
-              descricao: 'Brasília',
+              descricao: 'Nordeste',
               ativo: true,
+              macroRegiaoId: 2,
             },
           },
           {
             id: 6,
             descricao: 'Brasilia - Setor 2',
-            macroRegiaoId: 2,
+            regiaoId: 2,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 2,
-              descricao: 'Brasília',
+              descricao: 'Nordeste',
               ativo: true,
+              macroRegiaoId: 2,
             },
           },
           {
             id: 7,
             descricao: 'Brasilia - Setor 3',
-            macroRegiaoId: 2,
+            regiaoId: 2,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 2,
-              descricao: 'Brasília',
+              descricao: 'Nordeste',
               ativo: true,
+              macroRegiaoId: 2,
             },
           },
           {
             id: 8,
             descricao: 'Brasilia - Setor 4',
-            macroRegiaoId: 2,
+            regiaoId: 2,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 2,
-              descricao: 'Brasília',
+              descricao: 'Nordeste',
               ativo: true,
+              macroRegiaoId: 2,
             },
           },
           {
             id: 9,
             descricao: 'Brasilia - Setor 5',
-            macroRegiaoId: 2,
+            regiaoId: 2,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 2,
-              descricao: 'Brasília',
+              descricao: 'Nordeste',
               ativo: true,
+              macroRegiaoId: 2,
             },
           },
           {
             id: 10,
             descricao: 'Centro Oeste - GO 1',
-            macroRegiaoId: 3,
+            regiaoId: 3,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 3,
-              descricao: 'Goiás',
+              descricao: 'Norte',
               ativo: true,
+              macroRegiaoId: 3,
             },
           },
           {
             id: 11,
             descricao: 'Centro Oeste - GO 2',
-            macroRegiaoId: 3,
+            regiaoId: 3,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 3,
-              descricao: 'Goiás',
+              descricao: 'Norte',
               ativo: true,
+              macroRegiaoId: 3,
             },
           },
           {
             id: 12,
             descricao: 'Centro Oeste - GO 3',
-            macroRegiaoId: 3,
+            regiaoId: 3,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 3,
-              descricao: 'Goiás',
+              descricao: 'Norte',
               ativo: true,
+              macroRegiaoId: 3,
             },
           },
         ];
@@ -173,20 +185,21 @@ describe('SetorController (e2e)', () => {
         expect(res.body.data).toEqual({
           id: 3,
           descricao: 'Portinari - Setor 1',
-          macroRegiaoId: 1,
+          regiaoId: 1,
           ativo: true,
-          macroRegiao: {
+          regiao: {
             id: 1,
-            descricao: 'Franca',
+            descricao: 'Centro-Oeste',
+            macroRegiaoId: 1,
             ativo: true,
           },
         });
       });
   });
 
-  it('/setor?macroRegiaoId=1 (GET) - deve retornar setores da macroRegião Franca', () => {
+  it('/setor?regiaoId=1 (GET) - deve retornar setores da regiao Centro Oeste', () => {
     return request(app.getHttpServer())
-      .get('/setor?macroRegiaoId=1')
+      .get('/setor?regiaoId=1')
       .expect(200)
       .expect((res) => {
         expect(res.body).toHaveProperty('data');
@@ -197,45 +210,49 @@ describe('SetorController (e2e)', () => {
           {
             id: 1,
             descricao: 'Anhaguera - Setor 1',
-            macroRegiaoId: 1,
+            regiaoId: 1,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 1,
-              descricao: 'Franca',
+              descricao: 'Centro-Oeste',
               ativo: true,
+              macroRegiaoId: 1,
             },
           },
           {
             id: 2,
             descricao: 'Anhaguera - Setor 2',
-            macroRegiaoId: 1,
+            regiaoId: 1,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 1,
-              descricao: 'Franca',
+              descricao: 'Centro-Oeste',
               ativo: true,
+              macroRegiaoId: 1,
             },
           },
           {
             id: 3,
             descricao: 'Portinari - Setor 1',
-            macroRegiaoId: 1,
+            regiaoId: 1,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 1,
-              descricao: 'Franca',
+              descricao: 'Centro-Oeste',
               ativo: true,
+              macroRegiaoId: 1,
             },
           },
           {
             id: 4,
             descricao: 'Portinari - Setor 2',
-            macroRegiaoId: 1,
+            regiaoId: 1,
             ativo: true,
-            macroRegiao: {
+            regiao: {
               id: 1,
-              descricao: 'Franca',
+              descricao: 'Centro-Oeste',
               ativo: true,
+              macroRegiaoId: 1,
             },
           },
         ];

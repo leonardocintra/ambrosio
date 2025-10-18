@@ -35,8 +35,8 @@ describe('SetorController', () => {
 
   it('should return all setores', async () => {
     const setores = [
-      { id: 1, descricao: 'Setor 1', ativo: true, macroRegiaoId: 1 },
-      { id: 2, descricao: 'Setor 2', ativo: false, macroRegiaoId: 2 },
+      { id: 1, descricao: 'Setor 1', ativo: true, regiaoId: 1 },
+      { id: 2, descricao: 'Setor 2', ativo: false, regiaoId: 2 },
     ];
     jest.spyOn(prisma.setor, 'findMany').mockResolvedValue(setores);
 
@@ -48,7 +48,7 @@ describe('SetorController', () => {
       id: 1,
       descricao: 'Setor 1',
       ativo: true,
-      macroRegiaoId: 1,
+      regiaoId: 1,
     };
     jest.spyOn(prisma.setor, 'findUniqueOrThrow').mockResolvedValue(setor);
 

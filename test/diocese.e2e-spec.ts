@@ -114,7 +114,6 @@ describe('DioceseController (e2e)', () => {
     const dioceseData = {
       descricao: faker.company.name(),
       tipoDiocese: { id: 2, descricao: 'Diocese' },
-      setor: { id: 6, descricao: 'Brasilia' },
       endereco: {
         cep: faker.location.zipCode('########'),
         logradouro: faker.location.streetAddress(),
@@ -151,7 +150,6 @@ describe('DioceseController (e2e)', () => {
     expect(response.body.data.endereco.cidade.estado.sigla).toBe(
       dioceseData.endereco.UF,
     );
-    expect(response.body.data.setor.id).toBe(dioceseData.setor.id);
     expect(response.body.data.endereco.cidade.estado.pais.nome).toBe('Brasil');
     expect(response.body.data.endereco.observacao).toBeDefined();
   });
@@ -160,7 +158,6 @@ describe('DioceseController (e2e)', () => {
     const dioceseData = {
       descricao: faker.company.name(),
       tipoDiocese: { id: 489, descricao: 'Diocese Mentira' },
-      setor: { id: 2, descricao: 'Setor 2' },
       endereco: {
         cep: faker.location.zipCode('########'),
         logradouro: faker.location.streetAddress(),
@@ -211,62 +208,6 @@ describe('DioceseController (e2e)', () => {
       });
   });
 
-  it(`/${principal} (POST) - 404 | nao deve criar uma diocese com setor inexistente`, async () => {
-    const dioceseData = {
-      descricao: faker.company.name(),
-      tipoDiocese: { id: 2, descricao: 'Diocese Tal' },
-      setor: { id: 489, descricao: 'Setor Mentira' },
-      endereco: {
-        cep: faker.location.zipCode('########'),
-        logradouro: faker.location.streetAddress(),
-        numero: '32',
-        bairro: faker.location.secondaryAddress(),
-        UF: 'SP',
-        cidade: 'Nuporanga',
-      },
-    };
-
-    await request(app.getHttpServer())
-      .post(`/${principal}`)
-      .set('Authorization', `Bearer ${token}`)
-      .set('Content-Type', 'application/json')
-      .send(dioceseData)
-      .expect(404)
-      .expect((res) => {
-        expect(res.body.message).toBe(
-          `O registro de 'Setor' não foi encontrado.`,
-        );
-        expect(res.body.statusCode).toBe(404);
-      });
-  });
-
-  it(`/${principal} (POST) - 400 | nao deve criar uma diocese com setor null`, async () => {
-    const dioceseData = {
-      descricao: faker.company.name(),
-      tipoDiocese: { id: 2, descricao: 'Diocese' },
-      endereco: {
-        cep: faker.location.zipCode('########'),
-        logradouro: faker.location.streetAddress(),
-        numero: '32',
-        bairro: faker.location.secondaryAddress(),
-        UF: 'SP',
-        cidade: 'Nuporanga',
-      },
-    };
-
-    await request(app.getHttpServer())
-      .post(`/${principal}`)
-      .set('Authorization', `Bearer ${token}`)
-      .set('Content-Type', 'application/json')
-      .send(dioceseData)
-      .expect(400)
-      .expect((res) => {
-        expect(res.body.message[0]).toBe(`setor must be an object`);
-        expect(res.body.error).toBe('Bad Request');
-        expect(res.body.statusCode).toBe(400);
-      });
-  });
-
   it(`/${principal} (POST) - 401 | deve falhar sem autenticação`, async () => {
     await request(app.getHttpServer())
       .post(`/${principal}`)
@@ -295,7 +236,6 @@ describe('DioceseController (e2e)', () => {
     const dioceseData = {
       descricao: faker.company.name(),
       tipoDiocese: { id: 2, descricao: 'Diocese' },
-      setor: { id: 2, descricao: 'Setor 2' },
       endereco: {
         id: 1,
         cep: faker.location.zipCode('########'),
@@ -361,36 +301,6 @@ describe('DioceseController (e2e)', () => {
           'Endereço id 9874 não encontrada para essa diocese',
         );
         expect(res.body.error).toBe('Not Found');
-        expect(res.body.statusCode).toBe(404);
-      });
-  });
-
-  it(`/${principal}/:id (PATCH) - 404 | não deve atualizar uma diocese com setor que nao existe`, async () => {
-    const dioceseData = {
-      descricao: faker.company.name(),
-      tipoDiocese: { id: 2, descricao: 'Diocese' },
-      setor: { id: 23231, descricao: 'Setor 2' },
-      endereco: {
-        id: 1,
-        cep: faker.location.zipCode('########'),
-        logradouro: faker.location.streetAddress(),
-        numero: '1226',
-        bairro: faker.location.secondaryAddress(),
-        cidade: faker.location.city(),
-        UF: 'SP',
-      },
-    };
-
-    await request(app.getHttpServer())
-      .patch(`/${principal}/2`)
-      .set('Authorization', `Bearer ${token}`)
-      .set('Content-Type', 'application/json')
-      .send(dioceseData)
-      .expect(404)
-      .expect((res) => {
-        expect(res.body.message).toBe(
-          `O registro de 'Setor' não foi encontrado.`,
-        );
         expect(res.body.statusCode).toBe(404);
       });
   });

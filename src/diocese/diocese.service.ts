@@ -16,7 +16,6 @@ import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { Diocese } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select';
-import { SetorService } from 'src/mapa/setor/setor.service';
 import { BaseService } from 'src/commons/base.service';
 
 @Injectable()
@@ -25,7 +24,6 @@ export class DioceseService extends BaseService {
     private prisma: PrismaService,
     private enderecoService: EnderecoService,
     private readonly tipoDioceseService: TipoDioceseService,
-    private readonly setorService: SetorService,
     protected readonly abilityService: CaslAbilityService,
   ) {
     super(abilityService);
@@ -34,7 +32,6 @@ export class DioceseService extends BaseService {
   async create(createDioceseDto: CreateDioceseDto): Promise<Diocese> {
     this.validateCreateAbility('diocese');
     await this.tipoDioceseService.findOne(createDioceseDto.tipoDiocese.id);
-    await this.setorService.findOne(createDioceseDto.setor.id);
 
     try {
       const result = await this.prisma.$transaction(async (transaction) => {
@@ -51,7 +48,6 @@ export class DioceseService extends BaseService {
             descricao: createDioceseDto.descricao,
             tipoDioceseId: createDioceseDto.tipoDiocese.id,
             enderecoId: endereco.id,
-            setorId: createDioceseDto.setor.id,
           },
           select: DIOCESE_SELECT,
         });
@@ -96,14 +92,7 @@ export class DioceseService extends BaseService {
     this.validateUpdateAbility('diocese');
 
     const diocese = await this.findOne(id);
-
-    let setorId = diocese.setor.id;
     let tipoDioceseId = diocese.tipoDiocese.id;
-
-    if (updateDioceseDto.setor) {
-      await this.setorService.findOne(updateDioceseDto.setor.id);
-      setorId = updateDioceseDto.setor.id;
-    }
 
     if (updateDioceseDto.tipoDiocese) {
       await this.tipoDioceseService.findOne(updateDioceseDto.tipoDiocese.id);
@@ -127,17 +116,11 @@ export class DioceseService extends BaseService {
           data: {
             descricao: updateDioceseDto.descricao,
             tipoDioceseId,
-            setorId,
             enderecoId: endereco.id,
           },
           include: {
             endereco: ENDERECO_INCLUDE,
             tipoDiocese: true,
-            setor: {
-              include: {
-                macroRegiao: true,
-              },
-            },
           },
           where: {
             id,
@@ -169,25 +152,16 @@ export class DioceseService extends BaseService {
     return accessibleBy(ability, 'read').diocese;
   }
 
-  private serializeResponse(dio): Diocese {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private serializeResponse(diocese: any): Diocese {
     return {
-      id: dio.id,
-      descricao: dio.descricao,
+      id: diocese.id,
+      descricao: diocese.descricao,
       tipoDiocese: {
-        id: dio.tipoDiocese.id,
-        descricao: dio.tipoDiocese.descricao,
+        id: diocese.tipoDiocese.id,
+        descricao: diocese.tipoDiocese.descricao,
       },
-      setor: {
-        id: dio.setor.id,
-        descricao: dio.setor.descricao,
-        ativo: dio.setor.ativo,
-        macroRegiao: {
-          id: dio.setor.macroRegiao.id,
-          descricao: dio.setor.macroRegiao.descricao,
-          ativo: dio.setor.macroRegiao.ativo,
-        },
-      },
-      endereco: serializeEndereco(dio.endereco),
+      endereco: serializeEndereco(diocese.endereco),
     };
   }
 
