@@ -42,13 +42,7 @@ describe('DioceseService', () => {
             create: jest.fn(),
             findFirstOrThrow: jest.fn(),
           },
-        },
-        {
-          provide: 'PAIS_UF_CIDADE_SERVICE',
-          useValue: {
-            emit: jest.fn(),
-          },
-        },
+        }
       ],
     }).compile();
 

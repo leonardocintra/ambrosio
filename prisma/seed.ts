@@ -211,19 +211,19 @@ async function main() {
 
   async function regiao() {
     await prisma.regiao.create({
-      data: { descricao: 'Centro-Oeste', macroRegiaoId: 1 },
+      data: { descricao: 'Franca', macroRegiaoId: 1 },
     });
 
     await prisma.regiao.create({
-      data: { descricao: 'Nordeste', macroRegiaoId: 2 },
+      data: { descricao: 'Ceará', macroRegiaoId: 2 },
     });
 
     await prisma.regiao.create({
-      data: { descricao: 'Norte', macroRegiaoId: 3 },
+      data: { descricao: 'Piauí', macroRegiaoId: 3 },
     });
 
     await prisma.regiao.create({
-      data: { descricao: 'Sudeste', macroRegiaoId: 1 },
+      data: { descricao: 'Campo Limpo', macroRegiaoId: 1 },
     });
 
     console.log('---------------------------------');

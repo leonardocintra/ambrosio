@@ -34,7 +34,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 1,
-              descricao: 'Centro-Oeste',
+              descricao: 'Franca',
               ativo: true,
               macroRegiaoId: 1,
             },
@@ -46,7 +46,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 1,
-              descricao: 'Centro-Oeste',
+              descricao: 'Franca',
               ativo: true,
               macroRegiaoId: 1,
             },
@@ -58,7 +58,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 1,
-              descricao: 'Centro-Oeste',
+              descricao: 'Franca',
               ativo: true,
               macroRegiaoId: 1,
             },
@@ -70,7 +70,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 1,
-              descricao: 'Centro-Oeste',
+              descricao: 'Franca',
               ativo: true,
               macroRegiaoId: 1,
             },
@@ -82,7 +82,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 2,
-              descricao: 'Nordeste',
+              descricao: 'Ceará',
               ativo: true,
               macroRegiaoId: 2,
             },
@@ -94,7 +94,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 2,
-              descricao: 'Nordeste',
+              descricao: 'Ceará',
               ativo: true,
               macroRegiaoId: 2,
             },
@@ -106,7 +106,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 2,
-              descricao: 'Nordeste',
+              descricao: 'Ceará',
               ativo: true,
               macroRegiaoId: 2,
             },
@@ -118,7 +118,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 2,
-              descricao: 'Nordeste',
+              descricao: 'Ceará',
               ativo: true,
               macroRegiaoId: 2,
             },
@@ -130,7 +130,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 2,
-              descricao: 'Nordeste',
+              descricao: 'Ceará',
               ativo: true,
               macroRegiaoId: 2,
             },
@@ -142,7 +142,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 3,
-              descricao: 'Norte',
+              descricao: 'Piauí',
               ativo: true,
               macroRegiaoId: 3,
             },
@@ -154,7 +154,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 3,
-              descricao: 'Norte',
+              descricao: 'Piauí',
               ativo: true,
               macroRegiaoId: 3,
             },
@@ -166,7 +166,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 3,
-              descricao: 'Norte',
+              descricao: 'Piauí',
               ativo: true,
               macroRegiaoId: 3,
             },
@@ -189,7 +189,7 @@ describe('SetorController (e2e)', () => {
           ativo: true,
           regiao: {
             id: 1,
-            descricao: 'Centro-Oeste',
+            descricao: 'Franca',
             macroRegiaoId: 1,
             ativo: true,
           },
@@ -214,7 +214,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 1,
-              descricao: 'Centro-Oeste',
+              descricao: 'Franca',
               ativo: true,
               macroRegiaoId: 1,
             },
@@ -226,7 +226,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 1,
-              descricao: 'Centro-Oeste',
+              descricao: 'Franca',
               ativo: true,
               macroRegiaoId: 1,
             },
@@ -238,7 +238,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 1,
-              descricao: 'Centro-Oeste',
+              descricao: 'Franca',
               ativo: true,
               macroRegiaoId: 1,
             },
@@ -250,7 +250,7 @@ describe('SetorController (e2e)', () => {
             ativo: true,
             regiao: {
               id: 1,
-              descricao: 'Centro-Oeste',
+              descricao: 'Franca',
               ativo: true,
               macroRegiaoId: 1,
             },

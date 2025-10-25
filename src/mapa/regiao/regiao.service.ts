@@ -1,0 +1,31 @@
+import { Injectable } from '@nestjs/common';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { BaseService } from 'src/commons/base.service';
+import { PrismaService } from 'src/prisma.service';
+
+@Injectable()
+export class RegiaoService extends BaseService {
+  constructor(
+    private prisma: PrismaService,
+    protected readonly abilityService: CaslAbilityService,
+  ) {
+    super(abilityService);
+  }
+
+  findAll() {
+    this.validateReadAbility('regiao');
+    return this.prisma.regiao.findMany({
+      include: {
+        macroRegiao: true,
+      },
+    });
+  }
+
+  findOne(id: number) {
+    this.validateReadAbility('regiao');
+    return this.prisma.regiao.findUnique({
+      where: { id },
+      include: { macroRegiao: true },
+    });
+  }
+}
