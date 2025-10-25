@@ -25,6 +25,7 @@ import { MacroRegiaoModule } from './mapa/macro-regiao/macro-regiao.module';
 import { SaoPedroModule } from './external/sao-pedro/sao-pedro.module';
 import { LoggerModule } from 'nestjs-pino';
 import { IncomingMessage, ServerResponse } from 'http';
+import { RegiaoModule } from './mapa/regiao/regiao.module';
 import * as rTracer from 'cls-rtracer';
 
 @Module({
@@ -35,8 +36,8 @@ import * as rTracer from 'cls-rtracer';
           process.env.NODE_ENV === 'test'
             ? 'silent'
             : process.env.NODE_ENV === 'production'
-            ? 'info'
-            : 'debug',
+              ? 'info'
+              : 'debug',
         transport: {
           target: 'pino-pretty',
           options: {
@@ -80,6 +81,7 @@ import * as rTracer from 'cls-rtracer';
     SetorModule,
     MacroRegiaoModule,
     SaoPedroModule,
+    RegiaoModule,
   ],
   controllers: [AppController],
   providers: [
