@@ -9,7 +9,6 @@ describe('RegiaoController', () => {
   let controller: RegiaoController;
   let prismaService: PrismaService;
   let abilityService: CaslAbilityService;
-  let jwtService: JwtService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -21,13 +20,11 @@ describe('RegiaoController', () => {
     prismaService = module.get<PrismaService>(PrismaService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
-    jwtService = module.get<JwtService>(JwtService);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
     expect(abilityService).toBeDefined();
     expect(prismaService).toBeDefined();
-    expect(jwtService).toBeDefined();
   });
 });

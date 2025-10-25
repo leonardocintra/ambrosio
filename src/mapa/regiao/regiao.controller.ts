@@ -1,12 +1,9 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 import { RegiaoService } from './regiao.service';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Regiões')
 @Controller('regiao')
-@UseGuards(AuthGuard, RoleGuard)
 export class RegiaoController {
   constructor(private readonly regiaoService: RegiaoService) {}
 
@@ -19,6 +16,12 @@ export class RegiaoController {
   @Get(':id')
   @ApiOkResponse({ description: 'Retorna uma região pelo ID' })
   findOne(@Param('id') id: string) {
-    return this.regiaoService.findOne(+id);
+    const parsedId = Number(id);
+    if (isNaN(parsedId) || !Number.isInteger(parsedId) || parsedId <= 0) {
+      throw new BadRequestException(
+        'O parâmetro "id" deve ser um número inteiro positivo válido.',
+      );
+    }
+    return this.regiaoService.findOne(parsedId);
   }
 }

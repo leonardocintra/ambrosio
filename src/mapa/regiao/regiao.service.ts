@@ -13,7 +13,6 @@ export class RegiaoService extends BaseService {
   }
 
   findAll() {
-    this.validateReadAbility('regiao');
     return this.prisma.regiao.findMany({
       include: {
         macroRegiao: true,
@@ -22,7 +21,6 @@ export class RegiaoService extends BaseService {
   }
 
   findOne(id: number) {
-    this.validateReadAbility('regiao');
     return this.prisma.regiao.findUnique({
       where: { id },
       include: { macroRegiao: true },

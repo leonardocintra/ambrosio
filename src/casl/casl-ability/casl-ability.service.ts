@@ -9,7 +9,6 @@ import {
   pessoaCarismaPrimitivo,
   pessoaCarismaServico,
   pessoaCarismaVinculado,
-  regiao,
   user,
 } from '@prisma/client';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
@@ -21,7 +20,6 @@ export type PermissionResource =
       pessoa: pessoa;
       user: user;
       diocese: diocese;
-      regiao: regiao;
       paroquia: paroquia;
       localidade: localidade;
       pessoaCarismaPrimitivo: pessoaCarismaPrimitivo;
@@ -56,7 +54,6 @@ const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
     cannot('read', 'paroquia');
     cannot('read', 'localidade');
     cannot('read', 'user');
-    cannot('read', 'regiao');
   },
   CATEQUISTA_NACIONAL: grantReadPessoaDiocese,
   CATEQUISTA_GRANDE_REGIAO: grantReadPessoaDiocese,
