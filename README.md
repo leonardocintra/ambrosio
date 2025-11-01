@@ -50,6 +50,15 @@ curl --location 'http://localhost:3005/auth/login' \
     
 }'
 ```
+Abre um novo terminal
+
+Para fazer o cadatro de pessoas precisa usar o codigo abaixo. 
+
+```
+$ bash ./scripts/start.sh
+```
+
+Isso é necessario pois a API de pessoas é "externa"
 
 ### production mode
 ```bash

@@ -4,12 +4,12 @@ import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 import { setupTestModule } from '../test-setup';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { mockSaoPedroPessoaService } from '../../test/mocks/sao-pedro-api-mock';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
-  const email = faker.internet.email();
-  const name = faker.person.fullName();
-  const cpf = '14147855632';
+  const email = 'carmem@neocatecumenal.com.es';
+  const cpf = '11122233345';
   const password = faker.internet.password();
   const whatsapp = '16999999999';
 
@@ -17,24 +17,7 @@ describe('UserController (e2e)', () => {
     app = await setupTestModule([
       {
         provider: SaoPedroPessoaService,
-        value: {
-          getExternalPessoaByCpf: async (cpf: string) => ({
-            id: 1,
-            externalId: 'external-123-468488',
-            nome: 'Pessoa Mock',
-            cpf,
-            estadoCivil: { id: 2, descricao: 'Casado' },
-            situacaoReligiosa: { id: 1, descricao: 'LEIGO' },
-            escolaridade: { id: 6, descricao: 'Ensino Superior' },
-            nacionalidade: 'brasileira',
-            sexo: 'FEMININO',
-            conhecidoPor: 'Mock',
-            foto: null,
-            ativo: true,
-            dataNascimento: new Date('1994-02-23'),
-          }),
-          // Adicione outros métodos se necessário
-        },
+        value: mockSaoPedroPessoaService,
       },
     ]);
   });
@@ -70,7 +53,6 @@ describe('UserController (e2e)', () => {
       email,
       cpf,
       password,
-      name,
       whatsapp,
     });
 
@@ -81,7 +63,6 @@ describe('UserController (e2e)', () => {
       limit: 1,
       data: {
         email,
-        name,
         cpf,
         role: ROLE_ENUM.NAO_IDENTIFICADO,
         whatsapp,
@@ -104,11 +85,10 @@ describe('UserController (e2e)', () => {
       email,
       cpf: '74147855632',
       password: 'admin',
-      name,
       whatsapp,
     });
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(409);
     expect(response.body.message).toContain(
       `O campo 'email' já existe cadastrado. Não permitimos duplicidade.`,
     );
@@ -119,13 +99,12 @@ describe('UserController (e2e)', () => {
       email,
       cpf,
       password: 'admin',
-      name,
       whatsapp,
     });
 
     expect(response.status).toBe(409);
     expect(response.body.message).toContain(
-      `Já tem um usuario com esse CPF ${cpf}`,
+      `Já tem um usuario com esse ID: 1 - Email: carmem@neocatecumenal.com.es`,
     );
   });
 

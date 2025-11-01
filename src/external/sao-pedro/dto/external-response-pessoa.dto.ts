@@ -1,4 +1,4 @@
-import { Escolaridade, EstadoCivil, SituacaoReligiosa } from 'neocatecumenal';
+import { SituacaoReligiosa } from 'neocatecumenal';
 
 export class ExternalResponsePessoaDto {
   id: number;
@@ -6,10 +6,10 @@ export class ExternalResponsePessoaDto {
   nome: string;
   cpf: string;
   ativo: boolean;
-  escolaridade?: Escolaridade;
+  escolaridade: string;
   conhecidoPor?: string;
   dataNascimento?: Date;
-  estadoCivil?: EstadoCivil;
+  estadoCivil?: string;
   nacionalidade?: string;
   situacaoReligiosa?: SituacaoReligiosa;
   sexo?: string;

@@ -26,7 +26,7 @@ export class EnderecoService {
       where: { id: pessoaId },
     });
 
-    createEnderecoDto.observacao = `End. pessoa id: ${pessoa.id} (${pessoa.nome}). ${createEnderecoDto.observacao ?? ''}`;
+    createEnderecoDto.observacao = `End. pessoa id: ${pessoa.id} (${pessoa.externalId}). ${createEnderecoDto.observacao ?? ''}`;
 
     const endereco = await this.create(createEnderecoDto);
     await this.prisma.pessoaEndereco.create({

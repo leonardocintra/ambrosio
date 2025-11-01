@@ -1,4 +1,4 @@
-import { escolaridade, estadoCivil, situacaoReligiosa } from '@prisma/client';
+import { situacaoReligiosa } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsDate,
@@ -10,7 +10,11 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { SEXO_ENUM } from 'src/commons/enums/enums';
+import {
+  ESCOLARIDADE_ENUM,
+  ESTADO_CIVIL_ENUM,
+  SEXO_ENUM,
+} from 'src/commons/enums/enums';
 
 export class CreatePessoaDto {
   @IsNotEmpty()
@@ -33,8 +37,9 @@ export class CreatePessoaDto {
   @IsString()
   nacionalidade: string;
 
-  @IsNotEmpty()
-  estadoCivil: estadoCivil;
+  @IsEnum(ESTADO_CIVIL_ENUM)
+  @IsOptional()
+  estadoCivil: string;
 
   @IsOptional()
   @IsDate({
@@ -51,8 +56,9 @@ export class CreatePessoaDto {
   @IsOptional()
   sexo: string;
 
+  @IsEnum(ESCOLARIDADE_ENUM)
   @IsOptional()
-  escolaridade: escolaridade;
+  escolaridade: string;
 
   @IsNotEmpty()
   situacaoReligiosa: situacaoReligiosa;

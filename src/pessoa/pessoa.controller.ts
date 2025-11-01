@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -105,11 +104,6 @@ export class PessoaController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
     return this.pessoaService.update(+id, updatePessoaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pessoaService.remove(+id);
   }
 
   @Post(':id/carisma')

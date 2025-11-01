@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
 import { PrismaClient, Sexo } from '@prisma/client';
-import { Escolaridade, EstadoCivil, SituacaoReligiosa } from 'neocatecumenal';
 
 const prisma = new PrismaClient();
 
@@ -24,12 +23,11 @@ async function main() {
   await diocese();
   await paroquia();
   await admin();
-  await pessoas(5);
+  await pessoas();
 
   async function admin() {
     await prisma.user.create({
       data: {
-        name: 'Admin Geral',
         email: 'admin@admin.com',
         password:
           '$2b$10$.TT7jgY.IqTW/3qg9RXw4.y20H4ROVqfj0TIjBi5l9ks2fb5ueQsC',
@@ -40,7 +38,6 @@ async function main() {
 
     await prisma.user.create({
       data: {
-        name: 'Ronaldinho Gaucho',
         email: 'ronaldinho@admin.com',
         password:
           '$2b$10$.TT7jgY.IqTW/3qg9RXw4.y20H4ROVqfj0TIjBi5l9ks2fb5ueQsC',
@@ -528,48 +525,16 @@ async function main() {
     console.log('Paroquia preenchida com sucesso!');
   }
 
-  async function pessoas(quantidade: number) {
-    const [estadosCivis, escolaridades, situacoesReligiosas] =
-      await Promise.all([
-        prisma.estadoCivil.findMany(),
-        prisma.escolaridade.findMany(),
-        prisma.situacaoReligiosa.findMany(),
-      ]);
-
-    const payloads = Array.from({ length: quantidade }, (_, i) =>
-      _buildPessoaPayload(i, estadosCivis, escolaridades, situacoesReligiosas),
-    );
-
-    await prisma.pessoa.createMany({ data: payloads });
+  async function pessoas() {
     await prisma.pessoa.create({
       data: {
-        nome: 'João da Silva',
-        externalId: 'external-123-468488',
-        conhecidoPor: 'João usuario do sistema teste',
-        nacionalidade: 'brasileira',
-        cpf: '14147855632',
-        sexo: 'MASCULINO',
-        dataNascimento: new Date('1990-01-01'),
-        estadoCivilId: estadosCivis[0].id,
-        escolaridadeId: escolaridades[4].id,
-        situacaoReligiosaId: situacoesReligiosas[0].id,
+        externalId: 'id-usuario-teste-e2e-1',
+        situacaoReligiosaId: 1,
       },
     });
-    await prisma.pessoa.create({
-      data: {
-        nome: faker.person.fullName(),
-        externalId: 'external-789-468488',
-        conhecidoPor: 'Maria usuario do sistema teste',
-        nacionalidade: 'brasileira',
-        cpf: '74147855632',
-        sexo: 'FEMININO',
-        dataNascimento: new Date('1990-01-01'),
-        estadoCivilId: estadosCivis[0].id,
-        escolaridadeId: escolaridades[4].id,
-        situacaoReligiosaId: situacoesReligiosas[0].id,
-      },
-    });
-    console.log(`Criadas ${quantidade + 2} pessoas com sucesso!`);
+
+    console.log('---------------------------------');
+    console.log('Pessoas preenchidas com sucesso!');
   }
 }
 
@@ -581,32 +546,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-function _buildPessoaPayload(
-  index: number,
-  estadosCivis: EstadoCivil[],
-  escolaridades: Escolaridade[],
-  situacoes: SituacaoReligiosa[],
-) {
-  const sexo = faker.helpers.arrayElement(['MASCULINO', 'FEMININO']);
-  const nome = faker.person.fullName({
-    sex: sexo === 'MASCULINO' ? 'male' : 'female',
-  });
-  return {
-    nome,
-    conhecidoPor: faker.person.firstName(
-      sexo === 'MASCULINO' ? 'male' : 'female',
-    ),
-    nacionalidade: 'brasileira',
-    cpf: String(index).padStart(11, '0'),
-    sexo,
-    dataNascimento: faker.date.birthdate({
-      min: 1950,
-      max: 2010,
-      mode: 'year',
-    }),
-    estadoCivilId: faker.helpers.arrayElement(estadosCivis).id,
-    escolaridadeId: faker.helpers.arrayElement(escolaridades).id,
-    situacaoReligiosaId: faker.helpers.arrayElement(situacoes).id,
-  };
-}

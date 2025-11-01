@@ -9,7 +9,7 @@ import { packRules } from '@casl/ability/extra';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-  
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
@@ -22,7 +22,7 @@ export class AuthService {
     });
 
     if (!user) {
-      this.logger.log(`Usuario não encontrado. Email ${loginDto.email} `)
+      this.logger.log(`Usuario não encontrado. Email ${loginDto.email} `);
       return null;
     }
 
@@ -32,14 +32,13 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      this.logger.log(`Senha invalida. User ${user.name}`)
+      this.logger.log(`Senha invalida. User ${user.email}`);
       return null;
     }
 
     const ability = this.abilityService.createForUser(user);
     const token = this.jwtService.sign({
       sub: user.id,
-      name: user.name,
       email: user.email,
       role: user.role,
       permissions: packRules(ability.rules),

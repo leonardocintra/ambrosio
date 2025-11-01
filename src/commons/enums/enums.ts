@@ -15,6 +15,13 @@ export enum ROLE_ENUM {
   NAO_IDENTIFICADO = 'NAO_IDENTIFICADO',
 }
 
+export enum ESTADO_CIVIL_ENUM {
+  SOLTEIRO = 'SOLTEIRO',
+  CASADO = 'CASADO',
+  DIVORCIADO = 'DIVORCIADO',
+  VIUVO = 'VIUVO',
+}
+
 export enum ESCOLARIDADE_ENUM {
   NAO_INFORMADO = 'nao_informado',
   ANALFABETO = 'analfabeto',

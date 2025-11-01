@@ -1,14 +1,17 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateCarismaDto } from '../dto/create-carisma.dto';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { BaseService } from 'src/commons/base.service';
 
 @Injectable()
-export class TipoCarismaPrimitivoService {
+export class TipoCarismaPrimitivoService extends BaseService {
   constructor(
     private prisma: PrismaService,
-    private abilityService: CaslAbilityService,
-  ) {}
+    abilityService: CaslAbilityService,
+  ) {
+    super(abilityService);
+  }
 
   findAll() {
     return this.prisma.tipoCarismaPrimitivo.findMany();
@@ -21,12 +24,7 @@ export class TipoCarismaPrimitivoService {
   }
 
   registerCarismaPrimitivoPessoa(createCarismaDto: CreateCarismaDto) {
-    const { ability } = this.abilityService;
-    if (!ability.can('create', 'pessoaCarismaPrimitivo')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para criar um carisma primitivo',
-      );
-    }
+    this.validateCreateAbility('pessoaCarismaPrimitivo');
     const { pessoaId, carismas } = createCarismaDto;
 
     // Monta os dados para criação em massa
@@ -35,6 +33,9 @@ export class TipoCarismaPrimitivoService {
       tipoCarismaPrimitivoId: carisma.id,
     }));
 
+    this.logger.log(
+      `Registrando carismas primitivos para a pessoa ID: ${pessoaId}`,
+    );
     return this.prisma.pessoaCarismaPrimitivo.createMany({
       data,
       skipDuplicates: true,

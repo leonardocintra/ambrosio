@@ -1,21 +1,26 @@
-import { Pessoa } from "neocatecumenal";
-import { serializeEndereco } from "src/commons/utils/serializers/serializerEndereco";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Pessoa } from 'neocatecumenal';
+import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function serializePessoaResponse(pessoa: any, conjugue?: any): Pessoa {
+export function serializePessoaResponse(
+  pessoa: any,
+  external: Pessoa,
+  conjugue?: any,
+): Pessoa {
   return {
     id: pessoa.id,
-    nome: pessoa.nome,
-    conhecidoPor: pessoa.conhecidoPor,
-    cpf: pessoa.cpf,
-    sexo: pessoa.sexo,
-    nacionalidade: pessoa.nacionalidade,
-    estadoCivil: pessoa.estadoCivil,
-    dataNascimento: pessoa.dataNascimento,
+    externalId: external.externalId,
+    nome: external.nome,
+    conhecidoPor: external.conhecidoPor,
+    cpf: external.cpf,
+    sexo: external.sexo,
+    nacionalidade: external.nacionalidade,
+    estadoCivil: external.estadoCivil,
+    dataNascimento: external.dataNascimento,
     conjugue,
-    foto: pessoa.foto,
+    foto: external.foto,
     ativo: pessoa.ativo,
-    escolaridade: pessoa.escolaridade,
+    escolaridade: external.escolaridade,
     situacaoReligiosa: pessoa.situacaoReligiosa,
     carismas: {
       primitivos: pessoa.carismasPrimitivo?.map((carisma) => ({
