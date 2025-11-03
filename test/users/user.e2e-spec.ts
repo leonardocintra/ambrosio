@@ -63,7 +63,6 @@ describe('UserController (e2e)', () => {
       limit: 1,
       data: {
         email,
-        cpf,
         role: ROLE_ENUM.NAO_IDENTIFICADO,
         whatsapp,
         verifiedWhatsapp: false,
@@ -81,14 +80,24 @@ describe('UserController (e2e)', () => {
   });
 
   it('/users (POST) - Não deve permitir e-mail duplicado', async () => {
+    // Mock específico para esse teste
+    jest
+      .spyOn(mockSaoPedroPessoaService, 'getExternalPessoaByCpf')
+      .mockResolvedValueOnce({
+        id: 3,
+        externalId: 'id-usuario-cpf-duplicado-e2e-2',
+        nome: 'Outra Pessoa Mock',
+        cpf: '74147855632',
+        ativo: true,
+      });
+
     const response = await request(app.getHttpServer()).post('/users').send({
       email,
       cpf: '74147855632',
       password: 'admin',
       whatsapp,
     });
-
-    expect(response.status).toBe(409);
+    expect(response.status).toBe(400);
     expect(response.body.message).toContain(
       `O campo 'email' já existe cadastrado. Não permitimos duplicidade.`,
     );

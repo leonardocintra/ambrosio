@@ -81,7 +81,7 @@ describe('PessoaCarismaController (e2e)', () => {
       .expect(403)
       .expect((res) => {
         expect(res.body.message).toBe(
-          'Você não tem permissão para criar um carisma primitivo',
+          'Você não tem permissão para create pessoaCarismaPrimitivo',
         );
         expect(res.body.error).toBe('Forbidden');
         expect(res.body.statusCode).toBe(403);

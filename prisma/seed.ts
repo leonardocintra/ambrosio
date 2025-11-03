@@ -533,6 +533,13 @@ async function main() {
       },
     });
 
+    await prisma.pessoa.create({
+      data: {
+        externalId: 'id-usuario-cpf-duplicado-e2e-2',
+        situacaoReligiosaId: 1,
+      },
+    });
+
     console.log('---------------------------------');
     console.log('Pessoas preenchidas com sucesso!');
   }

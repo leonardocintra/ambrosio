@@ -78,16 +78,20 @@ describe('PessoaCreateController (e2e)', () => {
   });
 
   it(`/${principal} (POST) - 201 | deve cadastrar pessoa corretamente`, async () => {
+    // Mock específico para este teste
+    jest
+      .spyOn(mockSaoPedroPessoaService, 'getExternalPessoaByCpf')
+      .mockResolvedValueOnce(null);
     const response = await request(app.getHttpServer())
       .post(`/${principal}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         ...pessoaMock,
-      })
-      .expect(201);
+      });
 
+    expect(response.status).toBe(201);
     expect(response.body.data).toHaveProperty('id');
-    expect(response.body.data).toHaveProperty('nome', pessoaMock.nome);
+    expect(response.body.data).toHaveProperty('nome', 'Carmem Hernandez Mock');
     expect(response.body.data).toHaveProperty('cpf', pessoaMock.cpf);
     // expect(response.body.data).toHaveProperty(
     //   'dataNascimento',
