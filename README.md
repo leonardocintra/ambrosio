@@ -52,7 +52,7 @@ curl --location 'http://localhost:3005/auth/login' \
 ```
 Abre um novo terminal
 
-Para fazer o cadatro de pessoas precisa usar o codigo abaixo. 
+Para fazer o cadastro de pessoas, precisa usar o código abaixo.
 
 ```
 $ bash ./scripts/start.sh
