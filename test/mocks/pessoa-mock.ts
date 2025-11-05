@@ -4,18 +4,15 @@ export const pessoaMock = {
   nome: faker.person.fullName(),
   conhecidoPor: faker.person.fullName(),
   nacionalidade: 'brasileira',
-  cpf: faker.string.numeric(11),
+  cpf: '07211100000',
   sexo: faker.helpers.arrayElement(['MASCULINO', 'FEMININO']),
   dataNascimento: faker.date
     .birthdate({ min: 1950, max: 2010, mode: 'year' })
     .toISOString()
     .slice(0, 10),
-  estadoCivil: {
-    id: 2,
-    descricao: 'Casado',
-  },
+  estadoCivil: 'CASADO',
   situacaoReligiosa: {
-    id: 2,
+    id: 1,
     descricao: 'LEIGO',
   },
 };

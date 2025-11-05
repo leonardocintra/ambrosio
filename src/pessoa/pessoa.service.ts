@@ -2,8 +2,6 @@ import { ConflictException, HttpException, Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
-import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
-import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { SEXO_ENUM } from 'src/commons/enums/enums';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import {
@@ -13,13 +11,8 @@ import {
 } from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
-import { Pessoa } from 'neocatecumenal';
-import {
-  escolaridade,
-  estadoCivil,
-  pessoa,
-  situacaoReligiosa,
-} from '@prisma/client';
+import { EstadoCivilEnum, Pessoa, PessoaConjugue } from 'neocatecumenal';
+import { pessoa } from '@prisma/client';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
 import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
@@ -27,14 +20,15 @@ import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-car
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { BaseService } from 'src/commons/base.service';
-import { serializePessoaResponse } from './pessoa.serializer';
+import {
+  serializePessoaResponse,
+  serializePessoasListResponse,
+} from './pessoa.serializer';
 
 @Injectable()
 export class PessoaService extends BaseService {
   constructor(
     private prisma: PrismaService,
-    private estadoCivilService: EstadoCivilService,
-    private escolaridadeService: EscolaridadeService,
     private situacaoReligiosaService: SituacaoReligiosaService,
     private carismaVinculadoService: TipoCarismaVinculadoService,
     private carismaPrimitivoService: TipoCarismaPrimitivoService,
@@ -48,41 +42,25 @@ export class PessoaService extends BaseService {
   async create(createPessoaDto: CreatePessoaDto) {
     this.validateCreateAbility('pessoa');
 
-    const [estadoCivil, escolaridade, situacaoReligiosa] =
-      await this.getEstadoCivilEscolaridadeSituacaoReligiosa(createPessoaDto);
+    const situacaoReligiosa = await this.situacaoReligiosaService.findOne(
+      createPessoaDto.situacaoReligiosa.id,
+    );
     await this.analisarCPF(createPessoaDto.cpf);
 
     try {
-      const external = await this.saoPedroPessoaService.postExternalPessoa(
-        createPessoaDto,
-        escolaridade?.descricao,
-        estadoCivil.descricao,
-      );
+      const external =
+        await this.saoPedroPessoaService.createExternalPessoa(createPessoaDto);
 
       const pessoa = await this.prisma.pessoa.create({
         data: {
-          nome: createPessoaDto.nome,
           externalId: external.externalId,
-          conhecidoPor: createPessoaDto.conhecidoPor,
-          cpf: createPessoaDto.cpf,
-          nacionalidade: createPessoaDto.nacionalidade,
-          estadoCivilId: estadoCivil.id,
-          foto: createPessoaDto.foto,
-          escolaridadeId: escolaridade?.id,
           situacaoReligiosaId: situacaoReligiosa.id,
-          dataNascimento: createPessoaDto.dataNascimento
-            ? new Date(createPessoaDto.dataNascimento)
-            : null,
-          sexo:
-            createPessoaDto.sexo === 'MASCULINO'
-              ? SEXO_ENUM.MASCULINO
-              : SEXO_ENUM.FEMININO,
         },
       });
       this.logger.log(
         `Pessoa ${external.nome} UUID: ${external.externalId} criada com ID ${pessoa.id}`,
       );
-      return pessoa;
+      return serializePessoaResponse(pessoa, external);
     } catch (error) {
       this.logger.error('Error posting external pessoa', error);
     }
@@ -98,13 +76,16 @@ export class PessoaService extends BaseService {
 
     const skip = (page - 1) * limit;
 
+    const externalPessoas = await this.saoPedroPessoaService.findAllPessoas();
+    this.logger.log(
+      `Total de pessoas externas encontradas: ${externalPessoas.length}`,
+    );
+
     const results = await this.prisma.pessoa.findMany({
       skip,
       take: limit,
       where,
       include: {
-        estadoCivil: true,
-        escolaridade: true,
         situacaoReligiosa: true,
         carismasServico: {
           include: {
@@ -132,7 +113,25 @@ export class PessoaService extends BaseService {
       },
     });
 
-    return results.map((result) => serializePessoaResponse(result));
+    // Monta um dicionário com externalId como chave
+    const externalMap = new Map(
+      externalPessoas.map((ep) => [ep.externalId, ep]),
+    );
+
+    return results
+      .map((pessoa) => {
+        const externalPessoa = externalMap.get(pessoa.externalId);
+
+        if (externalPessoa) {
+          return serializePessoaResponse(pessoa, externalPessoa, undefined);
+        } else {
+          this.logger.warn(
+            `Pessoa com ID ${pessoa.id} não encontrada na API externa (externalId: ${pessoa.externalId})`,
+          );
+          return null;
+        }
+      })
+      .filter(Boolean); // Remove os nulls do array
   }
 
   async createCasal(createCasalDto: CreateCasalDto) {
@@ -148,21 +147,22 @@ export class PessoaService extends BaseService {
       }),
     ]);
 
-    if (pessoa.estadoCivilId !== Number(process.env.ESTADO_CIVIL_CASADO_ID)) {
+    const [pessoaExternal, conjugueExternal] = await Promise.all([
+      this.saoPedroPessoaService.findExternalPessoaByUuid(pessoa.externalId),
+      this.saoPedroPessoaService.findExternalPessoaByUuid(conjugue.externalId),
+    ]);
+
+    if (
+      pessoaExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1) ||
+      conjugueExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1)
+    ) {
       throw new HttpException(
         'Apenas pessoas com estado civil casado podem se casar',
         400,
       );
     }
 
-    if (conjugue.estadoCivilId !== Number(process.env.ESTADO_CIVIL_CASADO_ID)) {
-      throw new HttpException(
-        'Apenas pessoas com estado civil casado podem se casar',
-        400,
-      );
-    }
-
-    if (pessoa.sexo === conjugue.sexo) {
+    if (pessoaExternal.sexo === conjugueExternal.sexo) {
       throw new HttpException(
         'Casal do mesmo sexo! Não existe casal do mesmo sexo. Verificar.',
         400,
@@ -195,14 +195,14 @@ export class PessoaService extends BaseService {
       );
     }
 
-    if (pessoa.sexo === SEXO_ENUM.MASCULINO) {
+    if (pessoaExternal.sexo === SEXO_ENUM.MASCULINO.substring(0, 1)) {
       return await this.prisma.pessoaCasal.create({
         data: {
           pessoaMaridoId: pessoa.id,
           pessoaMulherId: conjugue.id,
         },
       });
-    } else if (pessoa.sexo === SEXO_ENUM.FEMININO) {
+    } else if (pessoaExternal.sexo === SEXO_ENUM.FEMININO.substring(0, 1)) {
       return await this.prisma.pessoaCasal.create({
         data: {
           pessoaMaridoId: conjugue.id,
@@ -210,6 +210,9 @@ export class PessoaService extends BaseService {
         },
       });
     } else {
+      this.logger.error(
+        `Sexo inválido para pessoa ID ${pessoa.id} ou conjugue ID ${conjugue.id}`,
+      );
       throw new HttpException(
         'Marido ou esposa esta com os sexo (F ou M) cadastrado de forma errada. Verificar.',
         400,
@@ -218,7 +221,10 @@ export class PessoaService extends BaseService {
   }
 
   async createCarismas(pessoaId: number, dto: CreatePessoaCarismasDto) {
-    await this.findOne(pessoaId);
+    const pessoa = await this.findOne(pessoaId);
+    this.logger.log(
+      `Registrando carismas para a pessoa: ${pessoa.id} - ${pessoa.nome}`,
+    );
 
     const primitivos =
       await this.carismaPrimitivoService.registerCarismaPrimitivoPessoa({
@@ -257,44 +263,73 @@ export class PessoaService extends BaseService {
   }
 
   async findAllBySexoEstadoCivilCasado(sexo: string) {
-    // Funcao para buscar todas as pessoas com estado civil casado que não estao vinculados marido e mulher
+    // Função para buscar todas as pessoas com estado civil casado que não estão vinculadas como marido e mulher
     const param = sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO;
-    const estadoCivilId = Number(process.env.ESTADO_CIVIL_CASADO_ID);
+    const externalPessoas =
+      await this.saoPedroPessoaService.getExternalPessoasEstadoCivilCasado(
+        param,
+      );
 
-    // TODO: pensar uma alternativa para essa query, pois queryRamUnsafe é perigoso. Nesse caso se nao tiver alteração na query esta tudo bem.
-    return await this.prisma.$queryRawUnsafe(
-      `SELECT p.id, p.nome
-          FROM pessoa p 
-          LEFT JOIN "pessoaCasal" marido 
-            ON marido."pessoaMaridoId" = p.id 
-          LEFT JOIN "pessoaCasal" mulher 
-            ON mulher."pessoaMulherId" = p.id 
-          WHERE 
-            p."estadoCivilId" = ${estadoCivilId}
-            AND mulher.id IS NULL 
-            AND marido.id IS NULL
-            AND p.sexo = '${param}'`,
-    );
+    if (externalPessoas.length === 0) {
+      return [];
+    }
+
+    const externalIds = externalPessoas.map((pessoa) => pessoa.externalId);
+
+    const pessoas = await this.prisma.pessoa.findMany({
+      select: {
+        id: true,
+        externalId: true,
+      },
+      where: {
+        externalId: {
+          in: externalIds,
+        },
+        AND: [
+          {
+            casamentosComoMarido: {
+              none: {},
+            },
+          },
+          {
+            casamentosComoMulher: {
+              none: {},
+            },
+          },
+        ],
+      },
+    });
+
+    return serializePessoasListResponse(pessoas, externalPessoas, undefined);
   }
 
   async findOneByCpf(cpf: string): Promise<Pessoa> {
     const externalPessoa =
       await this.saoPedroPessoaService.getExternalPessoaByCpf(cpf);
-    if (externalPessoa) {
-      const pessoa = await this.prisma.pessoa.findUnique({
-        where: { externalId: externalPessoa.externalId },
-      });
-      return pessoa ? serializePessoaResponse(pessoa) : null;
+
+    if (!externalPessoa) {
+      return null;
     }
-    return null;
+
+    const pessoa = await this.prisma.pessoa.findUnique({
+      where: { externalId: externalPessoa.externalId },
+    });
+    return pessoa ? serializePessoaResponse(pessoa, externalPessoa) : null;
   }
 
-  async findOne(id: number) {
-    const result: pessoa = await this.prisma.pessoa.findUniqueOrThrow({
-      where: { id },
+  async findOne(id: number): Promise<Pessoa> {
+    return this.findBy({ id });
+  }
+
+  async findByExternalId(externalId: string): Promise<Pessoa> {
+    return this.findBy({ externalId });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private async findBy(where: any): Promise<Pessoa> {
+    const pessoa: pessoa = await this.prisma.pessoa.findUniqueOrThrow({
+      where,
       include: {
-        estadoCivil: true,
-        escolaridade: true,
         situacaoReligiosa: true,
         carismasPrimitivo: {
           include: {
@@ -318,72 +353,92 @@ export class PessoaService extends BaseService {
         },
       },
     });
-    const conjugue = await this.getConjugue(result);
-    return serializePessoaResponse(result, conjugue);
+
+    const externalPessoa =
+      await this.saoPedroPessoaService.findExternalPessoaByUuid(
+        pessoa.externalId,
+      );
+    const conjugue = await this.getConjugue(
+      pessoa.id,
+      externalPessoa.sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
+    );
+    return serializePessoaResponse(pessoa, externalPessoa, conjugue);
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
-    const [estadoCivil, escolaridade, situacaoReligiosa] =
-      await this.getEstadoCivilEscolaridadeSituacaoReligiosa(updatePessoaDto);
+    const pessoa = await this.findOne(id);
 
-    const pessoa = await this.prisma.pessoa.update({
-      where: { id },
-      data: {
-        nome: updatePessoaDto.nome,
-        conhecidoPor: updatePessoaDto.conhecidoPor,
-        cpf: updatePessoaDto.cpf,
-        nacionalidade: updatePessoaDto.nacionalidade,
-        estadoCivilId: estadoCivil.id,
-        foto: updatePessoaDto.foto,
-        escolaridadeId: escolaridade ? escolaridade.id : null,
-        situacaoReligiosaId: situacaoReligiosa.id,
-        sexo:
-          updatePessoaDto.sexo === 'MASCULINO'
-            ? SEXO_ENUM.MASCULINO
-            : SEXO_ENUM.FEMININO,
-      },
-    });
-
-    const conjugue = await this.getConjugue(pessoa);
-    return serializePessoaResponse(pessoa, conjugue);
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} pessoa`;
-  }
-
-  private async getConjugue(pessoa: pessoa) {
-    if (pessoa.estadoCivilId !== Number(process.env.ESTADO_CIVIL_CASADO_ID)) {
-      return;
-    }
-
-    let where = {};
-
-    if (pessoa.sexo === SEXO_ENUM.MASCULINO) {
-      where = {
-        pessoaMaridoId: pessoa.id,
-      };
-    } else {
-      where = {
-        pessoaMulherId: pessoa.id,
-      };
-    }
-    const casal = await this.prisma.pessoaCasal.findFirst({ where });
-
-    if (casal) {
-      return await this.prisma.pessoa.findUniqueOrThrow({
-        select: {
-          id: true,
-          nome: true,
-        },
-        where: {
-          id:
-            pessoa.sexo === SEXO_ENUM.MASCULINO
-              ? casal.pessoaMulherId
-              : casal.pessoaMaridoId,
+    if (updatePessoaDto.situacaoReligiosa) {
+      const situacaoReligiosa = await this.situacaoReligiosaService.findOne(
+        updatePessoaDto.situacaoReligiosa.id,
+      );
+      await this.prisma.pessoa.update({
+        where: { id },
+        data: {
+          situacaoReligiosaId: situacaoReligiosa.id,
         },
       });
     }
+
+    const externalPessoa =
+      await this.saoPedroPessoaService.updateExternalPessoa(
+        pessoa.externalId,
+        updatePessoaDto,
+      );
+
+    const conjugue = await this.getConjugue(
+      pessoa.id,
+      externalPessoa.sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
+    );
+    return serializePessoaResponse(pessoa, externalPessoa, conjugue);
+  }
+
+  private async getConjugue(
+    pessoaId: number,
+    sexoPessoa: SEXO_ENUM,
+  ): Promise<PessoaConjugue> {
+    let where = {};
+
+    if (sexoPessoa === SEXO_ENUM.MASCULINO) {
+      where = {
+        pessoaMaridoId: pessoaId,
+      };
+    } else {
+      where = {
+        pessoaMulherId: pessoaId,
+      };
+    }
+
+    const casal = await this.prisma.pessoaCasal.findFirst({ where });
+
+    if (!casal) {
+      this.logger.warn(
+        `Pessoa com ID ${pessoaId} está com estado civil casado, mas não possui conjugue cadastrado.`,
+      );
+      return;
+    }
+
+    const conjugue = await this.prisma.pessoa.findUniqueOrThrow({
+      select: {
+        id: true,
+        externalId: true,
+      },
+      where: {
+        id:
+          sexoPessoa === SEXO_ENUM.MASCULINO
+            ? casal.pessoaMulherId
+            : casal.pessoaMaridoId,
+      },
+    });
+    const externalConjugue =
+      await this.saoPedroPessoaService.findExternalPessoaByUuid(
+        conjugue.externalId,
+      );
+    return {
+      id: conjugue.id,
+      nome: externalConjugue.nome,
+      externalId: externalConjugue.externalId,
+    };
   }
 
   async analisarCPF(cpf: string) {
@@ -402,21 +457,5 @@ export class PessoaService extends BaseService {
         `O CPF ja registrado para ${pessoa.nome} de id: ${pessoa.id}`,
       );
     }
-  }
-
-  private async getEscolaridadeById(id: number): Promise<escolaridade | null> {
-    return id ? this.escolaridadeService.findOne(id) : Promise.resolve(null);
-  }
-
-  private async getEstadoCivilEscolaridadeSituacaoReligiosa(
-    updatePessoaDto: UpdatePessoaDto,
-  ): Promise<[estadoCivil, escolaridade, situacaoReligiosa]> {
-    return await Promise.all([
-      this.estadoCivilService.findOne(updatePessoaDto.estadoCivil.id),
-      this.getEscolaridadeById(updatePessoaDto?.escolaridade?.id),
-      this.situacaoReligiosaService.findOne(
-        updatePessoaDto.situacaoReligiosa.id,
-      ),
-    ]);
   }
 }

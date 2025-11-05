@@ -1,6 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { setupTestModule } from '../test-setup';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { mockSaoPedroPessoaService } from '../../test/mocks/sao-pedro-api-mock';
 
 describe('PessoaCarismaController (e2e)', () => {
   let app: INestApplication;
@@ -9,7 +11,12 @@ describe('PessoaCarismaController (e2e)', () => {
   let pessoaId: number;
 
   beforeAll(async () => {
-    app = await setupTestModule();
+    app = await setupTestModule([
+      {
+        provider: SaoPedroPessoaService,
+        value: mockSaoPedroPessoaService,
+      },
+    ]);
 
     const response = await request(app.getHttpServer())
       .post('/auth/login')
@@ -74,7 +81,7 @@ describe('PessoaCarismaController (e2e)', () => {
       .expect(403)
       .expect((res) => {
         expect(res.body.message).toBe(
-          'Você não tem permissão para criar um carisma primitivo',
+          'Você não tem permissão para create pessoaCarismaPrimitivo',
         );
         expect(res.body.error).toBe('Forbidden');
         expect(res.body.statusCode).toBe(403);

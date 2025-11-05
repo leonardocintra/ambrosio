@@ -1,21 +1,27 @@
-import { Pessoa } from "neocatecumenal";
-import { serializeEndereco } from "src/commons/utils/serializers/serializerEndereco";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Pessoa } from 'neocatecumenal';
+import { ESTADO_CIVIL_MAP, SEXO_ENUM } from 'src/commons/enums/enums';
+import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function serializePessoaResponse(pessoa: any, conjugue?: any): Pessoa {
+export function serializePessoaResponse(
+  pessoa: any,
+  external: Pessoa,
+  conjugue?: any,
+): Pessoa {
   return {
     id: pessoa.id,
-    nome: pessoa.nome,
-    conhecidoPor: pessoa.conhecidoPor,
-    cpf: pessoa.cpf,
-    sexo: pessoa.sexo,
-    nacionalidade: pessoa.nacionalidade,
-    estadoCivil: pessoa.estadoCivil,
-    dataNascimento: pessoa.dataNascimento,
+    externalId: external.externalId,
+    nome: external.nome,
+    conhecidoPor: external.conhecidoPor,
+    cpf: external.cpf,
+    sexo: external.sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
+    nacionalidade: external.nacionalidade,
+    estadoCivil: ESTADO_CIVIL_MAP[external.estadoCivil],
+    dataNascimento: external.dataNascimento,
     conjugue,
-    foto: pessoa.foto,
+    foto: external.foto,
     ativo: pessoa.ativo,
-    escolaridade: pessoa.escolaridade,
+    escolaridade: external.escolaridade,
     situacaoReligiosa: pessoa.situacaoReligiosa,
     carismas: {
       primitivos: pessoa.carismasPrimitivo?.map((carisma) => ({
@@ -35,4 +41,29 @@ export function serializePessoaResponse(pessoa: any, conjugue?: any): Pessoa {
       serializeEndereco(endereco),
     ),
   };
+}
+
+export function serializePessoasListResponse(
+  pessoas: any[],
+  externals: Pessoa[],
+  conjugues?: any[],
+): Pessoa[] {
+  return pessoas
+    .map((pessoa, index) => {
+      const external = externals.find(
+        (ext) => ext.externalId === pessoa.externalId,
+      );
+      const conjugue = conjugues?.[index];
+
+      if (!external) {
+        // Log ou tratamento quando não encontrar dados externos
+        console.warn(
+          `Dados externos não encontrados para pessoa ID: ${pessoa.id}`,
+        );
+        return null;
+      }
+
+      return serializePessoaResponse(pessoa, external, conjugue);
+    })
+    .filter(Boolean); // Remove os nulls do array
 }

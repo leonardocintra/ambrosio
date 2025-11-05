@@ -33,14 +33,15 @@ export class UsersService extends BaseService {
         `Não é possível criar um usuário sem uma pessoa vinculada. CPF ${createUserDto.cpf} não encontrado na base de pessoas.`,
       );
     }
-    await this.validateUniqueCpfForUser(createUserDto.cpf, pessoa.nome);
+    await this.validateUniquePessoaForUser(pessoa.id);
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
     return this.prismaService.user.create({
       data: {
         pessoaId: pessoa.id,
-        ...createUserDto,
+        email: createUserDto.email,
+        whatsapp: createUserDto.whatsapp,
         password: hashedPassword,
         role: ROLE_ENUM.NAO_IDENTIFICADO,
       },
@@ -73,14 +74,14 @@ export class UsersService extends BaseService {
     });
   }
 
-  private async validateUniqueCpfForUser(cpf: string, nomeDaPessoa: string) {
+  private async validateUniquePessoaForUser(pessoaId: number) {
     const cpfAlreadyExists = await this.prismaService.user.findFirst({
-      where: { cpf },
+      where: { pessoaId },
     });
 
     if (cpfAlreadyExists) {
       throw new ConflictException(
-        `Já tem um usuario com esse CPF ${cpf} - Pessoa: ${nomeDaPessoa}`,
+        `Já tem um usuario com esse ID: ${pessoaId} - Email: ${cpfAlreadyExists.email}`,
       );
     }
   }

@@ -1,8 +1,9 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { setupTestModule } from '../test-setup';
-import { pessoaMock } from './mock';
+import { pessoaMock } from '../mocks/pessoa-mock';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { mockSaoPedroPessoaService } from '../../test/mocks/sao-pedro-api-mock';
 
 describe('PessoaCreateController (e2e)', () => {
   let app: INestApplication;
@@ -13,23 +14,7 @@ describe('PessoaCreateController (e2e)', () => {
     app = await setupTestModule([
       {
         provider: SaoPedroPessoaService,
-        value: {
-          postExternalPessoa: async () => ({
-            id: 20,
-            externalId: '123-external-fdsfa151888',
-            nome: pessoaMock.nome,
-            cpf: pessoaMock.cpf,
-            conhecidoPor: pessoaMock.conhecidoPor,
-            nacionalidade: pessoaMock.nacionalidade,
-            sexo: pessoaMock.sexo,
-            dataNascimento: pessoaMock.dataNascimento,
-            estadoCivil: pessoaMock.estadoCivil,
-            situacaoReligiosa: pessoaMock.situacaoReligiosa,
-            ativo: true,
-          }),
-          getExternalPessoaByCpf: async () => null,
-          // Adicione outros métodos se necessário
-        },
+        value: mockSaoPedroPessoaService,
       },
     ]);
 
@@ -93,16 +78,20 @@ describe('PessoaCreateController (e2e)', () => {
   });
 
   it(`/${principal} (POST) - 201 | deve cadastrar pessoa corretamente`, async () => {
+    // Mock específico para este teste
+    jest
+      .spyOn(mockSaoPedroPessoaService, 'getExternalPessoaByCpf')
+      .mockResolvedValueOnce(null);
     const response = await request(app.getHttpServer())
       .post(`/${principal}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         ...pessoaMock,
-      })
-      .expect(201);
+      });
 
+    expect(response.status).toBe(201);
     expect(response.body.data).toHaveProperty('id');
-    expect(response.body.data).toHaveProperty('nome', pessoaMock.nome);
+    expect(response.body.data).toHaveProperty('nome', 'Carmem Hernandez Mock');
     expect(response.body.data).toHaveProperty('cpf', pessoaMock.cpf);
     // expect(response.body.data).toHaveProperty(
     //   'dataNascimento',

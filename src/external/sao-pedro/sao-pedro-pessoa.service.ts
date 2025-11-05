@@ -1,19 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpService } from '@nestjs/axios';
 import { HttpException, Injectable } from '@nestjs/common';
 import { SaoPedroAuthService } from './sao-pedro-auth.service';
 import { CreatePessoaDto } from 'src/pessoa/dto/create-pessoa.dto';
 import { Pessoa } from 'neocatecumenal';
 import { firstValueFrom } from 'rxjs';
-import {
-  ESCOLARIDADE_ENUM,
-  ESCOLARIDADE_MAP,
-  SEXO_ENUM,
-} from 'src/commons/enums/enums';
 import { ExternalCreatePessoaDto } from './dto/external-create-pessoa.dto';
 import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto';
 import { BaseService } from 'src/commons/base.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import {
+  serializeExternalPessoaResponse,
+  serializeExternalPessoasResponse,
+} from './sao-pedro-pessoa.serializer';
+import { UpdatePessoaDto } from 'src/pessoa/dto/update-pessoa.dto';
+import { CreatePessoaMapper } from './mapper/create-pessoa.mapper';
+import { UpdatePessoaMapper } from './mapper/update-pessoa.mapper';
+import { SEXO_ENUM } from 'src/commons/enums/enums';
 
 @Injectable()
 export class SaoPedroPessoaService extends BaseService {
@@ -25,14 +27,46 @@ export class SaoPedroPessoaService extends BaseService {
     super(abilityService);
   }
 
-  async getExternalPessoaByCpf(cpf: string): Promise<Pessoa> {
-    this.logger.log(`Fetching external pessoa with CPF: ${cpf}`);
+  async findAllPessoas(limit: number = 2000): Promise<Pessoa[]> {
+    this.logger.log('Fetching all external pessoas');
     const token = await this.authService.getAccessToken();
 
     try {
       const response = await firstValueFrom(
         this.httpService.get(
-          `${process.env.SAO_PEDRO_API_URL}/api/pessoas/?cpf=${cpf}`,
+          `${process.env.SAO_PEDRO_API_URL}/api/pessoas?limit=${limit}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        ),
+      );
+      const pessoas = response.data.data;
+      return pessoas.map((pessoa: ExternalResponsePessoaDto) =>
+        serializeExternalPessoaResponse(pessoa),
+      );
+    } catch (err) {
+      this.logger.error(`Error fetching all external pessoas: ${err.message}`);
+      throw new HttpException(
+        'Erro ao buscar pessoas externas',
+        err.response?.status || 500,
+      );
+    }
+  }
+
+  private async findByParam(params: Record<string, string>): Promise<Pessoa[]> {
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
+
+    this.logger.log(`Fetching external pessoa with params: ${queryString}`);
+    const token = await this.authService.getAccessToken();
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get(
+          `${process.env.SAO_PEDRO_API_URL}/api/pessoas/?${queryString}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -46,17 +80,15 @@ export class SaoPedroPessoaService extends BaseService {
       );
       const pessoas = response.data.data;
       if (pessoas.length === 0) {
-        this.logger.log(`No external pessoa found with CPF: ${cpf}`);
+        this.logger.warn(`No external pessoa found with params: ${queryString}`);
         return null;
       }
 
-      this.logger.warn(
-        `External pessoa fetched: ${JSON.stringify(pessoas[0])}`,
-      );
-      return this.serializePessoa(pessoas[0]);
+      this.logger.log(`External pessoa fetched: ${JSON.stringify(pessoas)}`);
+      return serializeExternalPessoasResponse(pessoas);
     } catch (err) {
       this.logger.error(
-        `Error fetching external pessoa with CPF ${cpf}: ${err.message}`,
+        `Error fetching external pessoa with params ${queryString}: ${err.message}`,
       );
       throw new HttpException(
         'Erro ao buscar pessoa externa',
@@ -65,17 +97,75 @@ export class SaoPedroPessoaService extends BaseService {
     }
   }
 
-  async postExternalPessoa(
+  async updateExternalPessoa(
+    uuid: string,
+    updatePessoaDto: Partial<UpdatePessoaDto>,
+  ): Promise<Pessoa> {
+    this.logger.log(`Updating external pessoa with UUID: ${uuid}`);
+    const token = await this.authService.getAccessToken();
+
+    const data = UpdatePessoaMapper.toExternal(updatePessoaDto);
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService.patch(
+          `${process.env.SAO_PEDRO_API_URL}/api/pessoas/${uuid}/`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          },
+        ),
+      );
+
+      this.logger.log(
+        `External pessoa updated with response: ${JSON.stringify(
+          response.data,
+        )}`,
+      );
+
+      return serializeExternalPessoaResponse(response.data);
+    } catch (err) {
+      this.logger.error(
+        `Error updating external pessoa with UUID ${uuid}: ${err.message}`,
+      );
+      throw new HttpException(
+        'Erro ao atualizar pessoa externa',
+        err.response?.status || 500,
+      );
+    }
+  }
+
+  async findExternalPessoaByUuid(uuid: string): Promise<Pessoa> {
+    this.logger.log(`Fetching external pessoa with UUID: ${uuid}`);
+    const pessoas = await this.findByParam({ uuid });
+    return pessoas[0];
+  }
+
+  async getExternalPessoaByCpf(cpf: string): Promise<Pessoa> {
+    this.logger.log(`Fetching external pessoa with CPF: ${cpf}`);
+    const pessoas = await this.findByParam({ cpf });
+    return pessoas ? pessoas[0] : null;
+  }
+
+  async getExternalPessoasEstadoCivilCasado(
+    sexo: SEXO_ENUM,
+  ): Promise<Pessoa[]> {
+    this.logger.log('Fetching external pessoas with estado civil CASADO');
+    return this.findByParam({
+      estadoCivil: 'C',
+      sexo: sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
+    });
+  }
+
+  async createExternalPessoa(
     createPessoaDto: CreatePessoaDto,
-    escolaridade: string,
-    estadoCivil: string,
   ): Promise<Pessoa> {
     const token = await this.authService.getAccessToken();
-    const payload: ExternalCreatePessoaDto = this.buildPayload(
-      createPessoaDto,
-      escolaridade,
-      estadoCivil,
-    );
+    const payload: ExternalCreatePessoaDto =
+      CreatePessoaMapper.toExternal(createPessoaDto);
 
     this.logger.log(
       `Posting external pessoa with payload: ${JSON.stringify(payload)}`,
@@ -87,22 +177,7 @@ export class SaoPedroPessoaService extends BaseService {
       `External pessoa created with response: ${JSON.stringify(responseData)}`,
     );
 
-    return this.serializePessoa(responseData);
-  }
-
-  private buildPayload(
-    createPessoaDto: CreatePessoaDto,
-    escolaridade: string,
-    estadoCivil: string,
-  ): ExternalCreatePessoaDto {
-    return {
-      ...createPessoaDto,
-      sexo: createPessoaDto.sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
-      dataNascimento: createPessoaDto.dataNascimento,
-      estadoCivil: estadoCivil.substring(0, 1).toUpperCase(),
-      escolaridade:
-        ESCOLARIDADE_MAP[escolaridade] || ESCOLARIDADE_ENUM.NAO_INFORMADO,
-    };
+    return serializeExternalPessoaResponse(responseData);
   }
 
   private async tryPostPessoa(
@@ -123,6 +198,7 @@ export class SaoPedroPessoaService extends BaseService {
         ),
       );
       return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err.response?.status === 401) {
         // token expirou → pega um novo
@@ -145,23 +221,5 @@ export class SaoPedroPessoaService extends BaseService {
       }
       throw err;
     }
-  }
-
-  private serializePessoa(data: ExternalResponsePessoaDto): Pessoa {
-    return {
-      id: data.id,
-      externalId: data.uuid,
-      nome: data.nome,
-      cpf: data.cpf,
-      ativo: data.ativo,
-      conhecidoPor: data.conhecidoPor,
-      dataNascimento: data.dataNascimento,
-      escolaridade: data.escolaridade,
-      estadoCivil: data.estadoCivil,
-      nacionalidade: data.nacionalidade,
-      sexo: data.sexo,
-      situacaoReligiosa: data.situacaoReligiosa,
-      foto: data.foto,
-    };
   }
 }
