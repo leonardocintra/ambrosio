@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Pessoa } from 'neocatecumenal';
+import { ESTADO_CIVIL_MAP, SEXO_ENUM } from 'src/commons/enums/enums';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 
 export function serializePessoaResponse(
@@ -13,9 +14,9 @@ export function serializePessoaResponse(
     nome: external.nome,
     conhecidoPor: external.conhecidoPor,
     cpf: external.cpf,
-    sexo: external.sexo,
+    sexo: external.sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
     nacionalidade: external.nacionalidade,
-    estadoCivil: external.estadoCivil,
+    estadoCivil: ESTADO_CIVIL_MAP[external.estadoCivil],
     dataNascimento: external.dataNascimento,
     conjugue,
     foto: external.foto,
@@ -40,4 +41,29 @@ export function serializePessoaResponse(
       serializeEndereco(endereco),
     ),
   };
+}
+
+export function serializePessoasListResponse(
+  pessoas: any[],
+  externals: Pessoa[],
+  conjugues?: any[],
+): Pessoa[] {
+  return pessoas
+    .map((pessoa, index) => {
+      const external = externals.find(
+        (ext) => ext.externalId === pessoa.externalId,
+      );
+      const conjugue = conjugues?.[index];
+
+      if (!external) {
+        // Log ou tratamento quando não encontrar dados externos
+        console.warn(
+          `Dados externos não encontrados para pessoa ID: ${pessoa.id}`,
+        );
+        return null;
+      }
+
+      return serializePessoaResponse(pessoa, external, conjugue);
+    })
+    .filter(Boolean); // Remove os nulls do array
 }

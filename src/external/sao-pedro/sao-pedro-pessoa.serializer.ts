@@ -20,3 +20,9 @@ export function serializeExternalPessoaResponse(
     foto: data.foto,
   };
 }
+
+export function serializeExternalPessoasResponse(
+  dataArray: ExternalResponsePessoaDto[],
+): Pessoa[] {
+  return dataArray.map((data) => serializeExternalPessoaResponse(data));
+}

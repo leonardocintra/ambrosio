@@ -1,3 +1,5 @@
+import { EscolaridadeEnum, EstadoCivilEnum } from 'neocatecumenal';
+
 export enum SEXO_ENUM {
   MASCULINO = 'MASCULINO',
   FEMININO = 'FEMININO',
@@ -15,39 +17,25 @@ export enum ROLE_ENUM {
   NAO_IDENTIFICADO = 'NAO_IDENTIFICADO',
 }
 
-export enum ESTADO_CIVIL_ENUM {
-  SOLTEIRO = 'SOLTEIRO',
-  CASADO = 'CASADO',
-  DIVORCIADO = 'DIVORCIADO',
-  VIUVO = 'VIUVO',
-}
-
-export enum ESCOLARIDADE_ENUM {
-  NAO_INFORMADO = 'nao_informado',
-  ANALFABETO = 'analfabeto',
-  FUNDAMENTAL = 'fundamental',
-  FUNDAMENTAL_INCOMPLETO = 'fundamental_incompleto',
-  MEDIO = 'medio',
-  MEDIO_INCOMPLETO = 'medio_incompleto',
-  SUPERIOR = 'superior',
-  SUPERIOR_INCOMPLETO = 'superior_incompleto',
-  POS_GRADUACAO = 'pos_graduacao',
-  MESTRADO = 'mestrado',
-  DOUTORADO = 'doutorado',
-  POS_DOUTORADO = 'pos_doutorado',
-}
-
 // Mapeamento para converter descricao para enum
-export const ESCOLARIDADE_MAP: Record<string, ESCOLARIDADE_ENUM> = {
-  Analfabeto: ESCOLARIDADE_ENUM.ANALFABETO,
-  'Ensino Fundamental': ESCOLARIDADE_ENUM.FUNDAMENTAL,
-  'Ensino Fundamental Incompleto': ESCOLARIDADE_ENUM.FUNDAMENTAL_INCOMPLETO,
-  'Ensino Médio': ESCOLARIDADE_ENUM.MEDIO,
-  'Ensino Médio Incompleto': ESCOLARIDADE_ENUM.MEDIO_INCOMPLETO,
-  'Ensino Superior': ESCOLARIDADE_ENUM.SUPERIOR,
-  'Ensino Superior Incompleto': ESCOLARIDADE_ENUM.SUPERIOR_INCOMPLETO,
-  'Pos Graduação': ESCOLARIDADE_ENUM.POS_GRADUACAO,
-  Mestrado: ESCOLARIDADE_ENUM.MESTRADO,
-  Douturado: ESCOLARIDADE_ENUM.DOUTORADO,
-  'Pos Doutorado': ESCOLARIDADE_ENUM.POS_DOUTORADO,
+export const ESCOLARIDADE_MAP: Record<string, EscolaridadeEnum> = {
+  nao_informado: EscolaridadeEnum.NAO_INFORMADO,
+  analfabeto: EscolaridadeEnum.ANALFABETO,
+  fundamental: EscolaridadeEnum.FUNDAMENTAL,
+  fundamental_incompleto: EscolaridadeEnum.FUNDAMENTAL_INCOMPLETO,
+  medio: EscolaridadeEnum.MEDIO,
+  medio_incompleto: EscolaridadeEnum.MEDIO_INCOMPLETO,
+  superior: EscolaridadeEnum.SUPERIOR,
+  superior_incompleto: EscolaridadeEnum.SUPERIOR_INCOMPLETO,
+  pos_graduacao: EscolaridadeEnum.POS_GRADUACAO,
+  mestrado: EscolaridadeEnum.MESTRADO,
+  doutorado: EscolaridadeEnum.DOUTORADO,
+  pos_doutorado: EscolaridadeEnum.POS_DOUTORADO,
+};
+
+export const ESTADO_CIVIL_MAP: Record<string, EstadoCivilEnum> = {
+  S: EstadoCivilEnum.SOLTEIRO,
+  C: EstadoCivilEnum.CASADO,
+  D: EstadoCivilEnum.DIVORCIADO,
+  V: EstadoCivilEnum.VIUVO,
 };

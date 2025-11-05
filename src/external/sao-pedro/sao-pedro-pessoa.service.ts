@@ -8,10 +8,14 @@ import { ExternalCreatePessoaDto } from './dto/external-create-pessoa.dto';
 import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto';
 import { BaseService } from 'src/commons/base.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { serializeExternalPessoaResponse } from './sao-pedro-pessoa.serializer';
+import {
+  serializeExternalPessoaResponse,
+  serializeExternalPessoasResponse,
+} from './sao-pedro-pessoa.serializer';
 import { UpdatePessoaDto } from 'src/pessoa/dto/update-pessoa.dto';
 import { CreatePessoaMapper } from './mapper/create-pessoa.mapper';
 import { UpdatePessoaMapper } from './mapper/update-pessoa.mapper';
+import { SEXO_ENUM } from 'src/commons/enums/enums';
 
 @Injectable()
 export class SaoPedroPessoaService extends BaseService {
@@ -51,14 +55,18 @@ export class SaoPedroPessoaService extends BaseService {
     }
   }
 
-  private async findByParam(param: string, value: string): Promise<Pessoa> {
-    this.logger.log(`Fetching external pessoa with ${param}: ${value}`);
+  private async findByParam(params: Record<string, string>): Promise<Pessoa[]> {
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
+
+    this.logger.log(`Fetching external pessoa with params: ${queryString}`);
     const token = await this.authService.getAccessToken();
 
     try {
       const response = await firstValueFrom(
         this.httpService.get(
-          `${process.env.SAO_PEDRO_API_URL}/api/pessoas/?${param}=${value}`,
+          `${process.env.SAO_PEDRO_API_URL}/api/pessoas/?${queryString}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -72,17 +80,15 @@ export class SaoPedroPessoaService extends BaseService {
       );
       const pessoas = response.data.data;
       if (pessoas.length === 0) {
-        this.logger.log(`No external pessoa found with ${param}: ${value}`);
+        this.logger.warn(`No external pessoa found with params: ${queryString}`);
         return null;
       }
 
-      this.logger.warn(
-        `External pessoa fetched: ${JSON.stringify(pessoas[0])}`,
-      );
-      return serializeExternalPessoaResponse(pessoas[0]);
+      this.logger.log(`External pessoa fetched: ${JSON.stringify(pessoas)}`);
+      return serializeExternalPessoasResponse(pessoas);
     } catch (err) {
       this.logger.error(
-        `Error fetching external pessoa with ${param} ${value}: ${err.message}`,
+        `Error fetching external pessoa with params ${queryString}: ${err.message}`,
       );
       throw new HttpException(
         'Erro ao buscar pessoa externa',
@@ -134,12 +140,24 @@ export class SaoPedroPessoaService extends BaseService {
 
   async findExternalPessoaByUuid(uuid: string): Promise<Pessoa> {
     this.logger.log(`Fetching external pessoa with UUID: ${uuid}`);
-    return this.findByParam('uuid', uuid);
+    const pessoas = await this.findByParam({ uuid });
+    return pessoas[0];
   }
 
   async getExternalPessoaByCpf(cpf: string): Promise<Pessoa> {
     this.logger.log(`Fetching external pessoa with CPF: ${cpf}`);
-    return this.findByParam('cpf', cpf);
+    const pessoas = await this.findByParam({ cpf });
+    return pessoas ? pessoas[0] : null;
+  }
+
+  async getExternalPessoasEstadoCivilCasado(
+    sexo: SEXO_ENUM,
+  ): Promise<Pessoa[]> {
+    this.logger.log('Fetching external pessoas with estado civil CASADO');
+    return this.findByParam({
+      estadoCivil: 'C',
+      sexo: sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
+    });
   }
 
   async createExternalPessoa(

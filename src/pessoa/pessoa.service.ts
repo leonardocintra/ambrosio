@@ -2,7 +2,7 @@ import { ConflictException, HttpException, Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
-import { ESTADO_CIVIL_ENUM, SEXO_ENUM } from 'src/commons/enums/enums';
+import { SEXO_ENUM } from 'src/commons/enums/enums';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import {
   ENDERECO_INCLUDE,
@@ -11,7 +11,7 @@ import {
 } from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
-import { Pessoa } from 'neocatecumenal';
+import { EstadoCivilEnum, Pessoa, PessoaConjugue } from 'neocatecumenal';
 import { pessoa } from '@prisma/client';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
@@ -20,7 +20,10 @@ import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-car
 import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { BaseService } from 'src/commons/base.service';
-import { serializePessoaResponse } from './pessoa.serializer';
+import {
+  serializePessoaResponse,
+  serializePessoasListResponse,
+} from './pessoa.serializer';
 
 @Injectable()
 export class PessoaService extends BaseService {
@@ -150,8 +153,8 @@ export class PessoaService extends BaseService {
     ]);
 
     if (
-      pessoaExternal.estadoCivil !== ESTADO_CIVIL_ENUM.CASADO.substring(0, 1) ||
-      conjugueExternal.estadoCivil !== ESTADO_CIVIL_ENUM.CASADO.substring(0, 1)
+      pessoaExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1) ||
+      conjugueExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1)
     ) {
       throw new HttpException(
         'Apenas pessoas com estado civil casado podem se casar',
@@ -207,6 +210,9 @@ export class PessoaService extends BaseService {
         },
       });
     } else {
+      this.logger.error(
+        `Sexo inválido para pessoa ID ${pessoa.id} ou conjugue ID ${conjugue.id}`,
+      );
       throw new HttpException(
         'Marido ou esposa esta com os sexo (F ou M) cadastrado de forma errada. Verificar.',
         400,
@@ -257,24 +263,44 @@ export class PessoaService extends BaseService {
   }
 
   async findAllBySexoEstadoCivilCasado(sexo: string) {
-    // Funcao para buscar todas as pessoas com estado civil casado que não estao vinculados marido e mulher
+    // Função para buscar todas as pessoas com estado civil casado que não estão vinculadas como marido e mulher
     const param = sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO;
-    const estadoCivilId = Number(process.env.ESTADO_CIVIL_CASADO_ID);
+    const externalPessoas =
+      await this.saoPedroPessoaService.getExternalPessoasEstadoCivilCasado(
+        param,
+      );
 
-    // TODO: pensar uma alternativa para essa query, pois queryRamUnsafe é perigoso. Nesse caso se nao tiver alteração na query esta tudo bem.
-    return await this.prisma.$queryRawUnsafe(
-      `SELECT p.id, p.nome
-          FROM pessoa p 
-          LEFT JOIN "pessoaCasal" marido 
-            ON marido."pessoaMaridoId" = p.id 
-          LEFT JOIN "pessoaCasal" mulher 
-            ON mulher."pessoaMulherId" = p.id 
-          WHERE 
-            p."estadoCivilId" = ${estadoCivilId}
-            AND mulher.id IS NULL 
-            AND marido.id IS NULL
-            AND p.sexo = '${param}'`,
-    );
+    if (externalPessoas.length === 0) {
+      return [];
+    }
+
+    const externalIds = externalPessoas.map((pessoa) => pessoa.externalId);
+
+    const pessoas = await this.prisma.pessoa.findMany({
+      select: {
+        id: true,
+        externalId: true,
+      },
+      where: {
+        externalId: {
+          in: externalIds,
+        },
+        AND: [
+          {
+            casamentosComoMarido: {
+              none: {},
+            },
+          },
+          {
+            casamentosComoMulher: {
+              none: {},
+            },
+          },
+        ],
+      },
+    });
+
+    return serializePessoasListResponse(pessoas, externalPessoas, undefined);
   }
 
   async findOneByCpf(cpf: string): Promise<Pessoa> {
@@ -299,15 +325,9 @@ export class PessoaService extends BaseService {
     return this.findBy({ externalId });
   }
 
-  private async remove(id: number) {
-    return this.prisma.pessoa.delete({
-      where: { id },
-    });
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async findBy(where: any): Promise<Pessoa> {
-    const result: pessoa = await this.prisma.pessoa.findUniqueOrThrow({
+    const pessoa: pessoa = await this.prisma.pessoa.findUniqueOrThrow({
       where,
       include: {
         situacaoReligiosa: true,
@@ -336,10 +356,13 @@ export class PessoaService extends BaseService {
 
     const externalPessoa =
       await this.saoPedroPessoaService.findExternalPessoaByUuid(
-        result.externalId,
+        pessoa.externalId,
       );
-    const conjugue = await this.getConjugue(externalPessoa);
-    return serializePessoaResponse(result, externalPessoa, conjugue);
+    const conjugue = await this.getConjugue(
+      pessoa.id,
+      externalPessoa.sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
+    );
+    return serializePessoaResponse(pessoa, externalPessoa, conjugue);
   }
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto) {
@@ -363,41 +386,59 @@ export class PessoaService extends BaseService {
         updatePessoaDto,
       );
 
-    const conjugue = await this.getConjugue(externalPessoa);
+    const conjugue = await this.getConjugue(
+      pessoa.id,
+      externalPessoa.sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
+    );
     return serializePessoaResponse(pessoa, externalPessoa, conjugue);
   }
 
-  private async getConjugue(pessoa: Pessoa) {
-    if (pessoa.estadoCivil !== ESTADO_CIVIL_ENUM.CASADO.substring(0, 1)) {
-      return;
-    }
-
+  private async getConjugue(
+    pessoaId: number,
+    sexoPessoa: SEXO_ENUM,
+  ): Promise<PessoaConjugue> {
     let where = {};
 
-    if (pessoa.sexo === SEXO_ENUM.MASCULINO) {
+    if (sexoPessoa === SEXO_ENUM.MASCULINO) {
       where = {
-        pessoaMaridoId: pessoa.id,
+        pessoaMaridoId: pessoaId,
       };
     } else {
       where = {
-        pessoaMulherId: pessoa.id,
+        pessoaMulherId: pessoaId,
       };
     }
+
     const casal = await this.prisma.pessoaCasal.findFirst({ where });
 
-    if (casal) {
-      return await this.prisma.pessoa.findUniqueOrThrow({
-        select: {
-          id: true,
-        },
-        where: {
-          id:
-            pessoa.sexo === SEXO_ENUM.MASCULINO
-              ? casal.pessoaMulherId
-              : casal.pessoaMaridoId,
-        },
-      });
+    if (!casal) {
+      this.logger.warn(
+        `Pessoa com ID ${pessoaId} está com estado civil casado, mas não possui conjugue cadastrado.`,
+      );
+      return;
     }
+
+    const conjugue = await this.prisma.pessoa.findUniqueOrThrow({
+      select: {
+        id: true,
+        externalId: true,
+      },
+      where: {
+        id:
+          sexoPessoa === SEXO_ENUM.MASCULINO
+            ? casal.pessoaMulherId
+            : casal.pessoaMaridoId,
+      },
+    });
+    const externalConjugue =
+      await this.saoPedroPessoaService.findExternalPessoaByUuid(
+        conjugue.externalId,
+      );
+    return {
+      id: conjugue.id,
+      nome: externalConjugue.nome,
+      externalId: externalConjugue.externalId,
+    };
   }
 
   async analisarCPF(cpf: string) {

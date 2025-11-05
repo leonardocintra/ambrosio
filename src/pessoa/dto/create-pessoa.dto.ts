@@ -10,11 +10,8 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import {
-  ESCOLARIDADE_ENUM,
-  ESTADO_CIVIL_ENUM,
-  SEXO_ENUM,
-} from 'src/commons/enums/enums';
+import { EscolaridadeEnum, EstadoCivilEnum } from 'neocatecumenal';
+import { SEXO_ENUM } from 'src/commons/enums/enums';
 
 export class CreatePessoaDto {
   @IsNotEmpty()
@@ -37,7 +34,7 @@ export class CreatePessoaDto {
   @IsString()
   nacionalidade: string;
 
-  @IsEnum(ESTADO_CIVIL_ENUM)
+  @IsEnum(EstadoCivilEnum)
   @IsOptional()
   estadoCivil: string;
 
@@ -56,7 +53,7 @@ export class CreatePessoaDto {
   @IsOptional()
   sexo: string;
 
-  @IsEnum(ESCOLARIDADE_ENUM)
+  @IsEnum(EscolaridadeEnum)
   @IsOptional()
   escolaridade: string;
 
