@@ -58,7 +58,7 @@ Para fazer o cadastro de pessoas, precisa usar o código abaixo.
 $ bash ./scripts/start.sh
 ```
 
-Isso é necessario pois a API de pessoas é "externa"
+Isso é necessário pois a API de pessoas é "externa"
 
 ### production mode
 ```bash
