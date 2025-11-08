@@ -1,13 +1,17 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { BaseService } from 'src/commons/base.service';
 
 @Injectable()
-export class SaoPedroAuthService {
+export class SaoPedroAuthService extends BaseService {
   private accessToken: string | null = null;
   private refreshToken: string | null = null;
 
-  constructor(private readonly http: HttpService) {}
+  constructor(private readonly http: HttpService) {
+    super(new CaslAbilityService());
+  }
 
   private async login() {
     const response = await firstValueFrom(
@@ -22,6 +26,7 @@ export class SaoPedroAuthService {
 
   private async refresh() {
     if (!this.refreshToken) {
+      this.logger.warn('Ambrosio: No refresh token available');
       throw new UnauthorizedException('No refresh token available');
     }
     const response = await firstValueFrom(
@@ -37,8 +42,10 @@ export class SaoPedroAuthService {
 
   async getAccessToken(): Promise<string> {
     if (!this.accessToken) {
+      this.logger.warn('Ambrosio: No access token available');
       await this.login();
     }
+    this.logger.log(`Ambrosio: Access token retrieved`);
     return this.accessToken!;
   }
 
