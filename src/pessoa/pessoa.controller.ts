@@ -85,8 +85,19 @@ export class PessoaController {
   }
 
   @Get()
-  findAll(@Query('page') page: number, @Query('limit') limit: number) {
-    return this.pessoaService.findAll(Number(page), Number(limit));
+  findAll(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('cpf') cpf?: string,
+    @Query('externalId') externalId?: string,
+  ) {
+    if (cpf) {
+      return this.pessoaService.findOneByCpf(cpf);
+    } else if (externalId) {
+      return this.pessoaService.findByExternalId(externalId);
+    } else {
+      return this.pessoaService.findAll(Number(page), Number(limit));
+    }
   }
 
   @Get('/conjugue')

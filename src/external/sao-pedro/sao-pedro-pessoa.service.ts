@@ -4,7 +4,6 @@ import { SaoPedroAuthService } from './sao-pedro-auth.service';
 import { CreatePessoaDto } from 'src/pessoa/dto/create-pessoa.dto';
 import { Pessoa } from 'neocatecumenal';
 import { firstValueFrom } from 'rxjs';
-import { ExternalCreatePessoaDto } from './dto/external-create-pessoa.dto';
 import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto';
 import { BaseService } from 'src/commons/base.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
@@ -27,135 +26,125 @@ export class SaoPedroPessoaService extends BaseService {
     super(abilityService);
   }
 
-  async findAllPessoas(limit: number = 2000): Promise<Pessoa[]> {
-    this.logger.log('Fetching all external pessoas');
-    const token = await this.authService.getAccessToken();
-
+  /**
+   * Método centralizado para fazer requisições autenticadas com retry automático
+   */
+  private async executeAuthenticatedRequest<T>(
+    requestFn: (token: string) => Promise<T>,
+    operation: string,
+  ): Promise<T> {
     try {
+      // Primeira tentativa com token válido
+      const token = await this.authService.getValidToken();
+      return await requestFn(token);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      // Se erro 401, tenta renovar token e repetir
+      if (error.response?.status === 401) {
+        this.logger.warn(`Token inválido durante ${operation}. Renovando...`);
+
+        try {
+          const newToken = await this.authService.handleAuthError();
+          return await requestFn(newToken);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (retryError: any) {
+          this.logger.error(
+            `Falha em ${operation} após renovação de token:`,
+            retryError.message,
+          );
+          throw new HttpException(
+            `Erro ao executar ${operation}`,
+            retryError.response?.status || 500,
+          );
+        }
+      }
+
+      // Para outros erros, propaga diretamente
+      this.logger.error(`Erro em ${operation}:`, error.message);
+      throw new HttpException(
+        `Erro ao executar ${operation}`,
+        error.response?.status || 500,
+      );
+    }
+  }
+
+  async findAllPessoas(limit: number = 2000): Promise<Pessoa[]> {
+    this.logger.log(`Buscando todas as pessoas externas (limit: ${limit})`);
+
+    return this.executeAuthenticatedRequest(async (token: string) => {
       const response = await firstValueFrom(
         this.httpService.get(
           `${process.env.SAO_PEDRO_API_URL}/api/pessoas?limit=${limit}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           },
         ),
       );
-      const pessoas = response.data.data;
+
+      const pessoas = response.data.data || [];
+      this.logger.log(`${pessoas.length} pessoas externas encontradas`);
+
       return pessoas.map((pessoa: ExternalResponsePessoaDto) =>
         serializeExternalPessoaResponse(pessoa),
       );
-    } catch (err) {
-      this.logger.error(`Error fetching all external pessoas: ${err.message}`);
-      throw new HttpException(
-        'Erro ao buscar pessoas externas',
-        err.response?.status || 500,
-      );
-    }
+    }, 'busca de pessoas externas');
   }
 
-  private async findByParam(params: Record<string, string>): Promise<Pessoa[]> {
+  private async findByParams(
+    params: Record<string, string>,
+  ): Promise<Pessoa[]> {
     const queryString = Object.entries(params)
-      .map(([key, value]) => `${key}=${value}`)
+      .filter(([, value]) => value !== undefined && value !== null)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+      )
       .join('&');
 
-    this.logger.log(`Fetching external pessoa with params: ${queryString}`);
-    const token = await this.authService.getAccessToken();
+    this.logger.log(`Buscando pessoas externas com parâmetros: ${queryString}`);
 
-    try {
+    return this.executeAuthenticatedRequest(async (token: string) => {
       const response = await firstValueFrom(
         this.httpService.get(
           `${process.env.SAO_PEDRO_API_URL}/api/pessoas/?${queryString}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           },
         ),
       );
 
-      this.logger.log(
-        `External pessoa response: ${JSON.stringify(response.data)}`,
-      );
-      const pessoas = response.data.data;
+      const pessoas = response.data.data || [];
+
       if (pessoas.length === 0) {
-        this.logger.warn(`No external pessoa found with params: ${queryString}`);
-        return null;
+        this.logger.warn(
+          `Nenhuma pessoa externa encontrada com parâmetros: ${queryString}`,
+        );
+        return [];
       }
 
-      this.logger.log(`External pessoa fetched: ${JSON.stringify(pessoas)}`);
+      this.logger.log(`${pessoas.length} pessoa(s) externa(s) encontrada(s)`);
       return serializeExternalPessoasResponse(pessoas);
-    } catch (err) {
-      this.logger.error(
-        `Error fetching external pessoa with params ${queryString}: ${err.message}`,
-      );
-      throw new HttpException(
-        'Erro ao buscar pessoa externa',
-        err.response?.status || 500,
-      );
-    }
+    }, `busca por parâmetros: ${queryString}`);
   }
 
-  async updateExternalPessoa(
-    uuid: string,
-    updatePessoaDto: Partial<UpdatePessoaDto>,
-  ): Promise<Pessoa> {
-    this.logger.log(`Updating external pessoa with UUID: ${uuid}`);
-    const token = await this.authService.getAccessToken();
-
-    const data = UpdatePessoaMapper.toExternal(updatePessoaDto);
-
-    try {
-      const response = await firstValueFrom(
-        this.httpService.patch(
-          `${process.env.SAO_PEDRO_API_URL}/api/pessoas/${uuid}/`,
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          },
-        ),
-      );
-
-      this.logger.log(
-        `External pessoa updated with response: ${JSON.stringify(
-          response.data,
-        )}`,
-      );
-
-      return serializeExternalPessoaResponse(response.data);
-    } catch (err) {
-      this.logger.error(
-        `Error updating external pessoa with UUID ${uuid}: ${err.message}`,
-      );
-      throw new HttpException(
-        'Erro ao atualizar pessoa externa',
-        err.response?.status || 500,
-      );
-    }
+  async getExternalPessoaByCpf(cpf: string): Promise<Pessoa | null> {
+    this.logger.log(`Buscando pessoa externa por CPF: ${cpf}`);
+    const pessoas = await this.findByParams({ cpf });
+    return pessoas.length > 0 ? pessoas[0] : null;
   }
 
-  async findExternalPessoaByUuid(uuid: string): Promise<Pessoa> {
-    this.logger.log(`Fetching external pessoa with UUID: ${uuid}`);
-    const pessoas = await this.findByParam({ uuid });
-    return pessoas[0];
-  }
-
-  async getExternalPessoaByCpf(cpf: string): Promise<Pessoa> {
-    this.logger.log(`Fetching external pessoa with CPF: ${cpf}`);
-    const pessoas = await this.findByParam({ cpf });
-    return pessoas ? pessoas[0] : null;
+  async findExternalPessoaByUuid(uuid: string): Promise<Pessoa | null> {
+    this.logger.log(`Buscando pessoa externa por UUID: ${uuid}`);
+    const pessoas = await this.findByParams({ uuid });
+    return pessoas.length > 0 ? pessoas[0] : null;
   }
 
   async getExternalPessoasEstadoCivilCasado(
     sexo: SEXO_ENUM,
   ): Promise<Pessoa[]> {
-    this.logger.log('Fetching external pessoas with estado civil CASADO');
-    return this.findByParam({
-      estadoCivil: 'C',
+    this.logger.log(`Buscando pessoas externas casadas do sexo: ${sexo}`);
+    return this.findByParams({
+      estado_civil: 'C',
       sexo: sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
     });
   }
@@ -163,28 +152,12 @@ export class SaoPedroPessoaService extends BaseService {
   async createExternalPessoa(
     createPessoaDto: CreatePessoaDto,
   ): Promise<Pessoa> {
-    const token = await this.authService.getAccessToken();
-    const payload: ExternalCreatePessoaDto =
-      CreatePessoaMapper.toExternal(createPessoaDto);
-
+    const payload = CreatePessoaMapper.toExternal(createPessoaDto);
     this.logger.log(
-      `Posting external pessoa with payload: ${JSON.stringify(payload)}`,
+      `Criando pessoa externa: ${payload.nome} (CPF: ${payload.cpf})`,
     );
 
-    const responseData = await this.tryPostPessoa(payload, token);
-
-    this.logger.log(
-      `External pessoa created with response: ${JSON.stringify(responseData)}`,
-    );
-
-    return serializeExternalPessoaResponse(responseData);
-  }
-
-  private async tryPostPessoa(
-    payload: ExternalCreatePessoaDto,
-    token: string,
-  ): Promise<ExternalResponsePessoaDto> {
-    try {
+    return this.executeAuthenticatedRequest(async (token: string) => {
       const response = await firstValueFrom(
         this.httpService.post(
           `${process.env.SAO_PEDRO_API_URL}/api/pessoas/`,
@@ -197,29 +170,39 @@ export class SaoPedroPessoaService extends BaseService {
           },
         ),
       );
-      return response.data;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      if (err.response?.status === 401) {
-        // token expirou → pega um novo
-        token = await this.authService.handleExpiredToken();
-        this.logger.warn('Token expirado. Novo token obtido.');
 
-        const response = await firstValueFrom(
-          this.httpService.post(
-            `${process.env.SAO_PEDRO_API_URL}/api/pessoas/`,
-            payload,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-              },
+      const pessoa = serializeExternalPessoaResponse(response.data);
+      this.logger.log(`Pessoa externa criada com sucesso - ID: ${pessoa.id}`);
+
+      return pessoa;
+    }, 'criação de pessoa externa');
+  }
+
+  async updateExternalPessoa(
+    uuid: string,
+    updatePessoaDto: Partial<UpdatePessoaDto>,
+  ): Promise<Pessoa> {
+    const payload = UpdatePessoaMapper.toExternal(updatePessoaDto);
+    this.logger.log(`Atualizando pessoa externa UUID: ${uuid}`);
+
+    return this.executeAuthenticatedRequest(async (token: string) => {
+      const response = await firstValueFrom(
+        this.httpService.patch(
+          `${process.env.SAO_PEDRO_API_URL}/api/pessoas/${uuid}/`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
             },
-          ),
-        );
-        return response.data;
-      }
-      throw err;
-    }
+          },
+        ),
+      );
+
+      const pessoa = serializeExternalPessoaResponse(response.data);
+      this.logger.log(`Pessoa externa atualizada com sucesso - UUID: ${uuid}`);
+
+      return pessoa;
+    }, `atualização de pessoa externa (UUID: ${uuid})`);
   }
 }
