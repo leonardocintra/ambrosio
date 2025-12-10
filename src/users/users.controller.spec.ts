@@ -48,8 +48,8 @@ describe('UsersController', () => {
       ],
     }).compile();
 
-    controller = module.get<UsersController>(UsersController);
-    pessoaService = module.get<PessoaService>(PessoaService);
+    controller = await module.resolve<UsersController>(UsersController);
+    pessoaService = await module.resolve<PessoaService>(PessoaService);
     prismaService = module.get<PrismaService>(PrismaService);
     saoPedroPessoaService = module.get<SaoPedroPessoaService>(
       SaoPedroPessoaService,

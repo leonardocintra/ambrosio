@@ -76,7 +76,7 @@ describe('PessoaService', () => {
       ],
     }).compile();
 
-    service = module.get<PessoaService>(PessoaService);
+    service = await module.resolve<PessoaService>(PessoaService);
     prismaService = module.get<PrismaService>(PrismaService);
     saoPedroPessoaService = module.get<SaoPedroPessoaService>(
       SaoPedroPessoaService,

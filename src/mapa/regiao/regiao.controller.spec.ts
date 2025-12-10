@@ -16,7 +16,7 @@ describe('RegiaoController', () => {
       providers: [RegiaoService, CaslAbilityService, PrismaService, JwtService],
     }).compile();
 
-    controller = module.get<RegiaoController>(RegiaoController);
+    controller = await module.resolve<RegiaoController>(RegiaoController);
     prismaService = module.get<PrismaService>(PrismaService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);

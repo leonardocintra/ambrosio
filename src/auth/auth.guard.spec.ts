@@ -15,7 +15,7 @@ describe('AuthGuard', () => {
       providers: [AuthGuard, JwtService, PrismaService, CaslAbilityService],
     }).compile();
 
-    guard = module.get<AuthGuard>(AuthGuard);
+    guard = await module.resolve<AuthGuard>(AuthGuard);
     jwtService = module.get<JwtService>(JwtService);
     prismaService = module.get<PrismaService>(PrismaService);
     abilityService =

@@ -51,7 +51,7 @@ describe('DioceseController', () => {
       ],
     }).compile();
 
-    controller = module.get<DioceseController>(DioceseController);
+    controller = await module.resolve<DioceseController>(DioceseController);
     prismaService = module.get<PrismaService>(PrismaService);
     localidadeService = module.get<LocalidadeService>(LocalidadeService);
     tipoLocalidadeService = module.get<TipoLocalidadeService>(

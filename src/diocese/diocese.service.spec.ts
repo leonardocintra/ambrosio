@@ -46,7 +46,7 @@ describe('DioceseService', () => {
       ],
     }).compile();
 
-    service = module.get<DioceseService>(DioceseService);
+    service = await module.resolve<DioceseService>(DioceseService);
     prismaService = module.get<PrismaService>(PrismaService);
     localidadeService = module.get<LocalidadeService>(LocalidadeService);
     tipoLocalidadeService = module.get<TipoLocalidadeService>(

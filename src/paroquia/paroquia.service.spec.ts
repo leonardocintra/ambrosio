@@ -46,10 +46,10 @@ describe('ParoquiaService', () => {
       ],
     }).compile();
 
-    service = module.get<ParoquiaService>(ParoquiaService);
+    service = await module.resolve<ParoquiaService>(ParoquiaService);
     enderecoService = module.get<EnderecoService>(EnderecoService);
     tipoDioceseService = module.get<TipoDioceseService>(TipoDioceseService);
-    dioceseService = module.get<DioceseService>(DioceseService);
+    dioceseService = await module.resolve<DioceseService>(DioceseService);
     cidadeService = module.get<CidadeService>(CidadeService);
     estadoService = module.get<EstadoService>(EstadoService);
     paisService = module.get<PaisService>(PaisService);

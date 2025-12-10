@@ -99,7 +99,7 @@ describe('PessoaController', () => {
       ],
     }).compile();
 
-    controller = module.get<PessoaController>(PessoaController);
+    controller = await module.resolve<PessoaController>(PessoaController);
     prismaService = module.get<PrismaService>(PrismaService);
     saoPedroPessoaService = module.get<SaoPedroPessoaService>(
       SaoPedroPessoaService,

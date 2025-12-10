@@ -66,12 +66,12 @@ describe('UsersService', () => {
       ],
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
-    pessoaService = module.get<PessoaService>(PessoaService);
-    saoPedroPessoaService = module.get<SaoPedroPessoaService>(
+    service = await module.resolve<UsersService>(UsersService);
+    pessoaService = await module.resolve<PessoaService>(PessoaService);
+    saoPedroPessoaService = await module.resolve<SaoPedroPessoaService>(
       SaoPedroPessoaService,
     );
-    prismaService = module.get<PrismaService>(PrismaService);
+    prismaService = await module.resolve<PrismaService>(PrismaService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
   });

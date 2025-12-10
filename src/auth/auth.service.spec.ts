@@ -15,7 +15,7 @@ describe('AuthService', () => {
       providers: [AuthService, JwtService, PrismaService, CaslAbilityService],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    service = await module.resolve<AuthService>(AuthService);
     jwtService = module.get<JwtService>(JwtService);
     prismaService = module.get<PrismaService>(PrismaService);
     abilityService =

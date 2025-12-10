@@ -51,7 +51,7 @@ describe('ParoquiaController', () => {
       ],
     }).compile();
 
-    controller = module.get<ParoquiaController>(ParoquiaController);
+    controller = await module.resolve<ParoquiaController>(ParoquiaController);
     prismaService = module.get<PrismaService>(PrismaService);
     enderecoService = module.get<EnderecoService>(EnderecoService);
     tipoDioceseService = module.get<TipoDioceseService>(TipoDioceseService);
@@ -59,7 +59,7 @@ describe('ParoquiaController', () => {
     estadoService = module.get<EstadoService>(EstadoService);
     paisService = module.get<PaisService>(PaisService);
     setorService = module.get<SetorService>(SetorService);
-    dioceseService = module.get<DioceseService>(DioceseService);
+    dioceseService = await module.resolve<DioceseService>(DioceseService);
     jwtService = module.get<JwtService>(JwtService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);

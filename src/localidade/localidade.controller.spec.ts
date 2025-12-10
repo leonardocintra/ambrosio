@@ -41,7 +41,7 @@ describe('LocalidadeController', () => {
       ],
     }).compile();
 
-    controller = module.get<LocalidadeController>(LocalidadeController);
+    controller = await module.resolve<LocalidadeController>(LocalidadeController);
     prismaService = module.get<PrismaService>(PrismaService);
     enderecoService = module.get<EnderecoService>(EnderecoService);
     jwtService = module.get<JwtService>(JwtService);

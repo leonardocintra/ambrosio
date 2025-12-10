@@ -13,7 +13,7 @@ describe('RegiaoService', () => {
       providers: [RegiaoService, CaslAbilityService, PrismaService],
     }).compile();
 
-    service = module.get<RegiaoService>(RegiaoService);
+    service = await module.resolve<RegiaoService>(RegiaoService);
     prismaService = module.get<PrismaService>(PrismaService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);
