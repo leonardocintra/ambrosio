@@ -85,6 +85,8 @@ export class PessoaController {
   }
 
   @Get()
+  @ApiOkResponse({ description: 'Lista todas as pessoas' })
+  @ApiBadRequestResponse({ description: 'Parâmetros inválidos' })
   findAll(
     @Query('page') page: number,
     @Query('limit') limit: number,
@@ -101,6 +103,8 @@ export class PessoaController {
   }
 
   @Get('/conjugue')
+  @ApiOkResponse({ description: 'Lista todas as pessoas casadas por sexo' })
+  @ApiBadRequestResponse({ description: 'Parâmetros inválidos. Use `sexo` M ou F' })
   findAllConjugue(@Query() query: SexoQueryParamDto) {
     return this.pessoaService.findAllBySexoEstadoCivilCasado(
       query.sexo.toUpperCase(),
@@ -108,16 +112,19 @@ export class PessoaController {
   }
 
   @Get(':id')
+  @ApiOkResponse({ description: 'Busca uma pessoa pelo ID' })
   findOne(@Param('id') id: string) {
     return this.pessoaService.findOne(+id);
   }
 
   @Patch(':id')
+  @ApiOkResponse({ description: 'Atualiza uma pessoa' })
   update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
     return this.pessoaService.update(+id, updatePessoaDto);
   }
 
   @Post(':id/carisma')
+  @ApiOkResponse({ description: 'Adiciona carismas a uma pessoa' })
   createCarisma(@Param('id') id: string, @Body() dto: CreatePessoaCarismasDto) {
     return this.pessoaService.createCarismas(+id, dto);
   }

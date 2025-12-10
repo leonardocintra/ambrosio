@@ -144,7 +144,7 @@ export class SaoPedroPessoaService extends BaseService {
   ): Promise<Pessoa[]> {
     this.logger.log(`Buscando pessoas externas casadas do sexo: ${sexo}`);
     return this.findByParams({
-      estado_civil: 'C',
+      estadoCivil: 'C',
       sexo: sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
     });
   }
