@@ -68,7 +68,7 @@ export class SaoPedroPessoaService extends BaseService {
     }
   }
 
-  async findAllPessoas(limit: number = 2000): Promise<Pessoa[]> {
+  async findAllPessoas(limit: number = 5000): Promise<Pessoa[]> {
     this.logger.log(`Buscando todas as pessoas externas (limit: ${limit})`);
 
     return this.executeAuthenticatedRequest(async (token: string) => {

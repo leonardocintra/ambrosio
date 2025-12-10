@@ -5,7 +5,7 @@
 API_URL="http://localhost:3005"
 EMAIL="admin@admin.com"
 PASSWORD="admin"
-QUANTIDADE_PESSOAS=10
+QUANTIDADE_PESSOAS=1500
 
 echo "=========================================="
 echo "Iniciando cadastro de pessoas de teste"
@@ -102,10 +102,11 @@ echo "=========================================="
 
 # 2. Cadastrar pessoas
 echo "2. Cadastrando ${QUANTIDADE_PESSOAS} pessoas..."
+# Arrays originais expandidos com mais 50 entradas cada
 
-NOMES=("Ana" "Amanda" "Aline" "Bruno" "Carlos" "Daniela" "Eduardo" "Fernanda" "Gabriel" "Helena" "Igor" "Leonardo" "Fabiano" "Orley" "Vitoria" "Cloves" "Jéssica" "Tomas" "Guilherme" "Joana" "Lucas" "Mariana" "Nicolas" "Patrícia" "Rafael" "Sabrina" "Tiago" "Vanessa" "William" "Yasmin")
-SOBRENOMES=("Lutfala" "Peres" "Lamborin" "Ramon" "Pedrito" "Augusto" "Liberato" "Fausto" "Almeida" "Barros" "Cardoso" "Duarte" "Esteves" "Ferreira" "Gomes" "Hernandes" "Ibrahim" "Jesus" "Klein" "Lima" "Martins" "Nogueira" "Oliveira" "Pereira" "Queiroz" "Ramos" "Silva" "Teixeira" "Uchoa" "Vieira" "Zanetti" "Cintra" "Faleiros")
-APELIDOS=("Bia" "Léo" "Nina" "Dani" "Dudu" "Gabi" "Zé" "Mari" "Rafa" "Tico" "Nando" "Bel" "Tata" "Gui" "Isa" "Luca" "Duda" "Teca" "Nico" "Vivi")
+NOMES=("Ana" "Amanda" "Aline" "Bruno" "Carlos" "Daniela" "Eduardo" "Fernanda" "Gabriel" "Helena" "Igor" "Leonardo" "Fabiano" "Orley" "Vitoria" "Cloves" "Jéssica" "Tomas" "Guilherme" "Joana" "Lucas" "Mariana" "Nicolas" "Patrícia" "Rafael" "Sabrina" "Tiago" "Vanessa" "William" "Yasmin" "Adriana" "Beatriz" "Camila" "Diego" "Elisa" "Felipe" "Giovana" "Henrique" "Isabela" "João" "Karina" "Leandro" "Marcelo" "Natália" "Otávio" "Paula" "Rodrigo" "Simone" "Thiago" "Úrsula" "Vinicius" "Wagner" "Xavier" "Yara" "Zilda" "André" "Bruna" "Cesar" "Débora" "Emerson" "Flávia" "Gustavo" "Heloísa" "Ivan" "Juliana" "Kauê" "Larissa" "Márcio" "Nilton" "Olívia" "Pedro" "Raquel" "Samuel" "Tatiana" "Valdirene" "Wesley" "Ximena" "Yuri" "Zenaide" "Alessandra")
+SOBRENOMES=("Lutfala" "Peres" "Lamborin" "Ramon" "Pedrito" "Augusto" "Liberato" "Fausto" "Almeida" "Barros" "Cardoso" "Duarte" "Esteves" "Ferreira" "Gomes" "Hernandes" "Ibrahim" "Jesus" "Klein" "Lima" "Martins" "Nogueira" "Oliveira" "Pereira" "Queiroz" "Ramos" "Silva" "Teixeira" "Uchoa" "Vieira" "Zanetti" "Cintra" "Faleiros" "Azevedo" "Barbosa" "Camargo" "Dias" "Evangelista" "Fonseca" "Guimarães" "Horta" "Inez" "Junqueira" "Kowalski" "Lopes" "Machado" "Neves" "Ornelas" "Pinto" "Quintana" "Ribeiro" "Santos" "Toledo" "Urbano" "Vargas" "Weber" "Xavier" "Yamamoto" "Zago" "Aguiar" "Borges" "Castro" "Domingues" "Espinosa" "Franco" "Galvão" "Henriques" "Ivo" "Jardim" "Kurtz" "Lacerda" "Mendes" "Nascimento" "Otoni" "Pacheco" "Quental" "Rocha" "Sampaio" "Tavares" "Ulhoa" "Vasconcelos" "Werneck" "Xavier")
+APELIDOS=("Bia" "Léo" "Nina" "Dani" "Dudu" "Gabi" "Zé" "Mari" "Rafa" "Tico" "Nando" "Bel" "Tata" "Gui" "Isa" "Luca" "Duda" "Teca" "Nico" "Vivi" "Caco" "Lili" "Neto" "Guga" "Fafá" "Kiko" "Beto" "Cris" "Lele" "Manu" "Titi" "Zeca" "Juju" "Didi" "Lalá" "Cacá" "Nanda" "Lulu" "Guto" "Fefe" "Lolo" "Mimi" "Toto" "Naná" "Gigi" "Babi" "Cida" "Dedé" "Lelê" "Mazé" "Netinho" "Paty" "Rê" "Sisi" "Tetê" "Vavá" "Xuxu" "Zezé" "Chico" "Dinho" "Fabi" "Gaúcho" "Ique" "Joca" "Keka" "Lala" "Mara" "Nino" "Pepê" "Quica")
 ESTADOS_CIVIS=("SOLTEIRO" "CASADO" "DIVORCIADO" "VIUVO")
 ESCOLARIDADES=("nao_informado" "analfabeto" "fundamental" "fundamental_incompleto" "medio" "medio_incompleto" "superior" "superior_incompleto" "pos_graduacao" "mestrado" "doutorado" "pos_doutorado")
 
@@ -113,7 +114,7 @@ ESCOLARIDADES=("nao_informado" "analfabeto" "fundamental" "fundamental_incomplet
 for i in $(seq 1 $QUANTIDADE_PESSOAS); do
 
   NOME_BASE=${NOMES[$RANDOM % ${#NOMES[@]}]}
-  SOBRENOME=${SOBRENOMES[$RANDOM % ${#SOBRENOMES[@]}]}
+  SOBRENOME="${SOBRENOMES[$RANDOM % ${#SOBRENOMES[@]}]} ${SOBRENOMES[$RANDOM % ${#SOBRENOMES[@]}]}"
 
   # Gerar dados aleatórios
   SEXO=$([ $((RANDOM % 2)) -eq 0 ] && echo "MASCULINO" || echo "FEMININO")
