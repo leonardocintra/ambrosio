@@ -69,15 +69,15 @@ model endereco {
 }
 
 model estadoCivil {
-  id        Int      @id @default(autoincrement())
-  descricao String   @unique @db.VarChar(20)
+  id        Int    @id @default(autoincrement())
+  descricao String @unique @db.VarChar(20)
 
   @@schema("ambrosio")
 }
 
 model escolaridade {
-  id        Int      @id @default(autoincrement())
-  descricao String   @unique @db.VarChar(30)
+  id        Int    @id @default(autoincrement())
+  descricao String @unique @db.VarChar(30)
 
   @@schema("ambrosio")
 }
@@ -242,14 +242,15 @@ model diocese {
 }
 
 model paroquia {
-  id         Int      @id @default(autoincrement())
-  enderecoId Int
-  dioceseId  Int
-  endereco   endereco @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
-  diocese    diocese  @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
-  descricao  String   @db.VarChar(50)
-  setorId    Int      @default(1)
-  setor      setor    @relation(fields: [setorId], references: [id], onDelete: Restrict)
+  id          Int          @id @default(autoincrement())
+  enderecoId  Int
+  dioceseId   Int
+  endereco    endereco     @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
+  diocese     diocese      @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
+  descricao   String       @db.VarChar(50)
+  setorId     Int          @default(1)
+  setor       setor        @relation(fields: [setorId], references: [id], onDelete: Restrict)
+  comunidades comunidade[]
 
   @@schema("ambrosio")
 }
@@ -350,5 +351,18 @@ model regiao {
   setor         setor[]
 
   @@unique([descricao, macroRegiaoId])
+  @@schema("ambrosio")
+}
+
+model comunidade {
+  id                 Int      @id @default(autoincrement())
+  descricao          String?  @db.VarChar(80)
+  numeroDaComunidade Int
+  paroquiaId         Int
+  paroquia           paroquia @relation(fields: [paroquiaId], references: [id], onDelete: Restrict)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([numeroDaComunidade, paroquiaId])
   @@schema("ambrosio")
 }

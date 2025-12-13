@@ -26,6 +26,7 @@ import { SaoPedroModule } from './external/sao-pedro/sao-pedro.module';
 import { LoggerModule } from 'nestjs-pino';
 import { IncomingMessage, ServerResponse } from 'http';
 import { RegiaoModule } from './mapa/regiao/regiao.module';
+import { ComunidadeModule } from './comunidade/comunidade/comunidade.module';
 import * as rTracer from 'cls-rtracer';
 
 @Module({
@@ -82,6 +83,7 @@ import * as rTracer from 'cls-rtracer';
     MacroRegiaoModule,
     SaoPedroModule,
     RegiaoModule,
+    ComunidadeModule,
   ],
   controllers: [AppController],
   providers: [
