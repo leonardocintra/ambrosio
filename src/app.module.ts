@@ -27,6 +27,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { IncomingMessage, ServerResponse } from 'http';
 import { RegiaoModule } from './mapa/regiao/regiao.module';
 import { ComunidadeModule } from './comunidade/comunidade/comunidade.module';
+import { EtapaModule } from './comunidade/etapa/etapa.module';
 import * as rTracer from 'cls-rtracer';
 
 @Module({
@@ -84,6 +85,7 @@ import * as rTracer from 'cls-rtracer';
     SaoPedroModule,
     RegiaoModule,
     ComunidadeModule,
+    EtapaModule,
   ],
   controllers: [AppController],
   providers: [

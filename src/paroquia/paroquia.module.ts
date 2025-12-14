@@ -9,5 +9,6 @@ import { SetorModule } from 'src/mapa/setor/setor.module';
   controllers: [ParoquiaController],
   providers: [ParoquiaService],
   imports: [DioceseModule, EnderecoModule, SetorModule],
+  exports: [ParoquiaService],
 })
 export class ParoquiaModule {}

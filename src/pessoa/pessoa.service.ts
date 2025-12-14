@@ -135,6 +135,7 @@ export class PessoaService extends BaseService {
   }
 
   async createCasal(createCasalDto: CreateCasalDto) {
+    this.validateCreateAbility('pessoa');
     const pessoaId = createCasalDto.pessoaId;
     const conjugueId = createCasalDto.conjugueId;
 

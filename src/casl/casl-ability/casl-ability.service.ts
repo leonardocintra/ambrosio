@@ -2,6 +2,7 @@ import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
 import { Injectable, Scope } from '@nestjs/common';
 import {
+  comunidade,
   diocese,
   localidade,
   paroquia,
@@ -25,6 +26,7 @@ export type PermissionResource =
       pessoaCarismaPrimitivo: pessoaCarismaPrimitivo;
       pessoaCarismaVinculado: pessoaCarismaVinculado;
       pessoaCarismaServico: pessoaCarismaServico;
+      comunidade: comunidade;
     }>
   | 'all';
 
@@ -65,6 +67,8 @@ const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
     can('read', 'pessoa');
     can('read', 'diocese');
     can('read', 'localidade');
+    can('read', 'paroquia');
+    can('read', 'comunidade');
   },
 };
 

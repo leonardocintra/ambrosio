@@ -15,6 +15,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiConflictResponse,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -31,7 +32,7 @@ export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}
 
   @Post()
-  @ApiOkResponse({ description: 'Cria uma pessoa' })
+  @ApiCreatedResponse({ description: 'Pessoa criada com sucesso.' })
   @ApiConflictResponse({
     description: 'O CPF ja registrado para {pessoa.nome} de id: {pessoa.id}',
   })
@@ -104,7 +105,9 @@ export class PessoaController {
 
   @Get('/conjugue')
   @ApiOkResponse({ description: 'Lista todas as pessoas casadas por sexo' })
-  @ApiBadRequestResponse({ description: 'Parâmetros inválidos. Use `sexo` M ou F' })
+  @ApiBadRequestResponse({
+    description: 'Parâmetros inválidos. Use `sexo` M ou F',
+  })
   findAllConjugue(@Query() query: SexoQueryParamDto) {
     return this.pessoaService.findAllBySexoEstadoCivilCasado(
       query.sexo.toUpperCase(),
