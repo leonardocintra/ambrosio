@@ -4,6 +4,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import {
   comunidade,
   diocese,
+  equipe,
   localidade,
   paroquia,
   pessoa,
@@ -27,6 +28,7 @@ export type PermissionResource =
       pessoaCarismaVinculado: pessoaCarismaVinculado;
       pessoaCarismaServico: pessoaCarismaServico;
       comunidade: comunidade;
+      equipe: equipe;
     }>
   | 'all';
 
@@ -56,6 +58,7 @@ const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
     cannot('read', 'paroquia');
     cannot('read', 'localidade');
     cannot('read', 'user');
+    cannot('read', 'equipe');
   },
   CATEQUISTA_NACIONAL: grantReadPessoaDiocese,
   CATEQUISTA_GRANDE_REGIAO: grantReadPessoaDiocese,

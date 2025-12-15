@@ -43,22 +43,26 @@ export class ComunidadeService extends BaseService {
   }
 
   findAll() {
+    this.validateReadAbility('comunidade');
     return this.prisma.comunidade.findMany();
   }
 
   findOne(id: number) {
+    this.validateReadAbility('comunidade');
     return this.prisma.comunidade.findUnique({
       where: { id },
     });
   }
 
   update(id: number, updateComunidadeDto: UpdateComunidadeDto) {
+    this.validateUpdateAbility('comunidade');
     return (
       `This action updates a #${id} comunidade` + updateComunidadeDto.toString()
     );
   }
 
   remove(id: number) {
+    this.validateDeleteAbility('comunidade');
     this.logger.log(`Removendo comunidade de id ${id}`);
     return this.prisma.comunidade.delete({
       where: { id },

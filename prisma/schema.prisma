@@ -91,7 +91,7 @@ enum Sexo {
 
 model pessoa {
   id                   Int                      @id @default(autoincrement())
-  externalId           String?                  @unique @db.VarChar(36)
+  externalId           String                   @unique @db.VarChar(36)
   ativo                Boolean                  @default(true)
   situacaoReligiosaId  Int
   situacaoReligiosa    situacaoReligiosa        @relation(fields: [situacaoReligiosaId], references: [id])
@@ -274,14 +274,15 @@ model tipoEquipe {
 }
 
 model equipe {
-  id            Int            @id @default(autoincrement())
-  descricao     String         @db.VarChar(80)
-  tipoEquipeId  Int
-  tipoEquipe    tipoEquipe     @relation(fields: [tipoEquipeId], references: [id], onDelete: Restrict)
-  observacao    String?        @db.VarChar(255)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(now()) @updatedAt
-  equipePessoas equipePessoa[]
+  id                Int                @id @default(autoincrement())
+  descricao         String             @db.VarChar(80)
+  tipoEquipeId      Int
+  tipoEquipe        tipoEquipe         @relation(fields: [tipoEquipeId], references: [id], onDelete: Restrict)
+  observacao        String?            @db.VarChar(255)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now()) @updatedAt
+  equipePessoas     equipePessoa[]
+  comunidadeEquipes comunidadeEquipe[]
 
   @@schema("ambrosio")
 }
@@ -396,6 +397,7 @@ model comunidade {
   updatedAt          DateTime           @default(now()) @updatedAt
   comunidadeEtapas   comunidadeEtapa[]
   comunidadePessoas  comunidadePessoa[]
+  comunidadeEquipes  comunidadeEquipe[]
 
   @@unique([numeroDaComunidade, paroquiaId])
   @@schema("ambrosio")
@@ -428,5 +430,19 @@ model comunidadePessoa {
   createdAt    DateTime   @default(now())
 
   @@unique([comunidadeId, pessoaId])
+  @@schema("ambrosio")
+}
+
+model comunidadeEquipe {
+  id           Int        @id @default(autoincrement())
+  comunidadeId Int
+  equipeId     Int
+  comunidade   comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
+  equipe       equipe     @relation(fields: [equipeId], references: [id], onDelete: Cascade)
+  observacao   String?    @db.VarChar(255)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
+
+  @@unique([comunidadeId, equipeId])
   @@schema("ambrosio")
 }

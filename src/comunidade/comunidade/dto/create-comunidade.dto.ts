@@ -3,6 +3,7 @@ import {
   IsNumber,
   IsOptional,
   IsPositive,
+  IsString,
   Max,
   MaxLength,
   Min,
@@ -11,16 +12,15 @@ import {
 export class CreateComunidadeDto {
   @IsOptional()
   @MaxLength(80)
+  @IsString()
   descricao: string;
 
-  @IsNumber()
   @IsInt()
   @IsPositive()
   @Max(30)
   @Min(1)
   numeroDaComunidade: number;
 
-  @IsNumber()
   @IsInt()
   @IsPositive()
   @Max(80)
@@ -33,5 +33,7 @@ export class CreateComunidadeDto {
   paroquiaId: number;
 
   @IsOptional()
+  @MaxLength(250)
+  @IsString()
   observacao: string;
 }

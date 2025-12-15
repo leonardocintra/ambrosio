@@ -49,7 +49,7 @@ describe('PessoaCarismaController (e2e)', () => {
 
   it(`/${principal}/:id/carisma (POST) - 401 | não pode cadastrar carisma se não tiver autenticado`, () => {
     return request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .send({
         carismas: {
           primitivos: [{ id: 1, descricao: 'Carisma 1' }],
@@ -71,7 +71,7 @@ describe('PessoaCarismaController (e2e)', () => {
     const tokenNaoPermitido = response.body.data.access_token;
 
     return request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${tokenNaoPermitido}`)
       .send({
         carismas: {
@@ -108,7 +108,7 @@ describe('PessoaCarismaController (e2e)', () => {
 
   it(`/${principal}/:id/carisma (POST) - 400 | deve retornar erro quando payload inválido`, () => {
     return request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         carismas: {
@@ -124,7 +124,7 @@ describe('PessoaCarismaController (e2e)', () => {
 
   it(`/${principal}/:id/carisma (POST) - 404 | deve retornar erro quando carisma primitivo não existir`, () => {
     return request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         carismas: {
@@ -140,7 +140,7 @@ describe('PessoaCarismaController (e2e)', () => {
 
   it(`/${principal}/:id/carisma (POST) - 404 | deve retornar erro quando carisma vinculado não existir`, () => {
     return request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         carismas: {
@@ -158,7 +158,7 @@ describe('PessoaCarismaController (e2e)', () => {
 
   it(`/${principal}/:id/carisma (POST) - 404 | deve retornar erro quando carisma serviço não existir`, () => {
     return request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         carismas: {
@@ -183,7 +183,7 @@ describe('PessoaCarismaController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(carismaData)
@@ -204,7 +204,7 @@ describe('PessoaCarismaController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(carismaData)
@@ -225,7 +225,7 @@ describe('PessoaCarismaController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(carismaData)
@@ -245,7 +245,7 @@ describe('PessoaCarismaController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(carismaData)
@@ -269,7 +269,7 @@ describe('PessoaCarismaController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(carismaData)
@@ -280,7 +280,7 @@ describe('PessoaCarismaController (e2e)', () => {
 
   it(`/${principal}/:id/carisma (POST) - 400 | deve retornar erro quando não enviar nenhum carisma`, () => {
     return request(app.getHttpServer())
-      .post(`/${principal}/${pessoaId}/carisma`)
+      .post(`/${principal}/${pessoaId}/carismas`)
       .set('Authorization', `Bearer ${token}`)
       .send({ carismas: {} })
       .expect(400)

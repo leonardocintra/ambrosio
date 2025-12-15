@@ -126,7 +126,7 @@ export class PessoaController {
     return this.pessoaService.update(+id, updatePessoaDto);
   }
 
-  @Post(':id/carisma')
+  @Post(':id/carismas')
   @ApiOkResponse({ description: 'Adiciona carismas a uma pessoa' })
   createCarisma(@Param('id') id: string, @Body() dto: CreatePessoaCarismasDto) {
     return this.pessoaService.createCarismas(+id, dto);

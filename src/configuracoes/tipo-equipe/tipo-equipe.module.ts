@@ -5,5 +5,6 @@ import { TipoEquipeController } from './tipo-equipe.controller';
 @Module({
   controllers: [TipoEquipeController],
   providers: [TipoEquipeService],
+  exports: [TipoEquipeService],
 })
 export class TipoEquipeModule {}

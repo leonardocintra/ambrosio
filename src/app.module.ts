@@ -28,6 +28,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { RegiaoModule } from './mapa/regiao/regiao.module';
 import { ComunidadeModule } from './comunidade/comunidade/comunidade.module';
 import { EtapaModule } from './comunidade/etapa/etapa.module';
+import { EquipeModule } from './equipe/equipe.module';
 import * as rTracer from 'cls-rtracer';
 
 @Module({
@@ -86,6 +87,7 @@ import * as rTracer from 'cls-rtracer';
     RegiaoModule,
     ComunidadeModule,
     EtapaModule,
+    EquipeModule,
   ],
   controllers: [AppController],
   providers: [
