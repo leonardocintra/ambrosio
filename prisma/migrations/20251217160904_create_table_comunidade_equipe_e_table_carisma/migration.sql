@@ -5,23 +5,23 @@
 
 */
 -- CreateEnum
-CREATE TYPE "tipoCarismaEnum" AS ENUM ('SERVICO', 'VINCULADO', 'PRIMITIVO');
+CREATE TYPE "ambrosio"."tipoCarismaEnum" AS ENUM ('SERVICO', 'VINCULADO', 'PRIMITIVO');
 
 -- AlterTable
-ALTER TABLE "pessoa" ALTER COLUMN "externalId" SET NOT NULL;
+ALTER TABLE "ambrosio"."pessoa" ALTER COLUMN "externalId" SET NOT NULL;
 
 -- CreateTable
-CREATE TABLE "carisma" (
+CREATE TABLE "ambrosio"."carisma" (
     "id" SERIAL NOT NULL,
     "descricao" VARCHAR(100) NOT NULL,
-    "tipo" "tipoCarismaEnum" NOT NULL,
+    "tipo" "ambrosio"."tipoCarismaEnum" NOT NULL,
     "casalAndaJunto" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "carisma_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "pessoaCarisma" (
+CREATE TABLE "ambrosio"."pessoaCarisma" (
     "id" SERIAL NOT NULL,
     "pessoaId" INTEGER NOT NULL,
     "carismaId" INTEGER NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE "pessoaCarisma" (
 );
 
 -- CreateTable
-CREATE TABLE "comunidadeEquipe" (
+CREATE TABLE "ambrosio"."comunidadeEquipe" (
     "id" SERIAL NOT NULL,
     "comunidadeId" INTEGER NOT NULL,
     "equipeId" INTEGER NOT NULL,
@@ -44,22 +44,22 @@ CREATE TABLE "comunidadeEquipe" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "carisma_descricao_tipo_key" ON "carisma"("descricao", "tipo");
+CREATE UNIQUE INDEX "carisma_descricao_tipo_key" ON "ambrosio"."carisma"("descricao", "tipo");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "pessoaCarisma_pessoaId_carismaId_key" ON "pessoaCarisma"("pessoaId", "carismaId");
+CREATE UNIQUE INDEX "pessoaCarisma_pessoaId_carismaId_key" ON "ambrosio"."pessoaCarisma"("pessoaId", "carismaId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "comunidadeEquipe_comunidadeId_equipeId_key" ON "comunidadeEquipe"("comunidadeId", "equipeId");
+CREATE UNIQUE INDEX "comunidadeEquipe_comunidadeId_equipeId_key" ON "ambrosio"."comunidadeEquipe"("comunidadeId", "equipeId");
 
 -- AddForeignKey
-ALTER TABLE "pessoaCarisma" ADD CONSTRAINT "pessoaCarisma_pessoaId_fkey" FOREIGN KEY ("pessoaId") REFERENCES "pessoa"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ambrosio"."pessoaCarisma" ADD CONSTRAINT "pessoaCarisma_pessoaId_fkey" FOREIGN KEY ("pessoaId") REFERENCES "ambrosio"."pessoa"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "pessoaCarisma" ADD CONSTRAINT "pessoaCarisma_carismaId_fkey" FOREIGN KEY ("carismaId") REFERENCES "carisma"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ambrosio"."pessoaCarisma" ADD CONSTRAINT "pessoaCarisma_carismaId_fkey" FOREIGN KEY ("carismaId") REFERENCES "ambrosio"."carisma"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comunidadeEquipe" ADD CONSTRAINT "comunidadeEquipe_comunidadeId_fkey" FOREIGN KEY ("comunidadeId") REFERENCES "comunidade"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ambrosio"."comunidadeEquipe" ADD CONSTRAINT "comunidadeEquipe_comunidadeId_fkey" FOREIGN KEY ("comunidadeId") REFERENCES "ambrosio"."comunidade"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comunidadeEquipe" ADD CONSTRAINT "comunidadeEquipe_equipeId_fkey" FOREIGN KEY ("equipeId") REFERENCES "equipe"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ambrosio"."comunidadeEquipe" ADD CONSTRAINT "comunidadeEquipe_equipeId_fkey" FOREIGN KEY ("equipeId") REFERENCES "ambrosio"."equipe"("id") ON DELETE CASCADE ON UPDATE CASCADE;
