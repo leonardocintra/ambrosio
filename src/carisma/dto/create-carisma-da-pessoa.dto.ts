@@ -1,5 +1,6 @@
 import {
   IsArray,
+  IsInt,
   IsOptional,
   IsPositive,
   IsString,
@@ -8,6 +9,7 @@ import {
 
 export class CreateCarismaDaPessoaDto {
   @IsArray()
+  @IsInt({ each: true })
   @IsPositive({ each: true })
   carismaIds: number[];
 

@@ -39,11 +39,6 @@ export class CarismaController {
     return this.carismaService.addCarismaToPessoa(+pessoaId, createCarismaDto);
   }
 
-  @Delete('pessoa/:pessoaId/carisma/:carismaId')
-  removeCarismaFromPessoa() {
-    return 'Implementação futura';
-  }
-
   @Get()
   findAll() {
     return this.carismaService.findAll();
