@@ -15,6 +15,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiConflictResponse,
+  ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -22,7 +23,6 @@ import { SexoQueryParamDto } from './dto/sexo.dto';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
-import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
 
 @ApiTags('Pessoas')
 @UseGuards(AuthGuard, RoleGuard)
@@ -31,7 +31,7 @@ export class PessoaController {
   constructor(private readonly pessoaService: PessoaService) {}
 
   @Post()
-  @ApiOkResponse({ description: 'Cria uma pessoa' })
+  @ApiCreatedResponse({ description: 'Pessoa criada com sucesso.' })
   @ApiConflictResponse({
     description: 'O CPF ja registrado para {pessoa.nome} de id: {pessoa.id}',
   })
@@ -104,7 +104,9 @@ export class PessoaController {
 
   @Get('/conjugue')
   @ApiOkResponse({ description: 'Lista todas as pessoas casadas por sexo' })
-  @ApiBadRequestResponse({ description: 'Parâmetros inválidos. Use `sexo` M ou F' })
+  @ApiBadRequestResponse({
+    description: 'Parâmetros inválidos. Use `sexo` M ou F',
+  })
   findAllConjugue(@Query() query: SexoQueryParamDto) {
     return this.pessoaService.findAllBySexoEstadoCivilCasado(
       query.sexo.toUpperCase(),
@@ -121,11 +123,5 @@ export class PessoaController {
   @ApiOkResponse({ description: 'Atualiza uma pessoa' })
   update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
     return this.pessoaService.update(+id, updatePessoaDto);
-  }
-
-  @Post(':id/carisma')
-  @ApiOkResponse({ description: 'Adiciona carismas a uma pessoa' })
-  createCarisma(@Param('id') id: string, @Body() dto: CreatePessoaCarismasDto) {
-    return this.pessoaService.createCarismas(+id, dto);
   }
 }

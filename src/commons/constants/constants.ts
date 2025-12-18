@@ -22,3 +22,16 @@ export const ENDERECO_INCLUDE = {
     },
   },
 };
+
+export const PESSOA_CARISMA_INCLUDE = {
+  include: {
+    carisma: {
+      select: {
+        id: true,
+        tipo: true,
+        descricao: true,
+        casalAndaJunto: true,
+      },
+    },
+  },
+};

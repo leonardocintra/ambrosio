@@ -23,20 +23,7 @@ export function serializePessoaResponse(
     ativo: pessoa.ativo,
     escolaridade: external.escolaridade,
     situacaoReligiosa: pessoa.situacaoReligiosa,
-    carismas: {
-      primitivos: pessoa.carismasPrimitivo?.map((carisma) => ({
-        id: carisma.tipoCarismaPrimitivo.id,
-        descricao: carisma.tipoCarismaPrimitivo.descricao,
-      })),
-      servicos: pessoa.carismasServico?.map((carisma) => ({
-        id: carisma.tipoCarismaServico.id,
-        descricao: carisma.tipoCarismaServico.descricao,
-      })),
-      vinculados: pessoa.carismasVinculado?.map((carisma) => ({
-        id: carisma.tipoCarismaVinculado.id,
-        descricao: carisma.tipoCarismaVinculado.descricao,
-      })),
-    },
+    carismas: pessoa.pessoaCarismas?.map((pc) => pc.carisma),
     enderecos: pessoa.enderecos?.map(({ endereco }) =>
       serializeEndereco(endereco),
     ),

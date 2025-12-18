@@ -1,26 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTipoEquipeDto } from './dto/create-tipo-equipe.dto';
-import { UpdateTipoEquipeDto } from './dto/update-tipo-equipe.dto';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { BaseService } from 'src/commons/base.service';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
-export class TipoEquipeService {
-  create(createTipoEquipeDto: CreateTipoEquipeDto) {
-    return 'This action adds a new tipoEquipe';
+export class TipoEquipeService extends BaseService {
+  constructor(
+    private prisma: PrismaService,
+    protected readonly abilityService: CaslAbilityService,
+  ) {
+    super(abilityService);
   }
 
   findAll() {
-    return `This action returns all tipoEquipe`;
+    return this.prisma.tipoEquipe.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} tipoEquipe`;
-  }
-
-  update(id: number, updateTipoEquipeDto: UpdateTipoEquipeDto) {
-    return `This action updates a #${id} tipoEquipe`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} tipoEquipe`;
+    return this.prisma.tipoEquipe.findUnique({
+      where: { id },
+    });
   }
 }
