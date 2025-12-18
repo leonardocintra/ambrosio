@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { PrismaClient, Sexo } from '@prisma/client';
+import { PrismaClient, Sexo, tipoCarismaEnum } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -13,9 +13,7 @@ async function main() {
   await estadoCivil();
   await escolaridade();
   await situacaoReligiosa();
-  await tipoCarismaServico();
-  await tipoCarismaVinculado();
-  await tipoCarismaPrimitivo();
+  await carismas();
   await tipoDiocese();
   await tipoLocalidade();
   await tipoEquipe();
@@ -328,6 +326,50 @@ async function main() {
     console.log('Cidades preenchidas com sucesso!');
   }
 
+  async function carismas() {
+    const carismas = [
+      { descricao: 'Vocacionado(a)', tipo: 'PRIMITIVO' },
+      { descricao: 'Religioso(a)', tipo: 'PRIMITIVO' },
+      { descricao: 'Familia em Missão', tipo: 'PRIMITIVO' },
+      {
+        descricao: 'Irmãos/Irmãs em Missão',
+        tipo: 'PRIMITIVO',
+      },
+      {
+        descricao: 'Irmãos/Irmãs Itinerantes',
+        tipo: 'PRIMITIVO',
+      },
+      { descricao: 'Familia Itinerante', tipo: 'PRIMITIVO' },
+      { descricao: 'Pós Crisma', tipo: 'PRIMITIVO' },
+      { descricao: 'Presbítero', tipo: 'PRIMITIVO' },
+      { descricao: 'Freira', tipo: 'PRIMITIVO' },
+      { descricao: 'Responsável', tipo: 'VINCULADO', casalAndaJunto: true },
+      { descricao: 'Co-Responsável', tipo: 'VINCULADO', casalAndaJunto: true },
+      { descricao: 'Salmista', tipo: 'VINCULADO' },
+      { descricao: 'Catequistas', tipo: 'VINCULADO', casalAndaJunto: true },
+      { descricao: 'Leitores', tipo: 'VINCULADO' },
+      { descricao: 'Ostiário', tipo: 'VINCULADO' },
+      { descricao: 'Mestre', tipo: 'VINCULADO' },
+      { descricao: 'Padeiro', tipo: 'VINCULADO' },
+      { descricao: 'Secretário', tipo: 'SERVICO' },
+      { descricao: 'Voluntário', tipo: 'SERVICO' },
+      { descricao: 'Convidado', tipo: 'SERVICO' },
+    ];
+
+    for (const carisma of carismas) {
+      await prisma.carisma.create({
+        data: {
+          descricao: carisma.descricao,
+          tipo: carisma.tipo as tipoCarismaEnum,
+          casalAndaJunto: carisma.casalAndaJunto || false,
+        },
+      });
+    }
+
+    console.log('---------------------------------');
+    console.log('Carismas preenchidos com sucesso!');
+  }
+
   async function tipoEquipe() {
     const tiposEquipe = [
       'Catequista',
@@ -371,64 +413,6 @@ async function main() {
 
     console.log('---------------------------------');
     console.log('Tipo de diocese preenchido com sucesso!');
-  }
-
-  async function tipoCarismaServico() {
-    const tiposCarisma = ['Secretário', 'Voluntário', 'Convidado'];
-
-    for (const descricao of tiposCarisma) {
-      await prisma.tipoCarismaServico.create({
-        data: { descricao },
-      });
-    }
-
-    console.log('---------------------------------');
-    console.log('Tipo de carisma serviço preenchido com sucesso!');
-  }
-
-  async function tipoCarismaVinculado() {
-    const tiposCarisma = [
-      'Responsável',
-      'Co-Responsável',
-      'Salmista',
-      'Catequistas',
-      'Leitores',
-      'Ostiário',
-      'Mestre',
-      'Padeiro',
-    ];
-
-    for (const descricao of tiposCarisma) {
-      await prisma.tipoCarismaVinculado.create({
-        data: { descricao },
-      });
-    }
-
-    console.log('---------------------------------');
-    console.log('Tipo de carisma vinculado preenchido com sucesso!');
-  }
-
-  async function tipoCarismaPrimitivo() {
-    const tiposCarisma = [
-      'Vocacionado(a)',
-      'Religioso(a)',
-      'Familia em Missão',
-      'Irmãos/Irmãs em Missão',
-      'Irmãos/Irmãs Itinerantes',
-      'Familia Itinerante',
-      'Pós Crisma',
-      'Presbítero',
-      'Freira',
-    ];
-
-    for (const descricao of tiposCarisma) {
-      await prisma.tipoCarismaPrimitivo.create({
-        data: { descricao },
-      });
-    }
-
-    console.log('---------------------------------');
-    console.log('Tipo de carisma primitivo preenchido com sucesso!');
   }
 
   async function escolaridade() {

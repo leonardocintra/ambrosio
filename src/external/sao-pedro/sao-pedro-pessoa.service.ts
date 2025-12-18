@@ -146,6 +146,7 @@ export class SaoPedroPessoaService extends BaseService {
     return this.findByParams({
       estadoCivil: 'C',
       sexo: sexo === SEXO_ENUM.MASCULINO ? 'M' : 'F',
+      limit: '5000',
     });
   }
 

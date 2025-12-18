@@ -23,7 +23,6 @@ import { SexoQueryParamDto } from './dto/sexo.dto';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
-import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
 
 @ApiTags('Pessoas')
 @UseGuards(AuthGuard, RoleGuard)
@@ -124,11 +123,5 @@ export class PessoaController {
   @ApiOkResponse({ description: 'Atualiza uma pessoa' })
   update(@Param('id') id: string, @Body() updatePessoaDto: UpdatePessoaDto) {
     return this.pessoaService.update(+id, updatePessoaDto);
-  }
-
-  @Post(':id/carismas')
-  @ApiOkResponse({ description: 'Adiciona carismas a uma pessoa' })
-  createCarisma(@Param('id') id: string, @Body() dto: CreatePessoaCarismasDto) {
-    return this.pessoaService.createCarismas(+id, dto);
   }
 }

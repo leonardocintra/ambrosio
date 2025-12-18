@@ -8,16 +8,13 @@ import {
   ENDERECO_INCLUDE,
   LIMIT_DEFAULT,
   PAGE_DEFAULT,
+  PESSOA_CARISMA_INCLUDE,
 } from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { EstadoCivilEnum, Pessoa, PessoaConjugue } from 'neocatecumenal';
 import { pessoa } from '@prisma/client';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
-import { CreatePessoaCarismasDto } from './dto/create-pessoa-carisma.dto';
-import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
-import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
-import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { BaseService } from 'src/commons/base.service';
 import {
@@ -30,9 +27,6 @@ export class PessoaService extends BaseService {
   constructor(
     private prisma: PrismaService,
     private situacaoReligiosaService: SituacaoReligiosaService,
-    private carismaVinculadoService: TipoCarismaVinculadoService,
-    private carismaPrimitivoService: TipoCarismaPrimitivoService,
-    private carismaServicoService: TipoCarismaServicoService,
     private readonly saoPedroPessoaService: SaoPedroPessoaService,
     abilityService: CaslAbilityService,
   ) {
@@ -87,21 +81,7 @@ export class PessoaService extends BaseService {
       where,
       include: {
         situacaoReligiosa: true,
-        carismasServico: {
-          include: {
-            tipoCarismaServico: true,
-          },
-        },
-        carismasPrimitivo: {
-          include: {
-            tipoCarismaPrimitivo: true,
-          },
-        },
-        carismasVinculado: {
-          include: {
-            tipoCarismaVinculado: true,
-          },
-        },
+        pessoaCarismas: PESSOA_CARISMA_INCLUDE,
         enderecos: {
           include: {
             endereco: ENDERECO_INCLUDE,
@@ -221,48 +201,6 @@ export class PessoaService extends BaseService {
     }
   }
 
-  async createCarismas(pessoaId: number, dto: CreatePessoaCarismasDto) {
-    const pessoa = await this.findOne(pessoaId);
-    this.logger.log(
-      `Registrando carismas para a pessoa: ${pessoa.id} - ${pessoa.nome}`,
-    );
-
-    const primitivos =
-      await this.carismaPrimitivoService.registerCarismaPrimitivoPessoa({
-        pessoaId,
-        carismas: dto.carismas.primitivos || [],
-      });
-    this.logger.log(
-      `Carismas primitivos registrados para a pessoa com ID ${pessoaId}`,
-    );
-
-    const servicos =
-      await this.carismaServicoService.registerCarismaServicoPessoa({
-        pessoaId,
-        carismas: dto.carismas.servicos || [],
-      });
-    this.logger.log(
-      `Carismas serviços registrados para a pessoa com ID ${pessoaId}`,
-    );
-
-    const vinculados =
-      await this.carismaVinculadoService.registerCarismaVinculadoPessoa({
-        pessoaId,
-        carismas: dto.carismas.vinculados || [],
-      });
-    this.logger.log(
-      `Carismas vinculados registrados para a pessoa com ID ${pessoaId}`,
-    );
-
-    return {
-      carismas: {
-        primitivos,
-        servicos,
-        vinculados,
-      },
-    };
-  }
-
   async findAllBySexoEstadoCivilCasado(sexo: string) {
     // Função para buscar todas as pessoas com estado civil casado que não estão vinculadas como marido e mulher
     const param = sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO;
@@ -332,21 +270,7 @@ export class PessoaService extends BaseService {
       where,
       include: {
         situacaoReligiosa: true,
-        carismasPrimitivo: {
-          include: {
-            tipoCarismaPrimitivo: true,
-          },
-        },
-        carismasServico: {
-          include: {
-            tipoCarismaServico: true,
-          },
-        },
-        carismasVinculado: {
-          include: {
-            tipoCarismaVinculado: true,
-          },
-        },
+        pessoaCarismas: PESSOA_CARISMA_INCLUDE,
         enderecos: {
           include: {
             endereco: ENDERECO_INCLUDE,
@@ -453,7 +377,9 @@ export class PessoaService extends BaseService {
     this.logger.log(`External pessoa fetched: ${JSON.stringify(pessoa)}`);
 
     if (pessoa) {
-      this.logger.warn(`CPF ${cpf} já está cadastrado`);
+      this.logger.warn(
+        `CPF ${cpf} já está cadastrado. Pertence a: ${pessoa.nome} (ID: ${pessoa.id})`,
+      );
       throw new ConflictException(
         `O CPF ja registrado para ${pessoa.nome} de id: ${pessoa.id}`,
       );

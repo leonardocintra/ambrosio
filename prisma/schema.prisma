@@ -90,22 +90,20 @@ enum Sexo {
 }
 
 model pessoa {
-  id                   Int                      @id @default(autoincrement())
-  externalId           String                   @unique @db.VarChar(36)
-  ativo                Boolean                  @default(true)
+  id                   Int                @id @default(autoincrement())
+  externalId           String             @unique @db.VarChar(36)
+  ativo                Boolean            @default(true)
   situacaoReligiosaId  Int
-  situacaoReligiosa    situacaoReligiosa        @relation(fields: [situacaoReligiosaId], references: [id])
+  situacaoReligiosa    situacaoReligiosa  @relation(fields: [situacaoReligiosaId], references: [id])
   passaportes          passaportePessoa[]
   contatos             pessoaContato[]
-  casamentosComoMarido pessoaCasal[]            @relation("Marido")
-  casamentosComoMulher pessoaCasal[]            @relation("Mulher")
+  casamentosComoMarido pessoaCasal[]      @relation("Marido")
+  casamentosComoMulher pessoaCasal[]      @relation("Mulher")
   enderecos            pessoaEndereco[]
-  carismasServico      pessoaCarismaServico[]
-  carismasVinculado    pessoaCarismaVinculado[]
-  carismasPrimitivo    pessoaCarismaPrimitivo[]
   user                 user[]
   comunidadePessoas    comunidadePessoa[]
   equipePessoas        equipePessoa[]
+  pessoaCarismas       pessoaCarisma[]
 
   @@index([externalId])
   @@schema("ambrosio")
@@ -120,57 +118,35 @@ model situacaoReligiosa {
   @@schema("ambrosio")
 }
 
-model tipoCarismaServico {
-  id        Int                    @id @default(autoincrement())
-  descricao String                 @unique @db.VarChar(80)
-  pessoas   pessoaCarismaServico[]
+enum tipoCarismaEnum {
+  SERVICO
+  VINCULADO
+  PRIMITIVO
 
   @@schema("ambrosio")
 }
 
-model tipoCarismaVinculado {
-  id        Int                      @id @default(autoincrement())
-  descricao String                   @unique @db.VarChar(80)
-  pessoas   pessoaCarismaVinculado[]
+model carisma {
+  id             Int             @id @default(autoincrement())
+  descricao      String          @db.VarChar(100)
+  tipo           tipoCarismaEnum
+  casalAndaJunto Boolean         @default(false)
+  pessoaCarismas pessoaCarisma[]
 
+  @@unique([descricao, tipo])
   @@schema("ambrosio")
 }
 
-model tipoCarismaPrimitivo {
-  id        Int                      @id @default(autoincrement())
-  descricao String                   @unique @db.VarChar(80)
-  pessoas   pessoaCarismaPrimitivo[]
+model pessoaCarisma {
+  id         Int      @id @default(autoincrement())
+  pessoaId   Int
+  carismaId  Int
+  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
+  carisma    carisma  @relation(fields: [carismaId], references: [id], onDelete: Cascade)
+  observacao String?  @db.VarChar(255)
+  createdAt  DateTime @default(now())
 
-  @@schema("ambrosio")
-}
-
-model pessoaCarismaServico {
-  pessoaId             Int
-  tipoCarismaServicoId Int
-  pessoa               pessoa             @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
-  tipoCarismaServico   tipoCarismaServico @relation(fields: [tipoCarismaServicoId], references: [id], onDelete: Cascade)
-
-  @@id([pessoaId, tipoCarismaServicoId])
-  @@schema("ambrosio")
-}
-
-model pessoaCarismaVinculado {
-  pessoaId               Int
-  tipoCarismaVinculadoId Int
-  pessoa                 pessoa               @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
-  tipoCarismaVinculado   tipoCarismaVinculado @relation(fields: [tipoCarismaVinculadoId], references: [id], onDelete: Cascade)
-
-  @@id([pessoaId, tipoCarismaVinculadoId])
-  @@schema("ambrosio")
-}
-
-model pessoaCarismaPrimitivo {
-  pessoaId               Int
-  tipoCarismaPrimitivoId Int
-  pessoa                 pessoa               @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
-  tipoCarismaPrimitivo   tipoCarismaPrimitivo @relation(fields: [tipoCarismaPrimitivoId], references: [id], onDelete: Cascade)
-
-  @@id([pessoaId, tipoCarismaPrimitivoId])
+  @@unique([pessoaId, carismaId])
   @@schema("ambrosio")
 }
 

@@ -6,9 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { PessoaService } from 'src/pessoa/pessoa.service';
 import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
-import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
-import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
-import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
@@ -31,9 +28,6 @@ describe('UsersController', () => {
         CaslAbilityService,
         PessoaService,
         EstadoCivilService,
-        TipoCarismaPrimitivoService,
-        TipoCarismaVinculadoService,
-        TipoCarismaServicoService,
         EscolaridadeService,
         SituacaoReligiosaService,
         {

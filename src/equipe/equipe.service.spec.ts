@@ -4,9 +4,6 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { PrismaService } from 'src/prisma.service';
 import { TipoEquipeService } from 'src/configuracoes/tipo-equipe/tipo-equipe.service';
 import { PessoaService } from 'src/pessoa/pessoa.service';
-import { TipoCarismaPrimitivoService } from 'src/configuracoes/carismas/tipo-carisma-primitivo/tipo-carisma-primitivo.service';
-import { TipoCarismaVinculadoService } from 'src/configuracoes/carismas/tipo-carisma-vinculado/tipo-carisma-vinculado.service';
-import { TipoCarismaServicoService } from 'src/configuracoes/carismas/tipo-carisma-servico/tipo-carisma-servico.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { HttpModule } from '@nestjs/axios';
@@ -25,9 +22,6 @@ describe('EquipeService', () => {
         CaslAbilityService,
         TipoEquipeService,
         PessoaService,
-        TipoCarismaPrimitivoService,
-        TipoCarismaVinculadoService,
-        TipoCarismaServicoService,
         SaoPedroPessoaService,
         SaoPedroAuthService,
         SituacaoReligiosaService,

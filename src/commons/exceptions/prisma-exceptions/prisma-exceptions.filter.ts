@@ -20,9 +20,7 @@ const MODEL_NAME_MAP: Record<string, string> = {
   situacaoreligiosa: 'Situação Religiosa',
   tipodiocese: 'Tipo de Diocese',
   user: 'Usuário',
-  tipocarismaservico: 'Tipo de Carisma Serviço',
-  tipocarismavinculado: 'Tipo de Carisma Vinculado',
-  tipocarismaprimitivo: 'Tipo de Carisma Primitivo',
+  carisma: 'Carisma',
   setor: 'Setor',
   macroregiao: 'Macro Região',
   // adicione mais conforme o projeto for crescendo

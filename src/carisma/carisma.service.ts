@@ -1,0 +1,271 @@
+import { Injectable, HttpException, BadRequestException } from '@nestjs/common';
+import { CreateCarismaDto } from './dto/create-carisma.dto';
+import { UpdateCarismaDto } from './dto/update-carisma.dto';
+import { BaseService } from 'src/commons/base.service';
+import { PrismaService } from 'src/prisma.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { TIPO_CARISMA_ENUM } from 'src/commons/enums/enums';
+import { PessoaService } from 'src/pessoa/pessoa.service';
+import { CreateCarismaDaPessoaDto } from './dto/create-carisma-da-pessoa.dto';
+
+@Injectable()
+export class CarismaService extends BaseService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly pessoaService: PessoaService,
+    abilityService: CaslAbilityService,
+  ) {
+    super(abilityService);
+  }
+
+  create(createCarismaDto: CreateCarismaDto) {
+    this.validateCreateAbility('carisma');
+
+    return this.prisma.carisma.create({
+      data: {
+        descricao: createCarismaDto.descricao,
+        tipo: createCarismaDto.tipo as TIPO_CARISMA_ENUM,
+        casalAndaJunto: createCarismaDto.casalAndaJunto || false,
+      },
+    });
+  }
+
+  async addCarismaToPessoa(
+    pessoaId: number,
+    carismaDto: CreateCarismaDaPessoaDto,
+  ) {
+    // Validações
+    if (!pessoaId || pessoaId <= 0) {
+      throw new BadRequestException('ID da pessoa inválido');
+    }
+
+    if (!carismaDto.carismaIds || carismaDto.carismaIds.length === 0) {
+      throw new BadRequestException('Nenhum carisma fornecido');
+    }
+
+    // Remove IDs duplicados
+    const uniqueCarismaIds = [...new Set(carismaDto.carismaIds)];
+
+    try {
+      // Verifica se a pessoa existe
+      await this.pessoaService.findOne(pessoaId);
+
+      // Verifica se todos os carismas fornecidos existem
+      const carismas = await this.prisma.carisma.findMany({
+        where: { id: { in: uniqueCarismaIds } },
+      });
+
+      if (carismas.length !== uniqueCarismaIds.length) {
+        const foundIds = carismas.map((c) => c.id);
+        const notFoundIds = uniqueCarismaIds.filter(
+          (id) => !foundIds.includes(id),
+        );
+
+        throw new HttpException(
+          `Carismas com IDs ${notFoundIds.join(', ')} não encontrados`,
+          404,
+        );
+      }
+
+      // Busca os carismas atualmente vinculados à pessoa
+      const currentCarismas = await this.prisma.pessoaCarisma.findMany({
+        where: { pessoaId },
+        select: { carismaId: true },
+      });
+
+      const currentCarismaIds = currentCarismas.map((c) => c.carismaId);
+
+      // Identifica carismas a remover (estão atualmente mas não estão no novo array)
+      const carismasToRemove = currentCarismaIds.filter(
+        (id) => !uniqueCarismaIds.includes(id),
+      );
+
+      // Identifica carismas a adicionar (estão no novo array mas não estão atualmente)
+      const carismasToAdd = uniqueCarismaIds.filter(
+        (id) => !currentCarismaIds.includes(id),
+      );
+
+      // Remove carismas que não constam no novo array
+      if (carismasToRemove.length > 0) {
+        await this.removeCarismaFromPessoa(pessoaId, carismasToRemove);
+      }
+
+      // Adiciona novos carismas
+      if (carismasToAdd.length > 0) {
+        const resultAdd = await this.prisma.pessoaCarisma.createMany({
+          data: carismasToAdd.map((carismaId) => ({
+            pessoaId,
+            carismaId,
+            observacao: carismaDto.observacao?.trim() || null,
+          })),
+          skipDuplicates: true,
+        });
+
+        this.logger.log(
+          `${resultAdd.count} carisma(s) adicionado(s) à pessoa ID ${pessoaId}`,
+        );
+      } else {
+        this.logger.log(
+          `Nenhum novo carisma para adicionar à pessoa ID ${pessoaId}`,
+        );
+      }
+
+      // Retorna o resumo da operação
+      return {
+        pessoaId,
+        adicionados: carismasToAdd.length,
+        removidos: carismasToRemove.length,
+        mantidos: uniqueCarismaIds.filter((id) =>
+          currentCarismaIds.includes(id),
+        ).length,
+        carismasFinais: uniqueCarismaIds,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Erro ao atualizar carismas da pessoa ${pessoaId}:`,
+        error.message,
+      );
+      throw error;
+    }
+  }
+
+  private async removeCarismaFromPessoa(
+    pessoaId: number,
+    carismaIds: number[],
+  ) {
+    if (!pessoaId || pessoaId <= 0) {
+      throw new BadRequestException('ID da pessoa inválido');
+    }
+
+    if (!carismaIds || carismaIds.length === 0) {
+      throw new BadRequestException('Nenhum carisma fornecido');
+    }
+
+    const uniqueCarismaIds = [...new Set(carismaIds)];
+
+    try {
+      const result = await this.prisma.pessoaCarisma.deleteMany({
+        where: {
+          pessoaId,
+          carismaId: { in: uniqueCarismaIds },
+        },
+      });
+
+      if (result.count === 0) {
+        this.logger.warn(
+          `Nenhum carisma encontrado para remover da pessoa ID ${pessoaId}`,
+        );
+        return result;
+      }
+
+      this.logger.log(
+        `${result.count} carisma(s) removido(s) da pessoa ID ${pessoaId}`,
+      );
+
+      return result;
+    } catch (error) {
+      this.logger.error(
+        `Erro ao remover carismas da pessoa ${pessoaId}:`,
+        error.message,
+      );
+      throw error;
+    }
+  }
+
+  async getCarismasByPessoa(pessoaId: number) {
+    if (!pessoaId || pessoaId <= 0) {
+      throw new BadRequestException('ID da pessoa inválido');
+    }
+
+    try {
+      const carismas = await this.prisma.pessoaCarisma.findMany({
+        where: { pessoaId },
+        include: {
+          carisma: true,
+        },
+        orderBy: {
+          carisma: {
+            descricao: 'asc',
+          },
+        },
+      });
+
+      return carismas;
+    } catch (error) {
+      this.logger.error(
+        `Erro ao buscar carismas da pessoa ${pessoaId}:`,
+        error.message,
+      );
+      throw error;
+    }
+  }
+
+  findAll() {
+    this.validateReadAbility('carisma');
+    return this.prisma.carisma.findMany({
+      select: {
+        id: true,
+        descricao: true,
+        tipo: true,
+        casalAndaJunto: true,
+      },
+      orderBy: {
+        descricao: 'asc',
+      },
+    });
+  }
+
+  findOne(id: number) {
+    this.validateReadAbility('carisma');
+
+    if (!id || id <= 0) {
+      throw new BadRequestException('ID inválido');
+    }
+
+    return this.prisma.carisma.findUnique({
+      where: { id },
+    });
+  }
+
+  update(id: number, updateCarismaDto: UpdateCarismaDto) {
+    this.validateUpdateAbility('carisma');
+
+    if (!id || id <= 0) {
+      throw new BadRequestException('ID inválido');
+    }
+
+    return this.prisma.carisma.update({
+      where: { id },
+      data: {
+        descricao: updateCarismaDto.descricao,
+        tipo: updateCarismaDto.tipo as TIPO_CARISMA_ENUM,
+        casalAndaJunto: updateCarismaDto.casalAndaJunto,
+      },
+    });
+  }
+
+  async remove(id: number) {
+    this.validateDeleteAbility('carisma');
+
+    if (!id || id <= 0) {
+      throw new BadRequestException('ID inválido');
+    }
+
+    try {
+      // Remove todas as relações antes de remover o carisma
+      await this.prisma.pessoaCarisma.deleteMany({
+        where: { carismaId: id },
+      });
+
+      const result = await this.prisma.carisma.delete({
+        where: { id },
+      });
+
+      this.logger.log(`Carisma ID ${id} removido com sucesso`);
+      return result;
+    } catch (error) {
+      this.logger.error(`Erro ao remover carisma ${id}:`, error.message);
+      throw error;
+    }
+  }
+}
