@@ -7,6 +7,7 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { TIPO_CARISMA_ENUM } from 'src/commons/enums/enums';
 import { PessoaService } from 'src/pessoa/pessoa.service';
 import { CreateCarismaDaPessoaDto } from './dto/create-carisma-da-pessoa.dto';
+import { Pessoa } from 'neocatecumenal';
 
 @Injectable()
 export class CarismaService extends BaseService {
@@ -166,6 +167,49 @@ export class CarismaService extends BaseService {
     } catch (error) {
       this.logger.error(
         `Erro ao remover carismas da pessoa ${pessoaId}:`,
+        error.message,
+      );
+      throw error;
+    }
+  }
+
+  async findAllPessoasByCarisma(carismaId: number) {
+    if (!carismaId || carismaId <= 0) {
+      throw new BadRequestException('ID do carisma inválido');
+    }
+
+    try {
+      const pessoasCarisma = await this.prisma.pessoaCarisma.findMany({
+        where: { carismaId },
+        include: {
+          pessoa: {
+            select: {
+              id: true,
+              externalId: true,
+            },
+          },
+        },
+      });
+
+      const result = await Promise.all(
+        pessoasCarisma.map(async (pc) => {
+          const pessoaDetails: Pessoa = await this.pessoaService.findOne(
+            pc.pessoa.id,
+          );
+
+          return {
+            id: pc.pessoa.id,
+            nome: pessoaDetails.nome,
+            casal: pessoaDetails.conjugue ? true : false,
+            paroquia: '', // TODO: adicionar paróquia que vai aparecer na comunidade da pessoa
+          };
+        }),
+      );
+
+      return result;
+    } catch (error) {
+      this.logger.error(
+        `Erro ao buscar pessoas do carisma ${carismaId}:`,
         error.message,
       );
       throw error;
