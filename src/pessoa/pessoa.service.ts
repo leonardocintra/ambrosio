@@ -290,12 +290,15 @@ export class PessoaService extends BaseService {
     return serializePessoaResponse(pessoa, externalPessoa, conjugue);
   }
 
-  async update(id: number, updatePessoaDto: UpdatePessoaDto) {
+  async update(id: number, updatePessoaDto: UpdatePessoaDto): Promise<Pessoa> {
     const pessoa = await this.findOne(id);
 
     if (updatePessoaDto.situacaoReligiosa) {
       const situacaoReligiosa = await this.situacaoReligiosaService.findOne(
         updatePessoaDto.situacaoReligiosa.id,
+      );
+      this.logger.log(
+        `Atualizando situação religiosa da pessoa ID ${id} para ${situacaoReligiosa.descricao}`,
       );
       await this.prisma.pessoa.update({
         where: { id },
@@ -304,18 +307,12 @@ export class PessoaService extends BaseService {
         },
       });
     }
-
-    const externalPessoa =
-      await this.saoPedroPessoaService.updateExternalPessoa(
-        pessoa.externalId,
-        updatePessoaDto,
-      );
-
-    const conjugue = await this.getConjugue(
-      pessoa.id,
-      externalPessoa.sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO,
+    
+    await this.saoPedroPessoaService.updateExternalPessoa(
+      pessoa.externalId,
+      updatePessoaDto,
     );
-    return serializePessoaResponse(pessoa, externalPessoa, conjugue);
+    return pessoa;
   }
 
   private async getConjugue(

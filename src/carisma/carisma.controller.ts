@@ -39,6 +39,14 @@ export class CarismaController {
     return this.carismaService.addCarismaToPessoa(+pessoaId, createCarismaDto);
   }
 
+  @Get('catequistas')
+  findlAllPessoasCarismas() {
+    const CATEQUISTA_CARISMA_ID = process.env.CATEQUISTA_CARISMA_ID
+      ? parseInt(process.env.CATEQUISTA_CARISMA_ID)
+      : 0;
+    return this.carismaService.findAllPessoasByCarisma(CATEQUISTA_CARISMA_ID);
+  }
+
   @Get()
   findAll() {
     return this.carismaService.findAll();

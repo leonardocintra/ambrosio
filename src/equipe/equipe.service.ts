@@ -43,7 +43,7 @@ export class EquipeService extends BaseService {
         data: {
           equipeId: result.id,
           pessoaId: pessoa.id,
-          observacao: `Pessoa adicionada na equipe ${result.descricao}`,
+          observacao: `Equipe/Pessoa de: ${result.descricao}`,
         },
       });
     }
