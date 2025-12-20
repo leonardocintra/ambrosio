@@ -10,37 +10,37 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "pessoaCarismaPrimitivo" DROP CONSTRAINT "pessoaCarismaPrimitivo_pessoaId_fkey";
+ALTER TABLE "ambrosio"."pessoaCarismaPrimitivo" DROP CONSTRAINT "pessoaCarismaPrimitivo_pessoaId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "pessoaCarismaPrimitivo" DROP CONSTRAINT "pessoaCarismaPrimitivo_tipoCarismaPrimitivoId_fkey";
+ALTER TABLE "ambrosio"."pessoaCarismaPrimitivo" DROP CONSTRAINT "pessoaCarismaPrimitivo_tipoCarismaPrimitivoId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "pessoaCarismaServico" DROP CONSTRAINT "pessoaCarismaServico_pessoaId_fkey";
+ALTER TABLE "ambrosio"."pessoaCarismaServico" DROP CONSTRAINT "pessoaCarismaServico_pessoaId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "pessoaCarismaServico" DROP CONSTRAINT "pessoaCarismaServico_tipoCarismaServicoId_fkey";
+ALTER TABLE "ambrosio"."pessoaCarismaServico" DROP CONSTRAINT "pessoaCarismaServico_tipoCarismaServicoId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "pessoaCarismaVinculado" DROP CONSTRAINT "pessoaCarismaVinculado_pessoaId_fkey";
+ALTER TABLE "ambrosio"."pessoaCarismaVinculado" DROP CONSTRAINT "pessoaCarismaVinculado_pessoaId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "pessoaCarismaVinculado" DROP CONSTRAINT "pessoaCarismaVinculado_tipoCarismaVinculadoId_fkey";
+ALTER TABLE "ambrosio"."pessoaCarismaVinculado" DROP CONSTRAINT "pessoaCarismaVinculado_tipoCarismaVinculadoId_fkey";
 
 -- DropTable
-DROP TABLE "pessoaCarismaPrimitivo";
+DROP TABLE "ambrosio"."pessoaCarismaPrimitivo";
 
 -- DropTable
-DROP TABLE "pessoaCarismaServico";
+DROP TABLE "ambrosio"."pessoaCarismaServico";
 
 -- DropTable
-DROP TABLE "pessoaCarismaVinculado";
+DROP TABLE "ambrosio"."pessoaCarismaVinculado";
 
 -- DropTable
-DROP TABLE "tipoCarismaPrimitivo";
+DROP TABLE "ambrosio"."tipoCarismaPrimitivo";
 
 -- DropTable
-DROP TABLE "tipoCarismaServico";
+DROP TABLE "ambrosio"."tipoCarismaServico";
 
 -- DropTable
-DROP TABLE "tipoCarismaVinculado";
+DROP TABLE "ambrosio"."tipoCarismaVinculado";
