@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ComunidadeService } from './comunidade.service';
 import { CreateComunidadeDto } from './dto/create-comunidade.dto';
@@ -28,8 +29,8 @@ export class ComunidadeController {
   }
 
   @Get()
-  findAll() {
-    return this.comunidadeService.findAll();
+  findAll(@Query('paroquiaId') paroquiaId?: string) {
+    return this.comunidadeService.findAll(paroquiaId ? +paroquiaId : undefined);
   }
 
   @Get(':id')

@@ -42,9 +42,15 @@ export class ComunidadeService extends BaseService {
     });
   }
 
-  findAll() {
+  findAll(paroquiaId?: number) {
     this.validateReadAbility('comunidade');
-    return this.prisma.comunidade.findMany();
+    return this.prisma.comunidade.findMany({
+      where: paroquiaId ? { paroquiaId } : undefined,
+      include: {
+        paroquia: true,
+      },
+      orderBy: { numeroDaComunidade: 'asc' },
+    });
   }
 
   findOne(id: number) {
