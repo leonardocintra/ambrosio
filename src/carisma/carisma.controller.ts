@@ -40,7 +40,7 @@ export class CarismaController {
   }
 
   @Get('catequistas')
-  findlAllPessoasCarismas() {
+  findAllCatequistas() {
     const CATEQUISTA_CARISMA_ID = process.env.CATEQUISTA_CARISMA_ID
       ? parseInt(process.env.CATEQUISTA_CARISMA_ID)
       : 0;

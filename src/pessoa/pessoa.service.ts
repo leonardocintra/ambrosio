@@ -176,20 +176,15 @@ export class PessoaService extends BaseService {
       );
     }
 
+    let pessoaMaridoId: number;
+    let pessoaMulherId: number;
+
     if (pessoaExternal.sexo === SEXO_ENUM.MASCULINO.substring(0, 1)) {
-      return await this.prisma.pessoaCasal.create({
-        data: {
-          pessoaMaridoId: pessoa.id,
-          pessoaMulherId: conjugue.id,
-        },
-      });
+      pessoaMaridoId = pessoa.id;
+      pessoaMulherId = conjugue.id;
     } else if (pessoaExternal.sexo === SEXO_ENUM.FEMININO.substring(0, 1)) {
-      return await this.prisma.pessoaCasal.create({
-        data: {
-          pessoaMaridoId: conjugue.id,
-          pessoaMulherId: pessoa.id,
-        },
-      });
+      pessoaMaridoId = conjugue.id;
+      pessoaMulherId = pessoa.id;
     } else {
       this.logger.error(
         `Sexo inválido para pessoa ID ${pessoa.id} ou conjugue ID ${conjugue.id}`,
@@ -199,6 +194,10 @@ export class PessoaService extends BaseService {
         400,
       );
     }
+
+    return await this.prisma.pessoaCasal.create({
+      data: { pessoaMaridoId, pessoaMulherId },
+    });
   }
 
   async findAllBySexoEstadoCivilCasado(sexo: string) {
@@ -307,7 +306,7 @@ export class PessoaService extends BaseService {
         },
       });
     }
-    
+
     await this.saoPedroPessoaService.updateExternalPessoa(
       pessoa.externalId,
       updatePessoaDto,

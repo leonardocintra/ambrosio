@@ -1,6 +1,12 @@
 # Ambrosio
 
+<div align="center">
+  <img src="./santo-ambrosio.jpg" alt="Santo Ambrosio" width="300">
+</div>
+
 Santo Ambrosio - BACKEND CNC
+
+Providencialmente, usou as **qualidades de organizador e administrador** para o bem da Igreja, podendo assim atuar no campo pastoral, político, doutrinal, litúrgico, a ponto de merecer o título de grande Doutor e Padre do Cristianismo no Ocidente. 
 
 Novo backend para https://apicncbrasil.cn.org.br/dashboard
 
