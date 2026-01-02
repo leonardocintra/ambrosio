@@ -23,8 +23,8 @@ export class CreateComunidadeDto {
 
   @IsInt()
   @IsPositive()
-  @Max(80)
-  @Min(5)
+  @Max(80, { message: 'A comunidade deve ter no máximo 80 membros.' })
+  @Min(5, { message: 'A comunidade deve ter no mínimo 5 membros.' })
   quantidadeMembros: number;
 
   @IsNumber()

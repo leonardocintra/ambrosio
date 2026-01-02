@@ -10,5 +10,6 @@ export const PAROQUIA_SELECT = {
   diocese: {
     select: DIOCESE_SELECT,
   },
+  comunidades: true,
   setor: true,
 };

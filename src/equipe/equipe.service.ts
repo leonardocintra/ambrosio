@@ -59,7 +59,15 @@ export class EquipeService extends BaseService {
 
   findAll() {
     this.validateReadAbility('equipe');
-    return this.prisma.equipe.findMany();
+    return this.prisma.equipe.findMany({
+      select: {
+        id: true,
+        descricao: true,
+        tipoEquipe: true,
+        observacao: true,
+        createdAt: true,
+      },
+    });
   }
 
   findOne(id: number) {
