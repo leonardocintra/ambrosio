@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Query,
+  ParseIntPipe,
+  HttpStatus,
 } from '@nestjs/common';
 import { ComunidadeService } from './comunidade.service';
 import { CreateComunidadeDto } from './dto/create-comunidade.dto';
@@ -29,8 +31,17 @@ export class ComunidadeController {
   }
 
   @Get()
-  findAll(@Query('paroquiaId') paroquiaId?: string) {
-    return this.comunidadeService.findAll(paroquiaId ? +paroquiaId : undefined);
+  findAll(
+    @Query(
+      'paroquiaId',
+      new ParseIntPipe({
+        optional: true,
+        errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE,
+      }),
+    )
+    paroquiaId?: number,
+  ) {
+    return this.comunidadeService.findAll(paroquiaId ? paroquiaId : undefined);
   }
 
   @Get(':id')

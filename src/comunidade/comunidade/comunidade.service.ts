@@ -5,12 +5,17 @@ import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
+import { Comunidade, EtapaEnum } from 'neocatecumenal';
+import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
+import { EtapaService } from '../etapa/etapa.service';
+import { ETAPA_ENUM } from 'src/commons/enums/enums';
 
 @Injectable()
 export class ComunidadeService extends BaseService {
   constructor(
     private prisma: PrismaService,
     private readonly paroquiaService: ParoquiaService,
+    private readonly etapaService: EtapaService,
     protected readonly abilityService: CaslAbilityService,
   ) {
     super(abilityService);
@@ -23,7 +28,7 @@ export class ComunidadeService extends BaseService {
       createComunidadeDto.paroquiaId,
     );
 
-    return this.prisma.comunidade.create({
+    const comunidade = await this.prisma.comunidade.create({
       data: {
         descricao: createComunidadeDto.descricao,
         numeroDaComunidade: createComunidadeDto.numeroDaComunidade,
@@ -31,15 +36,13 @@ export class ComunidadeService extends BaseService {
         paroquiaId: paroquia.id,
         observacao: createComunidadeDto.observacao,
       },
-      select: {
-        id: true,
-        descricao: true,
-        numeroDaComunidade: true,
-        quantidadeMembros: true,
-        observacao: true,
-        paroquia: true,
-      },
     });
+    await this.etapaService.create({
+      etapaId: ETAPA_ENUM.PRE_CATECUMENATO,
+      comunidadeId: comunidade.id,
+    });
+
+    return await this.findOne(comunidade.id);
   }
 
   findAll(paroquiaId?: number) {
@@ -53,11 +56,58 @@ export class ComunidadeService extends BaseService {
     });
   }
 
-  findOne(id: number) {
+  async findOne(id: number): Promise<Comunidade> {
     this.validateReadAbility('comunidade');
-    return this.prisma.comunidade.findUnique({
+    const comunidade = await this.prisma.comunidade.findFirstOrThrow({
       where: { id },
+      include: {
+        comunidadeEquipes: true,
+        comunidadeEtapas: true,
+        paroquia: {
+          include: {
+            diocese: {
+              include: {
+                tipoDiocese: true,
+                endereco: ENDERECO_INCLUDE,
+              },
+            },
+          },
+        },
+      },
     });
+
+    const result: Comunidade = {
+      id: comunidade.id,
+      descricao: comunidade.descricao,
+      numeroDaComunidade: comunidade.numeroDaComunidade,
+      quantidadeMembros: comunidade.quantidadeMembros,
+      observacao: comunidade.observacao,
+      comunidadeEtapas: comunidade.comunidadeEtapas.map((etapa) => ({
+        id: etapa.id,
+        etapaId: etapa.etapaId,
+        etapa: Object.values(EtapaEnum)[etapa.etapaId - 1],
+        comunidadeId: etapa.comunidadeId,
+        dataInicio: etapa.dataInicio,
+        dataFim: etapa.dataFim,
+        observacao: etapa.observacao,
+      })),
+      paroquia: {
+        id: comunidade.paroquia.id,
+        descricao: comunidade.paroquia.descricao,
+        endereco: null,
+        setor: null,
+        diocese: {
+          id: comunidade.paroquia.diocese.id,
+          descricao: comunidade.paroquia.diocese.descricao,
+          tipoDiocese: {
+            id: comunidade.paroquia.diocese.tipoDiocese.id,
+            descricao: comunidade.paroquia.diocese.tipoDiocese.descricao,
+          },
+          endereco: comunidade.paroquia.diocese.endereco,
+        },
+      },
+    };
+    return result;
   }
 
   update(id: number, updateComunidadeDto: UpdateComunidadeDto) {

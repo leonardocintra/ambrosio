@@ -13,6 +13,7 @@ import { EstadoService } from 'src/configuracoes/estado/estado.service';
 import { PaisService } from 'src/configuracoes/pais/pais.service';
 import { HttpModule } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
+import { EtapaService } from '../etapa/etapa.service';
 
 describe('ComunidadeController', () => {
   let controller: ComunidadeController;
@@ -30,6 +31,7 @@ describe('ComunidadeController', () => {
         CaslAbilityService,
         ParoquiaService,
         SetorService,
+        EtapaService,
         DioceseService,
         EnderecoService,
         TipoDioceseService,

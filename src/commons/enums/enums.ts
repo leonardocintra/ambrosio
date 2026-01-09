@@ -5,6 +5,10 @@ export enum SEXO_ENUM {
   FEMININO = 'FEMININO',
 }
 
+export enum ETAPA_ENUM {
+  PRE_CATECUMENATO = 1,
+}
+
 export enum TIPO_CARISMA_ENUM {
   PRIMITIVO = 'PRIMITIVO',
   SERVICO = 'SERVICO',

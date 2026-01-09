@@ -23,6 +23,7 @@ const MODEL_NAME_MAP: Record<string, string> = {
   carisma: 'Carisma',
   setor: 'Setor',
   macroregiao: 'Macro Região',
+  comunidade: 'Comunidade',
   // adicione mais conforme o projeto for crescendo
   // Atenção: os nomes devem ser tudo minúsculo e sem acentos
 };

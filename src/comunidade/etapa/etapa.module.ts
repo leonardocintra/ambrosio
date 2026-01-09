@@ -5,5 +5,6 @@ import { EtapaController } from './etapa.controller';
 @Module({
   controllers: [EtapaController],
   providers: [EtapaService],
+  exports: [EtapaService],
 })
 export class EtapaModule {}
