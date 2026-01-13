@@ -182,12 +182,7 @@ export class CarismaService extends BaseService {
       const pessoasCarisma = await this.prisma.pessoaCarisma.findMany({
         where: { carismaId },
         include: {
-          pessoa: {
-            select: {
-              id: true,
-              externalId: true,
-            },
-          },
+          pessoa: true,
         },
       });
 

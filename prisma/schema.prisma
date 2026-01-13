@@ -259,6 +259,7 @@ model equipe {
   updatedAt         DateTime           @default(now()) @updatedAt
   equipePessoas     equipePessoa[]
   comunidadeEquipes comunidadeEquipe[]
+  comunidadeEtapas  comunidadeEtapa[]
 
   @@schema("ambrosio")
 }
@@ -387,8 +388,11 @@ model comunidadeEtapa {
   etapa        etapa      @relation(fields: [etapaId], references: [id], onDelete: Cascade)
   dataInicio   DateTime?
   dataFim      DateTime?
+  equipeId     Int?
+  equipe       equipe?    @relation(fields: [equipeId], references: [id], onDelete: SetNull)
   observacao   String?    @db.VarChar(250)
   createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
 
   @@unique([comunidadeId, etapaId])
   @@schema("ambrosio")

@@ -62,7 +62,11 @@ export class ComunidadeService extends BaseService {
       where: { id },
       include: {
         comunidadeEquipes: true,
-        comunidadeEtapas: true,
+        comunidadeEtapas: {
+          include: {
+            equipe: true,
+          }
+        },
         paroquia: {
           include: {
             diocese: {
@@ -89,6 +93,16 @@ export class ComunidadeService extends BaseService {
         comunidadeId: etapa.comunidadeId,
         dataInicio: etapa.dataInicio,
         dataFim: etapa.dataFim,
+        equipe: etapa.equipe ? {
+          id: etapa.equipe.id,
+          descricao: etapa.equipe.descricao,
+          tipoEquipeId: etapa.equipe.tipoEquipeId,
+          observacao: etapa.equipe.observacao,
+          createdAt: etapa.equipe.createdAt,
+          updatedAt: etapa.equipe.updatedAt,
+          tipoEquipe: null,
+          pessoas: [],
+        } : null,
         observacao: etapa.observacao,
       })),
       paroquia: {
