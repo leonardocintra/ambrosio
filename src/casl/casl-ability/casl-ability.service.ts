@@ -10,6 +10,7 @@ import {
   paroquia,
   pessoa,
   user,
+  etapa,
 } from '@prisma/client';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 
@@ -25,6 +26,7 @@ export type PermissionResource =
       comunidade: comunidade;
       equipe: equipe;
       carisma: carisma;
+      etapa: etapa;
     }>
   | 'all';
 

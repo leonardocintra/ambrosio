@@ -1,4 +1,5 @@
 import {
+  IsDate,
   IsInt,
   IsNumber,
   IsOptional,
@@ -35,5 +36,14 @@ export class CreateComunidadeDto {
   @IsOptional()
   @MaxLength(250)
   @IsString()
-  observacao: string;
+  observacao?: string;
+
+  @IsOptional()
+  @IsDate()
+  dataInicio?: Date;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(180)
+  local?: string;
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateEtapaDto } from './dto/create-etapa.dto';
 import { UpdateEtapaDto } from './dto/update-etapa.dto';
 import { BaseService } from 'src/commons/base.service';
@@ -14,24 +14,68 @@ export class EtapaService extends BaseService {
     super(abilityService);
   }
 
-  create(createEtapaDto: CreateEtapaDto) {
-    this.logger.log(`Creating etapa for comunidade ${createEtapaDto.comunidadeId}`);
+  async create(createEtapaDto: CreateEtapaDto) {
+    this.validateCreateAbility('etapa');
+    this.logger.log(
+      `Creating etapa for comunidade ${createEtapaDto.comunidadeId}`,
+    );
+
+    await this.ensureCorrectEtapaSequence(
+      createEtapaDto.comunidadeId,
+      createEtapaDto.etapaId,
+    );
+
     return this.prisma.comunidadeEtapa.create({ data: createEtapaDto });
   }
 
-  findAll() {
-    return `This action returns all etapa`;
+  findAll(comunidadeId: number) {
+    this.validateReadAbility('etapa');
+    return this.findAllByComunidade(comunidadeId);
   }
 
   findOne(id: number) {
     return `This action returns a #${id} etapa`;
   }
 
-  update(id: number, updateEtapaDto: UpdateEtapaDto) {
-    return `This action updates a #${id} etapa da comunidade ${updateEtapaDto.comunidadeId}`;
+  update(id: number, dto: UpdateEtapaDto) {
+    return this.prisma.comunidadeEtapa.update({
+      where: { id },
+      data: {
+        equipeId: dto.equipeId,
+        localConvivencia: dto.localConvivencia,
+        dataInicio: dto.dataInicio,
+        dataFim: dto.dataFim,
+        observacao: dto.observacao,
+      },
+    });
   }
 
   remove(id: number) {
     return `This action removes a #${id} etapa`;
+  }
+
+  private findAllByComunidade(comunidadeId: number) {
+    return this.prisma.comunidadeEtapa.findMany({
+      where: { comunidadeId },
+      orderBy: { etapaId: 'asc' },
+    });
+  }
+
+  private async ensureCorrectEtapaSequence(
+    comunidadeId: number,
+    etapaId: number,
+  ) {
+    const etapasExistentes = await this.findAllByComunidade(comunidadeId);
+
+    const proximaEtapaEsperada =
+      etapasExistentes.length > 0
+        ? etapasExistentes[etapasExistentes.length - 1].etapaId + 1
+        : 1;
+
+    if (etapaId !== proximaEtapaEsperada) {
+      throw new BadRequestException(
+        `Não é permitido pular etapas. A próxima etapa esperada é ${proximaEtapaEsperada}`,
+      );
+    }
   }
 }

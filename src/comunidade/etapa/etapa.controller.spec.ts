@@ -3,6 +3,7 @@ import { EtapaController } from './etapa.controller';
 import { EtapaService } from './etapa.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { PrismaService } from 'src/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 
 describe('EtapaController', () => {
   let controller: EtapaController;
@@ -12,7 +13,7 @@ describe('EtapaController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EtapaController],
-      providers: [EtapaService, CaslAbilityService, PrismaService],
+      providers: [EtapaService, CaslAbilityService, PrismaService, JwtService],
     }).compile();
 
     controller = await module.resolve<EtapaController>(EtapaController);

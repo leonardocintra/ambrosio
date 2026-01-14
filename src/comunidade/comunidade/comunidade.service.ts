@@ -37,11 +37,20 @@ export class ComunidadeService extends BaseService {
         observacao: createComunidadeDto.observacao,
       },
     });
-    await this.etapaService.create({
-      etapaId: ETAPA_ENUM.PRE_CATECUMENATO,
-      comunidadeId: comunidade.id,
-    });
-
+    try {
+      await this.etapaService.create({
+        etapaId: ETAPA_ENUM.PRE_CATECUMENATO,
+        comunidadeId: comunidade.id,
+        observacao: createComunidadeDto.observacao,
+        dataInicio: createComunidadeDto.dataInicio,
+        localConvivencia: createComunidadeDto.local,
+      });
+    } catch (error) {
+      await this.remove(comunidade.id);
+      this.logger.error(
+        `Erro ao criar etapa inicial para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id}): ${error.message}`,
+      );
+    }
     return await this.findOne(comunidade.id);
   }
 
@@ -61,11 +70,10 @@ export class ComunidadeService extends BaseService {
     const comunidade = await this.prisma.comunidade.findFirstOrThrow({
       where: { id },
       include: {
-        comunidadeEquipes: true,
         comunidadeEtapas: {
           include: {
             equipe: true,
-          }
+          },
         },
         paroquia: {
           include: {
@@ -93,16 +101,18 @@ export class ComunidadeService extends BaseService {
         comunidadeId: etapa.comunidadeId,
         dataInicio: etapa.dataInicio,
         dataFim: etapa.dataFim,
-        equipe: etapa.equipe ? {
-          id: etapa.equipe.id,
-          descricao: etapa.equipe.descricao,
-          tipoEquipeId: etapa.equipe.tipoEquipeId,
-          observacao: etapa.equipe.observacao,
-          createdAt: etapa.equipe.createdAt,
-          updatedAt: etapa.equipe.updatedAt,
-          tipoEquipe: null,
-          pessoas: [],
-        } : null,
+        equipe: etapa.equipe
+          ? {
+              id: etapa.equipe.id,
+              descricao: etapa.equipe.descricao,
+              tipoEquipeId: etapa.equipe.tipoEquipeId,
+              observacao: etapa.equipe.observacao,
+              createdAt: etapa.equipe.createdAt,
+              updatedAt: etapa.equipe.updatedAt,
+              tipoEquipe: null,
+              pessoas: [],
+            }
+          : null,
         observacao: etapa.observacao,
       })),
       paroquia: {

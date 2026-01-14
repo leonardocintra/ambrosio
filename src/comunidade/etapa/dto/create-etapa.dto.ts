@@ -15,6 +15,11 @@ export class CreateEtapaDto {
   @IsPositive()
   etapaId: number;
 
+  @IsNumber()
+  @IsPositive()
+  @IsOptional()
+  equipeId?: number;
+
   @IsOptional()
   @IsDate()
   dataInicio?: Date;
@@ -22,6 +27,10 @@ export class CreateEtapaDto {
   @IsOptional()
   @IsDate()
   dataFim?: Date;
+
+  @IsOptional()
+  @MaxLength(180)
+  localConvivencia?: string;
 
   @IsOptional()
   @MaxLength(250)

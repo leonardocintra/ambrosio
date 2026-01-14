@@ -250,16 +250,15 @@ model tipoEquipe {
 }
 
 model equipe {
-  id                Int                @id @default(autoincrement())
-  descricao         String             @db.VarChar(80)
-  tipoEquipeId      Int
-  tipoEquipe        tipoEquipe         @relation(fields: [tipoEquipeId], references: [id], onDelete: Restrict)
-  observacao        String?            @db.VarChar(255)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @default(now()) @updatedAt
-  equipePessoas     equipePessoa[]
-  comunidadeEquipes comunidadeEquipe[]
-  comunidadeEtapas  comunidadeEtapa[]
+  id               Int               @id @default(autoincrement())
+  descricao        String            @db.VarChar(80)
+  tipoEquipeId     Int
+  tipoEquipe       tipoEquipe        @relation(fields: [tipoEquipeId], references: [id], onDelete: Restrict)
+  observacao       String?           @db.VarChar(255)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+  equipePessoas    equipePessoa[]
+  comunidadeEtapas comunidadeEtapa[]
 
   @@schema("ambrosio")
 }
@@ -374,25 +373,25 @@ model comunidade {
   updatedAt          DateTime           @default(now()) @updatedAt
   comunidadeEtapas   comunidadeEtapa[]
   comunidadePessoas  comunidadePessoa[]
-  comunidadeEquipes  comunidadeEquipe[]
 
   @@unique([numeroDaComunidade, paroquiaId])
   @@schema("ambrosio")
 }
 
 model comunidadeEtapa {
-  id           Int        @id @default(autoincrement())
-  comunidadeId Int
-  etapaId      Int
-  comunidade   comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
-  etapa        etapa      @relation(fields: [etapaId], references: [id], onDelete: Cascade)
-  dataInicio   DateTime?
-  dataFim      DateTime?
-  equipeId     Int?
-  equipe       equipe?    @relation(fields: [equipeId], references: [id], onDelete: SetNull)
-  observacao   String?    @db.VarChar(250)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @default(now()) @updatedAt
+  id               Int        @id @default(autoincrement())
+  comunidadeId     Int
+  etapaId          Int
+  comunidade       comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
+  etapa            etapa      @relation(fields: [etapaId], references: [id], onDelete: Cascade)
+  dataInicio       DateTime?
+  dataFim          DateTime?
+  equipeId         Int?
+  equipe           equipe?    @relation(fields: [equipeId], references: [id], onDelete: SetNull)
+  localConvivencia String?    @db.VarChar(180)
+  observacao       String?    @db.VarChar(250)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @default(now()) @updatedAt
 
   @@unique([comunidadeId, etapaId])
   @@schema("ambrosio")
@@ -410,19 +409,5 @@ model comunidadePessoa {
   createdAt    DateTime   @default(now())
 
   @@unique([comunidadeId, pessoaId])
-  @@schema("ambrosio")
-}
-
-model comunidadeEquipe {
-  id           Int        @id @default(autoincrement())
-  comunidadeId Int
-  equipeId     Int
-  comunidade   comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
-  equipe       equipe     @relation(fields: [equipeId], references: [id], onDelete: Cascade)
-  observacao   String?    @db.VarChar(255)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @default(now()) @updatedAt
-
-  @@unique([comunidadeId, equipeId])
   @@schema("ambrosio")
 }
