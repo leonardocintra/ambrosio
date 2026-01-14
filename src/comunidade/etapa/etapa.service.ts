@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateEtapaDto } from './dto/create-etapa.dto';
 import { UpdateEtapaDto } from './dto/update-etapa.dto';
 import { BaseService } from 'src/commons/base.service';
@@ -20,12 +20,17 @@ export class EtapaService extends BaseService {
       `Creating etapa for comunidade ${createEtapaDto.comunidadeId}`,
     );
 
-    await this.ensureCorrectEtapaSequence(
+    const proximaEtapa = await this.getProximaEtapaId(
       createEtapaDto.comunidadeId,
-      createEtapaDto.etapaId,
     );
 
-    return this.prisma.comunidadeEtapa.create({ data: createEtapaDto });
+    return this.prisma.comunidadeEtapa.create({
+      data: {
+        ...createEtapaDto,
+        etapaId: proximaEtapa,
+        localConvivencia: createEtapaDto.localConvivencia,
+      },
+    });
   }
 
   findAll(comunidadeId: number) {
@@ -61,21 +66,13 @@ export class EtapaService extends BaseService {
     });
   }
 
-  private async ensureCorrectEtapaSequence(
-    comunidadeId: number,
-    etapaId: number,
-  ) {
+  private async getProximaEtapaId(comunidadeId: number): Promise<number> {
     const etapasExistentes = await this.findAllByComunidade(comunidadeId);
 
     const proximaEtapaEsperada =
       etapasExistentes.length > 0
         ? etapasExistentes[etapasExistentes.length - 1].etapaId + 1
         : 1;
-
-    if (etapaId !== proximaEtapaEsperada) {
-      throw new BadRequestException(
-        `Não é permitido pular etapas. A próxima etapa esperada é ${proximaEtapaEsperada}`,
-      );
-    }
+    return proximaEtapaEsperada;
   }
 }

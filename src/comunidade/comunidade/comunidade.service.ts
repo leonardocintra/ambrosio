@@ -8,7 +8,6 @@ import { ParoquiaService } from 'src/paroquia/paroquia.service';
 import { Comunidade, EtapaEnum } from 'neocatecumenal';
 import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { EtapaService } from '../etapa/etapa.service';
-import { ETAPA_ENUM } from 'src/commons/enums/enums';
 
 @Injectable()
 export class ComunidadeService extends BaseService {
@@ -39,7 +38,6 @@ export class ComunidadeService extends BaseService {
     });
     try {
       await this.etapaService.create({
-        etapaId: ETAPA_ENUM.PRE_CATECUMENATO,
         comunidadeId: comunidade.id,
         observacao: createComunidadeDto.observacao,
         dataInicio: createComunidadeDto.dataInicio,

@@ -13,10 +13,6 @@ export class CreateEtapaDto {
 
   @IsNumber()
   @IsPositive()
-  etapaId: number;
-
-  @IsNumber()
-  @IsPositive()
   @IsOptional()
   equipeId?: number;
 
