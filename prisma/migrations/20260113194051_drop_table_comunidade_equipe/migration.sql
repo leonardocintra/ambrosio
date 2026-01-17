@@ -5,13 +5,13 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "comunidadeEquipe" DROP CONSTRAINT "comunidadeEquipe_comunidadeId_fkey";
+ALTER TABLE "ambrosio"."comunidadeEquipe" DROP CONSTRAINT "comunidadeEquipe_comunidadeId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "comunidadeEquipe" DROP CONSTRAINT "comunidadeEquipe_equipeId_fkey";
+ALTER TABLE "ambrosio"."comunidadeEquipe" DROP CONSTRAINT "comunidadeEquipe_equipeId_fkey";
 
 -- AlterTable
-ALTER TABLE "comunidadeEtapa" ADD COLUMN     "localConvivencia" VARCHAR(180);
+ALTER TABLE "ambrosio"."comunidadeEtapa" ADD COLUMN     "localConvivencia" VARCHAR(180);
 
 -- DropTable
-DROP TABLE "comunidadeEquipe";
+DROP TABLE "ambrosio"."comunidadeEquipe";
