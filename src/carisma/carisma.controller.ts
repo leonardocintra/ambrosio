@@ -11,7 +11,7 @@ import {
 import { CarismaService } from './carisma.service';
 import { CreateCarismaDto } from './dto/create-carisma.dto';
 import { UpdateCarismaDto } from './dto/update-carisma.dto';
-import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { CreateCarismaDaPessoaDto } from './dto/create-carisma-da-pessoa.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
@@ -39,12 +39,13 @@ export class CarismaController {
     return this.carismaService.addCarismaToPessoa(+pessoaId, createCarismaDto);
   }
 
-  @Get('catequistas')
-  findAllCatequistas() {
-    const CATEQUISTA_CARISMA_ID = process.env.CATEQUISTA_CARISMA_ID
-      ? parseInt(process.env.CATEQUISTA_CARISMA_ID)
-      : 0;
-    return this.carismaService.findAllPessoasByCarisma(CATEQUISTA_CARISMA_ID);
+  @Get('equipe')
+  @ApiOkResponse({
+    description:
+      'Retorna todas as pessoas que possuem carismas para formar uma equipe especializada em algum seviço: Ex: Pos Crisma, Catequitas, Familia Missão, etc.',
+  })
+  findPessoasComCarismas() {
+    return this.carismaService.findAllPessoaComCarismaParaEquipe();
   }
 
   @Get()

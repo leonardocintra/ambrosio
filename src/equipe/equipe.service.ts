@@ -6,6 +6,11 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { PrismaService } from 'src/prisma.service';
 import { TipoEquipeService } from 'src/configuracoes/tipo-equipe/tipo-equipe.service';
 import { PessoaService } from 'src/pessoa/pessoa.service';
+import { Equipe, Pessoa } from 'neocatecumenal';
+import {
+  serializeEquipeResponse,
+  serializeEquipeResponseList,
+} from './equipe.serializer';
 
 @Injectable()
 export class EquipeService extends BaseService {
@@ -57,9 +62,9 @@ export class EquipeService extends BaseService {
     });
   }
 
-  findAll() {
+  async findAll(): Promise<Equipe[]> {
     this.validateReadAbility('equipe');
-    return this.prisma.equipe.findMany({
+    const result = await this.prisma.equipe.findMany({
       select: {
         id: true,
         descricao: true,
@@ -68,11 +73,29 @@ export class EquipeService extends BaseService {
         createdAt: true,
       },
     });
+    return serializeEquipeResponseList(result);
   }
 
-  findOne(id: number) {
+  async findOne(id: number): Promise<Equipe> {
     this.validateReadAbility('equipe');
-    return `This action returns a #${id} equipe`;
+    const result = await this.prisma.equipe.findFirstOrThrow({
+      where: { id },
+      include: {
+        tipoEquipe: true,
+        equipePessoas: { include: { pessoa: true } },
+      },
+    });
+
+    const pessoas: Pessoa[] = [];
+
+    for (const pessoaEquipe of result.equipePessoas) {
+      console.log('Fetching pessoa for equipe:', pessoaEquipe);
+      const pessoa = await this.pessoaService.findOne(pessoaEquipe.pessoaId);
+      if (pessoa) {
+        pessoas.push(pessoa);
+      }
+    }
+    return serializeEquipeResponse(result, pessoas);
   }
 
   update(id: number, updateEquipeDto: UpdateEquipeDto) {
