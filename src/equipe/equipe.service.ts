@@ -89,7 +89,6 @@ export class EquipeService extends BaseService {
     const pessoas: Pessoa[] = [];
 
     for (const pessoaEquipe of result.equipePessoas) {
-      console.log('Fetching pessoa for equipe:', pessoaEquipe);
       const pessoa = await this.pessoaService.findOne(pessoaEquipe.pessoaId);
       if (pessoa) {
         pessoas.push(pessoa);
