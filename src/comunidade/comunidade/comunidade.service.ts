@@ -5,9 +5,10 @@ import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
-import { Comunidade, EtapaEnum } from 'neocatecumenal';
+import { Comunidade } from 'neocatecumenal';
 import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { EtapaService } from '../etapa/etapa.service';
+import serializeComunidadeResponse from './comunidade.serialize';
 
 @Injectable()
 export class ComunidadeService extends BaseService {
@@ -85,51 +86,7 @@ export class ComunidadeService extends BaseService {
         },
       },
     });
-
-    const result: Comunidade = {
-      id: comunidade.id,
-      descricao: comunidade.descricao,
-      numeroDaComunidade: comunidade.numeroDaComunidade,
-      quantidadeMembros: comunidade.quantidadeMembros,
-      observacao: comunidade.observacao,
-      comunidadeEtapas: comunidade.comunidadeEtapas.map((etapa) => ({
-        id: etapa.id,
-        etapaId: etapa.etapaId,
-        etapa: Object.values(EtapaEnum)[etapa.etapaId - 1],
-        comunidadeId: etapa.comunidadeId,
-        dataInicio: etapa.dataInicio,
-        dataFim: etapa.dataFim,
-        equipe: etapa.equipe
-          ? {
-              id: etapa.equipe.id,
-              descricao: etapa.equipe.descricao,
-              tipoEquipeId: etapa.equipe.tipoEquipeId,
-              observacao: etapa.equipe.observacao,
-              createdAt: etapa.equipe.createdAt,
-              updatedAt: etapa.equipe.updatedAt,
-              tipoEquipe: null,
-              pessoas: [],
-            }
-          : null,
-        observacao: etapa.observacao,
-      })),
-      paroquia: {
-        id: comunidade.paroquia.id,
-        descricao: comunidade.paroquia.descricao,
-        endereco: null,
-        setor: null,
-        diocese: {
-          id: comunidade.paroquia.diocese.id,
-          descricao: comunidade.paroquia.diocese.descricao,
-          tipoDiocese: {
-            id: comunidade.paroquia.diocese.tipoDiocese.id,
-            descricao: comunidade.paroquia.diocese.tipoDiocese.descricao,
-          },
-          endereco: comunidade.paroquia.diocese.endereco,
-        },
-      },
-    };
-    return result;
+    return serializeComunidadeResponse(comunidade);
   }
 
   update(id: number, updateComunidadeDto: UpdateComunidadeDto) {

@@ -4,7 +4,7 @@ import { UpdateCarismaDto } from './dto/update-carisma.dto';
 import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { TIPO_CARISMA_ENUM } from 'src/commons/enums/enums';
+import { CARISMA_IDS_ENUM, TIPO_CARISMA_ENUM } from 'src/commons/enums/enums';
 import { PessoaService } from 'src/pessoa/pessoa.service';
 import { CreateCarismaDaPessoaDto } from './dto/create-carisma-da-pessoa.dto';
 import { Pessoa } from 'neocatecumenal';
@@ -173,15 +173,20 @@ export class CarismaService extends BaseService {
     }
   }
 
-  async findAllPessoasByCarisma(carismaId: number) {
-    if (!carismaId || carismaId <= 0) {
-      throw new BadRequestException('ID do carisma inválido');
-    }
+  async findAllPessoaComCarismaParaEquipe() {
+    // IDs dos carismas que formam a equipe especializada
+    const carismaId = [
+      CARISMA_IDS_ENUM.CATEQUISTA,
+      CARISMA_IDS_ENUM.FAMILIA_MISSAO,
+      CARISMA_IDS_ENUM.FAMILIA_ITINERANTE,
+      CARISMA_IDS_ENUM.POS_CRISMA,
+    ];
 
     try {
       const pessoasCarisma = await this.prisma.pessoaCarisma.findMany({
-        where: { carismaId },
+        where: { carismaId: { in: carismaId } },
         include: {
+          carisma: true,
           pessoa: true,
         },
       });
@@ -193,10 +198,18 @@ export class CarismaService extends BaseService {
           );
 
           return {
-            id: pc.pessoa.id,
-            nome: pessoaDetails.nome,
-            casal: pessoaDetails.conjugue ? true : false,
-            paroquia: '', // TODO: adicionar paróquia que vai aparecer na comunidade da pessoa
+            id: pc.id,
+            pessoa: {
+              id: pc.pessoa.id,
+              nome: pessoaDetails.nome,
+              casal: pessoaDetails.conjugue ? true : false,
+            },
+            carisma: {
+              id: pc.carismaId,
+              descricao: pc.carisma.descricao,
+              tipo: pc.carisma.tipo,
+            },
+            paroquia: 'Pendente de implementação do TI', // TODO: adicionar paróquia que vai aparecer na comunidade da pessoa
           };
         }),
       );
