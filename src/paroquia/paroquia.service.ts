@@ -16,7 +16,7 @@ import { accessibleBy } from '@casl/prisma';
 import { Paroquia } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
-import { Prisma } from '@prisma/client';
+import { Prisma } from 'src/prisma/generated-client';
 import { SetorService } from 'src/mapa/setor/setor.service';
 
 @Injectable()

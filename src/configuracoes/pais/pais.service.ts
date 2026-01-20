@@ -6,7 +6,7 @@ import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
 import { IPaisOnu } from './IPaisOnu';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Prisma } from 'src/prisma/generated-client';
 import { UNIQUE_CONSTRAINT_FAILED } from 'src/commons/constants/constants';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class PaisService {
       });
     } catch (error) {
       if (
-        error instanceof PrismaClientKnownRequestError &&
+        error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === UNIQUE_CONSTRAINT_FAILED
       ) {
         this.logger.log(

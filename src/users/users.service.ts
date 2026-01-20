@@ -24,20 +24,19 @@ export class UsersService extends BaseService {
 
   async create(createUserDto: CreateUserDto) {
     const pessoa = await this.pessoaService.findOneByCpf(createUserDto.cpf);
-    this.logger.log(
-      `Pessoa para esse usuario encontrada: ${JSON.stringify(pessoa)}`,
-    );
-
     if (!pessoa) {
       throw new NotFoundException(
         `Não é possível criar um usuário sem uma pessoa vinculada. CPF ${createUserDto.cpf} não encontrado na base de pessoas.`,
       );
     }
+    this.logger.log(
+      `Pessoa para esse usuario encontrada: ${JSON.stringify(pessoa)}`,
+    );
     await this.validateUniquePessoaForUser(pessoa.id);
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
-    return this.prismaService.user.create({
+    return await this.prismaService.user.create({
       data: {
         pessoaId: pessoa.id,
         email: createUserDto.email,

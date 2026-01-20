@@ -1,4 +1,4 @@
-import { situacaoReligiosa } from '@prisma/client';
+import { situacaoReligiosa } from 'src/prisma/generated-client';
 import { Type } from 'class-transformer';
 import {
   IsDate,

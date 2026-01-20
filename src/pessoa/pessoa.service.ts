@@ -13,7 +13,7 @@ import {
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { EstadoCivilEnum, Pessoa, PessoaConjugue } from 'neocatecumenal';
-import { pessoa } from '@prisma/client';
+import { pessoa } from 'src/prisma/generated-client';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { BaseService } from 'src/commons/base.service';

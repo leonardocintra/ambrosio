@@ -11,7 +11,7 @@ import {
   pessoa,
   user,
   etapa,
-} from '@prisma/client';
+} from 'src/prisma/generated-client';
 import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 export type PermActions = 'manage' | 'create' | 'read' | 'update' | 'delete';
