@@ -21,7 +21,7 @@ export class RegiaoService extends BaseService {
   }
 
   findOne(id: number) {
-    return this.prisma.regiao.findUnique({
+    return this.prisma.regiao.findUniqueOrThrow({
       where: { id },
       include: { macroRegiao: true },
     });

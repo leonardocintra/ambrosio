@@ -1,7 +1,20 @@
-import { faker } from '@faker-js/faker';
-import { PrismaClient, Sexo, tipoCarismaEnum } from '@prisma/client';
+import 'dotenv/config';
 
-const prisma = new PrismaClient();
+import { faker } from '@faker-js/faker';
+import { PrismaPg } from '@prisma/adapter-pg';
+import pg from 'pg';
+import {
+  PrismaClient,
+  Sexo,
+  tipoCarismaEnum,
+} from '../generated/client';
+
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   await pais();

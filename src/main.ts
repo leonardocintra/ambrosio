@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import './instrument';
 
 import { NestFactory } from '@nestjs/core';

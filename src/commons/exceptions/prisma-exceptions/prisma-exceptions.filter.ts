@@ -1,53 +1,43 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma } from 'src/prisma/generated-client';
 import {
   FOREIGN_KEY_CONSTRAINT,
+  MODEL_NAME_MAP,
   RECORD_DOES_NOT_EXIST,
   UNIQUE_CONSTRAINT_FAILED,
 } from 'src/commons/constants/constants';
-
-const MODEL_NAME_MAP: Record<string, string> = {
-  cidade: 'Cidade',
-  diocese: 'Diocese',
-  endereco: 'Endereço',
-  escolaridade: 'Escolaridade',
-  estado: 'Estado',
-  estadocivil: 'Estado Civil',
-  localidade: 'Localidade',
-  pais: 'País',
-  paroquia: 'Paroquia',
-  pessoa: 'Pessoa',
-  situacaoreligiosa: 'Situação Religiosa',
-  tipodiocese: 'Tipo de Diocese',
-  user: 'Usuário',
-  carisma: 'Carisma',
-  setor: 'Setor',
-  macroregiao: 'Macro Região',
-  comunidade: 'Comunidade',
-  // adicione mais conforme o projeto for crescendo
-  // Atenção: os nomes devem ser tudo minúsculo e sem acentos
-};
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionsFilter implements ExceptionFilter {
   private extractErrorMessage(
     exception: Prisma.PrismaClientKnownRequestError,
   ): string | null {
-    // Aqui você pode implementar lógicas adicionais para extrair mensagens de diferentes tipos de erros
-    const meta = exception.meta as {
-      target?: string[];
-      field_name?: string;
-      table?: string;
-      modelName: string;
-    };
+    // Cast para 'any' para navegar com segurança na estrutura variável do meta
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const meta = (exception.meta || {}) as any;
 
-    if (meta?.target?.length) {
-      return `O campo '${meta.target.join(', ')}' já existe cadastrado. Não permitimos duplicidade.`;
-    } else if (meta?.field_name) {
+    // ------------------------------------------------------------------
+    // CORREÇÃO PARA PRISMA 7 + DRIVER ADAPTER (PG):
+    // Verifica se o 'target' está na raiz (padrão antigo/nativo)
+    // OU aninhado dentro do driverAdapterError (padrão novo/pg)
+    // ------------------------------------------------------------------
+    const target =
+      meta.target || meta.driverAdapterError?.cause?.constraint?.fields;
+
+    if (Array.isArray(target) && target.length > 0) {
+      return `O campo '${target.join(', ')}' já existe cadastrado. Não permitimos duplicidade.`;
+    }
+
+    // Mantém as verificações originais para outros tipos de erro
+    if (meta.field_name) {
       return `O campo '${meta.field_name}' não foi encontrado. Verifique.`;
-    } else if (meta?.table) {
+    }
+
+    if (meta.table) {
       return `O registro de '${meta.table}' não foi encontrado.`;
-    } else if (meta?.modelName) {
+    }
+
+    if (meta.modelName) {
       const modelName = MODEL_NAME_MAP[meta.modelName.toLowerCase()];
       if (modelName) {
         return `O registro de '${modelName}' não foi encontrado.`;
@@ -86,6 +76,7 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
         break;
 
       default:
+        // Mantive exception.message como fallback igual ao original
         message = exception.message;
         break;
     }
