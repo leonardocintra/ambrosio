@@ -196,15 +196,15 @@ export type pessoaEnderecoWhereInput = {
   NOT?: Prisma.pessoaEnderecoWhereInput | Prisma.pessoaEnderecoWhereInput[]
   pessoaId?: Prisma.IntFilter<"pessoaEndereco"> | number
   enderecoId?: Prisma.IntFilter<"pessoaEndereco"> | number
-  pessoa?: Prisma.XOR<Prisma.PessoaScalarRelationFilter, Prisma.pessoaWhereInput>
   endereco?: Prisma.XOR<Prisma.EnderecoScalarRelationFilter, Prisma.enderecoWhereInput>
+  pessoa?: Prisma.XOR<Prisma.PessoaScalarRelationFilter, Prisma.pessoaWhereInput>
 }
 
 export type pessoaEnderecoOrderByWithRelationInput = {
   pessoaId?: Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
-  pessoa?: Prisma.pessoaOrderByWithRelationInput
   endereco?: Prisma.enderecoOrderByWithRelationInput
+  pessoa?: Prisma.pessoaOrderByWithRelationInput
 }
 
 export type pessoaEnderecoWhereUniqueInput = Prisma.AtLeast<{
@@ -214,8 +214,8 @@ export type pessoaEnderecoWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.pessoaEnderecoWhereInput | Prisma.pessoaEnderecoWhereInput[]
   pessoaId?: Prisma.IntFilter<"pessoaEndereco"> | number
   enderecoId?: Prisma.IntFilter<"pessoaEndereco"> | number
-  pessoa?: Prisma.XOR<Prisma.PessoaScalarRelationFilter, Prisma.pessoaWhereInput>
   endereco?: Prisma.XOR<Prisma.EnderecoScalarRelationFilter, Prisma.enderecoWhereInput>
+  pessoa?: Prisma.XOR<Prisma.PessoaScalarRelationFilter, Prisma.pessoaWhereInput>
 }, "pessoaId_enderecoId">
 
 export type pessoaEnderecoOrderByWithAggregationInput = {
@@ -237,8 +237,8 @@ export type pessoaEnderecoScalarWhereWithAggregatesInput = {
 }
 
 export type pessoaEnderecoCreateInput = {
-  pessoa: Prisma.pessoaCreateNestedOneWithoutEnderecosInput
   endereco: Prisma.enderecoCreateNestedOneWithoutPessoasInput
+  pessoa: Prisma.pessoaCreateNestedOneWithoutEnderecosInput
 }
 
 export type pessoaEnderecoUncheckedCreateInput = {
@@ -247,8 +247,8 @@ export type pessoaEnderecoUncheckedCreateInput = {
 }
 
 export type pessoaEnderecoUpdateInput = {
-  pessoa?: Prisma.pessoaUpdateOneRequiredWithoutEnderecosNestedInput
   endereco?: Prisma.enderecoUpdateOneRequiredWithoutPessoasNestedInput
+  pessoa?: Prisma.pessoaUpdateOneRequiredWithoutEnderecosNestedInput
 }
 
 export type pessoaEnderecoUncheckedUpdateInput = {
@@ -507,22 +507,22 @@ export type pessoaEnderecoUncheckedUpdateManyWithoutPessoaInput = {
 export type pessoaEnderecoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   pessoaId?: boolean
   enderecoId?: boolean
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoaEndereco"]>
 
 export type pessoaEnderecoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   pessoaId?: boolean
   enderecoId?: boolean
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoaEndereco"]>
 
 export type pessoaEnderecoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   pessoaId?: boolean
   enderecoId?: boolean
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoaEndereco"]>
 
 export type pessoaEnderecoSelectScalar = {
@@ -532,23 +532,23 @@ export type pessoaEnderecoSelectScalar = {
 
 export type pessoaEnderecoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"pessoaId" | "enderecoId", ExtArgs["result"]["pessoaEndereco"]>
 export type pessoaEnderecoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }
 export type pessoaEnderecoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }
 export type pessoaEnderecoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }
 
 export type $pessoaEnderecoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "pessoaEndereco"
   objects: {
-    pessoa: Prisma.$pessoaPayload<ExtArgs>
     endereco: Prisma.$enderecoPayload<ExtArgs>
+    pessoa: Prisma.$pessoaPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     pessoaId: number
@@ -947,8 +947,8 @@ readonly fields: pessoaEnderecoFieldRefs;
  */
 export interface Prisma__pessoaEnderecoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  pessoa<T extends Prisma.pessoaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoaDefaultArgs<ExtArgs>>): Prisma.Prisma__pessoaClient<runtime.Types.Result.GetResult<Prisma.$pessoaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   endereco<T extends Prisma.enderecoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.enderecoDefaultArgs<ExtArgs>>): Prisma.Prisma__enderecoClient<runtime.Types.Result.GetResult<Prisma.$enderecoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  pessoa<T extends Prisma.pessoaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoaDefaultArgs<ExtArgs>>): Prisma.Prisma__pessoaClient<runtime.Types.Result.GetResult<Prisma.$pessoaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

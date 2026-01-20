@@ -220,8 +220,8 @@ export type estadoWhereInput = {
   sigla?: Prisma.StringFilter<"estado"> | string
   ativo?: Prisma.BoolFilter<"estado"> | boolean
   paisId?: Prisma.IntFilter<"estado"> | number
-  pais?: Prisma.XOR<Prisma.PaisScalarRelationFilter, Prisma.paisWhereInput>
   cidade?: Prisma.CidadeListRelationFilter
+  pais?: Prisma.XOR<Prisma.PaisScalarRelationFilter, Prisma.paisWhereInput>
 }
 
 export type estadoOrderByWithRelationInput = {
@@ -230,8 +230,8 @@ export type estadoOrderByWithRelationInput = {
   sigla?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   paisId?: Prisma.SortOrder
-  pais?: Prisma.paisOrderByWithRelationInput
   cidade?: Prisma.cidadeOrderByRelationAggregateInput
+  pais?: Prisma.paisOrderByWithRelationInput
 }
 
 export type estadoWhereUniqueInput = Prisma.AtLeast<{
@@ -243,8 +243,8 @@ export type estadoWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.estadoWhereInput | Prisma.estadoWhereInput[]
   ativo?: Prisma.BoolFilter<"estado"> | boolean
   paisId?: Prisma.IntFilter<"estado"> | number
-  pais?: Prisma.XOR<Prisma.PaisScalarRelationFilter, Prisma.paisWhereInput>
   cidade?: Prisma.CidadeListRelationFilter
+  pais?: Prisma.XOR<Prisma.PaisScalarRelationFilter, Prisma.paisWhereInput>
 }, "id" | "nome" | "sigla">
 
 export type estadoOrderByWithAggregationInput = {
@@ -275,8 +275,8 @@ export type estadoCreateInput = {
   nome: string
   sigla: string
   ativo?: boolean
-  pais: Prisma.paisCreateNestedOneWithoutEstadoInput
   cidade?: Prisma.cidadeCreateNestedManyWithoutEstadoInput
+  pais: Prisma.paisCreateNestedOneWithoutEstadoInput
 }
 
 export type estadoUncheckedCreateInput = {
@@ -292,8 +292,8 @@ export type estadoUpdateInput = {
   nome?: Prisma.StringFieldUpdateOperationsInput | string
   sigla?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  pais?: Prisma.paisUpdateOneRequiredWithoutEstadoNestedInput
   cidade?: Prisma.cidadeUpdateManyWithoutEstadoNestedInput
+  pais?: Prisma.paisUpdateOneRequiredWithoutEstadoNestedInput
 }
 
 export type estadoUncheckedUpdateInput = {
@@ -600,8 +600,8 @@ export type estadoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   sigla?: boolean
   ativo?: boolean
   paisId?: boolean
-  pais?: boolean | Prisma.paisDefaultArgs<ExtArgs>
   cidade?: boolean | Prisma.estado$cidadeArgs<ExtArgs>
+  pais?: boolean | Prisma.paisDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.EstadoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["estado"]>
 
@@ -633,8 +633,8 @@ export type estadoSelectScalar = {
 
 export type estadoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nome" | "sigla" | "ativo" | "paisId", ExtArgs["result"]["estado"]>
 export type estadoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pais?: boolean | Prisma.paisDefaultArgs<ExtArgs>
   cidade?: boolean | Prisma.estado$cidadeArgs<ExtArgs>
+  pais?: boolean | Prisma.paisDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.EstadoCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type estadoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -647,8 +647,8 @@ export type estadoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $estadoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "estado"
   objects: {
-    pais: Prisma.$paisPayload<ExtArgs>
     cidade: Prisma.$cidadePayload<ExtArgs>[]
+    pais: Prisma.$paisPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1050,8 +1050,8 @@ readonly fields: estadoFieldRefs;
  */
 export interface Prisma__estadoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  pais<T extends Prisma.paisDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.paisDefaultArgs<ExtArgs>>): Prisma.Prisma__paisClient<runtime.Types.Result.GetResult<Prisma.$paisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   cidade<T extends Prisma.estado$cidadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.estado$cidadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$cidadePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  pais<T extends Prisma.paisDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.paisDefaultArgs<ExtArgs>>): Prisma.Prisma__paisClient<runtime.Types.Result.GetResult<Prisma.$paisPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

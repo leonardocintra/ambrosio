@@ -38,23 +38,29 @@ export type PessoaSumAggregateOutputType = {
 
 export type PessoaMinAggregateOutputType = {
   id: number | null
-  externalId: string | null
   ativo: boolean | null
   situacaoReligiosaId: number | null
+  externalId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PessoaMaxAggregateOutputType = {
   id: number | null
-  externalId: string | null
   ativo: boolean | null
   situacaoReligiosaId: number | null
+  externalId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PessoaCountAggregateOutputType = {
   id: number
-  externalId: number
   ativo: number
   situacaoReligiosaId: number
+  externalId: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -71,23 +77,29 @@ export type PessoaSumAggregateInputType = {
 
 export type PessoaMinAggregateInputType = {
   id?: true
-  externalId?: true
   ativo?: true
   situacaoReligiosaId?: true
+  externalId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PessoaMaxAggregateInputType = {
   id?: true
-  externalId?: true
   ativo?: true
   situacaoReligiosaId?: true
+  externalId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PessoaCountAggregateInputType = {
   id?: true
-  externalId?: true
   ativo?: true
   situacaoReligiosaId?: true
+  externalId?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -179,9 +191,11 @@ export type pessoaGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
 
 export type PessoaGroupByOutputType = {
   id: number
-  externalId: string
   ativo: boolean
   situacaoReligiosaId: number
+  externalId: string
+  createdAt: Date
+  updatedAt: Date
   _count: PessoaCountAggregateOutputType | null
   _avg: PessoaAvgAggregateOutputType | null
   _sum: PessoaSumAggregateOutputType | null
@@ -209,36 +223,40 @@ export type pessoaWhereInput = {
   OR?: Prisma.pessoaWhereInput[]
   NOT?: Prisma.pessoaWhereInput | Prisma.pessoaWhereInput[]
   id?: Prisma.IntFilter<"pessoa"> | number
-  externalId?: Prisma.StringFilter<"pessoa"> | string
   ativo?: Prisma.BoolFilter<"pessoa"> | boolean
   situacaoReligiosaId?: Prisma.IntFilter<"pessoa"> | number
-  situacaoReligiosa?: Prisma.XOR<Prisma.SituacaoReligiosaScalarRelationFilter, Prisma.situacaoReligiosaWhereInput>
-  passaportes?: Prisma.PassaportePessoaListRelationFilter
-  contatos?: Prisma.PessoaContatoListRelationFilter
-  casamentosComoMarido?: Prisma.PessoaCasalListRelationFilter
-  casamentosComoMulher?: Prisma.PessoaCasalListRelationFilter
-  enderecos?: Prisma.PessoaEnderecoListRelationFilter
-  user?: Prisma.UserListRelationFilter
+  externalId?: Prisma.StringFilter<"pessoa"> | string
+  createdAt?: Prisma.DateTimeFilter<"pessoa"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"pessoa"> | Date | string
   comunidadePessoas?: Prisma.ComunidadePessoaListRelationFilter
   equipePessoas?: Prisma.EquipePessoaListRelationFilter
+  passaportes?: Prisma.PassaportePessoaListRelationFilter
+  situacaoReligiosa?: Prisma.XOR<Prisma.SituacaoReligiosaScalarRelationFilter, Prisma.situacaoReligiosaWhereInput>
   pessoaCarismas?: Prisma.PessoaCarismaListRelationFilter
+  casamentosComoMarido?: Prisma.PessoaCasalListRelationFilter
+  casamentosComoMulher?: Prisma.PessoaCasalListRelationFilter
+  contatos?: Prisma.PessoaContatoListRelationFilter
+  enderecos?: Prisma.PessoaEnderecoListRelationFilter
+  user?: Prisma.UserListRelationFilter
 }
 
 export type pessoaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   situacaoReligiosaId?: Prisma.SortOrder
-  situacaoReligiosa?: Prisma.situacaoReligiosaOrderByWithRelationInput
-  passaportes?: Prisma.passaportePessoaOrderByRelationAggregateInput
-  contatos?: Prisma.pessoaContatoOrderByRelationAggregateInput
-  casamentosComoMarido?: Prisma.pessoaCasalOrderByRelationAggregateInput
-  casamentosComoMulher?: Prisma.pessoaCasalOrderByRelationAggregateInput
-  enderecos?: Prisma.pessoaEnderecoOrderByRelationAggregateInput
-  user?: Prisma.userOrderByRelationAggregateInput
+  externalId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   comunidadePessoas?: Prisma.comunidadePessoaOrderByRelationAggregateInput
   equipePessoas?: Prisma.equipePessoaOrderByRelationAggregateInput
+  passaportes?: Prisma.passaportePessoaOrderByRelationAggregateInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaOrderByWithRelationInput
   pessoaCarismas?: Prisma.pessoaCarismaOrderByRelationAggregateInput
+  casamentosComoMarido?: Prisma.pessoaCasalOrderByRelationAggregateInput
+  casamentosComoMulher?: Prisma.pessoaCasalOrderByRelationAggregateInput
+  contatos?: Prisma.pessoaContatoOrderByRelationAggregateInput
+  enderecos?: Prisma.pessoaEnderecoOrderByRelationAggregateInput
+  user?: Prisma.userOrderByRelationAggregateInput
 }
 
 export type pessoaWhereUniqueInput = Prisma.AtLeast<{
@@ -249,23 +267,27 @@ export type pessoaWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.pessoaWhereInput | Prisma.pessoaWhereInput[]
   ativo?: Prisma.BoolFilter<"pessoa"> | boolean
   situacaoReligiosaId?: Prisma.IntFilter<"pessoa"> | number
-  situacaoReligiosa?: Prisma.XOR<Prisma.SituacaoReligiosaScalarRelationFilter, Prisma.situacaoReligiosaWhereInput>
-  passaportes?: Prisma.PassaportePessoaListRelationFilter
-  contatos?: Prisma.PessoaContatoListRelationFilter
-  casamentosComoMarido?: Prisma.PessoaCasalListRelationFilter
-  casamentosComoMulher?: Prisma.PessoaCasalListRelationFilter
-  enderecos?: Prisma.PessoaEnderecoListRelationFilter
-  user?: Prisma.UserListRelationFilter
+  createdAt?: Prisma.DateTimeFilter<"pessoa"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"pessoa"> | Date | string
   comunidadePessoas?: Prisma.ComunidadePessoaListRelationFilter
   equipePessoas?: Prisma.EquipePessoaListRelationFilter
+  passaportes?: Prisma.PassaportePessoaListRelationFilter
+  situacaoReligiosa?: Prisma.XOR<Prisma.SituacaoReligiosaScalarRelationFilter, Prisma.situacaoReligiosaWhereInput>
   pessoaCarismas?: Prisma.PessoaCarismaListRelationFilter
+  casamentosComoMarido?: Prisma.PessoaCasalListRelationFilter
+  casamentosComoMulher?: Prisma.PessoaCasalListRelationFilter
+  contatos?: Prisma.PessoaContatoListRelationFilter
+  enderecos?: Prisma.PessoaEnderecoListRelationFilter
+  user?: Prisma.UserListRelationFilter
 }, "id" | "externalId">
 
 export type pessoaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   situacaoReligiosaId?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.pessoaCountOrderByAggregateInput
   _avg?: Prisma.pessoaAvgOrderByAggregateInput
   _max?: Prisma.pessoaMaxOrderByAggregateInput
@@ -278,97 +300,115 @@ export type pessoaScalarWhereWithAggregatesInput = {
   OR?: Prisma.pessoaScalarWhereWithAggregatesInput[]
   NOT?: Prisma.pessoaScalarWhereWithAggregatesInput | Prisma.pessoaScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"pessoa"> | number
-  externalId?: Prisma.StringWithAggregatesFilter<"pessoa"> | string
   ativo?: Prisma.BoolWithAggregatesFilter<"pessoa"> | boolean
   situacaoReligiosaId?: Prisma.IntWithAggregatesFilter<"pessoa"> | number
+  externalId?: Prisma.StringWithAggregatesFilter<"pessoa"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"pessoa"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"pessoa"> | Date | string
 }
 
 export type pessoaCreateInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
-  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
-  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUpdateInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
-  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
-  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateManyInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type pessoaUpdateManyMutationInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type pessoaUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type pessoaCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   situacaoReligiosaId?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type pessoaAvgOrderByAggregateInput = {
@@ -378,16 +418,20 @@ export type pessoaAvgOrderByAggregateInput = {
 
 export type pessoaMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   situacaoReligiosaId?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type pessoaMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  externalId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
   situacaoReligiosaId?: Prisma.SortOrder
+  externalId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type pessoaSumOrderByAggregateInput = {
@@ -413,6 +457,10 @@ export type PessoaScalarRelationFilter = {
 export type PessoaNullableScalarRelationFilter = {
   is?: Prisma.pessoaWhereInput | null
   isNot?: Prisma.pessoaWhereInput | null
+}
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Date | string
 }
 
 export type pessoaCreateNestedManyWithoutSituacaoReligiosaInput = {
@@ -586,32 +634,36 @@ export type pessoaUpdateOneRequiredWithoutComunidadePessoasNestedInput = {
 }
 
 export type pessoaCreateWithoutSituacaoReligiosaInput = {
-  externalId: string
   ativo?: boolean
-  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutSituacaoReligiosaInput = {
   id?: number
-  externalId: string
   ativo?: boolean
-  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutSituacaoReligiosaInput = {
@@ -645,38 +697,44 @@ export type pessoaScalarWhereInput = {
   OR?: Prisma.pessoaScalarWhereInput[]
   NOT?: Prisma.pessoaScalarWhereInput | Prisma.pessoaScalarWhereInput[]
   id?: Prisma.IntFilter<"pessoa"> | number
-  externalId?: Prisma.StringFilter<"pessoa"> | string
   ativo?: Prisma.BoolFilter<"pessoa"> | boolean
   situacaoReligiosaId?: Prisma.IntFilter<"pessoa"> | number
+  externalId?: Prisma.StringFilter<"pessoa"> | string
+  createdAt?: Prisma.DateTimeFilter<"pessoa"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"pessoa"> | Date | string
 }
 
 export type pessoaCreateWithoutPessoaCarismasInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
-  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutPessoaCarismasInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
-  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutPessoaCarismasInput = {
@@ -696,61 +754,69 @@ export type pessoaUpdateToOneWithWhereWithoutPessoaCarismasInput = {
 }
 
 export type pessoaUpdateWithoutPessoaCarismasInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
-  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutPessoaCarismasInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
-  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateWithoutEnderecosInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
-  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
-  user?: Prisma.userCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutEnderecosInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
-  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
-  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutEnderecosInput = {
@@ -770,61 +836,69 @@ export type pessoaUpdateToOneWithWhereWithoutEnderecosInput = {
 }
 
 export type pessoaUpdateWithoutEnderecosInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
-  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
-  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutEnderecosInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
-  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
-  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateWithoutCasamentosComoMaridoInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
-  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
-  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
+  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutCasamentosComoMaridoInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
-  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutCasamentosComoMaridoInput = {
@@ -833,32 +907,36 @@ export type pessoaCreateOrConnectWithoutCasamentosComoMaridoInput = {
 }
 
 export type pessoaCreateWithoutCasamentosComoMulherInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
-  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
-  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutCasamentosComoMulherInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
-  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutCasamentosComoMulherInput = {
@@ -878,32 +956,36 @@ export type pessoaUpdateToOneWithWhereWithoutCasamentosComoMaridoInput = {
 }
 
 export type pessoaUpdateWithoutCasamentosComoMaridoInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
-  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutCasamentosComoMaridoInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
-  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUpsertWithoutCasamentosComoMulherInput = {
@@ -918,61 +1000,69 @@ export type pessoaUpdateToOneWithWhereWithoutCasamentosComoMulherInput = {
 }
 
 export type pessoaUpdateWithoutCasamentosComoMulherInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
-  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
-  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutCasamentosComoMulherInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
-  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateWithoutPassaportesInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutPassaportesInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
-  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
+  user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutPassaportesInput = {
@@ -992,61 +1082,69 @@ export type pessoaUpdateToOneWithWhereWithoutPassaportesInput = {
 }
 
 export type pessoaUpdateWithoutPassaportesInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutPassaportesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateWithoutContatosInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
+  equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
   passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
+  pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
   casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
   casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
   enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
   user?: Prisma.userCreateNestedManyWithoutPessoaInput
-  comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
-  equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
-  pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutContatosInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
   passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
   casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
   casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
   enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
   user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
-  comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutContatosInput = {
@@ -1066,61 +1164,69 @@ export type pessoaUpdateToOneWithWhereWithoutContatosInput = {
 }
 
 export type pessoaUpdateWithoutContatosInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
+  equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
   passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
+  pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
   casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
   casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
   enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
   user?: Prisma.userUpdateManyWithoutPessoaNestedInput
-  comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
-  equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
-  pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutContatosInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
   casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
   casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
   enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
   user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
-  comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateWithoutEquipePessoasInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
+  pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
   casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
   casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
   enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
   user?: Prisma.userCreateNestedManyWithoutPessoaInput
-  comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
-  pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutEquipePessoasInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
   casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
   casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
   enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
   user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
-  comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutEquipePessoasInput = {
@@ -1140,61 +1246,69 @@ export type pessoaUpdateToOneWithWhereWithoutEquipePessoasInput = {
 }
 
 export type pessoaUpdateWithoutEquipePessoasInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
+  pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
   casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
   casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
   enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
   user?: Prisma.userUpdateManyWithoutPessoaNestedInput
-  comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
-  pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutEquipePessoasInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
   casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
   casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
   enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
   user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
-  comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateWithoutUserInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
-  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutUserInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
-  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutPessoaInput
   equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
+  passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutUserInput = {
@@ -1214,61 +1328,69 @@ export type pessoaUpdateToOneWithWhereWithoutUserInput = {
 }
 
 export type pessoaUpdateWithoutUserInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
-  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
-  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateWithoutComunidadePessoasInput = {
-  externalId: string
   ativo?: boolean
-  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
   passaportes?: Prisma.passaportePessoaCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
+  situacaoReligiosa: Prisma.situacaoReligiosaCreateNestedOneWithoutPessoaInput
+  pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
   casamentosComoMarido?: Prisma.pessoaCasalCreateNestedManyWithoutMaridoInput
   casamentosComoMulher?: Prisma.pessoaCasalCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoCreateNestedManyWithoutPessoaInput
   enderecos?: Prisma.pessoaEnderecoCreateNestedManyWithoutPessoaInput
   user?: Prisma.userCreateNestedManyWithoutPessoaInput
-  equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutPessoaInput
-  pessoaCarismas?: Prisma.pessoaCarismaCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaUncheckedCreateWithoutComunidadePessoasInput = {
   id?: number
-  externalId: string
   ativo?: boolean
   situacaoReligiosaId: number
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
   passaportes?: Prisma.passaportePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
+  pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
   casamentosComoMarido?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMaridoInput
   casamentosComoMulher?: Prisma.pessoaCasalUncheckedCreateNestedManyWithoutMulherInput
+  contatos?: Prisma.pessoaContatoUncheckedCreateNestedManyWithoutPessoaInput
   enderecos?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutPessoaInput
   user?: Prisma.userUncheckedCreateNestedManyWithoutPessoaInput
-  equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutPessoaInput
-  pessoaCarismas?: Prisma.pessoaCarismaUncheckedCreateNestedManyWithoutPessoaInput
 }
 
 export type pessoaCreateOrConnectWithoutComunidadePessoasInput = {
@@ -1288,73 +1410,85 @@ export type pessoaUpdateToOneWithWhereWithoutComunidadePessoasInput = {
 }
 
 export type pessoaUpdateWithoutComunidadePessoasInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
   passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  situacaoReligiosa?: Prisma.situacaoReligiosaUpdateOneRequiredWithoutPessoaNestedInput
+  pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
   casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
   casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
   enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
   user?: Prisma.userUpdateManyWithoutPessoaNestedInput
-  equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
-  pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutComunidadePessoasInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   situacaoReligiosaId?: Prisma.IntFieldUpdateOperationsInput | number
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
   casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
   casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
   enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
   user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
-  equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaCreateManySituacaoReligiosaInput = {
   id?: number
-  externalId: string
   ativo?: boolean
+  externalId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type pessoaUpdateWithoutSituacaoReligiosaInput = {
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUpdateManyWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateWithoutSituacaoReligiosaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
-  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
-  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
-  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
-  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
-  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutPessoaNestedInput
+  passaportes?: Prisma.passaportePessoaUncheckedUpdateManyWithoutPessoaNestedInput
   pessoaCarismas?: Prisma.pessoaCarismaUncheckedUpdateManyWithoutPessoaNestedInput
+  casamentosComoMarido?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMaridoNestedInput
+  casamentosComoMulher?: Prisma.pessoaCasalUncheckedUpdateManyWithoutMulherNestedInput
+  contatos?: Prisma.pessoaContatoUncheckedUpdateManyWithoutPessoaNestedInput
+  enderecos?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutPessoaNestedInput
+  user?: Prisma.userUncheckedUpdateManyWithoutPessoaNestedInput
 }
 
 export type pessoaUncheckedUpdateManyWithoutSituacaoReligiosaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  externalId?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  externalId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -1363,27 +1497,27 @@ export type pessoaUncheckedUpdateManyWithoutSituacaoReligiosaInput = {
  */
 
 export type PessoaCountOutputType = {
-  passaportes: number
-  contatos: number
-  casamentosComoMarido: number
-  casamentosComoMulher: number
-  enderecos: number
-  user: number
   comunidadePessoas: number
   equipePessoas: number
+  passaportes: number
   pessoaCarismas: number
+  casamentosComoMarido: number
+  casamentosComoMulher: number
+  contatos: number
+  enderecos: number
+  user: number
 }
 
 export type PessoaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  passaportes?: boolean | PessoaCountOutputTypeCountPassaportesArgs
-  contatos?: boolean | PessoaCountOutputTypeCountContatosArgs
-  casamentosComoMarido?: boolean | PessoaCountOutputTypeCountCasamentosComoMaridoArgs
-  casamentosComoMulher?: boolean | PessoaCountOutputTypeCountCasamentosComoMulherArgs
-  enderecos?: boolean | PessoaCountOutputTypeCountEnderecosArgs
-  user?: boolean | PessoaCountOutputTypeCountUserArgs
   comunidadePessoas?: boolean | PessoaCountOutputTypeCountComunidadePessoasArgs
   equipePessoas?: boolean | PessoaCountOutputTypeCountEquipePessoasArgs
+  passaportes?: boolean | PessoaCountOutputTypeCountPassaportesArgs
   pessoaCarismas?: boolean | PessoaCountOutputTypeCountPessoaCarismasArgs
+  casamentosComoMarido?: boolean | PessoaCountOutputTypeCountCasamentosComoMaridoArgs
+  casamentosComoMulher?: boolean | PessoaCountOutputTypeCountCasamentosComoMulherArgs
+  contatos?: boolean | PessoaCountOutputTypeCountContatosArgs
+  enderecos?: boolean | PessoaCountOutputTypeCountEnderecosArgs
+  user?: boolean | PessoaCountOutputTypeCountUserArgs
 }
 
 /**
@@ -1394,48 +1528,6 @@ export type PessoaCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
    * Select specific fields to fetch from the PessoaCountOutputType
    */
   select?: Prisma.PessoaCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * PessoaCountOutputType without action
- */
-export type PessoaCountOutputTypeCountPassaportesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.passaportePessoaWhereInput
-}
-
-/**
- * PessoaCountOutputType without action
- */
-export type PessoaCountOutputTypeCountContatosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.pessoaContatoWhereInput
-}
-
-/**
- * PessoaCountOutputType without action
- */
-export type PessoaCountOutputTypeCountCasamentosComoMaridoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.pessoaCasalWhereInput
-}
-
-/**
- * PessoaCountOutputType without action
- */
-export type PessoaCountOutputTypeCountCasamentosComoMulherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.pessoaCasalWhereInput
-}
-
-/**
- * PessoaCountOutputType without action
- */
-export type PessoaCountOutputTypeCountEnderecosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.pessoaEnderecoWhereInput
-}
-
-/**
- * PessoaCountOutputType without action
- */
-export type PessoaCountOutputTypeCountUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.userWhereInput
 }
 
 /**
@@ -1455,64 +1547,114 @@ export type PessoaCountOutputTypeCountEquipePessoasArgs<ExtArgs extends runtime.
 /**
  * PessoaCountOutputType without action
  */
+export type PessoaCountOutputTypeCountPassaportesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.passaportePessoaWhereInput
+}
+
+/**
+ * PessoaCountOutputType without action
+ */
 export type PessoaCountOutputTypeCountPessoaCarismasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.pessoaCarismaWhereInput
+}
+
+/**
+ * PessoaCountOutputType without action
+ */
+export type PessoaCountOutputTypeCountCasamentosComoMaridoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.pessoaCasalWhereInput
+}
+
+/**
+ * PessoaCountOutputType without action
+ */
+export type PessoaCountOutputTypeCountCasamentosComoMulherArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.pessoaCasalWhereInput
+}
+
+/**
+ * PessoaCountOutputType without action
+ */
+export type PessoaCountOutputTypeCountContatosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.pessoaContatoWhereInput
+}
+
+/**
+ * PessoaCountOutputType without action
+ */
+export type PessoaCountOutputTypeCountEnderecosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.pessoaEnderecoWhereInput
+}
+
+/**
+ * PessoaCountOutputType without action
+ */
+export type PessoaCountOutputTypeCountUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.userWhereInput
 }
 
 
 export type pessoaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  externalId?: boolean
   ativo?: boolean
   situacaoReligiosaId?: boolean
-  situacaoReligiosa?: boolean | Prisma.situacaoReligiosaDefaultArgs<ExtArgs>
-  passaportes?: boolean | Prisma.pessoa$passaportesArgs<ExtArgs>
-  contatos?: boolean | Prisma.pessoa$contatosArgs<ExtArgs>
-  casamentosComoMarido?: boolean | Prisma.pessoa$casamentosComoMaridoArgs<ExtArgs>
-  casamentosComoMulher?: boolean | Prisma.pessoa$casamentosComoMulherArgs<ExtArgs>
-  enderecos?: boolean | Prisma.pessoa$enderecosArgs<ExtArgs>
-  user?: boolean | Prisma.pessoa$userArgs<ExtArgs>
+  externalId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   comunidadePessoas?: boolean | Prisma.pessoa$comunidadePessoasArgs<ExtArgs>
   equipePessoas?: boolean | Prisma.pessoa$equipePessoasArgs<ExtArgs>
+  passaportes?: boolean | Prisma.pessoa$passaportesArgs<ExtArgs>
+  situacaoReligiosa?: boolean | Prisma.situacaoReligiosaDefaultArgs<ExtArgs>
   pessoaCarismas?: boolean | Prisma.pessoa$pessoaCarismasArgs<ExtArgs>
+  casamentosComoMarido?: boolean | Prisma.pessoa$casamentosComoMaridoArgs<ExtArgs>
+  casamentosComoMulher?: boolean | Prisma.pessoa$casamentosComoMulherArgs<ExtArgs>
+  contatos?: boolean | Prisma.pessoa$contatosArgs<ExtArgs>
+  enderecos?: boolean | Prisma.pessoa$enderecosArgs<ExtArgs>
+  user?: boolean | Prisma.pessoa$userArgs<ExtArgs>
   _count?: boolean | Prisma.PessoaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoa"]>
 
 export type pessoaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  externalId?: boolean
   ativo?: boolean
   situacaoReligiosaId?: boolean
+  externalId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   situacaoReligiosa?: boolean | Prisma.situacaoReligiosaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoa"]>
 
 export type pessoaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  externalId?: boolean
   ativo?: boolean
   situacaoReligiosaId?: boolean
+  externalId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   situacaoReligiosa?: boolean | Prisma.situacaoReligiosaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoa"]>
 
 export type pessoaSelectScalar = {
   id?: boolean
-  externalId?: boolean
   ativo?: boolean
   situacaoReligiosaId?: boolean
+  externalId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type pessoaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "externalId" | "ativo" | "situacaoReligiosaId", ExtArgs["result"]["pessoa"]>
+export type pessoaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ativo" | "situacaoReligiosaId" | "externalId" | "createdAt" | "updatedAt", ExtArgs["result"]["pessoa"]>
 export type pessoaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  situacaoReligiosa?: boolean | Prisma.situacaoReligiosaDefaultArgs<ExtArgs>
-  passaportes?: boolean | Prisma.pessoa$passaportesArgs<ExtArgs>
-  contatos?: boolean | Prisma.pessoa$contatosArgs<ExtArgs>
-  casamentosComoMarido?: boolean | Prisma.pessoa$casamentosComoMaridoArgs<ExtArgs>
-  casamentosComoMulher?: boolean | Prisma.pessoa$casamentosComoMulherArgs<ExtArgs>
-  enderecos?: boolean | Prisma.pessoa$enderecosArgs<ExtArgs>
-  user?: boolean | Prisma.pessoa$userArgs<ExtArgs>
   comunidadePessoas?: boolean | Prisma.pessoa$comunidadePessoasArgs<ExtArgs>
   equipePessoas?: boolean | Prisma.pessoa$equipePessoasArgs<ExtArgs>
+  passaportes?: boolean | Prisma.pessoa$passaportesArgs<ExtArgs>
+  situacaoReligiosa?: boolean | Prisma.situacaoReligiosaDefaultArgs<ExtArgs>
   pessoaCarismas?: boolean | Prisma.pessoa$pessoaCarismasArgs<ExtArgs>
+  casamentosComoMarido?: boolean | Prisma.pessoa$casamentosComoMaridoArgs<ExtArgs>
+  casamentosComoMulher?: boolean | Prisma.pessoa$casamentosComoMulherArgs<ExtArgs>
+  contatos?: boolean | Prisma.pessoa$contatosArgs<ExtArgs>
+  enderecos?: boolean | Prisma.pessoa$enderecosArgs<ExtArgs>
+  user?: boolean | Prisma.pessoa$userArgs<ExtArgs>
   _count?: boolean | Prisma.PessoaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type pessoaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1525,22 +1667,24 @@ export type pessoaIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $pessoaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "pessoa"
   objects: {
-    situacaoReligiosa: Prisma.$situacaoReligiosaPayload<ExtArgs>
-    passaportes: Prisma.$passaportePessoaPayload<ExtArgs>[]
-    contatos: Prisma.$pessoaContatoPayload<ExtArgs>[]
-    casamentosComoMarido: Prisma.$pessoaCasalPayload<ExtArgs>[]
-    casamentosComoMulher: Prisma.$pessoaCasalPayload<ExtArgs>[]
-    enderecos: Prisma.$pessoaEnderecoPayload<ExtArgs>[]
-    user: Prisma.$userPayload<ExtArgs>[]
     comunidadePessoas: Prisma.$comunidadePessoaPayload<ExtArgs>[]
     equipePessoas: Prisma.$equipePessoaPayload<ExtArgs>[]
+    passaportes: Prisma.$passaportePessoaPayload<ExtArgs>[]
+    situacaoReligiosa: Prisma.$situacaoReligiosaPayload<ExtArgs>
     pessoaCarismas: Prisma.$pessoaCarismaPayload<ExtArgs>[]
+    casamentosComoMarido: Prisma.$pessoaCasalPayload<ExtArgs>[]
+    casamentosComoMulher: Prisma.$pessoaCasalPayload<ExtArgs>[]
+    contatos: Prisma.$pessoaContatoPayload<ExtArgs>[]
+    enderecos: Prisma.$pessoaEnderecoPayload<ExtArgs>[]
+    user: Prisma.$userPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    externalId: string
     ativo: boolean
     situacaoReligiosaId: number
+    externalId: string
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["pessoa"]>
   composites: {}
 }
@@ -1935,16 +2079,16 @@ readonly fields: pessoaFieldRefs;
  */
 export interface Prisma__pessoaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  situacaoReligiosa<T extends Prisma.situacaoReligiosaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.situacaoReligiosaDefaultArgs<ExtArgs>>): Prisma.Prisma__situacaoReligiosaClient<runtime.Types.Result.GetResult<Prisma.$situacaoReligiosaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  passaportes<T extends Prisma.pessoa$passaportesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$passaportesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$passaportePessoaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  contatos<T extends Prisma.pessoa$contatosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$contatosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaContatoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  casamentosComoMarido<T extends Prisma.pessoa$casamentosComoMaridoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$casamentosComoMaridoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaCasalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  casamentosComoMulher<T extends Prisma.pessoa$casamentosComoMulherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$casamentosComoMulherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaCasalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  enderecos<T extends Prisma.pessoa$enderecosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$enderecosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaEnderecoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  user<T extends Prisma.pessoa$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$userArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comunidadePessoas<T extends Prisma.pessoa$comunidadePessoasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$comunidadePessoasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comunidadePessoaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   equipePessoas<T extends Prisma.pessoa$equipePessoasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$equipePessoasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$equipePessoaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passaportes<T extends Prisma.pessoa$passaportesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$passaportesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$passaportePessoaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  situacaoReligiosa<T extends Prisma.situacaoReligiosaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.situacaoReligiosaDefaultArgs<ExtArgs>>): Prisma.Prisma__situacaoReligiosaClient<runtime.Types.Result.GetResult<Prisma.$situacaoReligiosaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   pessoaCarismas<T extends Prisma.pessoa$pessoaCarismasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$pessoaCarismasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaCarismaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  casamentosComoMarido<T extends Prisma.pessoa$casamentosComoMaridoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$casamentosComoMaridoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaCasalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  casamentosComoMulher<T extends Prisma.pessoa$casamentosComoMulherArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$casamentosComoMulherArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaCasalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contatos<T extends Prisma.pessoa$contatosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$contatosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaContatoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  enderecos<T extends Prisma.pessoa$enderecosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$enderecosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaEnderecoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  user<T extends Prisma.pessoa$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoa$userArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1975,9 +2119,11 @@ export interface Prisma__pessoaClient<T, Null = never, ExtArgs extends runtime.T
  */
 export interface pessoaFieldRefs {
   readonly id: Prisma.FieldRef<"pessoa", 'Int'>
-  readonly externalId: Prisma.FieldRef<"pessoa", 'String'>
   readonly ativo: Prisma.FieldRef<"pessoa", 'Boolean'>
   readonly situacaoReligiosaId: Prisma.FieldRef<"pessoa", 'Int'>
+  readonly externalId: Prisma.FieldRef<"pessoa", 'String'>
+  readonly createdAt: Prisma.FieldRef<"pessoa", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"pessoa", 'DateTime'>
 }
     
 
@@ -2374,6 +2520,54 @@ export type pessoaDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * pessoa.comunidadePessoas
+ */
+export type pessoa$comunidadePessoasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the comunidadePessoa
+   */
+  select?: Prisma.comunidadePessoaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the comunidadePessoa
+   */
+  omit?: Prisma.comunidadePessoaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.comunidadePessoaInclude<ExtArgs> | null
+  where?: Prisma.comunidadePessoaWhereInput
+  orderBy?: Prisma.comunidadePessoaOrderByWithRelationInput | Prisma.comunidadePessoaOrderByWithRelationInput[]
+  cursor?: Prisma.comunidadePessoaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ComunidadePessoaScalarFieldEnum | Prisma.ComunidadePessoaScalarFieldEnum[]
+}
+
+/**
+ * pessoa.equipePessoas
+ */
+export type pessoa$equipePessoasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the equipePessoa
+   */
+  select?: Prisma.equipePessoaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the equipePessoa
+   */
+  omit?: Prisma.equipePessoaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.equipePessoaInclude<ExtArgs> | null
+  where?: Prisma.equipePessoaWhereInput
+  orderBy?: Prisma.equipePessoaOrderByWithRelationInput | Prisma.equipePessoaOrderByWithRelationInput[]
+  cursor?: Prisma.equipePessoaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EquipePessoaScalarFieldEnum | Prisma.EquipePessoaScalarFieldEnum[]
+}
+
+/**
  * pessoa.passaportes
  */
 export type pessoa$passaportesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2398,27 +2592,27 @@ export type pessoa$passaportesArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * pessoa.contatos
+ * pessoa.pessoaCarismas
  */
-export type pessoa$contatosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type pessoa$pessoaCarismasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the pessoaContato
+   * Select specific fields to fetch from the pessoaCarisma
    */
-  select?: Prisma.pessoaContatoSelect<ExtArgs> | null
+  select?: Prisma.pessoaCarismaSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the pessoaContato
+   * Omit specific fields from the pessoaCarisma
    */
-  omit?: Prisma.pessoaContatoOmit<ExtArgs> | null
+  omit?: Prisma.pessoaCarismaOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.pessoaContatoInclude<ExtArgs> | null
-  where?: Prisma.pessoaContatoWhereInput
-  orderBy?: Prisma.pessoaContatoOrderByWithRelationInput | Prisma.pessoaContatoOrderByWithRelationInput[]
-  cursor?: Prisma.pessoaContatoWhereUniqueInput
+  include?: Prisma.pessoaCarismaInclude<ExtArgs> | null
+  where?: Prisma.pessoaCarismaWhereInput
+  orderBy?: Prisma.pessoaCarismaOrderByWithRelationInput | Prisma.pessoaCarismaOrderByWithRelationInput[]
+  cursor?: Prisma.pessoaCarismaWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.PessoaContatoScalarFieldEnum | Prisma.PessoaContatoScalarFieldEnum[]
+  distinct?: Prisma.PessoaCarismaScalarFieldEnum | Prisma.PessoaCarismaScalarFieldEnum[]
 }
 
 /**
@@ -2470,6 +2664,30 @@ export type pessoa$casamentosComoMulherArgs<ExtArgs extends runtime.Types.Extens
 }
 
 /**
+ * pessoa.contatos
+ */
+export type pessoa$contatosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the pessoaContato
+   */
+  select?: Prisma.pessoaContatoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the pessoaContato
+   */
+  omit?: Prisma.pessoaContatoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.pessoaContatoInclude<ExtArgs> | null
+  where?: Prisma.pessoaContatoWhereInput
+  orderBy?: Prisma.pessoaContatoOrderByWithRelationInput | Prisma.pessoaContatoOrderByWithRelationInput[]
+  cursor?: Prisma.pessoaContatoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PessoaContatoScalarFieldEnum | Prisma.PessoaContatoScalarFieldEnum[]
+}
+
+/**
  * pessoa.enderecos
  */
 export type pessoa$enderecosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2515,78 +2733,6 @@ export type pessoa$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
-}
-
-/**
- * pessoa.comunidadePessoas
- */
-export type pessoa$comunidadePessoasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the comunidadePessoa
-   */
-  select?: Prisma.comunidadePessoaSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the comunidadePessoa
-   */
-  omit?: Prisma.comunidadePessoaOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.comunidadePessoaInclude<ExtArgs> | null
-  where?: Prisma.comunidadePessoaWhereInput
-  orderBy?: Prisma.comunidadePessoaOrderByWithRelationInput | Prisma.comunidadePessoaOrderByWithRelationInput[]
-  cursor?: Prisma.comunidadePessoaWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.ComunidadePessoaScalarFieldEnum | Prisma.ComunidadePessoaScalarFieldEnum[]
-}
-
-/**
- * pessoa.equipePessoas
- */
-export type pessoa$equipePessoasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the equipePessoa
-   */
-  select?: Prisma.equipePessoaSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the equipePessoa
-   */
-  omit?: Prisma.equipePessoaOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.equipePessoaInclude<ExtArgs> | null
-  where?: Prisma.equipePessoaWhereInput
-  orderBy?: Prisma.equipePessoaOrderByWithRelationInput | Prisma.equipePessoaOrderByWithRelationInput[]
-  cursor?: Prisma.equipePessoaWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.EquipePessoaScalarFieldEnum | Prisma.EquipePessoaScalarFieldEnum[]
-}
-
-/**
- * pessoa.pessoaCarismas
- */
-export type pessoa$pessoaCarismasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the pessoaCarisma
-   */
-  select?: Prisma.pessoaCarismaSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the pessoaCarisma
-   */
-  omit?: Prisma.pessoaCarismaOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.pessoaCarismaInclude<ExtArgs> | null
-  where?: Prisma.pessoaCarismaWhereInput
-  orderBy?: Prisma.pessoaCarismaOrderByWithRelationInput | Prisma.pessoaCarismaOrderByWithRelationInput[]
-  cursor?: Prisma.pessoaCarismaWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PessoaCarismaScalarFieldEnum | Prisma.PessoaCarismaScalarFieldEnum[]
 }
 
 /**

@@ -39,22 +39,22 @@ export type SetorSumAggregateOutputType = {
 export type SetorMinAggregateOutputType = {
   id: number | null
   descricao: string | null
-  regiaoId: number | null
   ativo: boolean | null
+  regiaoId: number | null
 }
 
 export type SetorMaxAggregateOutputType = {
   id: number | null
   descricao: string | null
-  regiaoId: number | null
   ativo: boolean | null
+  regiaoId: number | null
 }
 
 export type SetorCountAggregateOutputType = {
   id: number
   descricao: number
-  regiaoId: number
   ativo: number
+  regiaoId: number
   _all: number
 }
 
@@ -72,22 +72,22 @@ export type SetorSumAggregateInputType = {
 export type SetorMinAggregateInputType = {
   id?: true
   descricao?: true
-  regiaoId?: true
   ativo?: true
+  regiaoId?: true
 }
 
 export type SetorMaxAggregateInputType = {
   id?: true
   descricao?: true
-  regiaoId?: true
   ativo?: true
+  regiaoId?: true
 }
 
 export type SetorCountAggregateInputType = {
   id?: true
   descricao?: true
-  regiaoId?: true
   ativo?: true
+  regiaoId?: true
   _all?: true
 }
 
@@ -180,8 +180,8 @@ export type setorGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type SetorGroupByOutputType = {
   id: number
   descricao: string
-  regiaoId: number
   ativo: boolean
+  regiaoId: number
   _count: SetorCountAggregateOutputType | null
   _avg: SetorAvgAggregateOutputType | null
   _sum: SetorSumAggregateOutputType | null
@@ -210,19 +210,19 @@ export type setorWhereInput = {
   NOT?: Prisma.setorWhereInput | Prisma.setorWhereInput[]
   id?: Prisma.IntFilter<"setor"> | number
   descricao?: Prisma.StringFilter<"setor"> | string
-  regiaoId?: Prisma.IntFilter<"setor"> | number
   ativo?: Prisma.BoolFilter<"setor"> | boolean
-  regiao?: Prisma.XOR<Prisma.RegiaoScalarRelationFilter, Prisma.regiaoWhereInput>
+  regiaoId?: Prisma.IntFilter<"setor"> | number
   paroquia?: Prisma.ParoquiaListRelationFilter
+  regiao?: Prisma.XOR<Prisma.RegiaoScalarRelationFilter, Prisma.regiaoWhereInput>
 }
 
 export type setorOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   descricao?: Prisma.SortOrder
-  regiaoId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
-  regiao?: Prisma.regiaoOrderByWithRelationInput
+  regiaoId?: Prisma.SortOrder
   paroquia?: Prisma.paroquiaOrderByRelationAggregateInput
+  regiao?: Prisma.regiaoOrderByWithRelationInput
 }
 
 export type setorWhereUniqueInput = Prisma.AtLeast<{
@@ -232,17 +232,17 @@ export type setorWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.setorWhereInput | Prisma.setorWhereInput[]
   OR?: Prisma.setorWhereInput[]
   NOT?: Prisma.setorWhereInput | Prisma.setorWhereInput[]
-  regiaoId?: Prisma.IntFilter<"setor"> | number
   ativo?: Prisma.BoolFilter<"setor"> | boolean
-  regiao?: Prisma.XOR<Prisma.RegiaoScalarRelationFilter, Prisma.regiaoWhereInput>
+  regiaoId?: Prisma.IntFilter<"setor"> | number
   paroquia?: Prisma.ParoquiaListRelationFilter
+  regiao?: Prisma.XOR<Prisma.RegiaoScalarRelationFilter, Prisma.regiaoWhereInput>
 }, "id" | "descricao" | "descricao_regiaoId">
 
 export type setorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   descricao?: Prisma.SortOrder
-  regiaoId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
+  regiaoId?: Prisma.SortOrder
   _count?: Prisma.setorCountOrderByAggregateInput
   _avg?: Prisma.setorAvgOrderByAggregateInput
   _max?: Prisma.setorMaxOrderByAggregateInput
@@ -256,45 +256,45 @@ export type setorScalarWhereWithAggregatesInput = {
   NOT?: Prisma.setorScalarWhereWithAggregatesInput | Prisma.setorScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"setor"> | number
   descricao?: Prisma.StringWithAggregatesFilter<"setor"> | string
-  regiaoId?: Prisma.IntWithAggregatesFilter<"setor"> | number
   ativo?: Prisma.BoolWithAggregatesFilter<"setor"> | boolean
+  regiaoId?: Prisma.IntWithAggregatesFilter<"setor"> | number
 }
 
 export type setorCreateInput = {
   descricao: string
   ativo?: boolean
-  regiao?: Prisma.regiaoCreateNestedOneWithoutSetorInput
   paroquia?: Prisma.paroquiaCreateNestedManyWithoutSetorInput
+  regiao?: Prisma.regiaoCreateNestedOneWithoutSetorInput
 }
 
 export type setorUncheckedCreateInput = {
   id?: number
   descricao: string
-  regiaoId?: number
   ativo?: boolean
+  regiaoId?: number
   paroquia?: Prisma.paroquiaUncheckedCreateNestedManyWithoutSetorInput
 }
 
 export type setorUpdateInput = {
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  regiao?: Prisma.regiaoUpdateOneRequiredWithoutSetorNestedInput
   paroquia?: Prisma.paroquiaUpdateManyWithoutSetorNestedInput
+  regiao?: Prisma.regiaoUpdateOneRequiredWithoutSetorNestedInput
 }
 
 export type setorUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
-  regiaoId?: Prisma.IntFieldUpdateOperationsInput | number
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  regiaoId?: Prisma.IntFieldUpdateOperationsInput | number
   paroquia?: Prisma.paroquiaUncheckedUpdateManyWithoutSetorNestedInput
 }
 
 export type setorCreateManyInput = {
   id?: number
   descricao: string
-  regiaoId?: number
   ativo?: boolean
+  regiaoId?: number
 }
 
 export type setorUpdateManyMutationInput = {
@@ -305,8 +305,8 @@ export type setorUpdateManyMutationInput = {
 export type setorUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
-  regiaoId?: Prisma.IntFieldUpdateOperationsInput | number
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  regiaoId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type SetorScalarRelationFilter = {
@@ -322,8 +322,8 @@ export type setorDescricaoRegiaoIdCompoundUniqueInput = {
 export type setorCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   descricao?: Prisma.SortOrder
-  regiaoId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
+  regiaoId?: Prisma.SortOrder
 }
 
 export type setorAvgOrderByAggregateInput = {
@@ -334,15 +334,15 @@ export type setorAvgOrderByAggregateInput = {
 export type setorMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   descricao?: Prisma.SortOrder
-  regiaoId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
+  regiaoId?: Prisma.SortOrder
 }
 
 export type setorMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   descricao?: Prisma.SortOrder
-  regiaoId?: Prisma.SortOrder
   ativo?: Prisma.SortOrder
+  regiaoId?: Prisma.SortOrder
 }
 
 export type setorSumOrderByAggregateInput = {
@@ -425,8 +425,8 @@ export type setorCreateWithoutParoquiaInput = {
 export type setorUncheckedCreateWithoutParoquiaInput = {
   id?: number
   descricao: string
-  regiaoId?: number
   ativo?: boolean
+  regiaoId?: number
 }
 
 export type setorCreateOrConnectWithoutParoquiaInput = {
@@ -454,8 +454,8 @@ export type setorUpdateWithoutParoquiaInput = {
 export type setorUncheckedUpdateWithoutParoquiaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
-  regiaoId?: Prisma.IntFieldUpdateOperationsInput | number
   ativo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  regiaoId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type setorCreateWithoutRegiaoInput = {
@@ -503,8 +503,8 @@ export type setorScalarWhereInput = {
   NOT?: Prisma.setorScalarWhereInput | Prisma.setorScalarWhereInput[]
   id?: Prisma.IntFilter<"setor"> | number
   descricao?: Prisma.StringFilter<"setor"> | string
-  regiaoId?: Prisma.IntFilter<"setor"> | number
   ativo?: Prisma.BoolFilter<"setor"> | boolean
+  regiaoId?: Prisma.IntFilter<"setor"> | number
 }
 
 export type setorCreateManyRegiaoInput = {
@@ -566,40 +566,40 @@ export type SetorCountOutputTypeCountParoquiaArgs<ExtArgs extends runtime.Types.
 export type setorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   descricao?: boolean
-  regiaoId?: boolean
   ativo?: boolean
-  regiao?: boolean | Prisma.regiaoDefaultArgs<ExtArgs>
+  regiaoId?: boolean
   paroquia?: boolean | Prisma.setor$paroquiaArgs<ExtArgs>
+  regiao?: boolean | Prisma.regiaoDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SetorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["setor"]>
 
 export type setorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   descricao?: boolean
-  regiaoId?: boolean
   ativo?: boolean
+  regiaoId?: boolean
   regiao?: boolean | Prisma.regiaoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["setor"]>
 
 export type setorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   descricao?: boolean
-  regiaoId?: boolean
   ativo?: boolean
+  regiaoId?: boolean
   regiao?: boolean | Prisma.regiaoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["setor"]>
 
 export type setorSelectScalar = {
   id?: boolean
   descricao?: boolean
-  regiaoId?: boolean
   ativo?: boolean
+  regiaoId?: boolean
 }
 
-export type setorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "descricao" | "regiaoId" | "ativo", ExtArgs["result"]["setor"]>
+export type setorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "descricao" | "ativo" | "regiaoId", ExtArgs["result"]["setor"]>
 export type setorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  regiao?: boolean | Prisma.regiaoDefaultArgs<ExtArgs>
   paroquia?: boolean | Prisma.setor$paroquiaArgs<ExtArgs>
+  regiao?: boolean | Prisma.regiaoDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.SetorCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type setorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -612,14 +612,14 @@ export type setorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $setorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "setor"
   objects: {
-    regiao: Prisma.$regiaoPayload<ExtArgs>
     paroquia: Prisma.$paroquiaPayload<ExtArgs>[]
+    regiao: Prisma.$regiaoPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     descricao: string
-    regiaoId: number
     ativo: boolean
+    regiaoId: number
   }, ExtArgs["result"]["setor"]>
   composites: {}
 }
@@ -1014,8 +1014,8 @@ readonly fields: setorFieldRefs;
  */
 export interface Prisma__setorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  regiao<T extends Prisma.regiaoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.regiaoDefaultArgs<ExtArgs>>): Prisma.Prisma__regiaoClient<runtime.Types.Result.GetResult<Prisma.$regiaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paroquia<T extends Prisma.setor$paroquiaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.setor$paroquiaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$paroquiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  regiao<T extends Prisma.regiaoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.regiaoDefaultArgs<ExtArgs>>): Prisma.Prisma__regiaoClient<runtime.Types.Result.GetResult<Prisma.$regiaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1047,8 +1047,8 @@ export interface Prisma__setorClient<T, Null = never, ExtArgs extends runtime.Ty
 export interface setorFieldRefs {
   readonly id: Prisma.FieldRef<"setor", 'Int'>
   readonly descricao: Prisma.FieldRef<"setor", 'String'>
-  readonly regiaoId: Prisma.FieldRef<"setor", 'Int'>
   readonly ativo: Prisma.FieldRef<"setor", 'Boolean'>
+  readonly regiaoId: Prisma.FieldRef<"setor", 'Int'>
 }
     
 

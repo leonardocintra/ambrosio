@@ -40,11 +40,11 @@ export type UserMinAggregateOutputType = {
   password: string | null
   role: $Enums.roles | null
   whatsapp: string | null
-  pessoaId: number | null
   verifiedWhatsapp: boolean | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  pessoaId: number | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -53,11 +53,11 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   role: $Enums.roles | null
   whatsapp: string | null
-  pessoaId: number | null
   verifiedWhatsapp: boolean | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
+  pessoaId: number | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -66,11 +66,11 @@ export type UserCountAggregateOutputType = {
   password: number
   role: number
   whatsapp: number
-  pessoaId: number
   verifiedWhatsapp: number
   active: number
   createdAt: number
   updatedAt: number
+  pessoaId: number
   _all: number
 }
 
@@ -89,11 +89,11 @@ export type UserMinAggregateInputType = {
   password?: true
   role?: true
   whatsapp?: true
-  pessoaId?: true
   verifiedWhatsapp?: true
   active?: true
   createdAt?: true
   updatedAt?: true
+  pessoaId?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -102,11 +102,11 @@ export type UserMaxAggregateInputType = {
   password?: true
   role?: true
   whatsapp?: true
-  pessoaId?: true
   verifiedWhatsapp?: true
   active?: true
   createdAt?: true
   updatedAt?: true
+  pessoaId?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -115,11 +115,11 @@ export type UserCountAggregateInputType = {
   password?: true
   role?: true
   whatsapp?: true
-  pessoaId?: true
   verifiedWhatsapp?: true
   active?: true
   createdAt?: true
   updatedAt?: true
+  pessoaId?: true
   _all?: true
 }
 
@@ -215,11 +215,11 @@ export type UserGroupByOutputType = {
   password: string
   role: $Enums.roles
   whatsapp: string | null
-  pessoaId: number | null
   verifiedWhatsapp: boolean
   active: boolean
   createdAt: Date
   updatedAt: Date
+  pessoaId: number | null
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -251,11 +251,11 @@ export type userWhereInput = {
   password?: Prisma.StringFilter<"user"> | string
   role?: Prisma.EnumrolesFilter<"user"> | $Enums.roles
   whatsapp?: Prisma.StringNullableFilter<"user"> | string | null
-  pessoaId?: Prisma.IntNullableFilter<"user"> | number | null
   verifiedWhatsapp?: Prisma.BoolFilter<"user"> | boolean
   active?: Prisma.BoolFilter<"user"> | boolean
   createdAt?: Prisma.DateTimeFilter<"user"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"user"> | Date | string
+  pessoaId?: Prisma.IntNullableFilter<"user"> | number | null
   pessoa?: Prisma.XOR<Prisma.PessoaNullableScalarRelationFilter, Prisma.pessoaWhereInput> | null
 }
 
@@ -265,11 +265,11 @@ export type userOrderByWithRelationInput = {
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrderInput | Prisma.SortOrder
-  pessoaId?: Prisma.SortOrderInput | Prisma.SortOrder
   verifiedWhatsapp?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  pessoaId?: Prisma.SortOrderInput | Prisma.SortOrder
   pessoa?: Prisma.pessoaOrderByWithRelationInput
 }
 
@@ -282,11 +282,11 @@ export type userWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringFilter<"user"> | string
   role?: Prisma.EnumrolesFilter<"user"> | $Enums.roles
   whatsapp?: Prisma.StringNullableFilter<"user"> | string | null
-  pessoaId?: Prisma.IntNullableFilter<"user"> | number | null
   verifiedWhatsapp?: Prisma.BoolFilter<"user"> | boolean
   active?: Prisma.BoolFilter<"user"> | boolean
   createdAt?: Prisma.DateTimeFilter<"user"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"user"> | Date | string
+  pessoaId?: Prisma.IntNullableFilter<"user"> | number | null
   pessoa?: Prisma.XOR<Prisma.PessoaNullableScalarRelationFilter, Prisma.pessoaWhereInput> | null
 }, "id" | "email">
 
@@ -296,11 +296,11 @@ export type userOrderByWithAggregationInput = {
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrderInput | Prisma.SortOrder
-  pessoaId?: Prisma.SortOrderInput | Prisma.SortOrder
   verifiedWhatsapp?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  pessoaId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.userCountOrderByAggregateInput
   _avg?: Prisma.userAvgOrderByAggregateInput
   _max?: Prisma.userMaxOrderByAggregateInput
@@ -317,11 +317,11 @@ export type userScalarWhereWithAggregatesInput = {
   password?: Prisma.StringWithAggregatesFilter<"user"> | string
   role?: Prisma.EnumrolesWithAggregatesFilter<"user"> | $Enums.roles
   whatsapp?: Prisma.StringNullableWithAggregatesFilter<"user"> | string | null
-  pessoaId?: Prisma.IntNullableWithAggregatesFilter<"user"> | number | null
   verifiedWhatsapp?: Prisma.BoolWithAggregatesFilter<"user"> | boolean
   active?: Prisma.BoolWithAggregatesFilter<"user"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"user"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"user"> | Date | string
+  pessoaId?: Prisma.IntNullableWithAggregatesFilter<"user"> | number | null
 }
 
 export type userCreateInput = {
@@ -343,11 +343,11 @@ export type userUncheckedCreateInput = {
   password: string
   role?: $Enums.roles
   whatsapp?: string | null
-  pessoaId?: number | null
   verifiedWhatsapp?: boolean
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  pessoaId?: number | null
 }
 
 export type userUpdateInput = {
@@ -369,11 +369,11 @@ export type userUncheckedUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumrolesFieldUpdateOperationsInput | $Enums.roles
   whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  pessoaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   verifiedWhatsapp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pessoaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type userCreateManyInput = {
@@ -382,11 +382,11 @@ export type userCreateManyInput = {
   password: string
   role?: $Enums.roles
   whatsapp?: string | null
-  pessoaId?: number | null
   verifiedWhatsapp?: boolean
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  pessoaId?: number | null
 }
 
 export type userUpdateManyMutationInput = {
@@ -407,11 +407,11 @@ export type userUncheckedUpdateManyInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumrolesFieldUpdateOperationsInput | $Enums.roles
   whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  pessoaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   verifiedWhatsapp?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pessoaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type UserListRelationFilter = {
@@ -430,11 +430,11 @@ export type userCountOrderByAggregateInput = {
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrder
-  pessoaId?: Prisma.SortOrder
   verifiedWhatsapp?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  pessoaId?: Prisma.SortOrder
 }
 
 export type userAvgOrderByAggregateInput = {
@@ -447,11 +447,11 @@ export type userMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrder
-  pessoaId?: Prisma.SortOrder
   verifiedWhatsapp?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  pessoaId?: Prisma.SortOrder
 }
 
 export type userMinOrderByAggregateInput = {
@@ -460,11 +460,11 @@ export type userMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
   whatsapp?: Prisma.SortOrder
-  pessoaId?: Prisma.SortOrder
   verifiedWhatsapp?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  pessoaId?: Prisma.SortOrder
 }
 
 export type userSumOrderByAggregateInput = {
@@ -584,11 +584,11 @@ export type userScalarWhereInput = {
   password?: Prisma.StringFilter<"user"> | string
   role?: Prisma.EnumrolesFilter<"user"> | $Enums.roles
   whatsapp?: Prisma.StringNullableFilter<"user"> | string | null
-  pessoaId?: Prisma.IntNullableFilter<"user"> | number | null
   verifiedWhatsapp?: Prisma.BoolFilter<"user"> | boolean
   active?: Prisma.BoolFilter<"user"> | boolean
   createdAt?: Prisma.DateTimeFilter<"user"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"user"> | Date | string
+  pessoaId?: Prisma.IntNullableFilter<"user"> | number | null
 }
 
 export type userCreateManyPessoaInput = {
@@ -647,11 +647,11 @@ export type userSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   password?: boolean
   role?: boolean
   whatsapp?: boolean
-  pessoaId?: boolean
   verifiedWhatsapp?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  pessoaId?: boolean
   pessoa?: boolean | Prisma.user$pessoaArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -661,11 +661,11 @@ export type userSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   role?: boolean
   whatsapp?: boolean
-  pessoaId?: boolean
   verifiedWhatsapp?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  pessoaId?: boolean
   pessoa?: boolean | Prisma.user$pessoaArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -675,11 +675,11 @@ export type userSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   role?: boolean
   whatsapp?: boolean
-  pessoaId?: boolean
   verifiedWhatsapp?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  pessoaId?: boolean
   pessoa?: boolean | Prisma.user$pessoaArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -689,14 +689,14 @@ export type userSelectScalar = {
   password?: boolean
   role?: boolean
   whatsapp?: boolean
-  pessoaId?: boolean
   verifiedWhatsapp?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  pessoaId?: boolean
 }
 
-export type userOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role" | "whatsapp" | "pessoaId" | "verifiedWhatsapp" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type userOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "role" | "whatsapp" | "verifiedWhatsapp" | "active" | "createdAt" | "updatedAt" | "pessoaId", ExtArgs["result"]["user"]>
 export type userInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pessoa?: boolean | Prisma.user$pessoaArgs<ExtArgs>
 }
@@ -718,11 +718,11 @@ export type $userPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     password: string
     role: $Enums.roles
     whatsapp: string | null
-    pessoaId: number | null
     verifiedWhatsapp: boolean
     active: boolean
     createdAt: Date
     updatedAt: Date
+    pessoaId: number | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1152,11 +1152,11 @@ export interface userFieldRefs {
   readonly password: Prisma.FieldRef<"user", 'String'>
   readonly role: Prisma.FieldRef<"user", 'roles'>
   readonly whatsapp: Prisma.FieldRef<"user", 'String'>
-  readonly pessoaId: Prisma.FieldRef<"user", 'Int'>
   readonly verifiedWhatsapp: Prisma.FieldRef<"user", 'Boolean'>
   readonly active: Prisma.FieldRef<"user", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"user", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"user", 'DateTime'>
+  readonly pessoaId: Prisma.FieldRef<"user", 'Int'>
 }
     
 

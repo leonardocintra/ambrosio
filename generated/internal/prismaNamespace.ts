@@ -2758,9 +2758,11 @@ export type EscolaridadeScalarFieldEnum = (typeof EscolaridadeScalarFieldEnum)[k
 
 export const PessoaScalarFieldEnum = {
   id: 'id',
-  externalId: 'externalId',
   ativo: 'ativo',
-  situacaoReligiosaId: 'situacaoReligiosaId'
+  situacaoReligiosaId: 'situacaoReligiosaId',
+  externalId: 'externalId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PessoaScalarFieldEnum = (typeof PessoaScalarFieldEnum)[keyof typeof PessoaScalarFieldEnum]
@@ -2934,11 +2936,11 @@ export const UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   whatsapp: 'whatsapp',
-  pessoaId: 'pessoaId',
   verifiedWhatsapp: 'verifiedWhatsapp',
   active: 'active',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  pessoaId: 'pessoaId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2947,8 +2949,8 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 export const SetorScalarFieldEnum = {
   id: 'id',
   descricao: 'descricao',
-  regiaoId: 'regiaoId',
-  ativo: 'ativo'
+  ativo: 'ativo',
+  regiaoId: 'regiaoId'
 } as const
 
 export type SetorScalarFieldEnum = (typeof SetorScalarFieldEnum)[keyof typeof SetorScalarFieldEnum]
@@ -2993,11 +2995,11 @@ export const ComunidadeEtapaScalarFieldEnum = {
   etapaId: 'etapaId',
   dataInicio: 'dataInicio',
   dataFim: 'dataFim',
-  equipeId: 'equipeId',
-  localConvivencia: 'localConvivencia',
   observacao: 'observacao',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  equipeId: 'equipeId',
+  updatedAt: 'updatedAt',
+  localConvivencia: 'localConvivencia'
 } as const
 
 export type ComunidadeEtapaScalarFieldEnum = (typeof ComunidadeEtapaScalarFieldEnum)[keyof typeof ComunidadeEtapaScalarFieldEnum]
@@ -3082,6 +3084,20 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
  * Reference to a field of type 'Sexo'
  */
 export type EnumSexoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Sexo'>
@@ -3106,20 +3122,6 @@ export type EnumtipoCarismaEnumFieldRefInput<$PrismaModel> = FieldRefInputType<$
  * Reference to a field of type 'tipoCarismaEnum[]'
  */
 export type ListEnumtipoCarismaEnumFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'tipoCarismaEnum[]'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 

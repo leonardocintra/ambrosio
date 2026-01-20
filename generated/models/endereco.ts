@@ -236,11 +236,11 @@ export type enderecoWhereInput = {
   numero?: Prisma.StringFilter<"endereco"> | string
   cidadeId?: Prisma.IntFilter<"endereco"> | number
   observacao?: Prisma.StringNullableFilter<"endereco"> | string | null
+  diocese?: Prisma.DioceseListRelationFilter
   cidade?: Prisma.XOR<Prisma.CidadeScalarRelationFilter, Prisma.cidadeWhereInput>
+  localidade?: Prisma.LocalidadeListRelationFilter
   paroquias?: Prisma.ParoquiaListRelationFilter
   pessoas?: Prisma.PessoaEnderecoListRelationFilter
-  localidade?: Prisma.LocalidadeListRelationFilter
-  diocese?: Prisma.DioceseListRelationFilter
 }
 
 export type enderecoOrderByWithRelationInput = {
@@ -251,11 +251,11 @@ export type enderecoOrderByWithRelationInput = {
   numero?: Prisma.SortOrder
   cidadeId?: Prisma.SortOrder
   observacao?: Prisma.SortOrderInput | Prisma.SortOrder
+  diocese?: Prisma.dioceseOrderByRelationAggregateInput
   cidade?: Prisma.cidadeOrderByWithRelationInput
+  localidade?: Prisma.localidadeOrderByRelationAggregateInput
   paroquias?: Prisma.paroquiaOrderByRelationAggregateInput
   pessoas?: Prisma.pessoaEnderecoOrderByRelationAggregateInput
-  localidade?: Prisma.localidadeOrderByRelationAggregateInput
-  diocese?: Prisma.dioceseOrderByRelationAggregateInput
 }
 
 export type enderecoWhereUniqueInput = Prisma.AtLeast<{
@@ -269,11 +269,11 @@ export type enderecoWhereUniqueInput = Prisma.AtLeast<{
   numero?: Prisma.StringFilter<"endereco"> | string
   cidadeId?: Prisma.IntFilter<"endereco"> | number
   observacao?: Prisma.StringNullableFilter<"endereco"> | string | null
+  diocese?: Prisma.DioceseListRelationFilter
   cidade?: Prisma.XOR<Prisma.CidadeScalarRelationFilter, Prisma.cidadeWhereInput>
+  localidade?: Prisma.LocalidadeListRelationFilter
   paroquias?: Prisma.ParoquiaListRelationFilter
   pessoas?: Prisma.PessoaEnderecoListRelationFilter
-  localidade?: Prisma.LocalidadeListRelationFilter
-  diocese?: Prisma.DioceseListRelationFilter
 }, "id">
 
 export type enderecoOrderByWithAggregationInput = {
@@ -310,11 +310,11 @@ export type enderecoCreateInput = {
   bairro: string
   numero: string
   observacao?: string | null
+  diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
   cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
-  diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoUncheckedCreateInput = {
@@ -325,10 +325,10 @@ export type enderecoUncheckedCreateInput = {
   numero: string
   cidadeId?: number
   observacao?: string | null
+  diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
+  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaUncheckedCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
-  diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoUpdateInput = {
@@ -337,11 +337,11 @@ export type enderecoUpdateInput = {
   bairro?: Prisma.StringFieldUpdateOperationsInput | string
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diocese?: Prisma.dioceseUpdateManyWithoutEnderecoNestedInput
   cidade?: Prisma.cidadeUpdateOneRequiredWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
   paroquias?: Prisma.paroquiaUpdateManyWithoutEnderecoNestedInput
   pessoas?: Prisma.pessoaEnderecoUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
-  diocese?: Prisma.dioceseUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoUncheckedUpdateInput = {
@@ -352,10 +352,10 @@ export type enderecoUncheckedUpdateInput = {
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   cidadeId?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diocese?: Prisma.dioceseUncheckedUpdateManyWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
   paroquias?: Prisma.paroquiaUncheckedUpdateManyWithoutEnderecoNestedInput
   pessoas?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
-  diocese?: Prisma.dioceseUncheckedUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoCreateManyInput = {
@@ -545,10 +545,10 @@ export type enderecoCreateWithoutCidadeInput = {
   bairro: string
   numero: string
   observacao?: string | null
+  diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
+  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
-  diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoUncheckedCreateWithoutCidadeInput = {
@@ -558,10 +558,10 @@ export type enderecoUncheckedCreateWithoutCidadeInput = {
   bairro: string
   numero: string
   observacao?: string | null
+  diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
+  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaUncheckedCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
-  diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoCreateOrConnectWithoutCidadeInput = {
@@ -609,10 +609,10 @@ export type enderecoCreateWithoutPessoasInput = {
   bairro: string
   numero: string
   observacao?: string | null
-  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
-  paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
+  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
+  paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoUncheckedCreateWithoutPessoasInput = {
@@ -623,9 +623,9 @@ export type enderecoUncheckedCreateWithoutPessoasInput = {
   numero: string
   cidadeId?: number
   observacao?: string | null
-  paroquias?: Prisma.paroquiaUncheckedCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
   diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
+  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
+  paroquias?: Prisma.paroquiaUncheckedCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoCreateOrConnectWithoutPessoasInput = {
@@ -650,10 +650,10 @@ export type enderecoUpdateWithoutPessoasInput = {
   bairro?: Prisma.StringFieldUpdateOperationsInput | string
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cidade?: Prisma.cidadeUpdateOneRequiredWithoutEnderecoNestedInput
-  paroquias?: Prisma.paroquiaUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
   diocese?: Prisma.dioceseUpdateManyWithoutEnderecoNestedInput
+  cidade?: Prisma.cidadeUpdateOneRequiredWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
+  paroquias?: Prisma.paroquiaUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoUncheckedUpdateWithoutPessoasInput = {
@@ -664,9 +664,9 @@ export type enderecoUncheckedUpdateWithoutPessoasInput = {
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   cidadeId?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  paroquias?: Prisma.paroquiaUncheckedUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
   diocese?: Prisma.dioceseUncheckedUpdateManyWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
+  paroquias?: Prisma.paroquiaUncheckedUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoCreateWithoutDioceseInput = {
@@ -676,9 +676,9 @@ export type enderecoCreateWithoutDioceseInput = {
   numero: string
   observacao?: string | null
   cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoUncheckedCreateWithoutDioceseInput = {
@@ -689,9 +689,9 @@ export type enderecoUncheckedCreateWithoutDioceseInput = {
   numero: string
   cidadeId?: number
   observacao?: string | null
+  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaUncheckedCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoCreateOrConnectWithoutDioceseInput = {
@@ -717,9 +717,9 @@ export type enderecoUpdateWithoutDioceseInput = {
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cidade?: Prisma.cidadeUpdateOneRequiredWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
   paroquias?: Prisma.paroquiaUpdateManyWithoutEnderecoNestedInput
   pessoas?: Prisma.pessoaEnderecoUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoUncheckedUpdateWithoutDioceseInput = {
@@ -730,9 +730,9 @@ export type enderecoUncheckedUpdateWithoutDioceseInput = {
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   cidadeId?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
   paroquias?: Prisma.paroquiaUncheckedUpdateManyWithoutEnderecoNestedInput
   pessoas?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoCreateWithoutParoquiasInput = {
@@ -741,10 +741,10 @@ export type enderecoCreateWithoutParoquiasInput = {
   bairro: string
   numero: string
   observacao?: string | null
-  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
-  pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
+  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
+  pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoUncheckedCreateWithoutParoquiasInput = {
@@ -755,9 +755,9 @@ export type enderecoUncheckedCreateWithoutParoquiasInput = {
   numero: string
   cidadeId?: number
   observacao?: string | null
-  pessoas?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutEnderecoInput
-  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
   diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
+  localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
+  pessoas?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoCreateOrConnectWithoutParoquiasInput = {
@@ -782,10 +782,10 @@ export type enderecoUpdateWithoutParoquiasInput = {
   bairro?: Prisma.StringFieldUpdateOperationsInput | string
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cidade?: Prisma.cidadeUpdateOneRequiredWithoutEnderecoNestedInput
-  pessoas?: Prisma.pessoaEnderecoUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
   diocese?: Prisma.dioceseUpdateManyWithoutEnderecoNestedInput
+  cidade?: Prisma.cidadeUpdateOneRequiredWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
+  pessoas?: Prisma.pessoaEnderecoUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoUncheckedUpdateWithoutParoquiasInput = {
@@ -796,9 +796,9 @@ export type enderecoUncheckedUpdateWithoutParoquiasInput = {
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   cidadeId?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  pessoas?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
   diocese?: Prisma.dioceseUncheckedUpdateManyWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
+  pessoas?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoCreateWithoutLocalidadeInput = {
@@ -807,10 +807,10 @@ export type enderecoCreateWithoutLocalidadeInput = {
   bairro: string
   numero: string
   observacao?: string | null
+  diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
   cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
   paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
-  diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoUncheckedCreateWithoutLocalidadeInput = {
@@ -821,9 +821,9 @@ export type enderecoUncheckedCreateWithoutLocalidadeInput = {
   numero: string
   cidadeId?: number
   observacao?: string | null
+  diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaUncheckedCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoUncheckedCreateNestedManyWithoutEnderecoInput
-  diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
 }
 
 export type enderecoCreateOrConnectWithoutLocalidadeInput = {
@@ -848,10 +848,10 @@ export type enderecoUpdateWithoutLocalidadeInput = {
   bairro?: Prisma.StringFieldUpdateOperationsInput | string
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diocese?: Prisma.dioceseUpdateManyWithoutEnderecoNestedInput
   cidade?: Prisma.cidadeUpdateOneRequiredWithoutEnderecoNestedInput
   paroquias?: Prisma.paroquiaUpdateManyWithoutEnderecoNestedInput
   pessoas?: Prisma.pessoaEnderecoUpdateManyWithoutEnderecoNestedInput
-  diocese?: Prisma.dioceseUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoUncheckedUpdateWithoutLocalidadeInput = {
@@ -862,9 +862,9 @@ export type enderecoUncheckedUpdateWithoutLocalidadeInput = {
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   cidadeId?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diocese?: Prisma.dioceseUncheckedUpdateManyWithoutEnderecoNestedInput
   paroquias?: Prisma.paroquiaUncheckedUpdateManyWithoutEnderecoNestedInput
   pessoas?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutEnderecoNestedInput
-  diocese?: Prisma.dioceseUncheckedUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoCreateManyCidadeInput = {
@@ -882,10 +882,10 @@ export type enderecoUpdateWithoutCidadeInput = {
   bairro?: Prisma.StringFieldUpdateOperationsInput | string
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diocese?: Prisma.dioceseUpdateManyWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
   paroquias?: Prisma.paroquiaUpdateManyWithoutEnderecoNestedInput
   pessoas?: Prisma.pessoaEnderecoUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUpdateManyWithoutEnderecoNestedInput
-  diocese?: Prisma.dioceseUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoUncheckedUpdateWithoutCidadeInput = {
@@ -895,10 +895,10 @@ export type enderecoUncheckedUpdateWithoutCidadeInput = {
   bairro?: Prisma.StringFieldUpdateOperationsInput | string
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  diocese?: Prisma.dioceseUncheckedUpdateManyWithoutEnderecoNestedInput
+  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
   paroquias?: Prisma.paroquiaUncheckedUpdateManyWithoutEnderecoNestedInput
   pessoas?: Prisma.pessoaEnderecoUncheckedUpdateManyWithoutEnderecoNestedInput
-  localidade?: Prisma.localidadeUncheckedUpdateManyWithoutEnderecoNestedInput
-  diocese?: Prisma.dioceseUncheckedUpdateManyWithoutEnderecoNestedInput
 }
 
 export type enderecoUncheckedUpdateManyWithoutCidadeInput = {
@@ -916,17 +916,17 @@ export type enderecoUncheckedUpdateManyWithoutCidadeInput = {
  */
 
 export type EnderecoCountOutputType = {
+  diocese: number
+  localidade: number
   paroquias: number
   pessoas: number
-  localidade: number
-  diocese: number
 }
 
 export type EnderecoCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  diocese?: boolean | EnderecoCountOutputTypeCountDioceseArgs
+  localidade?: boolean | EnderecoCountOutputTypeCountLocalidadeArgs
   paroquias?: boolean | EnderecoCountOutputTypeCountParoquiasArgs
   pessoas?: boolean | EnderecoCountOutputTypeCountPessoasArgs
-  localidade?: boolean | EnderecoCountOutputTypeCountLocalidadeArgs
-  diocese?: boolean | EnderecoCountOutputTypeCountDioceseArgs
 }
 
 /**
@@ -937,6 +937,20 @@ export type EnderecoCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the EnderecoCountOutputType
    */
   select?: Prisma.EnderecoCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * EnderecoCountOutputType without action
+ */
+export type EnderecoCountOutputTypeCountDioceseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.dioceseWhereInput
+}
+
+/**
+ * EnderecoCountOutputType without action
+ */
+export type EnderecoCountOutputTypeCountLocalidadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.localidadeWhereInput
 }
 
 /**
@@ -953,20 +967,6 @@ export type EnderecoCountOutputTypeCountPessoasArgs<ExtArgs extends runtime.Type
   where?: Prisma.pessoaEnderecoWhereInput
 }
 
-/**
- * EnderecoCountOutputType without action
- */
-export type EnderecoCountOutputTypeCountLocalidadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.localidadeWhereInput
-}
-
-/**
- * EnderecoCountOutputType without action
- */
-export type EnderecoCountOutputTypeCountDioceseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.dioceseWhereInput
-}
-
 
 export type enderecoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -976,11 +976,11 @@ export type enderecoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   numero?: boolean
   cidadeId?: boolean
   observacao?: boolean
+  diocese?: boolean | Prisma.endereco$dioceseArgs<ExtArgs>
   cidade?: boolean | Prisma.cidadeDefaultArgs<ExtArgs>
+  localidade?: boolean | Prisma.endereco$localidadeArgs<ExtArgs>
   paroquias?: boolean | Prisma.endereco$paroquiasArgs<ExtArgs>
   pessoas?: boolean | Prisma.endereco$pessoasArgs<ExtArgs>
-  localidade?: boolean | Prisma.endereco$localidadeArgs<ExtArgs>
-  diocese?: boolean | Prisma.endereco$dioceseArgs<ExtArgs>
   _count?: boolean | Prisma.EnderecoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["endereco"]>
 
@@ -1018,11 +1018,11 @@ export type enderecoSelectScalar = {
 
 export type enderecoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cep" | "logradouro" | "bairro" | "numero" | "cidadeId" | "observacao", ExtArgs["result"]["endereco"]>
 export type enderecoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  diocese?: boolean | Prisma.endereco$dioceseArgs<ExtArgs>
   cidade?: boolean | Prisma.cidadeDefaultArgs<ExtArgs>
+  localidade?: boolean | Prisma.endereco$localidadeArgs<ExtArgs>
   paroquias?: boolean | Prisma.endereco$paroquiasArgs<ExtArgs>
   pessoas?: boolean | Prisma.endereco$pessoasArgs<ExtArgs>
-  localidade?: boolean | Prisma.endereco$localidadeArgs<ExtArgs>
-  diocese?: boolean | Prisma.endereco$dioceseArgs<ExtArgs>
   _count?: boolean | Prisma.EnderecoCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type enderecoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1035,11 +1035,11 @@ export type enderecoIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $enderecoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "endereco"
   objects: {
+    diocese: Prisma.$diocesePayload<ExtArgs>[]
     cidade: Prisma.$cidadePayload<ExtArgs>
+    localidade: Prisma.$localidadePayload<ExtArgs>[]
     paroquias: Prisma.$paroquiaPayload<ExtArgs>[]
     pessoas: Prisma.$pessoaEnderecoPayload<ExtArgs>[]
-    localidade: Prisma.$localidadePayload<ExtArgs>[]
-    diocese: Prisma.$diocesePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1443,11 +1443,11 @@ readonly fields: enderecoFieldRefs;
  */
 export interface Prisma__enderecoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  diocese<T extends Prisma.endereco$dioceseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.endereco$dioceseArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$diocesePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cidade<T extends Prisma.cidadeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.cidadeDefaultArgs<ExtArgs>>): Prisma.Prisma__cidadeClient<runtime.Types.Result.GetResult<Prisma.$cidadePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  localidade<T extends Prisma.endereco$localidadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.endereco$localidadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$localidadePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paroquias<T extends Prisma.endereco$paroquiasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.endereco$paroquiasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$paroquiaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pessoas<T extends Prisma.endereco$pessoasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.endereco$pessoasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$pessoaEnderecoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  localidade<T extends Prisma.endereco$localidadeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.endereco$localidadeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$localidadePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  diocese<T extends Prisma.endereco$dioceseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.endereco$dioceseArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$diocesePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1880,6 +1880,54 @@ export type enderecoDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
+ * endereco.diocese
+ */
+export type endereco$dioceseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the diocese
+   */
+  select?: Prisma.dioceseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the diocese
+   */
+  omit?: Prisma.dioceseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.dioceseInclude<ExtArgs> | null
+  where?: Prisma.dioceseWhereInput
+  orderBy?: Prisma.dioceseOrderByWithRelationInput | Prisma.dioceseOrderByWithRelationInput[]
+  cursor?: Prisma.dioceseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DioceseScalarFieldEnum | Prisma.DioceseScalarFieldEnum[]
+}
+
+/**
+ * endereco.localidade
+ */
+export type endereco$localidadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the localidade
+   */
+  select?: Prisma.localidadeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the localidade
+   */
+  omit?: Prisma.localidadeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.localidadeInclude<ExtArgs> | null
+  where?: Prisma.localidadeWhereInput
+  orderBy?: Prisma.localidadeOrderByWithRelationInput | Prisma.localidadeOrderByWithRelationInput[]
+  cursor?: Prisma.localidadeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LocalidadeScalarFieldEnum | Prisma.LocalidadeScalarFieldEnum[]
+}
+
+/**
  * endereco.paroquias
  */
 export type endereco$paroquiasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1925,54 +1973,6 @@ export type endereco$pessoasArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.PessoaEnderecoScalarFieldEnum | Prisma.PessoaEnderecoScalarFieldEnum[]
-}
-
-/**
- * endereco.localidade
- */
-export type endereco$localidadeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the localidade
-   */
-  select?: Prisma.localidadeSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the localidade
-   */
-  omit?: Prisma.localidadeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.localidadeInclude<ExtArgs> | null
-  where?: Prisma.localidadeWhereInput
-  orderBy?: Prisma.localidadeOrderByWithRelationInput | Prisma.localidadeOrderByWithRelationInput[]
-  cursor?: Prisma.localidadeWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.LocalidadeScalarFieldEnum | Prisma.LocalidadeScalarFieldEnum[]
-}
-
-/**
- * endereco.diocese
- */
-export type endereco$dioceseArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the diocese
-   */
-  select?: Prisma.dioceseSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the diocese
-   */
-  omit?: Prisma.dioceseOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.dioceseInclude<ExtArgs> | null
-  where?: Prisma.dioceseWhereInput
-  orderBy?: Prisma.dioceseOrderByWithRelationInput | Prisma.dioceseOrderByWithRelationInput[]
-  cursor?: Prisma.dioceseWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.DioceseScalarFieldEnum | Prisma.DioceseScalarFieldEnum[]
 }
 
 /**

@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../generated"
@@ -32,10 +26,10 @@ model estado {
   id     Int      @id @default(autoincrement())
   nome   String   @unique @db.VarChar(100)
   sigla  String   @unique @db.VarChar(2)
-  ativo  Boolean  @default(true) @db.Boolean
+  ativo  Boolean  @default(true)
   paisId Int
-  pais   pais     @relation(fields: [paisId], references: [id])
   cidade cidade[]
+  pais   pais     @relation(fields: [paisId], references: [id])
 
   @@schema("ambrosio")
 }
@@ -44,8 +38,8 @@ model cidade {
   id       Int        @id @default(autoincrement())
   nome     String     @unique @db.VarChar(100)
   estadoId Int
+  ativo    Boolean    @default(true)
   estado   estado     @relation(fields: [estadoId], references: [id])
-  ativo    Boolean    @default(true) @db.Boolean
   endereco endereco[]
 
   @@schema("ambrosio")
@@ -58,12 +52,12 @@ model endereco {
   bairro     String           @db.VarChar(50)
   numero     String           @db.VarChar(5)
   cidadeId   Int              @default(1)
-  cidade     cidade           @relation(fields: [cidadeId], references: [id])
   observacao String?          @db.VarChar(250)
+  diocese    diocese[]
+  cidade     cidade           @relation(fields: [cidadeId], references: [id])
+  localidade localidade[]
   paroquias  paroquia[]
   pessoas    pessoaEndereco[]
-  localidade localidade[]
-  diocese    diocese[]
 
   @@schema("ambrosio")
 }
@@ -82,28 +76,23 @@ model escolaridade {
   @@schema("ambrosio")
 }
 
-enum Sexo {
-  MASCULINO
-  FEMININO
-
-  @@schema("ambrosio")
-}
-
 model pessoa {
   id                   Int                @id @default(autoincrement())
-  externalId           String             @unique @db.VarChar(36)
   ativo                Boolean            @default(true)
   situacaoReligiosaId  Int
-  situacaoReligiosa    situacaoReligiosa  @relation(fields: [situacaoReligiosaId], references: [id])
-  passaportes          passaportePessoa[]
-  contatos             pessoaContato[]
-  casamentosComoMarido pessoaCasal[]      @relation("Marido")
-  casamentosComoMulher pessoaCasal[]      @relation("Mulher")
-  enderecos            pessoaEndereco[]
-  user                 user[]
+  externalId           String             @unique @db.VarChar(36)
   comunidadePessoas    comunidadePessoa[]
   equipePessoas        equipePessoa[]
+  passaportes          passaportePessoa[]
+  situacaoReligiosa    situacaoReligiosa  @relation(fields: [situacaoReligiosaId], references: [id])
   pessoaCarismas       pessoaCarisma[]
+  casamentosComoMarido pessoaCasal[]      @relation("Marido")
+  casamentosComoMulher pessoaCasal[]      @relation("Mulher")
+  contatos             pessoaContato[]
+  enderecos            pessoaEndereco[]
+  user                 user[]
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @default(now()) @updatedAt
 
   @@index([externalId])
   @@schema("ambrosio")
@@ -114,14 +103,6 @@ model situacaoReligiosa {
   descricao String   @unique @db.VarChar(50)
   sexoUnico Sexo?
   pessoa    pessoa[]
-
-  @@schema("ambrosio")
-}
-
-enum tipoCarismaEnum {
-  SERVICO
-  VINCULADO
-  PRIMITIVO
 
   @@schema("ambrosio")
 }
@@ -141,10 +122,10 @@ model pessoaCarisma {
   id         Int      @id @default(autoincrement())
   pessoaId   Int
   carismaId  Int
-  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
-  carisma    carisma  @relation(fields: [carismaId], references: [id], onDelete: Cascade)
   observacao String?  @db.VarChar(255)
   createdAt  DateTime @default(now())
+  carisma    carisma  @relation(fields: [carismaId], references: [id], onDelete: Cascade)
+  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@unique([pessoaId, carismaId])
   @@schema("ambrosio")
@@ -153,8 +134,8 @@ model pessoaCarisma {
 model pessoaEndereco {
   pessoaId   Int
   enderecoId Int
-  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  endereco   endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  endereco   endereco @relation(fields: [enderecoId], references: [id], onDelete: Cascade)
+  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@id([pessoaId, enderecoId])
   @@schema("ambrosio")
@@ -164,8 +145,8 @@ model pessoaCasal {
   id             Int    @id @default(autoincrement())
   pessoaMaridoId Int
   pessoaMulherId Int
-  marido         pessoa @relation("Marido", fields: [pessoaMaridoId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  mulher         pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  marido         pessoa @relation("Marido", fields: [pessoaMaridoId], references: [id], onDelete: Cascade)
+  mulher         pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id], onDelete: Cascade)
 
   @@unique([pessoaMaridoId, pessoaMulherId])
   @@schema("ambrosio")
@@ -191,7 +172,7 @@ model pessoaContato {
   ativo               Boolean @default(true)
   email               String?
   pessoaId            Int
-  pessoa              pessoa  @relation(fields: [pessoaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pessoa              pessoa  @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@schema("ambrosio")
 }
@@ -207,14 +188,14 @@ model tipoDiocese {
 model diocese {
   id            Int          @id @default(autoincrement())
   tipoDioceseId Int
-  tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
   descricao     String       @db.VarChar(90)
   enderecoId    Int
-  endereco      endereco     @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @default(now()) @updatedAt
-  paroquias     paroquia[]
+  endereco      endereco     @relation(fields: [enderecoId], references: [id])
+  tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
   localidade    localidade[]
+  paroquias     paroquia[]
 
   @@schema("ambrosio")
 }
@@ -223,12 +204,12 @@ model paroquia {
   id          Int          @id @default(autoincrement())
   enderecoId  Int
   dioceseId   Int
-  endereco    endereco     @relation(fields: [enderecoId], references: [id], onDelete: Restrict)
-  diocese     diocese      @relation(fields: [dioceseId], references: [id], onDelete: Restrict)
   descricao   String       @db.VarChar(50)
   setorId     Int          @default(1)
-  setor       setor        @relation(fields: [setorId], references: [id], onDelete: Restrict)
   comunidades comunidade[]
+  diocese     diocese      @relation(fields: [dioceseId], references: [id])
+  endereco    endereco     @relation(fields: [enderecoId], references: [id])
+  setor       setor        @relation(fields: [setorId], references: [id])
 
   @@schema("ambrosio")
 }
@@ -253,12 +234,12 @@ model equipe {
   id               Int               @id @default(autoincrement())
   descricao        String            @db.VarChar(80)
   tipoEquipeId     Int
-  tipoEquipe       tipoEquipe        @relation(fields: [tipoEquipeId], references: [id], onDelete: Restrict)
   observacao       String?           @db.VarChar(255)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @default(now()) @updatedAt
-  equipePessoas    equipePessoa[]
   comunidadeEtapas comunidadeEtapa[]
+  tipoEquipe       tipoEquipe        @relation(fields: [tipoEquipeId], references: [id])
+  equipePessoas    equipePessoa[]
 
   @@schema("ambrosio")
 }
@@ -267,10 +248,10 @@ model equipePessoa {
   id         Int      @id @default(autoincrement())
   equipeId   Int
   pessoaId   Int
-  equipe     equipe   @relation(fields: [equipeId], references: [id], onDelete: Cascade)
-  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
   observacao String?  @db.VarChar(255)
   createdAt  DateTime @default(now())
+  equipe     equipe   @relation(fields: [equipeId], references: [id], onDelete: Cascade)
+  pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@unique([equipeId, pessoaId])
   @@schema("ambrosio")
@@ -280,12 +261,12 @@ model localidade {
   id               Int            @id @default(autoincrement())
   descricao        String         @db.VarChar(80)
   dioceseId        Int
-  diocese          diocese        @relation(fields: [dioceseId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   tipoLocalidadeId Int
-  tipoLocalidade   tipoLocalidade @relation(fields: [tipoLocalidadeId], references: [id], onDelete: Restrict)
   observacao       String?
   enderecoId       Int
-  endereco         endereco       @relation(fields: [enderecoId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  diocese          diocese        @relation(fields: [dioceseId], references: [id])
+  endereco         endereco       @relation(fields: [enderecoId], references: [id])
+  tipoLocalidade   tipoLocalidade @relation(fields: [tipoLocalidadeId], references: [id])
 
   @@schema("ambrosio")
 }
@@ -298,32 +279,18 @@ model tipoLocalidade {
   @@schema("ambrosio")
 }
 
-enum roles {
-  ADMIN
-  CATEQUISTA_NACIONAL
-  CATEQUISTA_GRANDE_REGIAO
-  CATEQUISTA_REGIAO
-  CATEQUISTA_SETOR
-  CATEQUISTA_PAROQUIA
-  SECRETARIA_CNC
-  SECRETARIA_PAROQUIA
-  NAO_IDENTIFICADO
-
-  @@schema("ambrosio")
-}
-
 model user {
   id               String   @id @default(cuid())
   email            String   @unique
   password         String
   role             roles    @default(NAO_IDENTIFICADO)
   whatsapp         String?  @db.VarChar(20)
-  pessoaId         Int?
-  pessoa           pessoa?  @relation(fields: [pessoaId], references: [id])
   verifiedWhatsapp Boolean  @default(false)
   active           Boolean  @default(false)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  pessoaId         Int?
+  pessoa           pessoa?  @relation(fields: [pessoaId], references: [id])
 
   @@schema("ambrosio")
 }
@@ -331,10 +298,10 @@ model user {
 model setor {
   id        Int        @id @default(autoincrement())
   descricao String     @unique @db.VarChar(50)
-  regiaoId  Int        @default(1)
-  regiao    regiao     @relation(fields: [regiaoId], references: [id], onDelete: Restrict)
   ativo     Boolean    @default(true)
+  regiaoId  Int        @default(1)
   paroquia  paroquia[]
+  regiao    regiao     @relation(fields: [regiaoId], references: [id])
 
   @@unique([descricao, regiaoId])
   @@schema("ambrosio")
@@ -353,8 +320,8 @@ model regiao {
   id            Int         @id @default(autoincrement())
   descricao     String      @unique @db.VarChar(100)
   macroRegiaoId Int
-  macroRegiao   macroRegiao @relation(fields: [macroRegiaoId], references: [id], onDelete: Restrict)
   ativo         Boolean     @default(true)
+  macroRegiao   macroRegiao @relation(fields: [macroRegiaoId], references: [id])
   setor         setor[]
 
   @@unique([descricao, macroRegiaoId])
@@ -368,9 +335,9 @@ model comunidade {
   quantidadeMembros  Int
   observacao         String?            @db.VarChar(250)
   paroquiaId         Int
-  paroquia           paroquia           @relation(fields: [paroquiaId], references: [id], onDelete: Restrict)
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @default(now()) @updatedAt
+  paroquia           paroquia           @relation(fields: [paroquiaId], references: [id])
   comunidadeEtapas   comunidadeEtapa[]
   comunidadePessoas  comunidadePessoa[]
 
@@ -382,16 +349,16 @@ model comunidadeEtapa {
   id               Int        @id @default(autoincrement())
   comunidadeId     Int
   etapaId          Int
-  comunidade       comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
-  etapa            etapa      @relation(fields: [etapaId], references: [id], onDelete: Cascade)
   dataInicio       DateTime?
   dataFim          DateTime?
-  equipeId         Int?
-  equipe           equipe?    @relation(fields: [equipeId], references: [id], onDelete: SetNull)
-  localConvivencia String?    @db.VarChar(180)
   observacao       String?    @db.VarChar(250)
   createdAt        DateTime   @default(now())
+  equipeId         Int?
   updatedAt        DateTime   @default(now()) @updatedAt
+  localConvivencia String?    @db.VarChar(180)
+  comunidade       comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
+  equipe           equipe?    @relation(fields: [equipeId], references: [id])
+  etapa            etapa      @relation(fields: [etapaId], references: [id], onDelete: Cascade)
 
   @@unique([comunidadeId, etapaId])
   @@schema("ambrosio")
@@ -401,13 +368,42 @@ model comunidadePessoa {
   id           Int        @id @default(autoincrement())
   comunidadeId Int
   pessoaId     Int
-  comunidade   comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
-  pessoa       pessoa     @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
   dataEntrada  DateTime
   dataSaida    DateTime?
   observacao   String?    @db.VarChar(250)
   createdAt    DateTime   @default(now())
+  comunidade   comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
+  pessoa       pessoa     @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@unique([comunidadeId, pessoaId])
+  @@schema("ambrosio")
+}
+
+enum Sexo {
+  MASCULINO
+  FEMININO
+
+  @@schema("ambrosio")
+}
+
+enum tipoCarismaEnum {
+  SERVICO
+  VINCULADO
+  PRIMITIVO
+
+  @@schema("ambrosio")
+}
+
+enum roles {
+  ADMIN
+  CATEQUISTA_NACIONAL
+  CATEQUISTA_GRANDE_REGIAO
+  CATEQUISTA_REGIAO
+  CATEQUISTA_SETOR
+  CATEQUISTA_PAROQUIA
+  SECRETARIA_CNC
+  SECRETARIA_PAROQUIA
+  NAO_IDENTIFICADO
+
   @@schema("ambrosio")
 }

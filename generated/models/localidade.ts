@@ -237,8 +237,8 @@ export type localidadeWhereInput = {
   observacao?: Prisma.StringNullableFilter<"localidade"> | string | null
   enderecoId?: Prisma.IntFilter<"localidade"> | number
   diocese?: Prisma.XOR<Prisma.DioceseScalarRelationFilter, Prisma.dioceseWhereInput>
-  tipoLocalidade?: Prisma.XOR<Prisma.TipoLocalidadeScalarRelationFilter, Prisma.tipoLocalidadeWhereInput>
   endereco?: Prisma.XOR<Prisma.EnderecoScalarRelationFilter, Prisma.enderecoWhereInput>
+  tipoLocalidade?: Prisma.XOR<Prisma.TipoLocalidadeScalarRelationFilter, Prisma.tipoLocalidadeWhereInput>
 }
 
 export type localidadeOrderByWithRelationInput = {
@@ -249,8 +249,8 @@ export type localidadeOrderByWithRelationInput = {
   observacao?: Prisma.SortOrderInput | Prisma.SortOrder
   enderecoId?: Prisma.SortOrder
   diocese?: Prisma.dioceseOrderByWithRelationInput
-  tipoLocalidade?: Prisma.tipoLocalidadeOrderByWithRelationInput
   endereco?: Prisma.enderecoOrderByWithRelationInput
+  tipoLocalidade?: Prisma.tipoLocalidadeOrderByWithRelationInput
 }
 
 export type localidadeWhereUniqueInput = Prisma.AtLeast<{
@@ -264,8 +264,8 @@ export type localidadeWhereUniqueInput = Prisma.AtLeast<{
   observacao?: Prisma.StringNullableFilter<"localidade"> | string | null
   enderecoId?: Prisma.IntFilter<"localidade"> | number
   diocese?: Prisma.XOR<Prisma.DioceseScalarRelationFilter, Prisma.dioceseWhereInput>
-  tipoLocalidade?: Prisma.XOR<Prisma.TipoLocalidadeScalarRelationFilter, Prisma.tipoLocalidadeWhereInput>
   endereco?: Prisma.XOR<Prisma.EnderecoScalarRelationFilter, Prisma.enderecoWhereInput>
+  tipoLocalidade?: Prisma.XOR<Prisma.TipoLocalidadeScalarRelationFilter, Prisma.tipoLocalidadeWhereInput>
 }, "id">
 
 export type localidadeOrderByWithAggregationInput = {
@@ -298,8 +298,8 @@ export type localidadeCreateInput = {
   descricao: string
   observacao?: string | null
   diocese: Prisma.dioceseCreateNestedOneWithoutLocalidadeInput
-  tipoLocalidade: Prisma.tipoLocalidadeCreateNestedOneWithoutLocalidadeInput
   endereco: Prisma.enderecoCreateNestedOneWithoutLocalidadeInput
+  tipoLocalidade: Prisma.tipoLocalidadeCreateNestedOneWithoutLocalidadeInput
 }
 
 export type localidadeUncheckedCreateInput = {
@@ -315,8 +315,8 @@ export type localidadeUpdateInput = {
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   diocese?: Prisma.dioceseUpdateOneRequiredWithoutLocalidadeNestedInput
-  tipoLocalidade?: Prisma.tipoLocalidadeUpdateOneRequiredWithoutLocalidadeNestedInput
   endereco?: Prisma.enderecoUpdateOneRequiredWithoutLocalidadeNestedInput
+  tipoLocalidade?: Prisma.tipoLocalidadeUpdateOneRequiredWithoutLocalidadeNestedInput
 }
 
 export type localidadeUncheckedUpdateInput = {
@@ -584,8 +584,8 @@ export type localidadeScalarWhereInput = {
 export type localidadeCreateWithoutDioceseInput = {
   descricao: string
   observacao?: string | null
-  tipoLocalidade: Prisma.tipoLocalidadeCreateNestedOneWithoutLocalidadeInput
   endereco: Prisma.enderecoCreateNestedOneWithoutLocalidadeInput
+  tipoLocalidade: Prisma.tipoLocalidadeCreateNestedOneWithoutLocalidadeInput
 }
 
 export type localidadeUncheckedCreateWithoutDioceseInput = {
@@ -705,8 +705,8 @@ export type localidadeCreateManyDioceseInput = {
 export type localidadeUpdateWithoutDioceseInput = {
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  tipoLocalidade?: Prisma.tipoLocalidadeUpdateOneRequiredWithoutLocalidadeNestedInput
   endereco?: Prisma.enderecoUpdateOneRequiredWithoutLocalidadeNestedInput
+  tipoLocalidade?: Prisma.tipoLocalidadeUpdateOneRequiredWithoutLocalidadeNestedInput
 }
 
 export type localidadeUncheckedUpdateWithoutDioceseInput = {
@@ -766,8 +766,8 @@ export type localidadeSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   observacao?: boolean
   enderecoId?: boolean
   diocese?: boolean | Prisma.dioceseDefaultArgs<ExtArgs>
-  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["localidade"]>
 
 export type localidadeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -778,8 +778,8 @@ export type localidadeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   observacao?: boolean
   enderecoId?: boolean
   diocese?: boolean | Prisma.dioceseDefaultArgs<ExtArgs>
-  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["localidade"]>
 
 export type localidadeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -790,8 +790,8 @@ export type localidadeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   observacao?: boolean
   enderecoId?: boolean
   diocese?: boolean | Prisma.dioceseDefaultArgs<ExtArgs>
-  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["localidade"]>
 
 export type localidadeSelectScalar = {
@@ -806,26 +806,26 @@ export type localidadeSelectScalar = {
 export type localidadeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "descricao" | "dioceseId" | "tipoLocalidadeId" | "observacao" | "enderecoId", ExtArgs["result"]["localidade"]>
 export type localidadeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   diocese?: boolean | Prisma.dioceseDefaultArgs<ExtArgs>
-  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
 }
 export type localidadeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   diocese?: boolean | Prisma.dioceseDefaultArgs<ExtArgs>
-  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
 }
 export type localidadeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   diocese?: boolean | Prisma.dioceseDefaultArgs<ExtArgs>
-  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
   endereco?: boolean | Prisma.enderecoDefaultArgs<ExtArgs>
+  tipoLocalidade?: boolean | Prisma.tipoLocalidadeDefaultArgs<ExtArgs>
 }
 
 export type $localidadePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "localidade"
   objects: {
     diocese: Prisma.$diocesePayload<ExtArgs>
-    tipoLocalidade: Prisma.$tipoLocalidadePayload<ExtArgs>
     endereco: Prisma.$enderecoPayload<ExtArgs>
+    tipoLocalidade: Prisma.$tipoLocalidadePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1229,8 +1229,8 @@ readonly fields: localidadeFieldRefs;
 export interface Prisma__localidadeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   diocese<T extends Prisma.dioceseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.dioceseDefaultArgs<ExtArgs>>): Prisma.Prisma__dioceseClient<runtime.Types.Result.GetResult<Prisma.$diocesePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  tipoLocalidade<T extends Prisma.tipoLocalidadeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.tipoLocalidadeDefaultArgs<ExtArgs>>): Prisma.Prisma__tipoLocalidadeClient<runtime.Types.Result.GetResult<Prisma.$tipoLocalidadePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   endereco<T extends Prisma.enderecoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.enderecoDefaultArgs<ExtArgs>>): Prisma.Prisma__enderecoClient<runtime.Types.Result.GetResult<Prisma.$enderecoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  tipoLocalidade<T extends Prisma.tipoLocalidadeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.tipoLocalidadeDefaultArgs<ExtArgs>>): Prisma.Prisma__tipoLocalidadeClient<runtime.Types.Result.GetResult<Prisma.$tipoLocalidadePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

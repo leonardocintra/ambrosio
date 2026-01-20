@@ -228,9 +228,9 @@ export type equipeWhereInput = {
   observacao?: Prisma.StringNullableFilter<"equipe"> | string | null
   createdAt?: Prisma.DateTimeFilter<"equipe"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"equipe"> | Date | string
+  comunidadeEtapas?: Prisma.ComunidadeEtapaListRelationFilter
   tipoEquipe?: Prisma.XOR<Prisma.TipoEquipeScalarRelationFilter, Prisma.tipoEquipeWhereInput>
   equipePessoas?: Prisma.EquipePessoaListRelationFilter
-  comunidadeEtapas?: Prisma.ComunidadeEtapaListRelationFilter
 }
 
 export type equipeOrderByWithRelationInput = {
@@ -240,9 +240,9 @@ export type equipeOrderByWithRelationInput = {
   observacao?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  comunidadeEtapas?: Prisma.comunidadeEtapaOrderByRelationAggregateInput
   tipoEquipe?: Prisma.tipoEquipeOrderByWithRelationInput
   equipePessoas?: Prisma.equipePessoaOrderByRelationAggregateInput
-  comunidadeEtapas?: Prisma.comunidadeEtapaOrderByRelationAggregateInput
 }
 
 export type equipeWhereUniqueInput = Prisma.AtLeast<{
@@ -255,9 +255,9 @@ export type equipeWhereUniqueInput = Prisma.AtLeast<{
   observacao?: Prisma.StringNullableFilter<"equipe"> | string | null
   createdAt?: Prisma.DateTimeFilter<"equipe"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"equipe"> | Date | string
+  comunidadeEtapas?: Prisma.ComunidadeEtapaListRelationFilter
   tipoEquipe?: Prisma.XOR<Prisma.TipoEquipeScalarRelationFilter, Prisma.tipoEquipeWhereInput>
   equipePessoas?: Prisma.EquipePessoaListRelationFilter
-  comunidadeEtapas?: Prisma.ComunidadeEtapaListRelationFilter
 }, "id">
 
 export type equipeOrderByWithAggregationInput = {
@@ -291,9 +291,9 @@ export type equipeCreateInput = {
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutEquipeInput
   tipoEquipe: Prisma.tipoEquipeCreateNestedOneWithoutEquipesInput
   equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutEquipeInput
-  comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutEquipeInput
 }
 
 export type equipeUncheckedCreateInput = {
@@ -303,8 +303,8 @@ export type equipeUncheckedCreateInput = {
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutEquipeInput
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedCreateNestedManyWithoutEquipeInput
+  equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutEquipeInput
 }
 
 export type equipeUpdateInput = {
@@ -312,9 +312,9 @@ export type equipeUpdateInput = {
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutEquipeNestedInput
   tipoEquipe?: Prisma.tipoEquipeUpdateOneRequiredWithoutEquipesNestedInput
   equipePessoas?: Prisma.equipePessoaUpdateManyWithoutEquipeNestedInput
-  comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutEquipeNestedInput
 }
 
 export type equipeUncheckedUpdateInput = {
@@ -324,8 +324,8 @@ export type equipeUncheckedUpdateInput = {
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutEquipeNestedInput
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedUpdateManyWithoutEquipeNestedInput
+  equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutEquipeNestedInput
 }
 
 export type equipeCreateManyInput = {
@@ -487,8 +487,8 @@ export type equipeCreateWithoutTipoEquipeInput = {
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutEquipeInput
   comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutEquipeInput
+  equipePessoas?: Prisma.equipePessoaCreateNestedManyWithoutEquipeInput
 }
 
 export type equipeUncheckedCreateWithoutTipoEquipeInput = {
@@ -497,8 +497,8 @@ export type equipeUncheckedCreateWithoutTipoEquipeInput = {
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutEquipeInput
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedCreateNestedManyWithoutEquipeInput
+  equipePessoas?: Prisma.equipePessoaUncheckedCreateNestedManyWithoutEquipeInput
 }
 
 export type equipeCreateOrConnectWithoutTipoEquipeInput = {
@@ -544,8 +544,8 @@ export type equipeCreateWithoutEquipePessoasInput = {
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  tipoEquipe: Prisma.tipoEquipeCreateNestedOneWithoutEquipesInput
   comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutEquipeInput
+  tipoEquipe: Prisma.tipoEquipeCreateNestedOneWithoutEquipesInput
 }
 
 export type equipeUncheckedCreateWithoutEquipePessoasInput = {
@@ -579,8 +579,8 @@ export type equipeUpdateWithoutEquipePessoasInput = {
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  tipoEquipe?: Prisma.tipoEquipeUpdateOneRequiredWithoutEquipesNestedInput
   comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutEquipeNestedInput
+  tipoEquipe?: Prisma.tipoEquipeUpdateOneRequiredWithoutEquipesNestedInput
 }
 
 export type equipeUncheckedUpdateWithoutEquipePessoasInput = {
@@ -660,8 +660,8 @@ export type equipeUpdateWithoutTipoEquipeInput = {
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  equipePessoas?: Prisma.equipePessoaUpdateManyWithoutEquipeNestedInput
   comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutEquipeNestedInput
+  equipePessoas?: Prisma.equipePessoaUpdateManyWithoutEquipeNestedInput
 }
 
 export type equipeUncheckedUpdateWithoutTipoEquipeInput = {
@@ -670,8 +670,8 @@ export type equipeUncheckedUpdateWithoutTipoEquipeInput = {
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutEquipeNestedInput
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedUpdateManyWithoutEquipeNestedInput
+  equipePessoas?: Prisma.equipePessoaUncheckedUpdateManyWithoutEquipeNestedInput
 }
 
 export type equipeUncheckedUpdateManyWithoutTipoEquipeInput = {
@@ -688,13 +688,13 @@ export type equipeUncheckedUpdateManyWithoutTipoEquipeInput = {
  */
 
 export type EquipeCountOutputType = {
-  equipePessoas: number
   comunidadeEtapas: number
+  equipePessoas: number
 }
 
 export type EquipeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  equipePessoas?: boolean | EquipeCountOutputTypeCountEquipePessoasArgs
   comunidadeEtapas?: boolean | EquipeCountOutputTypeCountComunidadeEtapasArgs
+  equipePessoas?: boolean | EquipeCountOutputTypeCountEquipePessoasArgs
 }
 
 /**
@@ -710,15 +710,15 @@ export type EquipeCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * EquipeCountOutputType without action
  */
-export type EquipeCountOutputTypeCountEquipePessoasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.equipePessoaWhereInput
+export type EquipeCountOutputTypeCountComunidadeEtapasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.comunidadeEtapaWhereInput
 }
 
 /**
  * EquipeCountOutputType without action
  */
-export type EquipeCountOutputTypeCountComunidadeEtapasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.comunidadeEtapaWhereInput
+export type EquipeCountOutputTypeCountEquipePessoasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.equipePessoaWhereInput
 }
 
 
@@ -729,9 +729,9 @@ export type equipeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   observacao?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  comunidadeEtapas?: boolean | Prisma.equipe$comunidadeEtapasArgs<ExtArgs>
   tipoEquipe?: boolean | Prisma.tipoEquipeDefaultArgs<ExtArgs>
   equipePessoas?: boolean | Prisma.equipe$equipePessoasArgs<ExtArgs>
-  comunidadeEtapas?: boolean | Prisma.equipe$comunidadeEtapasArgs<ExtArgs>
   _count?: boolean | Prisma.EquipeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["equipe"]>
 
@@ -766,9 +766,9 @@ export type equipeSelectScalar = {
 
 export type equipeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "descricao" | "tipoEquipeId" | "observacao" | "createdAt" | "updatedAt", ExtArgs["result"]["equipe"]>
 export type equipeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  comunidadeEtapas?: boolean | Prisma.equipe$comunidadeEtapasArgs<ExtArgs>
   tipoEquipe?: boolean | Prisma.tipoEquipeDefaultArgs<ExtArgs>
   equipePessoas?: boolean | Prisma.equipe$equipePessoasArgs<ExtArgs>
-  comunidadeEtapas?: boolean | Prisma.equipe$comunidadeEtapasArgs<ExtArgs>
   _count?: boolean | Prisma.EquipeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type equipeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -781,9 +781,9 @@ export type equipeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type $equipePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "equipe"
   objects: {
+    comunidadeEtapas: Prisma.$comunidadeEtapaPayload<ExtArgs>[]
     tipoEquipe: Prisma.$tipoEquipePayload<ExtArgs>
     equipePessoas: Prisma.$equipePessoaPayload<ExtArgs>[]
-    comunidadeEtapas: Prisma.$comunidadeEtapaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1186,9 +1186,9 @@ readonly fields: equipeFieldRefs;
  */
 export interface Prisma__equipeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  comunidadeEtapas<T extends Prisma.equipe$comunidadeEtapasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.equipe$comunidadeEtapasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comunidadeEtapaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tipoEquipe<T extends Prisma.tipoEquipeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.tipoEquipeDefaultArgs<ExtArgs>>): Prisma.Prisma__tipoEquipeClient<runtime.Types.Result.GetResult<Prisma.$tipoEquipePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   equipePessoas<T extends Prisma.equipe$equipePessoasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.equipe$equipePessoasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$equipePessoaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  comunidadeEtapas<T extends Prisma.equipe$comunidadeEtapasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.equipe$comunidadeEtapasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comunidadeEtapaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1620,30 +1620,6 @@ export type equipeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * equipe.equipePessoas
- */
-export type equipe$equipePessoasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the equipePessoa
-   */
-  select?: Prisma.equipePessoaSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the equipePessoa
-   */
-  omit?: Prisma.equipePessoaOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.equipePessoaInclude<ExtArgs> | null
-  where?: Prisma.equipePessoaWhereInput
-  orderBy?: Prisma.equipePessoaOrderByWithRelationInput | Prisma.equipePessoaOrderByWithRelationInput[]
-  cursor?: Prisma.equipePessoaWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.EquipePessoaScalarFieldEnum | Prisma.EquipePessoaScalarFieldEnum[]
-}
-
-/**
  * equipe.comunidadeEtapas
  */
 export type equipe$comunidadeEtapasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1665,6 +1641,30 @@ export type equipe$comunidadeEtapasArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.ComunidadeEtapaScalarFieldEnum | Prisma.ComunidadeEtapaScalarFieldEnum[]
+}
+
+/**
+ * equipe.equipePessoas
+ */
+export type equipe$equipePessoasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the equipePessoa
+   */
+  select?: Prisma.equipePessoaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the equipePessoa
+   */
+  omit?: Prisma.equipePessoaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.equipePessoaInclude<ExtArgs> | null
+  where?: Prisma.equipePessoaWhereInput
+  orderBy?: Prisma.equipePessoaOrderByWithRelationInput | Prisma.equipePessoaOrderByWithRelationInput[]
+  cursor?: Prisma.equipePessoaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EquipePessoaScalarFieldEnum | Prisma.EquipePessoaScalarFieldEnum[]
 }
 
 /**

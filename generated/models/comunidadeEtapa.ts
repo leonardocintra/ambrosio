@@ -46,11 +46,11 @@ export type ComunidadeEtapaMinAggregateOutputType = {
   etapaId: number | null
   dataInicio: Date | null
   dataFim: Date | null
-  equipeId: number | null
-  localConvivencia: string | null
   observacao: string | null
   createdAt: Date | null
+  equipeId: number | null
   updatedAt: Date | null
+  localConvivencia: string | null
 }
 
 export type ComunidadeEtapaMaxAggregateOutputType = {
@@ -59,11 +59,11 @@ export type ComunidadeEtapaMaxAggregateOutputType = {
   etapaId: number | null
   dataInicio: Date | null
   dataFim: Date | null
-  equipeId: number | null
-  localConvivencia: string | null
   observacao: string | null
   createdAt: Date | null
+  equipeId: number | null
   updatedAt: Date | null
+  localConvivencia: string | null
 }
 
 export type ComunidadeEtapaCountAggregateOutputType = {
@@ -72,11 +72,11 @@ export type ComunidadeEtapaCountAggregateOutputType = {
   etapaId: number
   dataInicio: number
   dataFim: number
-  equipeId: number
-  localConvivencia: number
   observacao: number
   createdAt: number
+  equipeId: number
   updatedAt: number
+  localConvivencia: number
   _all: number
 }
 
@@ -101,11 +101,11 @@ export type ComunidadeEtapaMinAggregateInputType = {
   etapaId?: true
   dataInicio?: true
   dataFim?: true
-  equipeId?: true
-  localConvivencia?: true
   observacao?: true
   createdAt?: true
+  equipeId?: true
   updatedAt?: true
+  localConvivencia?: true
 }
 
 export type ComunidadeEtapaMaxAggregateInputType = {
@@ -114,11 +114,11 @@ export type ComunidadeEtapaMaxAggregateInputType = {
   etapaId?: true
   dataInicio?: true
   dataFim?: true
-  equipeId?: true
-  localConvivencia?: true
   observacao?: true
   createdAt?: true
+  equipeId?: true
   updatedAt?: true
+  localConvivencia?: true
 }
 
 export type ComunidadeEtapaCountAggregateInputType = {
@@ -127,11 +127,11 @@ export type ComunidadeEtapaCountAggregateInputType = {
   etapaId?: true
   dataInicio?: true
   dataFim?: true
-  equipeId?: true
-  localConvivencia?: true
   observacao?: true
   createdAt?: true
+  equipeId?: true
   updatedAt?: true
+  localConvivencia?: true
   _all?: true
 }
 
@@ -227,11 +227,11 @@ export type ComunidadeEtapaGroupByOutputType = {
   etapaId: number
   dataInicio: Date | null
   dataFim: Date | null
-  equipeId: number | null
-  localConvivencia: string | null
   observacao: string | null
   createdAt: Date
+  equipeId: number | null
   updatedAt: Date
+  localConvivencia: string | null
   _count: ComunidadeEtapaCountAggregateOutputType | null
   _avg: ComunidadeEtapaAvgAggregateOutputType | null
   _sum: ComunidadeEtapaSumAggregateOutputType | null
@@ -263,14 +263,14 @@ export type comunidadeEtapaWhereInput = {
   etapaId?: Prisma.IntFilter<"comunidadeEtapa"> | number
   dataInicio?: Prisma.DateTimeNullableFilter<"comunidadeEtapa"> | Date | string | null
   dataFim?: Prisma.DateTimeNullableFilter<"comunidadeEtapa"> | Date | string | null
-  equipeId?: Prisma.IntNullableFilter<"comunidadeEtapa"> | number | null
-  localConvivencia?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
   observacao?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
   createdAt?: Prisma.DateTimeFilter<"comunidadeEtapa"> | Date | string
+  equipeId?: Prisma.IntNullableFilter<"comunidadeEtapa"> | number | null
   updatedAt?: Prisma.DateTimeFilter<"comunidadeEtapa"> | Date | string
+  localConvivencia?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
   comunidade?: Prisma.XOR<Prisma.ComunidadeScalarRelationFilter, Prisma.comunidadeWhereInput>
-  etapa?: Prisma.XOR<Prisma.EtapaScalarRelationFilter, Prisma.etapaWhereInput>
   equipe?: Prisma.XOR<Prisma.EquipeNullableScalarRelationFilter, Prisma.equipeWhereInput> | null
+  etapa?: Prisma.XOR<Prisma.EtapaScalarRelationFilter, Prisma.etapaWhereInput>
 }
 
 export type comunidadeEtapaOrderByWithRelationInput = {
@@ -279,14 +279,14 @@ export type comunidadeEtapaOrderByWithRelationInput = {
   etapaId?: Prisma.SortOrder
   dataInicio?: Prisma.SortOrderInput | Prisma.SortOrder
   dataFim?: Prisma.SortOrderInput | Prisma.SortOrder
-  equipeId?: Prisma.SortOrderInput | Prisma.SortOrder
-  localConvivencia?: Prisma.SortOrderInput | Prisma.SortOrder
   observacao?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  equipeId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  localConvivencia?: Prisma.SortOrderInput | Prisma.SortOrder
   comunidade?: Prisma.comunidadeOrderByWithRelationInput
-  etapa?: Prisma.etapaOrderByWithRelationInput
   equipe?: Prisma.equipeOrderByWithRelationInput
+  etapa?: Prisma.etapaOrderByWithRelationInput
 }
 
 export type comunidadeEtapaWhereUniqueInput = Prisma.AtLeast<{
@@ -299,14 +299,14 @@ export type comunidadeEtapaWhereUniqueInput = Prisma.AtLeast<{
   etapaId?: Prisma.IntFilter<"comunidadeEtapa"> | number
   dataInicio?: Prisma.DateTimeNullableFilter<"comunidadeEtapa"> | Date | string | null
   dataFim?: Prisma.DateTimeNullableFilter<"comunidadeEtapa"> | Date | string | null
-  equipeId?: Prisma.IntNullableFilter<"comunidadeEtapa"> | number | null
-  localConvivencia?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
   observacao?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
   createdAt?: Prisma.DateTimeFilter<"comunidadeEtapa"> | Date | string
+  equipeId?: Prisma.IntNullableFilter<"comunidadeEtapa"> | number | null
   updatedAt?: Prisma.DateTimeFilter<"comunidadeEtapa"> | Date | string
+  localConvivencia?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
   comunidade?: Prisma.XOR<Prisma.ComunidadeScalarRelationFilter, Prisma.comunidadeWhereInput>
-  etapa?: Prisma.XOR<Prisma.EtapaScalarRelationFilter, Prisma.etapaWhereInput>
   equipe?: Prisma.XOR<Prisma.EquipeNullableScalarRelationFilter, Prisma.equipeWhereInput> | null
+  etapa?: Prisma.XOR<Prisma.EtapaScalarRelationFilter, Prisma.etapaWhereInput>
 }, "id" | "comunidadeId_etapaId">
 
 export type comunidadeEtapaOrderByWithAggregationInput = {
@@ -315,11 +315,11 @@ export type comunidadeEtapaOrderByWithAggregationInput = {
   etapaId?: Prisma.SortOrder
   dataInicio?: Prisma.SortOrderInput | Prisma.SortOrder
   dataFim?: Prisma.SortOrderInput | Prisma.SortOrder
-  equipeId?: Prisma.SortOrderInput | Prisma.SortOrder
-  localConvivencia?: Prisma.SortOrderInput | Prisma.SortOrder
   observacao?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  equipeId?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  localConvivencia?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.comunidadeEtapaCountOrderByAggregateInput
   _avg?: Prisma.comunidadeEtapaAvgOrderByAggregateInput
   _max?: Prisma.comunidadeEtapaMaxOrderByAggregateInput
@@ -336,23 +336,23 @@ export type comunidadeEtapaScalarWhereWithAggregatesInput = {
   etapaId?: Prisma.IntWithAggregatesFilter<"comunidadeEtapa"> | number
   dataInicio?: Prisma.DateTimeNullableWithAggregatesFilter<"comunidadeEtapa"> | Date | string | null
   dataFim?: Prisma.DateTimeNullableWithAggregatesFilter<"comunidadeEtapa"> | Date | string | null
-  equipeId?: Prisma.IntNullableWithAggregatesFilter<"comunidadeEtapa"> | number | null
-  localConvivencia?: Prisma.StringNullableWithAggregatesFilter<"comunidadeEtapa"> | string | null
   observacao?: Prisma.StringNullableWithAggregatesFilter<"comunidadeEtapa"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"comunidadeEtapa"> | Date | string
+  equipeId?: Prisma.IntNullableWithAggregatesFilter<"comunidadeEtapa"> | number | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"comunidadeEtapa"> | Date | string
+  localConvivencia?: Prisma.StringNullableWithAggregatesFilter<"comunidadeEtapa"> | string | null
 }
 
 export type comunidadeEtapaCreateInput = {
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  localConvivencia?: string | null
   comunidade: Prisma.comunidadeCreateNestedOneWithoutComunidadeEtapasInput
-  etapa: Prisma.etapaCreateNestedOneWithoutComunidadeEtapasInput
   equipe?: Prisma.equipeCreateNestedOneWithoutComunidadeEtapasInput
+  etapa: Prisma.etapaCreateNestedOneWithoutComunidadeEtapasInput
 }
 
 export type comunidadeEtapaUncheckedCreateInput = {
@@ -361,23 +361,23 @@ export type comunidadeEtapaUncheckedCreateInput = {
   etapaId: number
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  equipeId?: number | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
+  equipeId?: number | null
   updatedAt?: Date | string
+  localConvivencia?: string | null
 }
 
 export type comunidadeEtapaUpdateInput = {
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comunidade?: Prisma.comunidadeUpdateOneRequiredWithoutComunidadeEtapasNestedInput
-  etapa?: Prisma.etapaUpdateOneRequiredWithoutComunidadeEtapasNestedInput
   equipe?: Prisma.equipeUpdateOneWithoutComunidadeEtapasNestedInput
+  etapa?: Prisma.etapaUpdateOneRequiredWithoutComunidadeEtapasNestedInput
 }
 
 export type comunidadeEtapaUncheckedUpdateInput = {
@@ -386,11 +386,11 @@ export type comunidadeEtapaUncheckedUpdateInput = {
   etapaId?: Prisma.IntFieldUpdateOperationsInput | number
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type comunidadeEtapaCreateManyInput = {
@@ -399,20 +399,20 @@ export type comunidadeEtapaCreateManyInput = {
   etapaId: number
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  equipeId?: number | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
+  equipeId?: number | null
   updatedAt?: Date | string
+  localConvivencia?: string | null
 }
 
 export type comunidadeEtapaUpdateManyMutationInput = {
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type comunidadeEtapaUncheckedUpdateManyInput = {
@@ -421,11 +421,11 @@ export type comunidadeEtapaUncheckedUpdateManyInput = {
   etapaId?: Prisma.IntFieldUpdateOperationsInput | number
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ComunidadeEtapaListRelationFilter = {
@@ -449,11 +449,11 @@ export type comunidadeEtapaCountOrderByAggregateInput = {
   etapaId?: Prisma.SortOrder
   dataInicio?: Prisma.SortOrder
   dataFim?: Prisma.SortOrder
-  equipeId?: Prisma.SortOrder
-  localConvivencia?: Prisma.SortOrder
   observacao?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  equipeId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  localConvivencia?: Prisma.SortOrder
 }
 
 export type comunidadeEtapaAvgOrderByAggregateInput = {
@@ -469,11 +469,11 @@ export type comunidadeEtapaMaxOrderByAggregateInput = {
   etapaId?: Prisma.SortOrder
   dataInicio?: Prisma.SortOrder
   dataFim?: Prisma.SortOrder
-  equipeId?: Prisma.SortOrder
-  localConvivencia?: Prisma.SortOrder
   observacao?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  equipeId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  localConvivencia?: Prisma.SortOrder
 }
 
 export type comunidadeEtapaMinOrderByAggregateInput = {
@@ -482,11 +482,11 @@ export type comunidadeEtapaMinOrderByAggregateInput = {
   etapaId?: Prisma.SortOrder
   dataInicio?: Prisma.SortOrder
   dataFim?: Prisma.SortOrder
-  equipeId?: Prisma.SortOrder
-  localConvivencia?: Prisma.SortOrder
   observacao?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  equipeId?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  localConvivencia?: Prisma.SortOrder
 }
 
 export type comunidadeEtapaSumOrderByAggregateInput = {
@@ -625,10 +625,10 @@ export type comunidadeEtapaUncheckedUpdateManyWithoutComunidadeNestedInput = {
 export type comunidadeEtapaCreateWithoutEtapaInput = {
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  localConvivencia?: string | null
   comunidade: Prisma.comunidadeCreateNestedOneWithoutComunidadeEtapasInput
   equipe?: Prisma.equipeCreateNestedOneWithoutComunidadeEtapasInput
 }
@@ -638,11 +638,11 @@ export type comunidadeEtapaUncheckedCreateWithoutEtapaInput = {
   comunidadeId: number
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  equipeId?: number | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
+  equipeId?: number | null
   updatedAt?: Date | string
+  localConvivencia?: string | null
 }
 
 export type comunidadeEtapaCreateOrConnectWithoutEtapaInput = {
@@ -680,20 +680,20 @@ export type comunidadeEtapaScalarWhereInput = {
   etapaId?: Prisma.IntFilter<"comunidadeEtapa"> | number
   dataInicio?: Prisma.DateTimeNullableFilter<"comunidadeEtapa"> | Date | string | null
   dataFim?: Prisma.DateTimeNullableFilter<"comunidadeEtapa"> | Date | string | null
-  equipeId?: Prisma.IntNullableFilter<"comunidadeEtapa"> | number | null
-  localConvivencia?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
   observacao?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
   createdAt?: Prisma.DateTimeFilter<"comunidadeEtapa"> | Date | string
+  equipeId?: Prisma.IntNullableFilter<"comunidadeEtapa"> | number | null
   updatedAt?: Prisma.DateTimeFilter<"comunidadeEtapa"> | Date | string
+  localConvivencia?: Prisma.StringNullableFilter<"comunidadeEtapa"> | string | null
 }
 
 export type comunidadeEtapaCreateWithoutEquipeInput = {
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  localConvivencia?: string | null
   comunidade: Prisma.comunidadeCreateNestedOneWithoutComunidadeEtapasInput
   etapa: Prisma.etapaCreateNestedOneWithoutComunidadeEtapasInput
 }
@@ -704,10 +704,10 @@ export type comunidadeEtapaUncheckedCreateWithoutEquipeInput = {
   etapaId: number
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  localConvivencia?: string | null
 }
 
 export type comunidadeEtapaCreateOrConnectWithoutEquipeInput = {
@@ -739,12 +739,12 @@ export type comunidadeEtapaUpdateManyWithWhereWithoutEquipeInput = {
 export type comunidadeEtapaCreateWithoutComunidadeInput = {
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  etapa: Prisma.etapaCreateNestedOneWithoutComunidadeEtapasInput
+  localConvivencia?: string | null
   equipe?: Prisma.equipeCreateNestedOneWithoutComunidadeEtapasInput
+  etapa: Prisma.etapaCreateNestedOneWithoutComunidadeEtapasInput
 }
 
 export type comunidadeEtapaUncheckedCreateWithoutComunidadeInput = {
@@ -752,11 +752,11 @@ export type comunidadeEtapaUncheckedCreateWithoutComunidadeInput = {
   etapaId: number
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  equipeId?: number | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
+  equipeId?: number | null
   updatedAt?: Date | string
+  localConvivencia?: string | null
 }
 
 export type comunidadeEtapaCreateOrConnectWithoutComunidadeInput = {
@@ -790,20 +790,20 @@ export type comunidadeEtapaCreateManyEtapaInput = {
   comunidadeId: number
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  equipeId?: number | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
+  equipeId?: number | null
   updatedAt?: Date | string
+  localConvivencia?: string | null
 }
 
 export type comunidadeEtapaUpdateWithoutEtapaInput = {
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comunidade?: Prisma.comunidadeUpdateOneRequiredWithoutComunidadeEtapasNestedInput
   equipe?: Prisma.equipeUpdateOneWithoutComunidadeEtapasNestedInput
 }
@@ -813,11 +813,11 @@ export type comunidadeEtapaUncheckedUpdateWithoutEtapaInput = {
   comunidadeId?: Prisma.IntFieldUpdateOperationsInput | number
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type comunidadeEtapaUncheckedUpdateManyWithoutEtapaInput = {
@@ -825,11 +825,11 @@ export type comunidadeEtapaUncheckedUpdateManyWithoutEtapaInput = {
   comunidadeId?: Prisma.IntFieldUpdateOperationsInput | number
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type comunidadeEtapaCreateManyEquipeInput = {
@@ -838,19 +838,19 @@ export type comunidadeEtapaCreateManyEquipeInput = {
   etapaId: number
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  localConvivencia?: string | null
 }
 
 export type comunidadeEtapaUpdateWithoutEquipeInput = {
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   comunidade?: Prisma.comunidadeUpdateOneRequiredWithoutComunidadeEtapasNestedInput
   etapa?: Prisma.etapaUpdateOneRequiredWithoutComunidadeEtapasNestedInput
 }
@@ -861,10 +861,10 @@ export type comunidadeEtapaUncheckedUpdateWithoutEquipeInput = {
   etapaId?: Prisma.IntFieldUpdateOperationsInput | number
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type comunidadeEtapaUncheckedUpdateManyWithoutEquipeInput = {
@@ -873,10 +873,10 @@ export type comunidadeEtapaUncheckedUpdateManyWithoutEquipeInput = {
   etapaId?: Prisma.IntFieldUpdateOperationsInput | number
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type comunidadeEtapaCreateManyComunidadeInput = {
@@ -884,22 +884,22 @@ export type comunidadeEtapaCreateManyComunidadeInput = {
   etapaId: number
   dataInicio?: Date | string | null
   dataFim?: Date | string | null
-  equipeId?: number | null
-  localConvivencia?: string | null
   observacao?: string | null
   createdAt?: Date | string
+  equipeId?: number | null
   updatedAt?: Date | string
+  localConvivencia?: string | null
 }
 
 export type comunidadeEtapaUpdateWithoutComunidadeInput = {
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  etapa?: Prisma.etapaUpdateOneRequiredWithoutComunidadeEtapasNestedInput
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   equipe?: Prisma.equipeUpdateOneWithoutComunidadeEtapasNestedInput
+  etapa?: Prisma.etapaUpdateOneRequiredWithoutComunidadeEtapasNestedInput
 }
 
 export type comunidadeEtapaUncheckedUpdateWithoutComunidadeInput = {
@@ -907,11 +907,11 @@ export type comunidadeEtapaUncheckedUpdateWithoutComunidadeInput = {
   etapaId?: Prisma.IntFieldUpdateOperationsInput | number
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type comunidadeEtapaUncheckedUpdateManyWithoutComunidadeInput = {
@@ -919,11 +919,11 @@ export type comunidadeEtapaUncheckedUpdateManyWithoutComunidadeInput = {
   etapaId?: Prisma.IntFieldUpdateOperationsInput | number
   dataInicio?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   dataFim?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  equipeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  localConvivencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -934,14 +934,14 @@ export type comunidadeEtapaSelect<ExtArgs extends runtime.Types.Extensions.Inter
   etapaId?: boolean
   dataInicio?: boolean
   dataFim?: boolean
-  equipeId?: boolean
-  localConvivencia?: boolean
   observacao?: boolean
   createdAt?: boolean
+  equipeId?: boolean
   updatedAt?: boolean
+  localConvivencia?: boolean
   comunidade?: boolean | Prisma.comunidadeDefaultArgs<ExtArgs>
-  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
   equipe?: boolean | Prisma.comunidadeEtapa$equipeArgs<ExtArgs>
+  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comunidadeEtapa"]>
 
 export type comunidadeEtapaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -950,14 +950,14 @@ export type comunidadeEtapaSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   etapaId?: boolean
   dataInicio?: boolean
   dataFim?: boolean
-  equipeId?: boolean
-  localConvivencia?: boolean
   observacao?: boolean
   createdAt?: boolean
+  equipeId?: boolean
   updatedAt?: boolean
+  localConvivencia?: boolean
   comunidade?: boolean | Prisma.comunidadeDefaultArgs<ExtArgs>
-  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
   equipe?: boolean | Prisma.comunidadeEtapa$equipeArgs<ExtArgs>
+  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comunidadeEtapa"]>
 
 export type comunidadeEtapaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -966,14 +966,14 @@ export type comunidadeEtapaSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   etapaId?: boolean
   dataInicio?: boolean
   dataFim?: boolean
-  equipeId?: boolean
-  localConvivencia?: boolean
   observacao?: boolean
   createdAt?: boolean
+  equipeId?: boolean
   updatedAt?: boolean
+  localConvivencia?: boolean
   comunidade?: boolean | Prisma.comunidadeDefaultArgs<ExtArgs>
-  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
   equipe?: boolean | Prisma.comunidadeEtapa$equipeArgs<ExtArgs>
+  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comunidadeEtapa"]>
 
 export type comunidadeEtapaSelectScalar = {
@@ -982,36 +982,36 @@ export type comunidadeEtapaSelectScalar = {
   etapaId?: boolean
   dataInicio?: boolean
   dataFim?: boolean
-  equipeId?: boolean
-  localConvivencia?: boolean
   observacao?: boolean
   createdAt?: boolean
+  equipeId?: boolean
   updatedAt?: boolean
+  localConvivencia?: boolean
 }
 
-export type comunidadeEtapaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "comunidadeId" | "etapaId" | "dataInicio" | "dataFim" | "equipeId" | "localConvivencia" | "observacao" | "createdAt" | "updatedAt", ExtArgs["result"]["comunidadeEtapa"]>
+export type comunidadeEtapaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "comunidadeId" | "etapaId" | "dataInicio" | "dataFim" | "observacao" | "createdAt" | "equipeId" | "updatedAt" | "localConvivencia", ExtArgs["result"]["comunidadeEtapa"]>
 export type comunidadeEtapaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comunidade?: boolean | Prisma.comunidadeDefaultArgs<ExtArgs>
-  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
   equipe?: boolean | Prisma.comunidadeEtapa$equipeArgs<ExtArgs>
+  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
 }
 export type comunidadeEtapaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comunidade?: boolean | Prisma.comunidadeDefaultArgs<ExtArgs>
-  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
   equipe?: boolean | Prisma.comunidadeEtapa$equipeArgs<ExtArgs>
+  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
 }
 export type comunidadeEtapaIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comunidade?: boolean | Prisma.comunidadeDefaultArgs<ExtArgs>
-  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
   equipe?: boolean | Prisma.comunidadeEtapa$equipeArgs<ExtArgs>
+  etapa?: boolean | Prisma.etapaDefaultArgs<ExtArgs>
 }
 
 export type $comunidadeEtapaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "comunidadeEtapa"
   objects: {
     comunidade: Prisma.$comunidadePayload<ExtArgs>
-    etapa: Prisma.$etapaPayload<ExtArgs>
     equipe: Prisma.$equipePayload<ExtArgs> | null
+    etapa: Prisma.$etapaPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1019,11 +1019,11 @@ export type $comunidadeEtapaPayload<ExtArgs extends runtime.Types.Extensions.Int
     etapaId: number
     dataInicio: Date | null
     dataFim: Date | null
-    equipeId: number | null
-    localConvivencia: string | null
     observacao: string | null
     createdAt: Date
+    equipeId: number | null
     updatedAt: Date
+    localConvivencia: string | null
   }, ExtArgs["result"]["comunidadeEtapa"]>
   composites: {}
 }
@@ -1419,8 +1419,8 @@ readonly fields: comunidadeEtapaFieldRefs;
 export interface Prisma__comunidadeEtapaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   comunidade<T extends Prisma.comunidadeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.comunidadeDefaultArgs<ExtArgs>>): Prisma.Prisma__comunidadeClient<runtime.Types.Result.GetResult<Prisma.$comunidadePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  etapa<T extends Prisma.etapaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.etapaDefaultArgs<ExtArgs>>): Prisma.Prisma__etapaClient<runtime.Types.Result.GetResult<Prisma.$etapaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   equipe<T extends Prisma.comunidadeEtapa$equipeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.comunidadeEtapa$equipeArgs<ExtArgs>>): Prisma.Prisma__equipeClient<runtime.Types.Result.GetResult<Prisma.$equipePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  etapa<T extends Prisma.etapaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.etapaDefaultArgs<ExtArgs>>): Prisma.Prisma__etapaClient<runtime.Types.Result.GetResult<Prisma.$etapaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1455,11 +1455,11 @@ export interface comunidadeEtapaFieldRefs {
   readonly etapaId: Prisma.FieldRef<"comunidadeEtapa", 'Int'>
   readonly dataInicio: Prisma.FieldRef<"comunidadeEtapa", 'DateTime'>
   readonly dataFim: Prisma.FieldRef<"comunidadeEtapa", 'DateTime'>
-  readonly equipeId: Prisma.FieldRef<"comunidadeEtapa", 'Int'>
-  readonly localConvivencia: Prisma.FieldRef<"comunidadeEtapa", 'String'>
   readonly observacao: Prisma.FieldRef<"comunidadeEtapa", 'String'>
   readonly createdAt: Prisma.FieldRef<"comunidadeEtapa", 'DateTime'>
+  readonly equipeId: Prisma.FieldRef<"comunidadeEtapa", 'Int'>
   readonly updatedAt: Prisma.FieldRef<"comunidadeEtapa", 'DateTime'>
+  readonly localConvivencia: Prisma.FieldRef<"comunidadeEtapa", 'String'>
 }
     
 

@@ -224,8 +224,8 @@ export type pessoaCarismaWhereInput = {
   carismaId?: Prisma.IntFilter<"pessoaCarisma"> | number
   observacao?: Prisma.StringNullableFilter<"pessoaCarisma"> | string | null
   createdAt?: Prisma.DateTimeFilter<"pessoaCarisma"> | Date | string
-  pessoa?: Prisma.XOR<Prisma.PessoaScalarRelationFilter, Prisma.pessoaWhereInput>
   carisma?: Prisma.XOR<Prisma.CarismaScalarRelationFilter, Prisma.carismaWhereInput>
+  pessoa?: Prisma.XOR<Prisma.PessoaScalarRelationFilter, Prisma.pessoaWhereInput>
 }
 
 export type pessoaCarismaOrderByWithRelationInput = {
@@ -234,8 +234,8 @@ export type pessoaCarismaOrderByWithRelationInput = {
   carismaId?: Prisma.SortOrder
   observacao?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  pessoa?: Prisma.pessoaOrderByWithRelationInput
   carisma?: Prisma.carismaOrderByWithRelationInput
+  pessoa?: Prisma.pessoaOrderByWithRelationInput
 }
 
 export type pessoaCarismaWhereUniqueInput = Prisma.AtLeast<{
@@ -248,8 +248,8 @@ export type pessoaCarismaWhereUniqueInput = Prisma.AtLeast<{
   carismaId?: Prisma.IntFilter<"pessoaCarisma"> | number
   observacao?: Prisma.StringNullableFilter<"pessoaCarisma"> | string | null
   createdAt?: Prisma.DateTimeFilter<"pessoaCarisma"> | Date | string
-  pessoa?: Prisma.XOR<Prisma.PessoaScalarRelationFilter, Prisma.pessoaWhereInput>
   carisma?: Prisma.XOR<Prisma.CarismaScalarRelationFilter, Prisma.carismaWhereInput>
+  pessoa?: Prisma.XOR<Prisma.PessoaScalarRelationFilter, Prisma.pessoaWhereInput>
 }, "id" | "pessoaId_carismaId">
 
 export type pessoaCarismaOrderByWithAggregationInput = {
@@ -279,8 +279,8 @@ export type pessoaCarismaScalarWhereWithAggregatesInput = {
 export type pessoaCarismaCreateInput = {
   observacao?: string | null
   createdAt?: Date | string
-  pessoa: Prisma.pessoaCreateNestedOneWithoutPessoaCarismasInput
   carisma: Prisma.carismaCreateNestedOneWithoutPessoaCarismasInput
+  pessoa: Prisma.pessoaCreateNestedOneWithoutPessoaCarismasInput
 }
 
 export type pessoaCarismaUncheckedCreateInput = {
@@ -294,8 +294,8 @@ export type pessoaCarismaUncheckedCreateInput = {
 export type pessoaCarismaUpdateInput = {
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  pessoa?: Prisma.pessoaUpdateOneRequiredWithoutPessoaCarismasNestedInput
   carisma?: Prisma.carismaUpdateOneRequiredWithoutPessoaCarismasNestedInput
+  pessoa?: Prisma.pessoaUpdateOneRequiredWithoutPessoaCarismasNestedInput
 }
 
 export type pessoaCarismaUncheckedUpdateInput = {
@@ -462,10 +462,6 @@ export type pessoaCarismaUncheckedUpdateManyWithoutCarismaNestedInput = {
   deleteMany?: Prisma.pessoaCarismaScalarWhereInput | Prisma.pessoaCarismaScalarWhereInput[]
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
 export type pessoaCarismaCreateWithoutPessoaInput = {
   observacao?: string | null
   createdAt?: Date | string
@@ -617,8 +613,8 @@ export type pessoaCarismaSelect<ExtArgs extends runtime.Types.Extensions.Interna
   carismaId?: boolean
   observacao?: boolean
   createdAt?: boolean
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   carisma?: boolean | Prisma.carismaDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoaCarisma"]>
 
 export type pessoaCarismaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -627,8 +623,8 @@ export type pessoaCarismaSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   carismaId?: boolean
   observacao?: boolean
   createdAt?: boolean
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   carisma?: boolean | Prisma.carismaDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoaCarisma"]>
 
 export type pessoaCarismaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -637,8 +633,8 @@ export type pessoaCarismaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   carismaId?: boolean
   observacao?: boolean
   createdAt?: boolean
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   carisma?: boolean | Prisma.carismaDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pessoaCarisma"]>
 
 export type pessoaCarismaSelectScalar = {
@@ -651,23 +647,23 @@ export type pessoaCarismaSelectScalar = {
 
 export type pessoaCarismaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pessoaId" | "carismaId" | "observacao" | "createdAt", ExtArgs["result"]["pessoaCarisma"]>
 export type pessoaCarismaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   carisma?: boolean | Prisma.carismaDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }
 export type pessoaCarismaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   carisma?: boolean | Prisma.carismaDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }
 export type pessoaCarismaIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
   carisma?: boolean | Prisma.carismaDefaultArgs<ExtArgs>
+  pessoa?: boolean | Prisma.pessoaDefaultArgs<ExtArgs>
 }
 
 export type $pessoaCarismaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "pessoaCarisma"
   objects: {
-    pessoa: Prisma.$pessoaPayload<ExtArgs>
     carisma: Prisma.$carismaPayload<ExtArgs>
+    pessoa: Prisma.$pessoaPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1069,8 +1065,8 @@ readonly fields: pessoaCarismaFieldRefs;
  */
 export interface Prisma__pessoaCarismaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  pessoa<T extends Prisma.pessoaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoaDefaultArgs<ExtArgs>>): Prisma.Prisma__pessoaClient<runtime.Types.Result.GetResult<Prisma.$pessoaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   carisma<T extends Prisma.carismaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.carismaDefaultArgs<ExtArgs>>): Prisma.Prisma__carismaClient<runtime.Types.Result.GetResult<Prisma.$carismaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  pessoa<T extends Prisma.pessoaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.pessoaDefaultArgs<ExtArgs>>): Prisma.Prisma__pessoaClient<runtime.Types.Result.GetResult<Prisma.$pessoaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
