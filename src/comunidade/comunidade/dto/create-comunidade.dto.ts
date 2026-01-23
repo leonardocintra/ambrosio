@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsInt,
@@ -40,6 +41,7 @@ export class CreateComunidadeDto {
 
   @IsOptional()
   @IsDate()
+  @Type(() => Date)
   dataInicio?: Date;
 
   @IsOptional()

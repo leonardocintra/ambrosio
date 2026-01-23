@@ -39,7 +39,8 @@ export class EtapaService extends BaseService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} etapa`;
+    this.validateReadAbility('etapa');
+    return this.prisma.comunidadeEtapa.findUnique({ where: { id } });
   }
 
   update(id: number, dto: UpdateEtapaDto) {
@@ -49,7 +50,6 @@ export class EtapaService extends BaseService {
         equipeId: dto.equipeId,
         localConvivencia: dto.localConvivencia,
         dataInicio: dto.dataInicio,
-        dataFim: dto.dataFim,
         observacao: dto.observacao,
       },
     });
