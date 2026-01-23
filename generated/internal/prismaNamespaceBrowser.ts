@@ -80,7 +80,8 @@ export const ModelName = {
   regiao: 'regiao',
   comunidade: 'comunidade',
   comunidadeEtapa: 'comunidadeEtapa',
-  comunidadePessoa: 'comunidadePessoa'
+  comunidadePessoa: 'comunidadePessoa',
+  comunidadeHistorico: 'comunidadeHistorico'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -89,12 +90,12 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  * Enums
  */
 
-export const TransactionIsolationLevel = {
+export const TransactionIsolationLevel = runtime.makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
-} as const
+} as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
@@ -384,7 +385,6 @@ export type RegiaoScalarFieldEnum = (typeof RegiaoScalarFieldEnum)[keyof typeof 
 
 export const ComunidadeScalarFieldEnum = {
   id: 'id',
-  descricao: 'descricao',
   numeroDaComunidade: 'numeroDaComunidade',
   quantidadeMembros: 'quantidadeMembros',
   observacao: 'observacao',
@@ -423,6 +423,16 @@ export const ComunidadePessoaScalarFieldEnum = {
 } as const
 
 export type ComunidadePessoaScalarFieldEnum = (typeof ComunidadePessoaScalarFieldEnum)[keyof typeof ComunidadePessoaScalarFieldEnum]
+
+
+export const ComunidadeHistoricoScalarFieldEnum = {
+  id: 'id',
+  comunidadeId: 'comunidadeId',
+  descricao: 'descricao',
+  createdAt: 'createdAt'
+} as const
+
+export type ComunidadeHistoricoScalarFieldEnum = (typeof ComunidadeHistoricoScalarFieldEnum)[keyof typeof ComunidadeHistoricoScalarFieldEnum]
 
 
 export const SortOrder = {

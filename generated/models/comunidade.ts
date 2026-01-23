@@ -42,7 +42,6 @@ export type ComunidadeSumAggregateOutputType = {
 
 export type ComunidadeMinAggregateOutputType = {
   id: number | null
-  descricao: string | null
   numeroDaComunidade: number | null
   quantidadeMembros: number | null
   observacao: string | null
@@ -53,7 +52,6 @@ export type ComunidadeMinAggregateOutputType = {
 
 export type ComunidadeMaxAggregateOutputType = {
   id: number | null
-  descricao: string | null
   numeroDaComunidade: number | null
   quantidadeMembros: number | null
   observacao: string | null
@@ -64,7 +62,6 @@ export type ComunidadeMaxAggregateOutputType = {
 
 export type ComunidadeCountAggregateOutputType = {
   id: number
-  descricao: number
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao: number
@@ -91,7 +88,6 @@ export type ComunidadeSumAggregateInputType = {
 
 export type ComunidadeMinAggregateInputType = {
   id?: true
-  descricao?: true
   numeroDaComunidade?: true
   quantidadeMembros?: true
   observacao?: true
@@ -102,7 +98,6 @@ export type ComunidadeMinAggregateInputType = {
 
 export type ComunidadeMaxAggregateInputType = {
   id?: true
-  descricao?: true
   numeroDaComunidade?: true
   quantidadeMembros?: true
   observacao?: true
@@ -113,7 +108,6 @@ export type ComunidadeMaxAggregateInputType = {
 
 export type ComunidadeCountAggregateInputType = {
   id?: true
-  descricao?: true
   numeroDaComunidade?: true
   quantidadeMembros?: true
   observacao?: true
@@ -211,7 +205,6 @@ export type comunidadeGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type ComunidadeGroupByOutputType = {
   id: number
-  descricao: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao: string | null
@@ -245,7 +238,6 @@ export type comunidadeWhereInput = {
   OR?: Prisma.comunidadeWhereInput[]
   NOT?: Prisma.comunidadeWhereInput | Prisma.comunidadeWhereInput[]
   id?: Prisma.IntFilter<"comunidade"> | number
-  descricao?: Prisma.StringNullableFilter<"comunidade"> | string | null
   numeroDaComunidade?: Prisma.IntFilter<"comunidade"> | number
   quantidadeMembros?: Prisma.IntFilter<"comunidade"> | number
   observacao?: Prisma.StringNullableFilter<"comunidade"> | string | null
@@ -255,11 +247,11 @@ export type comunidadeWhereInput = {
   paroquia?: Prisma.XOR<Prisma.ParoquiaScalarRelationFilter, Prisma.paroquiaWhereInput>
   comunidadeEtapas?: Prisma.ComunidadeEtapaListRelationFilter
   comunidadePessoas?: Prisma.ComunidadePessoaListRelationFilter
+  comunidadeHistoricos?: Prisma.ComunidadeHistoricoListRelationFilter
 }
 
 export type comunidadeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  descricao?: Prisma.SortOrderInput | Prisma.SortOrder
   numeroDaComunidade?: Prisma.SortOrder
   quantidadeMembros?: Prisma.SortOrder
   observacao?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -269,6 +261,7 @@ export type comunidadeOrderByWithRelationInput = {
   paroquia?: Prisma.paroquiaOrderByWithRelationInput
   comunidadeEtapas?: Prisma.comunidadeEtapaOrderByRelationAggregateInput
   comunidadePessoas?: Prisma.comunidadePessoaOrderByRelationAggregateInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoOrderByRelationAggregateInput
 }
 
 export type comunidadeWhereUniqueInput = Prisma.AtLeast<{
@@ -277,7 +270,6 @@ export type comunidadeWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.comunidadeWhereInput | Prisma.comunidadeWhereInput[]
   OR?: Prisma.comunidadeWhereInput[]
   NOT?: Prisma.comunidadeWhereInput | Prisma.comunidadeWhereInput[]
-  descricao?: Prisma.StringNullableFilter<"comunidade"> | string | null
   numeroDaComunidade?: Prisma.IntFilter<"comunidade"> | number
   quantidadeMembros?: Prisma.IntFilter<"comunidade"> | number
   observacao?: Prisma.StringNullableFilter<"comunidade"> | string | null
@@ -287,11 +279,11 @@ export type comunidadeWhereUniqueInput = Prisma.AtLeast<{
   paroquia?: Prisma.XOR<Prisma.ParoquiaScalarRelationFilter, Prisma.paroquiaWhereInput>
   comunidadeEtapas?: Prisma.ComunidadeEtapaListRelationFilter
   comunidadePessoas?: Prisma.ComunidadePessoaListRelationFilter
+  comunidadeHistoricos?: Prisma.ComunidadeHistoricoListRelationFilter
 }, "id" | "numeroDaComunidade_paroquiaId">
 
 export type comunidadeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  descricao?: Prisma.SortOrderInput | Prisma.SortOrder
   numeroDaComunidade?: Prisma.SortOrder
   quantidadeMembros?: Prisma.SortOrder
   observacao?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -310,7 +302,6 @@ export type comunidadeScalarWhereWithAggregatesInput = {
   OR?: Prisma.comunidadeScalarWhereWithAggregatesInput[]
   NOT?: Prisma.comunidadeScalarWhereWithAggregatesInput | Prisma.comunidadeScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"comunidade"> | number
-  descricao?: Prisma.StringNullableWithAggregatesFilter<"comunidade"> | string | null
   numeroDaComunidade?: Prisma.IntWithAggregatesFilter<"comunidade"> | number
   quantidadeMembros?: Prisma.IntWithAggregatesFilter<"comunidade"> | number
   observacao?: Prisma.StringNullableWithAggregatesFilter<"comunidade"> | string | null
@@ -320,7 +311,6 @@ export type comunidadeScalarWhereWithAggregatesInput = {
 }
 
 export type comunidadeCreateInput = {
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -329,11 +319,11 @@ export type comunidadeCreateInput = {
   paroquia: Prisma.paroquiaCreateNestedOneWithoutComunidadesInput
   comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutComunidadeInput
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutComunidadeInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoCreateNestedManyWithoutComunidadeInput
 }
 
 export type comunidadeUncheckedCreateInput = {
   id?: number
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -342,10 +332,10 @@ export type comunidadeUncheckedCreateInput = {
   updatedAt?: Date | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedCreateNestedManyWithoutComunidadeInput
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutComunidadeInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUncheckedCreateNestedManyWithoutComunidadeInput
 }
 
 export type comunidadeUpdateInput = {
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -354,11 +344,11 @@ export type comunidadeUpdateInput = {
   paroquia?: Prisma.paroquiaUpdateOneRequiredWithoutComunidadesNestedInput
   comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutComunidadeNestedInput
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutComunidadeNestedInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUpdateManyWithoutComunidadeNestedInput
 }
 
 export type comunidadeUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -367,11 +357,11 @@ export type comunidadeUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedUpdateManyWithoutComunidadeNestedInput
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutComunidadeNestedInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUncheckedUpdateManyWithoutComunidadeNestedInput
 }
 
 export type comunidadeCreateManyInput = {
   id?: number
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -381,7 +371,6 @@ export type comunidadeCreateManyInput = {
 }
 
 export type comunidadeUpdateManyMutationInput = {
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -391,7 +380,6 @@ export type comunidadeUpdateManyMutationInput = {
 
 export type comunidadeUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -417,7 +405,6 @@ export type comunidadeNumeroDaComunidadeParoquiaIdCompoundUniqueInput = {
 
 export type comunidadeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  descricao?: Prisma.SortOrder
   numeroDaComunidade?: Prisma.SortOrder
   quantidadeMembros?: Prisma.SortOrder
   observacao?: Prisma.SortOrder
@@ -435,7 +422,6 @@ export type comunidadeAvgOrderByAggregateInput = {
 
 export type comunidadeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  descricao?: Prisma.SortOrder
   numeroDaComunidade?: Prisma.SortOrder
   quantidadeMembros?: Prisma.SortOrder
   observacao?: Prisma.SortOrder
@@ -446,7 +432,6 @@ export type comunidadeMaxOrderByAggregateInput = {
 
 export type comunidadeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  descricao?: Prisma.SortOrder
   numeroDaComunidade?: Prisma.SortOrder
   quantidadeMembros?: Prisma.SortOrder
   observacao?: Prisma.SortOrder
@@ -537,8 +522,21 @@ export type comunidadeUpdateOneRequiredWithoutComunidadePessoasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.comunidadeUpdateToOneWithWhereWithoutComunidadePessoasInput, Prisma.comunidadeUpdateWithoutComunidadePessoasInput>, Prisma.comunidadeUncheckedUpdateWithoutComunidadePessoasInput>
 }
 
+export type comunidadeCreateNestedOneWithoutComunidadeHistoricosInput = {
+  create?: Prisma.XOR<Prisma.comunidadeCreateWithoutComunidadeHistoricosInput, Prisma.comunidadeUncheckedCreateWithoutComunidadeHistoricosInput>
+  connectOrCreate?: Prisma.comunidadeCreateOrConnectWithoutComunidadeHistoricosInput
+  connect?: Prisma.comunidadeWhereUniqueInput
+}
+
+export type comunidadeUpdateOneRequiredWithoutComunidadeHistoricosNestedInput = {
+  create?: Prisma.XOR<Prisma.comunidadeCreateWithoutComunidadeHistoricosInput, Prisma.comunidadeUncheckedCreateWithoutComunidadeHistoricosInput>
+  connectOrCreate?: Prisma.comunidadeCreateOrConnectWithoutComunidadeHistoricosInput
+  upsert?: Prisma.comunidadeUpsertWithoutComunidadeHistoricosInput
+  connect?: Prisma.comunidadeWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.comunidadeUpdateToOneWithWhereWithoutComunidadeHistoricosInput, Prisma.comunidadeUpdateWithoutComunidadeHistoricosInput>, Prisma.comunidadeUncheckedUpdateWithoutComunidadeHistoricosInput>
+}
+
 export type comunidadeCreateWithoutParoquiaInput = {
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -546,11 +544,11 @@ export type comunidadeCreateWithoutParoquiaInput = {
   updatedAt?: Date | string
   comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutComunidadeInput
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutComunidadeInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoCreateNestedManyWithoutComunidadeInput
 }
 
 export type comunidadeUncheckedCreateWithoutParoquiaInput = {
   id?: number
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -558,6 +556,7 @@ export type comunidadeUncheckedCreateWithoutParoquiaInput = {
   updatedAt?: Date | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedCreateNestedManyWithoutComunidadeInput
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutComunidadeInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUncheckedCreateNestedManyWithoutComunidadeInput
 }
 
 export type comunidadeCreateOrConnectWithoutParoquiaInput = {
@@ -591,7 +590,6 @@ export type comunidadeScalarWhereInput = {
   OR?: Prisma.comunidadeScalarWhereInput[]
   NOT?: Prisma.comunidadeScalarWhereInput | Prisma.comunidadeScalarWhereInput[]
   id?: Prisma.IntFilter<"comunidade"> | number
-  descricao?: Prisma.StringNullableFilter<"comunidade"> | string | null
   numeroDaComunidade?: Prisma.IntFilter<"comunidade"> | number
   quantidadeMembros?: Prisma.IntFilter<"comunidade"> | number
   observacao?: Prisma.StringNullableFilter<"comunidade"> | string | null
@@ -601,7 +599,6 @@ export type comunidadeScalarWhereInput = {
 }
 
 export type comunidadeCreateWithoutComunidadeEtapasInput = {
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -609,11 +606,11 @@ export type comunidadeCreateWithoutComunidadeEtapasInput = {
   updatedAt?: Date | string
   paroquia: Prisma.paroquiaCreateNestedOneWithoutComunidadesInput
   comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutComunidadeInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoCreateNestedManyWithoutComunidadeInput
 }
 
 export type comunidadeUncheckedCreateWithoutComunidadeEtapasInput = {
   id?: number
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -621,6 +618,7 @@ export type comunidadeUncheckedCreateWithoutComunidadeEtapasInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutComunidadeInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUncheckedCreateNestedManyWithoutComunidadeInput
 }
 
 export type comunidadeCreateOrConnectWithoutComunidadeEtapasInput = {
@@ -640,7 +638,6 @@ export type comunidadeUpdateToOneWithWhereWithoutComunidadeEtapasInput = {
 }
 
 export type comunidadeUpdateWithoutComunidadeEtapasInput = {
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -648,11 +645,11 @@ export type comunidadeUpdateWithoutComunidadeEtapasInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paroquia?: Prisma.paroquiaUpdateOneRequiredWithoutComunidadesNestedInput
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutComunidadeNestedInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUpdateManyWithoutComunidadeNestedInput
 }
 
 export type comunidadeUncheckedUpdateWithoutComunidadeEtapasInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -660,10 +657,10 @@ export type comunidadeUncheckedUpdateWithoutComunidadeEtapasInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutComunidadeNestedInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUncheckedUpdateManyWithoutComunidadeNestedInput
 }
 
 export type comunidadeCreateWithoutComunidadePessoasInput = {
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -671,11 +668,11 @@ export type comunidadeCreateWithoutComunidadePessoasInput = {
   updatedAt?: Date | string
   paroquia: Prisma.paroquiaCreateNestedOneWithoutComunidadesInput
   comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutComunidadeInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoCreateNestedManyWithoutComunidadeInput
 }
 
 export type comunidadeUncheckedCreateWithoutComunidadePessoasInput = {
   id?: number
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -683,6 +680,7 @@ export type comunidadeUncheckedCreateWithoutComunidadePessoasInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedCreateNestedManyWithoutComunidadeInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUncheckedCreateNestedManyWithoutComunidadeInput
 }
 
 export type comunidadeCreateOrConnectWithoutComunidadePessoasInput = {
@@ -702,7 +700,6 @@ export type comunidadeUpdateToOneWithWhereWithoutComunidadePessoasInput = {
 }
 
 export type comunidadeUpdateWithoutComunidadePessoasInput = {
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -710,11 +707,11 @@ export type comunidadeUpdateWithoutComunidadePessoasInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   paroquia?: Prisma.paroquiaUpdateOneRequiredWithoutComunidadesNestedInput
   comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutComunidadeNestedInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUpdateManyWithoutComunidadeNestedInput
 }
 
 export type comunidadeUncheckedUpdateWithoutComunidadePessoasInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -722,11 +719,73 @@ export type comunidadeUncheckedUpdateWithoutComunidadePessoasInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedUpdateManyWithoutComunidadeNestedInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUncheckedUpdateManyWithoutComunidadeNestedInput
+}
+
+export type comunidadeCreateWithoutComunidadeHistoricosInput = {
+  numeroDaComunidade: number
+  quantidadeMembros: number
+  observacao?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  paroquia: Prisma.paroquiaCreateNestedOneWithoutComunidadesInput
+  comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutComunidadeInput
+  comunidadePessoas?: Prisma.comunidadePessoaCreateNestedManyWithoutComunidadeInput
+}
+
+export type comunidadeUncheckedCreateWithoutComunidadeHistoricosInput = {
+  id?: number
+  numeroDaComunidade: number
+  quantidadeMembros: number
+  observacao?: string | null
+  paroquiaId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedCreateNestedManyWithoutComunidadeInput
+  comunidadePessoas?: Prisma.comunidadePessoaUncheckedCreateNestedManyWithoutComunidadeInput
+}
+
+export type comunidadeCreateOrConnectWithoutComunidadeHistoricosInput = {
+  where: Prisma.comunidadeWhereUniqueInput
+  create: Prisma.XOR<Prisma.comunidadeCreateWithoutComunidadeHistoricosInput, Prisma.comunidadeUncheckedCreateWithoutComunidadeHistoricosInput>
+}
+
+export type comunidadeUpsertWithoutComunidadeHistoricosInput = {
+  update: Prisma.XOR<Prisma.comunidadeUpdateWithoutComunidadeHistoricosInput, Prisma.comunidadeUncheckedUpdateWithoutComunidadeHistoricosInput>
+  create: Prisma.XOR<Prisma.comunidadeCreateWithoutComunidadeHistoricosInput, Prisma.comunidadeUncheckedCreateWithoutComunidadeHistoricosInput>
+  where?: Prisma.comunidadeWhereInput
+}
+
+export type comunidadeUpdateToOneWithWhereWithoutComunidadeHistoricosInput = {
+  where?: Prisma.comunidadeWhereInput
+  data: Prisma.XOR<Prisma.comunidadeUpdateWithoutComunidadeHistoricosInput, Prisma.comunidadeUncheckedUpdateWithoutComunidadeHistoricosInput>
+}
+
+export type comunidadeUpdateWithoutComunidadeHistoricosInput = {
+  numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
+  quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
+  observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paroquia?: Prisma.paroquiaUpdateOneRequiredWithoutComunidadesNestedInput
+  comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutComunidadeNestedInput
+  comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutComunidadeNestedInput
+}
+
+export type comunidadeUncheckedUpdateWithoutComunidadeHistoricosInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
+  quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
+  observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paroquiaId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedUpdateManyWithoutComunidadeNestedInput
+  comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutComunidadeNestedInput
 }
 
 export type comunidadeCreateManyParoquiaInput = {
   id?: number
-  descricao?: string | null
   numeroDaComunidade: number
   quantidadeMembros: number
   observacao?: string | null
@@ -735,7 +794,6 @@ export type comunidadeCreateManyParoquiaInput = {
 }
 
 export type comunidadeUpdateWithoutParoquiaInput = {
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -743,11 +801,11 @@ export type comunidadeUpdateWithoutParoquiaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutComunidadeNestedInput
   comunidadePessoas?: Prisma.comunidadePessoaUpdateManyWithoutComunidadeNestedInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUpdateManyWithoutComunidadeNestedInput
 }
 
 export type comunidadeUncheckedUpdateWithoutParoquiaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -755,11 +813,11 @@ export type comunidadeUncheckedUpdateWithoutParoquiaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedUpdateManyWithoutComunidadeNestedInput
   comunidadePessoas?: Prisma.comunidadePessoaUncheckedUpdateManyWithoutComunidadeNestedInput
+  comunidadeHistoricos?: Prisma.comunidadeHistoricoUncheckedUpdateManyWithoutComunidadeNestedInput
 }
 
 export type comunidadeUncheckedUpdateManyWithoutParoquiaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  descricao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroDaComunidade?: Prisma.IntFieldUpdateOperationsInput | number
   quantidadeMembros?: Prisma.IntFieldUpdateOperationsInput | number
   observacao?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -775,11 +833,13 @@ export type comunidadeUncheckedUpdateManyWithoutParoquiaInput = {
 export type ComunidadeCountOutputType = {
   comunidadeEtapas: number
   comunidadePessoas: number
+  comunidadeHistoricos: number
 }
 
 export type ComunidadeCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comunidadeEtapas?: boolean | ComunidadeCountOutputTypeCountComunidadeEtapasArgs
   comunidadePessoas?: boolean | ComunidadeCountOutputTypeCountComunidadePessoasArgs
+  comunidadeHistoricos?: boolean | ComunidadeCountOutputTypeCountComunidadeHistoricosArgs
 }
 
 /**
@@ -806,10 +866,16 @@ export type ComunidadeCountOutputTypeCountComunidadePessoasArgs<ExtArgs extends 
   where?: Prisma.comunidadePessoaWhereInput
 }
 
+/**
+ * ComunidadeCountOutputType without action
+ */
+export type ComunidadeCountOutputTypeCountComunidadeHistoricosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.comunidadeHistoricoWhereInput
+}
+
 
 export type comunidadeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  descricao?: boolean
   numeroDaComunidade?: boolean
   quantidadeMembros?: boolean
   observacao?: boolean
@@ -819,12 +885,12 @@ export type comunidadeSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   paroquia?: boolean | Prisma.paroquiaDefaultArgs<ExtArgs>
   comunidadeEtapas?: boolean | Prisma.comunidade$comunidadeEtapasArgs<ExtArgs>
   comunidadePessoas?: boolean | Prisma.comunidade$comunidadePessoasArgs<ExtArgs>
+  comunidadeHistoricos?: boolean | Prisma.comunidade$comunidadeHistoricosArgs<ExtArgs>
   _count?: boolean | Prisma.ComunidadeCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["comunidade"]>
 
 export type comunidadeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  descricao?: boolean
   numeroDaComunidade?: boolean
   quantidadeMembros?: boolean
   observacao?: boolean
@@ -836,7 +902,6 @@ export type comunidadeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type comunidadeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  descricao?: boolean
   numeroDaComunidade?: boolean
   quantidadeMembros?: boolean
   observacao?: boolean
@@ -848,7 +913,6 @@ export type comunidadeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
 
 export type comunidadeSelectScalar = {
   id?: boolean
-  descricao?: boolean
   numeroDaComunidade?: boolean
   quantidadeMembros?: boolean
   observacao?: boolean
@@ -857,11 +921,12 @@ export type comunidadeSelectScalar = {
   updatedAt?: boolean
 }
 
-export type comunidadeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "descricao" | "numeroDaComunidade" | "quantidadeMembros" | "observacao" | "paroquiaId" | "createdAt" | "updatedAt", ExtArgs["result"]["comunidade"]>
+export type comunidadeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "numeroDaComunidade" | "quantidadeMembros" | "observacao" | "paroquiaId" | "createdAt" | "updatedAt", ExtArgs["result"]["comunidade"]>
 export type comunidadeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   paroquia?: boolean | Prisma.paroquiaDefaultArgs<ExtArgs>
   comunidadeEtapas?: boolean | Prisma.comunidade$comunidadeEtapasArgs<ExtArgs>
   comunidadePessoas?: boolean | Prisma.comunidade$comunidadePessoasArgs<ExtArgs>
+  comunidadeHistoricos?: boolean | Prisma.comunidade$comunidadeHistoricosArgs<ExtArgs>
   _count?: boolean | Prisma.ComunidadeCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type comunidadeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -877,10 +942,10 @@ export type $comunidadePayload<ExtArgs extends runtime.Types.Extensions.Internal
     paroquia: Prisma.$paroquiaPayload<ExtArgs>
     comunidadeEtapas: Prisma.$comunidadeEtapaPayload<ExtArgs>[]
     comunidadePessoas: Prisma.$comunidadePessoaPayload<ExtArgs>[]
+    comunidadeHistoricos: Prisma.$comunidadeHistoricoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    descricao: string | null
     numeroDaComunidade: number
     quantidadeMembros: number
     observacao: string | null
@@ -1284,6 +1349,7 @@ export interface Prisma__comunidadeClient<T, Null = never, ExtArgs extends runti
   paroquia<T extends Prisma.paroquiaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.paroquiaDefaultArgs<ExtArgs>>): Prisma.Prisma__paroquiaClient<runtime.Types.Result.GetResult<Prisma.$paroquiaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   comunidadeEtapas<T extends Prisma.comunidade$comunidadeEtapasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.comunidade$comunidadeEtapasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comunidadeEtapaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comunidadePessoas<T extends Prisma.comunidade$comunidadePessoasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.comunidade$comunidadePessoasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comunidadePessoaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comunidadeHistoricos<T extends Prisma.comunidade$comunidadeHistoricosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.comunidade$comunidadeHistoricosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comunidadeHistoricoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1314,7 +1380,6 @@ export interface Prisma__comunidadeClient<T, Null = never, ExtArgs extends runti
  */
 export interface comunidadeFieldRefs {
   readonly id: Prisma.FieldRef<"comunidade", 'Int'>
-  readonly descricao: Prisma.FieldRef<"comunidade", 'String'>
   readonly numeroDaComunidade: Prisma.FieldRef<"comunidade", 'Int'>
   readonly quantidadeMembros: Prisma.FieldRef<"comunidade", 'Int'>
   readonly observacao: Prisma.FieldRef<"comunidade", 'String'>
@@ -1762,6 +1827,30 @@ export type comunidade$comunidadePessoasArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.ComunidadePessoaScalarFieldEnum | Prisma.ComunidadePessoaScalarFieldEnum[]
+}
+
+/**
+ * comunidade.comunidadeHistoricos
+ */
+export type comunidade$comunidadeHistoricosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the comunidadeHistorico
+   */
+  select?: Prisma.comunidadeHistoricoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the comunidadeHistorico
+   */
+  omit?: Prisma.comunidadeHistoricoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.comunidadeHistoricoInclude<ExtArgs> | null
+  where?: Prisma.comunidadeHistoricoWhereInput
+  orderBy?: Prisma.comunidadeHistoricoOrderByWithRelationInput | Prisma.comunidadeHistoricoOrderByWithRelationInput[]
+  cursor?: Prisma.comunidadeHistoricoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ComunidadeHistoricoScalarFieldEnum | Prisma.ComunidadeHistoricoScalarFieldEnum[]
 }
 
 /**

@@ -6,7 +6,6 @@ export default function serializeComunidadeResponse(
 ): Comunidade {
   return {
     id: comunidade.id,
-    descricao: comunidade.descricao,
     numeroDaComunidade: comunidade.numeroDaComunidade,
     quantidadeMembros: comunidade.quantidadeMembros,
     observacao: comunidade.observacao,

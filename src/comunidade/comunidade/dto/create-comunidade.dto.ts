@@ -12,11 +12,6 @@ import {
 } from 'class-validator';
 
 export class CreateComunidadeDto {
-  @IsOptional()
-  @MaxLength(80)
-  @IsString()
-  descricao: string;
-
   @IsInt()
   @IsPositive()
   @Max(30)
@@ -25,7 +20,7 @@ export class CreateComunidadeDto {
 
   @IsInt()
   @IsPositive()
-  @Max(80, { message: 'A comunidade deve ter no máximo 80 membros.' })
+  @Max(120, { message: 'A comunidade deve ter no máximo 120 membros.' })
   @Min(5, { message: 'A comunidade deve ter no mínimo 5 membros.' })
   quantidadeMembros: number;
 

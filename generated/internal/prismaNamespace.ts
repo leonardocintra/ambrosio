@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.2.0
- * Query Engine version: 0c8ef2ce45c83248ab3df073180d5eda9e8be7a3
+ * Prisma Client JS version: 7.3.0
+ * Query Engine version: 9d6ad21cbbceab97458517b147a6a09ff43aa735
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.2.0",
-  engine: "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3"
+  client: "7.3.0",
+  engine: "9d6ad21cbbceab97458517b147a6a09ff43aa735"
 }
 
 /**
@@ -413,7 +413,8 @@ export const ModelName = {
   regiao: 'regiao',
   comunidade: 'comunidade',
   comunidadeEtapa: 'comunidadeEtapa',
-  comunidadePessoa: 'comunidadePessoa'
+  comunidadePessoa: 'comunidadePessoa',
+  comunidadeHistorico: 'comunidadeHistorico'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -429,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "pais" | "estado" | "cidade" | "endereco" | "estadoCivil" | "escolaridade" | "pessoa" | "situacaoReligiosa" | "carisma" | "pessoaCarisma" | "pessoaEndereco" | "pessoaCasal" | "passaportePessoa" | "pessoaContato" | "tipoDiocese" | "diocese" | "paroquia" | "etapa" | "tipoEquipe" | "equipe" | "equipePessoa" | "localidade" | "tipoLocalidade" | "user" | "setor" | "macroRegiao" | "regiao" | "comunidade" | "comunidadeEtapa" | "comunidadePessoa"
+    modelProps: "pais" | "estado" | "cidade" | "endereco" | "estadoCivil" | "escolaridade" | "pessoa" | "situacaoReligiosa" | "carisma" | "pessoaCarisma" | "pessoaEndereco" | "pessoaCasal" | "passaportePessoa" | "pessoaContato" | "tipoDiocese" | "diocese" | "paroquia" | "etapa" | "tipoEquipe" | "equipe" | "equipePessoa" | "localidade" | "tipoLocalidade" | "user" | "setor" | "macroRegiao" | "regiao" | "comunidade" | "comunidadeEtapa" | "comunidadePessoa" | "comunidadeHistorico"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2653,6 +2654,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    comunidadeHistorico: {
+      payload: Prisma.$comunidadeHistoricoPayload<ExtArgs>
+      fields: Prisma.comunidadeHistoricoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.comunidadeHistoricoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.comunidadeHistoricoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>
+        }
+        findFirst: {
+          args: Prisma.comunidadeHistoricoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.comunidadeHistoricoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>
+        }
+        findMany: {
+          args: Prisma.comunidadeHistoricoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>[]
+        }
+        create: {
+          args: Prisma.comunidadeHistoricoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>
+        }
+        createMany: {
+          args: Prisma.comunidadeHistoricoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.comunidadeHistoricoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>[]
+        }
+        delete: {
+          args: Prisma.comunidadeHistoricoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>
+        }
+        update: {
+          args: Prisma.comunidadeHistoricoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>
+        }
+        deleteMany: {
+          args: Prisma.comunidadeHistoricoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.comunidadeHistoricoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.comunidadeHistoricoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>[]
+        }
+        upsert: {
+          args: Prisma.comunidadeHistoricoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$comunidadeHistoricoPayload>
+        }
+        aggregate: {
+          args: Prisma.ComunidadeHistoricoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateComunidadeHistorico>
+        }
+        groupBy: {
+          args: Prisma.comunidadeHistoricoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ComunidadeHistoricoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.comunidadeHistoricoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ComunidadeHistoricoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2977,7 +3052,6 @@ export type RegiaoScalarFieldEnum = (typeof RegiaoScalarFieldEnum)[keyof typeof 
 
 export const ComunidadeScalarFieldEnum = {
   id: 'id',
-  descricao: 'descricao',
   numeroDaComunidade: 'numeroDaComunidade',
   quantidadeMembros: 'quantidadeMembros',
   observacao: 'observacao',
@@ -3016,6 +3090,16 @@ export const ComunidadePessoaScalarFieldEnum = {
 } as const
 
 export type ComunidadePessoaScalarFieldEnum = (typeof ComunidadePessoaScalarFieldEnum)[keyof typeof ComunidadePessoaScalarFieldEnum]
+
+
+export const ComunidadeHistoricoScalarFieldEnum = {
+  id: 'id',
+  comunidadeId: 'comunidadeId',
+  descricao: 'descricao',
+  createdAt: 'createdAt'
+} as const
+
+export type ComunidadeHistoricoScalarFieldEnum = (typeof ComunidadeHistoricoScalarFieldEnum)[keyof typeof ComunidadeHistoricoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3277,6 +3361,7 @@ export type GlobalOmitConfig = {
   comunidade?: Prisma.comunidadeOmit
   comunidadeEtapa?: Prisma.comunidadeEtapaOmit
   comunidadePessoa?: Prisma.comunidadePessoaOmit
+  comunidadeHistorico?: Prisma.comunidadeHistoricoOmit
 }
 
 /* Types for Logging */

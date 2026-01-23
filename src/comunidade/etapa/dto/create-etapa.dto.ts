@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsNumber,
@@ -18,11 +19,8 @@ export class CreateEtapaDto {
 
   @IsOptional()
   @IsDate()
+  @Type(() => Date)
   dataInicio?: Date;
-
-  @IsOptional()
-  @IsDate()
-  dataFim?: Date;
 
   @IsOptional()
   @MaxLength(180)

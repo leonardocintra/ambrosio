@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "Prisma-Remote": {
+      "url": "https://mcp.prisma.io/mcp"
+    }
+  }
+}

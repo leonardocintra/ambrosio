@@ -30,6 +30,7 @@ import { ComunidadeModule } from './comunidade/comunidade/comunidade.module';
 import { EtapaModule } from './comunidade/etapa/etapa.module';
 import { EquipeModule } from './equipe/equipe.module';
 import { CarismaModule } from './carisma/carisma.module';
+import { HistoricoModule } from './comunidade/historico/historico.module';
 import * as rTracer from 'cls-rtracer';
 
 @Module({
@@ -90,6 +91,7 @@ import * as rTracer from 'cls-rtracer';
     EtapaModule,
     EquipeModule,
     CarismaModule,
+    HistoricoModule,
   ],
   controllers: [AppController],
   providers: [
