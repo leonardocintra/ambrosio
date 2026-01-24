@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "comunidadeHistorico" (
+CREATE TABLE "ambrosio"."comunidadeHistorico" (
     "id" SERIAL NOT NULL,
     "comunidadeId" INTEGER NOT NULL,
     "descricao" TEXT,
@@ -9,4 +9,4 @@ CREATE TABLE "comunidadeHistorico" (
 );
 
 -- AddForeignKey
-ALTER TABLE "comunidadeHistorico" ADD CONSTRAINT "comunidadeHistorico_comunidadeId_fkey" FOREIGN KEY ("comunidadeId") REFERENCES "comunidade"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ambrosio"."comunidadeHistorico" ADD CONSTRAINT "comunidadeHistorico_comunidadeId_fkey" FOREIGN KEY ("comunidadeId") REFERENCES "comunidade"("id") ON DELETE CASCADE ON UPDATE CASCADE;

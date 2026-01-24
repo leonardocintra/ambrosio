@@ -5,7 +5,7 @@
 
 */
 -- DropIndex
-DROP INDEX "comunidadeEtapa_comunidadeId_etapaId_key";
+DROP INDEX "ambrosio"."comunidadeEtapa_comunidadeId_etapaId_key";
 
 -- AlterTable
-ALTER TABLE "comunidade" DROP COLUMN "descricao";
+ALTER TABLE "ambrosio"."comunidade" DROP COLUMN "descricao";
