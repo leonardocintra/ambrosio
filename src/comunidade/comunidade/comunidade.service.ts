@@ -5,7 +5,7 @@ import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
-import { Comunidade } from 'neocatecumenal';
+import { Comunidade, EtapaEnum } from 'neocatecumenal';
 import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { EtapaService } from '../etapa/etapa.service';
 import serializeComunidadeResponse from './comunidade.serialize';
@@ -45,6 +45,7 @@ export class ComunidadeService extends BaseService {
       );
       await this.etapaService.create({
         comunidadeId: comunidade.id,
+        etapa: EtapaEnum.PRE_CATECUMENATO,
         observacao: createComunidadeDto.observacao,
         dataInicio: createComunidadeDto.dataInicio,
         localConvivencia: createComunidadeDto.local,

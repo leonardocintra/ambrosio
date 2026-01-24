@@ -4,6 +4,7 @@ import { UpdateEtapaDto } from './dto/update-etapa.dto';
 import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { EtapaEnum } from 'neocatecumenal';
 
 @Injectable()
 export class EtapaService extends BaseService {
@@ -20,14 +21,14 @@ export class EtapaService extends BaseService {
       `Creating etapa for comunidade ${createEtapaDto.comunidadeId}`,
     );
 
-    const proximaEtapa = await this.getProximaEtapaId(
-      createEtapaDto.comunidadeId,
-    );
+    const etapaId = this.getEtapaIndex(createEtapaDto.etapa);
 
     return this.prisma.comunidadeEtapa.create({
       data: {
-        ...createEtapaDto,
-        etapaId: proximaEtapa,
+        etapaId,
+        comunidadeId: createEtapaDto.comunidadeId,
+        dataInicio: createEtapaDto.dataInicio,
+        observacao: createEtapaDto.observacao,
         localConvivencia: createEtapaDto.localConvivencia,
       },
     });
@@ -66,13 +67,14 @@ export class EtapaService extends BaseService {
     });
   }
 
-  private async getProximaEtapaId(comunidadeId: number): Promise<number> {
-    const etapasExistentes = await this.findAllByComunidade(comunidadeId);
+  private getEtapaIndex(etapa: EtapaEnum): number {
+    const etapas = Object.values(EtapaEnum);
+    const index = etapas.indexOf(etapa);
 
-    const proximaEtapaEsperada =
-      etapasExistentes.length > 0
-        ? etapasExistentes[etapasExistentes.length - 1].etapaId + 1
-        : 1;
-    return proximaEtapaEsperada;
+    if (index === -1) {
+      throw new Error(`Etapa inválida: ${etapa}`);
+    }
+
+    return index + 1;
   }
 }

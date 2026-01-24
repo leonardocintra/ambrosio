@@ -1,16 +1,21 @@
 import { Type } from 'class-transformer';
 import {
   IsDate,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,
   MaxLength,
 } from 'class-validator';
+import { EtapaEnum } from 'neocatecumenal';
 
 export class CreateEtapaDto {
   @IsNumber()
   @IsPositive()
   comunidadeId: number;
+
+  @IsEnum(EtapaEnum)
+  etapa: EtapaEnum;
 
   @IsNumber()
   @IsPositive()
