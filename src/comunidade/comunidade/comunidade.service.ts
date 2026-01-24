@@ -24,6 +24,7 @@ export class ComunidadeService extends BaseService {
   }
 
   async create(createComunidadeDto: CreateComunidadeDto) {
+    // TODO: refatorar essa funcao para modo de transacao
     this.validateCreateAbility('comunidade');
 
     const paroquia = await this.paroquiaService.findOne(
@@ -48,21 +49,29 @@ export class ComunidadeService extends BaseService {
         dataInicio: createComunidadeDto.dataInicio,
         localConvivencia: createComunidadeDto.local,
       });
-
-      await this.historicoService.create({
-        comunidadeId: comunidade.id,
-        descricao: `Comunidade ${comunidade.numeroDaComunidade} criada.`,
-        catequistas: `Não informado`,
-        numeroComunidade: comunidade.numeroDaComunidade,
-        localConvivencia: createComunidadeDto.local,
-        dataConvivencia: createComunidadeDto.dataInicio,
-      });
     } catch (error) {
       await this.remove(comunidade.id);
       this.logger.error(
         `Erro ao criar etapa inicial para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id}): ${error.message}`,
       );
     }
+
+    try {
+      await this.historicoService.create({
+        comunidadeId: comunidade.id,
+        descricao: `Comunidade ${comunidade.numeroDaComunidade} criada.`,
+        catequistas: `Não informado`,
+        numeroComunidade: comunidade.numeroDaComunidade,
+        localConvivencia: createComunidadeDto.local,
+        dataConvivencia: createComunidadeDto.dataInicio ?? new Date(),
+      });
+    } catch (error) {
+      await this.remove(comunidade.id);
+      this.logger.error(
+        `Erro ao criar historico para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id}): ${error.message}`,
+      );
+    }
+
     return await this.findOne(comunidade.id);
   }
 

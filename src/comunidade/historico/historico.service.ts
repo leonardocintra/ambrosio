@@ -17,7 +17,7 @@ export class HistoricoService extends BaseService {
     const descricao = `Comunidade: ${createHistoricoDto.numeroComunidade}
       # Catequistas: ${createHistoricoDto.catequistas}
       # Local Convivência: ${createHistoricoDto.localConvivencia}
-      # Data Convivência: ${createHistoricoDto.dataConvivencia.toString()}
+      # Data Convivência: ${createHistoricoDto.dataConvivencia.toString() || 'Não informado'}
       # Responsável: ${createHistoricoDto.responsavel ?? 'Não informado'}
       # Co-Responsável: ${createHistoricoDto.coResponsavel ?? 'Não informado'}
       # Observação: ${createHistoricoDto.descricao}`;
