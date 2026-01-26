@@ -291,7 +291,6 @@ export type comunidadeEtapaOrderByWithRelationInput = {
 
 export type comunidadeEtapaWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  comunidadeId_etapaId?: Prisma.comunidadeEtapaComunidadeIdEtapaIdCompoundUniqueInput
   AND?: Prisma.comunidadeEtapaWhereInput | Prisma.comunidadeEtapaWhereInput[]
   OR?: Prisma.comunidadeEtapaWhereInput[]
   NOT?: Prisma.comunidadeEtapaWhereInput | Prisma.comunidadeEtapaWhereInput[]
@@ -307,7 +306,7 @@ export type comunidadeEtapaWhereUniqueInput = Prisma.AtLeast<{
   comunidade?: Prisma.XOR<Prisma.ComunidadeScalarRelationFilter, Prisma.comunidadeWhereInput>
   equipe?: Prisma.XOR<Prisma.EquipeNullableScalarRelationFilter, Prisma.equipeWhereInput> | null
   etapa?: Prisma.XOR<Prisma.EtapaScalarRelationFilter, Prisma.etapaWhereInput>
-}, "id" | "comunidadeId_etapaId">
+}, "id">
 
 export type comunidadeEtapaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -436,11 +435,6 @@ export type ComunidadeEtapaListRelationFilter = {
 
 export type comunidadeEtapaOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type comunidadeEtapaComunidadeIdEtapaIdCompoundUniqueInput = {
-  comunidadeId: number
-  etapaId: number
 }
 
 export type comunidadeEtapaCountOrderByAggregateInput = {

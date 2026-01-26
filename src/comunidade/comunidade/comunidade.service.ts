@@ -5,10 +5,11 @@ import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
-import { Comunidade } from 'neocatecumenal';
+import { Comunidade, EtapaEnum } from 'neocatecumenal';
 import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { EtapaService } from '../etapa/etapa.service';
 import serializeComunidadeResponse from './comunidade.serialize';
+import { HistoricoService } from '../historico/historico.service';
 
 @Injectable()
 export class ComunidadeService extends BaseService {
@@ -16,12 +17,14 @@ export class ComunidadeService extends BaseService {
     private prisma: PrismaService,
     private readonly paroquiaService: ParoquiaService,
     private readonly etapaService: EtapaService,
+    private readonly historicoService: HistoricoService,
     protected readonly abilityService: CaslAbilityService,
   ) {
     super(abilityService);
   }
 
   async create(createComunidadeDto: CreateComunidadeDto) {
+    // TODO: refatorar essa funcao para modo de transacao
     this.validateCreateAbility('comunidade');
 
     const paroquia = await this.paroquiaService.findOne(
@@ -30,7 +33,6 @@ export class ComunidadeService extends BaseService {
 
     const comunidade = await this.prisma.comunidade.create({
       data: {
-        descricao: createComunidadeDto.descricao,
         numeroDaComunidade: createComunidadeDto.numeroDaComunidade,
         quantidadeMembros: createComunidadeDto.quantidadeMembros,
         paroquiaId: paroquia.id,
@@ -38,8 +40,12 @@ export class ComunidadeService extends BaseService {
       },
     });
     try {
+      this.logger.log(
+        `Criando etapa inicial para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id})`,
+      );
       await this.etapaService.create({
         comunidadeId: comunidade.id,
+        etapa: EtapaEnum.PRE_CATECUMENATO,
         observacao: createComunidadeDto.observacao,
         dataInicio: createComunidadeDto.dataInicio,
         localConvivencia: createComunidadeDto.local,
@@ -50,6 +56,23 @@ export class ComunidadeService extends BaseService {
         `Erro ao criar etapa inicial para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id}): ${error.message}`,
       );
     }
+
+    try {
+      await this.historicoService.create({
+        comunidadeId: comunidade.id,
+        descricao: `Comunidade ${comunidade.numeroDaComunidade} criada.`,
+        catequistas: `Não informado`,
+        numeroComunidade: comunidade.numeroDaComunidade,
+        localConvivencia: createComunidadeDto.local,
+        dataConvivencia: createComunidadeDto.dataInicio ?? new Date(),
+      });
+    } catch (error) {
+      await this.remove(comunidade.id);
+      this.logger.error(
+        `Erro ao criar historico para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id}): ${error.message}`,
+      );
+    }
+
     return await this.findOne(comunidade.id);
   }
 

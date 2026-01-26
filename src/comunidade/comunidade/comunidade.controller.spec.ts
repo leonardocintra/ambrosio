@@ -14,6 +14,7 @@ import { PaisService } from 'src/configuracoes/pais/pais.service';
 import { HttpModule } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
 import { EtapaService } from '../etapa/etapa.service';
+import { HistoricoService } from '../historico/historico.service';
 
 describe('ComunidadeController', () => {
   let controller: ComunidadeController;
@@ -36,6 +37,7 @@ describe('ComunidadeController', () => {
         EnderecoService,
         TipoDioceseService,
         CidadeService,
+        HistoricoService,
         EstadoService,
         PaisService,
         JwtService,

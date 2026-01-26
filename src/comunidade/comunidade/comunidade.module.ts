@@ -3,10 +3,11 @@ import { ComunidadeService } from './comunidade.service';
 import { ComunidadeController } from './comunidade.controller';
 import { ParoquiaModule } from 'src/paroquia/paroquia.module';
 import { EtapaModule } from '../etapa/etapa.module';
+import { HistoricoModule } from '../historico/historico.module';
 
 @Module({
   controllers: [ComunidadeController],
   providers: [ComunidadeService],
-  imports: [ParoquiaModule, EtapaModule],
+  imports: [ParoquiaModule, EtapaModule, HistoricoModule],
 })
 export class ComunidadeModule {}

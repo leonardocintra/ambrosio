@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../generated"
+  provider     = "prisma-client"
+  output       = "../generated"
+  moduleFormat = "cjs"
 }
 
 datasource db {
@@ -329,17 +330,17 @@ model regiao {
 }
 
 model comunidade {
-  id                 Int                @id @default(autoincrement())
-  descricao          String?            @db.VarChar(80)
-  numeroDaComunidade Int
-  quantidadeMembros  Int
-  observacao         String?            @db.VarChar(250)
-  paroquiaId         Int
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @default(now()) @updatedAt
-  paroquia           paroquia           @relation(fields: [paroquiaId], references: [id])
-  comunidadeEtapas   comunidadeEtapa[]
-  comunidadePessoas  comunidadePessoa[]
+  id                   Int                   @id @default(autoincrement())
+  numeroDaComunidade   Int
+  quantidadeMembros    Int
+  observacao           String?               @db.VarChar(250)
+  paroquiaId           Int
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @default(now()) @updatedAt
+  paroquia             paroquia              @relation(fields: [paroquiaId], references: [id])
+  comunidadeEtapas     comunidadeEtapa[]
+  comunidadePessoas    comunidadePessoa[]
+  comunidadeHistoricos comunidadeHistorico[]
 
   @@unique([numeroDaComunidade, paroquiaId])
   @@schema("ambrosio")
@@ -360,7 +361,6 @@ model comunidadeEtapa {
   equipe           equipe?    @relation(fields: [equipeId], references: [id])
   etapa            etapa      @relation(fields: [etapaId], references: [id], onDelete: Cascade)
 
-  @@unique([comunidadeId, etapaId])
   @@schema("ambrosio")
 }
 
@@ -376,6 +376,16 @@ model comunidadePessoa {
   pessoa       pessoa     @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@unique([comunidadeId, pessoaId])
+  @@schema("ambrosio")
+}
+
+model comunidadeHistorico {
+  id           Int        @id @default(autoincrement())
+  comunidadeId Int
+  descricao    String?    @db.Text
+  comunidade   comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+
   @@schema("ambrosio")
 }
 

@@ -167,3 +167,8 @@ export type comunidadeEtapa = Prisma.comunidadeEtapaModel
  * 
  */
 export type comunidadePessoa = Prisma.comunidadePessoaModel
+/**
+ * Model comunidadeHistorico
+ * 
+ */
+export type comunidadeHistorico = Prisma.comunidadeHistoricoModel

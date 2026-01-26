@@ -13,6 +13,7 @@ import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.
 import { EstadoService } from 'src/configuracoes/estado/estado.service';
 import { HttpModule } from '@nestjs/axios';
 import { EtapaService } from '../etapa/etapa.service';
+import { HistoricoService } from '../historico/historico.service';
 
 describe('ComunidadeService', () => {
   let service: ComunidadeService;
@@ -33,7 +34,8 @@ describe('ComunidadeService', () => {
         EstadoService,
         SetorService,
         JwtService,
-        TipoDioceseService
+        TipoDioceseService,
+        HistoricoService
       ],
       imports: [HttpModule],
     }).compile();
