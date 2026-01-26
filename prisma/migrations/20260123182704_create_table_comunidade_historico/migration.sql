@@ -9,4 +9,4 @@ CREATE TABLE "ambrosio"."comunidadeHistorico" (
 );
 
 -- AddForeignKey
-ALTER TABLE "ambrosio"."comunidadeHistorico" ADD CONSTRAINT "comunidadeHistorico_comunidadeId_fkey" FOREIGN KEY ("comunidadeId") REFERENCES "comunidade"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ambrosio"."comunidadeHistorico" ADD CONSTRAINT "comunidadeHistorico_comunidadeId_fkey" FOREIGN KEY ("comunidadeId") REFERENCES "ambrosio"."comunidade"("id") ON DELETE CASCADE ON UPDATE CASCADE;
