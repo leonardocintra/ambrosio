@@ -21,7 +21,7 @@ export class SendEmailService {
         from: 'delivered+user2@resend.dev',
         to,
         subject: 'CNC - Gestão - Recuperação de senha',
-        html: `<p>Voce precisa acessar com sua senha temporária (${tempPassword}) e mudar a senha.</p>`,
+        html: `<p>Voce precisa acessar com sua senha temporária <b>${tempPassword}</b> e mudar a senha.</p>`,
       });
       // Clique aqui para redefinir a senha: <a href="${resetLink}">${resetLink}</a>
       this.logger.log(`Email de recuperação enviado para ${to}. Senha temporária: ${tempPassword}`);
