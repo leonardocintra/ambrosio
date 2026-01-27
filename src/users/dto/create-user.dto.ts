@@ -14,7 +14,7 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
-  @IsMobilePhone('pt-BR')
+  @IsMobilePhone('pt-BR', {}, { message: 'Insira um telefone whatsapp válido' })
   @MaxLength(13)
   whatsapp: string;
 
