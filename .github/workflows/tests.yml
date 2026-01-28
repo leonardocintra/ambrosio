@@ -53,3 +53,4 @@ jobs:
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
           JWT_SECRET: seu-jwt-secret
+          RESEND_API_KEY: seu-resend-api-key
