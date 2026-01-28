@@ -12,6 +12,8 @@ import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { PessoaService } from 'src/pessoa/pessoa.service';
 import { BaseService } from 'src/commons/base.service';
 
+const SALT_OR_ROUNDS = 10;
+
 @Injectable()
 export class UsersService extends BaseService {
   constructor(
@@ -34,7 +36,10 @@ export class UsersService extends BaseService {
     );
     await this.validateUniquePessoaForUser(pessoa.id);
 
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    const hashedPassword = await bcrypt.hash(
+      createUserDto.password,
+      SALT_OR_ROUNDS,
+    );
 
     return await this.prismaService.user.create({
       data: {
@@ -53,13 +58,20 @@ export class UsersService extends BaseService {
   }
 
   findOne(id: string) {
-    return this.prismaService.user.findUnique({ where: { id } });
+    return this.prismaService.user.findUniqueOrThrow({ where: { id } });
+  }
+
+  findOneByEmail(email: string) {
+    return this.prismaService.user.findUniqueOrThrow({ where: { email } });
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     // If a password is provided in the update DTO, hash it before updating.
     if (updateUserDto.password) {
-      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+      updateUserDto.password = await bcrypt.hash(
+        updateUserDto.password,
+        SALT_OR_ROUNDS,
+      );
     }
     return this.prismaService.user.update({
       where: { id },

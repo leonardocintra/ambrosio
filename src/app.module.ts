@@ -31,6 +31,8 @@ import { EtapaModule } from './comunidade/etapa/etapa.module';
 import { EquipeModule } from './equipe/equipe.module';
 import { CarismaModule } from './carisma/carisma.module';
 import { HistoricoModule } from './comunidade/historico/historico.module';
+import { ExternalModule } from './external/external.module';
+import { ResendModule } from 'nestjs-resend';
 import * as rTracer from 'cls-rtracer';
 
 @Module({
@@ -69,6 +71,9 @@ import * as rTracer from 'cls-rtracer';
         }),
       },
     }),
+    ResendModule.forRoot({
+      apiKey: process.env.RESEND_API_KEY,
+    }),
     SentryModule.forRoot(),
     ScheduleModule.forRoot(),
     EstadoCivilModule,
@@ -92,6 +97,7 @@ import * as rTracer from 'cls-rtracer';
     EquipeModule,
     CarismaModule,
     HistoricoModule,
+    ExternalModule,
   ],
   controllers: [AppController],
   providers: [

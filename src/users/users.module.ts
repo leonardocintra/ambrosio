@@ -7,5 +7,6 @@ import { PessoaModule } from 'src/pessoa/pessoa.module';
   controllers: [UsersController],
   providers: [UsersService],
   imports: [PessoaModule],
+  exports: [UsersService],
 })
 export class UsersModule {}

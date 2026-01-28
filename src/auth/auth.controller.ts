@@ -14,4 +14,9 @@ export class AuthController {
     }
     return user;
   }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body('email') email: string) {
+    return this.authService.forgotPassword(email);
+  }
 }

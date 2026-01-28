@@ -5,6 +5,9 @@ import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { packRules } from '@casl/ability/extra';
+import { createHash, randomBytes } from 'crypto';
+import { SendEmailService } from 'src/external/send-email/send-email.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -13,13 +16,13 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly prismaService: PrismaService,
+    private readonly mailService: SendEmailService,
+    private readonly userService: UsersService,
     private readonly abilityService: CaslAbilityService,
   ) {}
 
   async login(loginDto: LoginDto) {
-    const user = await this.prismaService.user.findUnique({
-      where: { email: loginDto.email },
-    });
+    const user = await this.userService.findOneByEmail(loginDto.email);
 
     if (!user) {
       this.logger.log(`Usuario não encontrado. Email ${loginDto.email} `);
@@ -45,5 +48,29 @@ export class AuthService {
     });
 
     return { access_token: token, access_token_type: 'Bearer' };
+  }
+
+  async forgotPassword(email: string) {
+    this.logger.log(`Iniciando processo de recuperação de senha para ${email}`);
+    const user = await this.userService.findOneByEmail(email);
+
+    if (!user) {
+      return { message: 'Email de recuperação enviado se o usuário existir.' };
+    }
+
+    const token = randomBytes(32).toString('hex');
+    const tokenHash = createHash('sha256').update(token).digest('hex');
+    const tempPassword = Math.random().toString(36).slice(-8);
+
+    await this.userService.update(user.id, {
+      password: tempPassword,
+      resetPasswordToken: tokenHash,
+      resetPasswordExpires: new Date(Date.now() + 1000 * 60 * 30), // 30 min
+    });
+
+    const resetLink = `${process.env.APP_URL}/reset-password?token=${token}`;
+
+    this.mailService.sendRecoveryEmail(user.email, resetLink, tempPassword);
+    return { message: 'Email de recuperação enviado se o usuário existir.' };
   }
 }

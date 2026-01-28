@@ -281,17 +281,19 @@ model tipoLocalidade {
 }
 
 model user {
-  id               String   @id @default(cuid())
-  email            String   @unique
-  password         String
-  role             roles    @default(NAO_IDENTIFICADO)
-  whatsapp         String?  @db.VarChar(20)
-  verifiedWhatsapp Boolean  @default(false)
-  active           Boolean  @default(false)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  pessoaId         Int?
-  pessoa           pessoa?  @relation(fields: [pessoaId], references: [id])
+  id                   String    @id @default(cuid())
+  email                String    @unique
+  password             String
+  role                 roles     @default(NAO_IDENTIFICADO)
+  whatsapp             String?   @db.VarChar(20)
+  verifiedWhatsapp     Boolean   @default(false)
+  active               Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  pessoaId             Int?
+  pessoa               pessoa?   @relation(fields: [pessoaId], references: [id])
+  resetPasswordToken   String?
+  resetPasswordExpires DateTime?
 
   @@schema("ambrosio")
 }
