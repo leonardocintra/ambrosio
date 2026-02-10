@@ -1,6 +1,4 @@
-import { Type } from 'class-transformer';
 import {
-  IsDate,
   IsInt,
   IsNumber,
   IsOptional,
@@ -33,14 +31,4 @@ export class CreateComunidadeDto {
   @MaxLength(250)
   @IsString()
   observacao?: string;
-
-  @IsOptional()
-  @IsDate()
-  @Type(() => Date)
-  dataInicio?: Date;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(180)
-  local?: string;
 }

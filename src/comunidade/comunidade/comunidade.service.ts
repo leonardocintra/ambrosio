@@ -5,7 +5,7 @@ import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
-import { Comunidade, EtapaEnum } from 'neocatecumenal';
+import { Comunidade } from 'neocatecumenal';
 import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { EtapaService } from '../etapa/etapa.service';
 import serializeComunidadeResponse from './comunidade.serialize';
@@ -24,7 +24,6 @@ export class ComunidadeService extends BaseService {
   }
 
   async create(createComunidadeDto: CreateComunidadeDto) {
-    // TODO: refatorar essa funcao para modo de transacao
     this.validateCreateAbility('comunidade');
 
     const paroquia = await this.paroquiaService.findOne(
@@ -39,37 +38,17 @@ export class ComunidadeService extends BaseService {
         observacao: createComunidadeDto.observacao,
       },
     });
-    try {
-      this.logger.log(
-        `Criando etapa inicial para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id})`,
-      );
-      await this.etapaService.create({
-        comunidadeId: comunidade.id,
-        etapa: EtapaEnum.PRE_CATECUMENATO,
-        observacao: createComunidadeDto.observacao,
-        dataInicio: createComunidadeDto.dataInicio,
-        localConvivencia: createComunidadeDto.local,
-      });
-    } catch (error) {
-      await this.remove(comunidade.id);
-      this.logger.error(
-        `Erro ao criar etapa inicial para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id}): ${error.message}`,
-      );
-    }
 
     try {
       await this.historicoService.create({
         comunidadeId: comunidade.id,
-        descricao: `Comunidade ${comunidade.numeroDaComunidade} criada.`,
-        catequistas: `Não informado`,
         numeroComunidade: comunidade.numeroDaComunidade,
-        localConvivencia: createComunidadeDto.local,
-        dataConvivencia: createComunidadeDto.dataInicio ?? new Date(),
+        descricao: `Comunidade ${comunidade.numeroDaComunidade} cadastrada no sistema.`,
       });
     } catch (error) {
       await this.remove(comunidade.id);
       this.logger.error(
-        `Erro ao criar historico para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id}): ${error.message}`,
+        `Erro ao criar historico para comunidade ${comunidade.numeroDaComunidade} - (ID: ${comunidade.id}): ${error instanceof Error ? error.message : String(error)}`,
       );
     }
 
@@ -112,11 +91,23 @@ export class ComunidadeService extends BaseService {
     return serializeComunidadeResponse(comunidade);
   }
 
-  update(id: number, updateComunidadeDto: UpdateComunidadeDto) {
+  async update(id: number, updateComunidadeDto: UpdateComunidadeDto) {
     this.validateUpdateAbility('comunidade');
-    return (
-      `This action updates a #${id} comunidade` + updateComunidadeDto.toString()
-    );
+
+    await this.historicoService.create({
+      comunidadeId: id,
+      numeroComunidade: updateComunidadeDto.numeroDaComunidade,
+      descricao: `Comunidade com ${updateComunidadeDto.quantidadeMembros} membros.`,
+    });
+
+    return this.prisma.comunidade.update({
+      where: { id },
+      data: {
+        numeroDaComunidade: updateComunidadeDto.numeroDaComunidade,
+        quantidadeMembros: updateComunidadeDto.quantidadeMembros,
+        observacao: updateComunidadeDto.observacao,
+      },
+    });
   }
 
   remove(id: number) {
