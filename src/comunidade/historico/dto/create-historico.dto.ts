@@ -17,13 +17,16 @@ export class CreateHistoricoDto {
   numeroComunidade: number;
 
   @IsString()
-  catequistas: string;
+  @IsOptional()
+  catequistas?: string;
 
   @IsString()
-  localConvivencia: string;
+  @IsOptional()
+  localConvivencia?: string;
 
   @IsString()
-  descricao: string;
+  @IsOptional()
+  descricao?: string;
 
   @IsOptional()
   @IsDate()

@@ -38,6 +38,8 @@ export const RECORD_DOES_NOT_EXIST = 'P2025';
 export const LIMIT_DEFAULT = 50;
 export const PAGE_DEFAULT = 1;
 
+export const SEM_INFORMACAO = 'Sem informações ou não se aplica';
+
 // INCLUDES PRISMA CLIENT
 export const ENDERECO_INCLUDE = {
   include: {
