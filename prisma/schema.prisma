@@ -45,7 +45,7 @@ model endereco {
   logradouro String           @db.VarChar(50)
   bairro     String           @db.VarChar(50)
   numero     String           @db.VarChar(5)
-  cidadeId   Int              @default(1)
+  cidadeId   Int
   observacao String?          @db.VarChar(250)
   diocese    diocese[]
   cidade     cidade           @relation(fields: [cidadeId], references: [id])
@@ -178,7 +178,7 @@ model paroquia {
   enderecoId  Int
   dioceseId   Int
   descricao   String       @db.VarChar(50)
-  setorId     Int          @default(1)
+  setorId     Int
   comunidades comunidade[]
   diocese     diocese      @relation(fields: [dioceseId], references: [id])
   endereco    endereco     @relation(fields: [enderecoId], references: [id])
@@ -259,7 +259,7 @@ model setor {
   id        Int        @id @default(autoincrement())
   descricao String     @unique @db.VarChar(50)
   ativo     Boolean    @default(true)
-  regiaoId  Int        @default(1)
+  regiaoId  Int
   paroquia  paroquia[]
   regiao    regiao     @relation(fields: [regiaoId], references: [id])
 

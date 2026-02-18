@@ -49,7 +49,7 @@ CREATE TABLE "endereco" (
     "logradouro" VARCHAR(50) NOT NULL,
     "bairro" VARCHAR(50) NOT NULL,
     "numero" VARCHAR(5) NOT NULL,
-    "cidadeId" INTEGER NOT NULL DEFAULT 1,
+    "cidadeId" INTEGER NOT NULL,
     "observacao" VARCHAR(250),
 
     CONSTRAINT "endereco_pkey" PRIMARY KEY ("id")
@@ -181,7 +181,7 @@ CREATE TABLE "paroquia" (
     "enderecoId" INTEGER NOT NULL,
     "dioceseId" INTEGER NOT NULL,
     "descricao" VARCHAR(50) NOT NULL,
-    "setorId" INTEGER NOT NULL DEFAULT 1,
+    "setorId" INTEGER NOT NULL,
 
     CONSTRAINT "paroquia_pkey" PRIMARY KEY ("id")
 );
@@ -268,7 +268,7 @@ CREATE TABLE "setor" (
     "id" SERIAL NOT NULL,
     "descricao" VARCHAR(50) NOT NULL,
     "ativo" BOOLEAN NOT NULL DEFAULT true,
-    "regiaoId" INTEGER NOT NULL DEFAULT 1,
+    "regiaoId" INTEGER NOT NULL,
 
     CONSTRAINT "setor_pkey" PRIMARY KEY ("id")
 );
