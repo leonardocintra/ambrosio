@@ -40,6 +40,7 @@ Seguir as instruções em https://github.com/leonardocintra/sao-pedro
 ```bash
 $ sudo docker compose up -d
 $ npx prisma migrate dev
+$ npx prisma generate
 $ npm run seed
 $ npm run start:dev
 ```

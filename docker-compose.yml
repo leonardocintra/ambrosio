@@ -1,11 +1,14 @@
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     ports:
       - 5432:5432
     volumes:
-      - ~/apps/postgres-ambrosio:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_PASSWORD=ambrosio
-      - POSTGRES_USER=ambrosio
-      - POSTGRES_DB=ambrosio
+      POSTGRES_PASSWORD: ambrosio
+      POSTGRES_USER: ambrosio
+      POSTGRES_DB: ambrosio
+
+volumes:
+  postgres-data:
