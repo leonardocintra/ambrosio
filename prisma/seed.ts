@@ -1,13 +1,8 @@
 import 'dotenv/config';
 
-import { faker } from '@faker-js/faker';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
-import {
-  PrismaClient,
-  Sexo,
-  tipoCarismaEnum,
-} from '../generated/client';
+import { PrismaClient, Sexo, tipoCarismaEnum } from '../generated/client';
 
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -316,6 +311,13 @@ async function main() {
 
     await prisma.cidade.create({
       data: {
+        nome: 'Guaxupé',
+        estadoId,
+      },
+    });
+
+    await prisma.cidade.create({
+      data: {
         nome: 'Claraval',
         estadoId,
       },
@@ -386,15 +388,15 @@ async function main() {
   async function tipoEquipe() {
     const tiposEquipe = [
       'Catequista',
-      'Secretários Centro Neocatecumenal',
-      'Peregrinações Jovens',
       'Catequista Regional',
       'Catequista Itinerante',
-      'Vocacional - Moças',
-      'Vocacional - Moços',
-      'Responsável GRANDE REGIAO',
+      'Secretários Centro Neocatecumenal',
+      'Peregrinações Jovens',
       'Perscrutação Jovens',
       'Pós-Crisma',
+      'Responsável GRANDE REGIAO',
+      'Vocacional - Moças',
+      'Vocacional - Moços',
     ];
 
     for (const descricao of tiposEquipe) {
@@ -472,21 +474,23 @@ async function main() {
   }
 
   async function diocese() {
-    const cidade = await prisma.cidade.findFirst();
+    const cidade = await prisma.cidade.findUnique({
+      where: { nome: 'Guaxupé' },
+    });
     const endereco = await prisma.endereco.create({
       data: {
-        bairro: faker.location.street(),
-        cep: '14400660',
-        logradouro: 'Rua do Comercio',
-        numero: '145',
-        observacao: faker.location.streetAddress(),
+        bairro: 'Centro',
+        cep: '37830000',
+        logradouro: 'Rua Francisco Ribeiro do Vale',
+        numero: '242',
+        observacao: 'Bipo Dom Jose Lanza',
         cidadeId: cidade.id,
       },
     });
 
     await prisma.diocese.create({
       data: {
-        descricao: 'Diocese de Londrina',
+        descricao: 'Mitra Diocesana de Guaxupé',
         tipoDioceseId: 1,
         enderecoId: endereco.id,
       },
@@ -500,11 +504,11 @@ async function main() {
     const cidade = await prisma.cidade.findFirst();
     const endereco = await prisma.endereco.create({
       data: {
-        bairro: faker.location.street(),
-        cep: faker.location.zipCode('########'),
-        logradouro: faker.location.street(),
-        numero: faker.number.int({ min: 1, max: 9000 }).toString(),
-        observacao: faker.location.streetAddress(),
+        bairro: 'Centro',
+        cep: '37990000',
+        logradouro: 'Rua Tiradentes',
+        numero: '789',
+        observacao: 'Padre Norival Sardinha Filho ',
         cidadeId: cidade.id,
       },
     });
