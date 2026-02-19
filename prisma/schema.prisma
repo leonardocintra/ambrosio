@@ -6,7 +6,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  schemas  = ["ambrosio"]
 }
 
 model pais {
@@ -19,8 +18,6 @@ model pais {
   lingua              String   @db.VarChar(50)
   capital             String   @db.VarChar(100)
   estado              estado[]
-
-  @@schema("ambrosio")
 }
 
 model estado {
@@ -31,8 +28,6 @@ model estado {
   paisId Int
   cidade cidade[]
   pais   pais     @relation(fields: [paisId], references: [id])
-
-  @@schema("ambrosio")
 }
 
 model cidade {
@@ -42,8 +37,6 @@ model cidade {
   ativo    Boolean    @default(true)
   estado   estado     @relation(fields: [estadoId], references: [id])
   endereco endereco[]
-
-  @@schema("ambrosio")
 }
 
 model endereco {
@@ -52,29 +45,23 @@ model endereco {
   logradouro String           @db.VarChar(50)
   bairro     String           @db.VarChar(50)
   numero     String           @db.VarChar(5)
-  cidadeId   Int              @default(1)
+  cidadeId   Int
   observacao String?          @db.VarChar(250)
   diocese    diocese[]
   cidade     cidade           @relation(fields: [cidadeId], references: [id])
   localidade localidade[]
   paroquias  paroquia[]
   pessoas    pessoaEndereco[]
-
-  @@schema("ambrosio")
 }
 
 model estadoCivil {
   id        Int    @id @default(autoincrement())
   descricao String @unique @db.VarChar(20)
-
-  @@schema("ambrosio")
 }
 
 model escolaridade {
   id        Int    @id @default(autoincrement())
   descricao String @unique @db.VarChar(30)
-
-  @@schema("ambrosio")
 }
 
 model pessoa {
@@ -96,7 +83,6 @@ model pessoa {
   updatedAt            DateTime           @default(now()) @updatedAt
 
   @@index([externalId])
-  @@schema("ambrosio")
 }
 
 model situacaoReligiosa {
@@ -104,8 +90,6 @@ model situacaoReligiosa {
   descricao String   @unique @db.VarChar(50)
   sexoUnico Sexo?
   pessoa    pessoa[]
-
-  @@schema("ambrosio")
 }
 
 model carisma {
@@ -116,7 +100,6 @@ model carisma {
   pessoaCarismas pessoaCarisma[]
 
   @@unique([descricao, tipo])
-  @@schema("ambrosio")
 }
 
 model pessoaCarisma {
@@ -129,7 +112,6 @@ model pessoaCarisma {
   pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@unique([pessoaId, carismaId])
-  @@schema("ambrosio")
 }
 
 model pessoaEndereco {
@@ -139,7 +121,6 @@ model pessoaEndereco {
   pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@id([pessoaId, enderecoId])
-  @@schema("ambrosio")
 }
 
 model pessoaCasal {
@@ -150,7 +131,6 @@ model pessoaCasal {
   mulher         pessoa @relation("Mulher", fields: [pessoaMulherId], references: [id], onDelete: Cascade)
 
   @@unique([pessoaMaridoId, pessoaMulherId])
-  @@schema("ambrosio")
 }
 
 model passaportePessoa {
@@ -161,8 +141,6 @@ model passaportePessoa {
   renovado      Boolean   @default(false)
   dataRenovacao DateTime?
   pessoa        pessoa    @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
-
-  @@schema("ambrosio")
 }
 
 model pessoaContato {
@@ -174,16 +152,12 @@ model pessoaContato {
   email               String?
   pessoaId            Int
   pessoa              pessoa  @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
-
-  @@schema("ambrosio")
 }
 
 model tipoDiocese {
   id        Int       @id @default(autoincrement())
   descricao String    @db.VarChar(50)
   dioceses  diocese[]
-
-  @@schema("ambrosio")
 }
 
 model diocese {
@@ -197,8 +171,6 @@ model diocese {
   tipoDiocese   tipoDiocese  @relation(fields: [tipoDioceseId], references: [id])
   localidade    localidade[]
   paroquias     paroquia[]
-
-  @@schema("ambrosio")
 }
 
 model paroquia {
@@ -206,29 +178,23 @@ model paroquia {
   enderecoId  Int
   dioceseId   Int
   descricao   String       @db.VarChar(50)
-  setorId     Int          @default(1)
+  setorId     Int
   comunidades comunidade[]
   diocese     diocese      @relation(fields: [dioceseId], references: [id])
   endereco    endereco     @relation(fields: [enderecoId], references: [id])
   setor       setor        @relation(fields: [setorId], references: [id])
-
-  @@schema("ambrosio")
 }
 
 model etapa {
   id               Int               @id @default(autoincrement())
   descricao        String            @db.VarChar(50)
   comunidadeEtapas comunidadeEtapa[]
-
-  @@schema("ambrosio")
 }
 
 model tipoEquipe {
   id        Int      @id @default(autoincrement())
   descricao String   @db.VarChar(80)
   equipes   equipe[]
-
-  @@schema("ambrosio")
 }
 
 model equipe {
@@ -241,8 +207,6 @@ model equipe {
   comunidadeEtapas comunidadeEtapa[]
   tipoEquipe       tipoEquipe        @relation(fields: [tipoEquipeId], references: [id])
   equipePessoas    equipePessoa[]
-
-  @@schema("ambrosio")
 }
 
 model equipePessoa {
@@ -255,7 +219,6 @@ model equipePessoa {
   pessoa     pessoa   @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@unique([equipeId, pessoaId])
-  @@schema("ambrosio")
 }
 
 model localidade {
@@ -268,16 +231,12 @@ model localidade {
   diocese          diocese        @relation(fields: [dioceseId], references: [id])
   endereco         endereco       @relation(fields: [enderecoId], references: [id])
   tipoLocalidade   tipoLocalidade @relation(fields: [tipoLocalidadeId], references: [id])
-
-  @@schema("ambrosio")
 }
 
 model tipoLocalidade {
   id         Int          @id @default(autoincrement())
   descricao  String       @db.VarChar(80)
   localidade localidade[]
-
-  @@schema("ambrosio")
 }
 
 model user {
@@ -294,20 +253,17 @@ model user {
   pessoa               pessoa?   @relation(fields: [pessoaId], references: [id])
   resetPasswordToken   String?
   resetPasswordExpires DateTime?
-
-  @@schema("ambrosio")
 }
 
 model setor {
   id        Int        @id @default(autoincrement())
   descricao String     @unique @db.VarChar(50)
   ativo     Boolean    @default(true)
-  regiaoId  Int        @default(1)
+  regiaoId  Int
   paroquia  paroquia[]
   regiao    regiao     @relation(fields: [regiaoId], references: [id])
 
   @@unique([descricao, regiaoId])
-  @@schema("ambrosio")
 }
 
 model macroRegiao {
@@ -315,8 +271,6 @@ model macroRegiao {
   descricao String   @db.VarChar(50)
   ativo     Boolean  @default(true)
   regiao    regiao[]
-
-  @@schema("ambrosio")
 }
 
 model regiao {
@@ -328,7 +282,6 @@ model regiao {
   setor         setor[]
 
   @@unique([descricao, macroRegiaoId])
-  @@schema("ambrosio")
 }
 
 model comunidade {
@@ -345,7 +298,6 @@ model comunidade {
   comunidadeHistoricos comunidadeHistorico[]
 
   @@unique([numeroDaComunidade, paroquiaId])
-  @@schema("ambrosio")
 }
 
 model comunidadeEtapa {
@@ -362,8 +314,6 @@ model comunidadeEtapa {
   comunidade       comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
   equipe           equipe?    @relation(fields: [equipeId], references: [id])
   etapa            etapa      @relation(fields: [etapaId], references: [id], onDelete: Cascade)
-
-  @@schema("ambrosio")
 }
 
 model comunidadePessoa {
@@ -378,7 +328,6 @@ model comunidadePessoa {
   pessoa       pessoa     @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
 
   @@unique([comunidadeId, pessoaId])
-  @@schema("ambrosio")
 }
 
 model comunidadeHistorico {
@@ -387,23 +336,17 @@ model comunidadeHistorico {
   descricao    String?    @db.Text
   comunidade   comunidade @relation(fields: [comunidadeId], references: [id], onDelete: Cascade)
   createdAt    DateTime   @default(now())
-
-  @@schema("ambrosio")
 }
 
 enum Sexo {
   MASCULINO
   FEMININO
-
-  @@schema("ambrosio")
 }
 
 enum tipoCarismaEnum {
   SERVICO
   VINCULADO
   PRIMITIVO
-
-  @@schema("ambrosio")
 }
 
 enum roles {
@@ -416,6 +359,4 @@ enum roles {
   SECRETARIA_CNC
   SECRETARIA_PAROQUIA
   NAO_IDENTIFICADO
-
-  @@schema("ambrosio")
 }

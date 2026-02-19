@@ -290,7 +290,7 @@ export type paroquiaCreateInput = {
   comunidades?: Prisma.comunidadeCreateNestedManyWithoutParoquiaInput
   diocese: Prisma.dioceseCreateNestedOneWithoutParoquiasInput
   endereco: Prisma.enderecoCreateNestedOneWithoutParoquiasInput
-  setor?: Prisma.setorCreateNestedOneWithoutParoquiaInput
+  setor: Prisma.setorCreateNestedOneWithoutParoquiaInput
 }
 
 export type paroquiaUncheckedCreateInput = {
@@ -298,7 +298,7 @@ export type paroquiaUncheckedCreateInput = {
   enderecoId: number
   dioceseId: number
   descricao: string
-  setorId?: number
+  setorId: number
   comunidades?: Prisma.comunidadeUncheckedCreateNestedManyWithoutParoquiaInput
 }
 
@@ -324,7 +324,7 @@ export type paroquiaCreateManyInput = {
   enderecoId: number
   dioceseId: number
   descricao: string
-  setorId?: number
+  setorId: number
 }
 
 export type paroquiaUpdateManyMutationInput = {
@@ -536,14 +536,14 @@ export type paroquiaCreateWithoutEnderecoInput = {
   descricao: string
   comunidades?: Prisma.comunidadeCreateNestedManyWithoutParoquiaInput
   diocese: Prisma.dioceseCreateNestedOneWithoutParoquiasInput
-  setor?: Prisma.setorCreateNestedOneWithoutParoquiaInput
+  setor: Prisma.setorCreateNestedOneWithoutParoquiaInput
 }
 
 export type paroquiaUncheckedCreateWithoutEnderecoInput = {
   id?: number
   dioceseId: number
   descricao: string
-  setorId?: number
+  setorId: number
   comunidades?: Prisma.comunidadeUncheckedCreateNestedManyWithoutParoquiaInput
 }
 
@@ -588,14 +588,14 @@ export type paroquiaCreateWithoutDioceseInput = {
   descricao: string
   comunidades?: Prisma.comunidadeCreateNestedManyWithoutParoquiaInput
   endereco: Prisma.enderecoCreateNestedOneWithoutParoquiasInput
-  setor?: Prisma.setorCreateNestedOneWithoutParoquiaInput
+  setor: Prisma.setorCreateNestedOneWithoutParoquiaInput
 }
 
 export type paroquiaUncheckedCreateWithoutDioceseInput = {
   id?: number
   enderecoId: number
   descricao: string
-  setorId?: number
+  setorId: number
   comunidades?: Prisma.comunidadeUncheckedCreateNestedManyWithoutParoquiaInput
 }
 
@@ -670,7 +670,7 @@ export type paroquiaCreateWithoutComunidadesInput = {
   descricao: string
   diocese: Prisma.dioceseCreateNestedOneWithoutParoquiasInput
   endereco: Prisma.enderecoCreateNestedOneWithoutParoquiasInput
-  setor?: Prisma.setorCreateNestedOneWithoutParoquiaInput
+  setor: Prisma.setorCreateNestedOneWithoutParoquiaInput
 }
 
 export type paroquiaUncheckedCreateWithoutComunidadesInput = {
@@ -678,7 +678,7 @@ export type paroquiaUncheckedCreateWithoutComunidadesInput = {
   enderecoId: number
   dioceseId: number
   descricao: string
-  setorId?: number
+  setorId: number
 }
 
 export type paroquiaCreateOrConnectWithoutComunidadesInput = {
@@ -716,7 +716,7 @@ export type paroquiaCreateManyEnderecoInput = {
   id?: number
   dioceseId: number
   descricao: string
-  setorId?: number
+  setorId: number
 }
 
 export type paroquiaUpdateWithoutEnderecoInput = {
@@ -745,7 +745,7 @@ export type paroquiaCreateManyDioceseInput = {
   id?: number
   enderecoId: number
   descricao: string
-  setorId?: number
+  setorId: number
 }
 
 export type paroquiaUpdateWithoutDioceseInput = {

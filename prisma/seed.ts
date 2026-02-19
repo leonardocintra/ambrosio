@@ -476,8 +476,8 @@ async function main() {
     const endereco = await prisma.endereco.create({
       data: {
         bairro: faker.location.street(),
-        cep: '86060340',
-        logradouro: 'Rua Dom Bosco',
+        cep: '14400660',
+        logradouro: 'Rua do Comercio',
         numero: '145',
         observacao: faker.location.streetAddress(),
         cidadeId: cidade.id,

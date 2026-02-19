@@ -22,10 +22,10 @@ jobs:
           --health-retries 5
     steps:
       - name: 📥 Checkout código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: ⚡️ Instalar Node.js 22
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
         with:
           node-version: 22
 
@@ -38,10 +38,6 @@ jobs:
             echo "Aguardando o PostgreSQL iniciar..."
             sleep 5
           done
-
-      - name: 🏗️ Criar schema do banco
-        run: |
-          PGPASSWORD=password psql -h localhost -U user -d mydb -c "CREATE SCHEMA IF NOT EXISTS ambrosio;"
 
       - name: 🛠️ Rodar migrations
         run: npx prisma migrate deploy

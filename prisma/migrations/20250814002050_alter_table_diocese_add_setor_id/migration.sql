@@ -1,7 +1,0 @@
--- AlterTable
-ALTER TABLE "ambrosio"."diocese" ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN     "setorId" INTEGER NOT NULL DEFAULT 1,
-ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
-
--- AddForeignKey
-ALTER TABLE "ambrosio"."diocese" ADD CONSTRAINT "diocese_setorId_fkey" FOREIGN KEY ("setorId") REFERENCES "ambrosio"."setor"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
