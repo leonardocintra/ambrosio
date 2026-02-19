@@ -311,7 +311,7 @@ export type enderecoCreateInput = {
   numero: string
   observacao?: string | null
   diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
-  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  cidade: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
   localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
@@ -323,7 +323,7 @@ export type enderecoUncheckedCreateInput = {
   logradouro: string
   bairro: string
   numero: string
-  cidadeId?: number
+  cidadeId: number
   observacao?: string | null
   diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
   localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
@@ -364,7 +364,7 @@ export type enderecoCreateManyInput = {
   logradouro: string
   bairro: string
   numero: string
-  cidadeId?: number
+  cidadeId: number
   observacao?: string | null
 }
 
@@ -610,7 +610,7 @@ export type enderecoCreateWithoutPessoasInput = {
   numero: string
   observacao?: string | null
   diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
-  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  cidade: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
   localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
 }
@@ -621,7 +621,7 @@ export type enderecoUncheckedCreateWithoutPessoasInput = {
   logradouro: string
   bairro: string
   numero: string
-  cidadeId?: number
+  cidadeId: number
   observacao?: string | null
   diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
   localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
@@ -675,7 +675,7 @@ export type enderecoCreateWithoutDioceseInput = {
   bairro: string
   numero: string
   observacao?: string | null
-  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  cidade: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
   localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
@@ -687,7 +687,7 @@ export type enderecoUncheckedCreateWithoutDioceseInput = {
   logradouro: string
   bairro: string
   numero: string
-  cidadeId?: number
+  cidadeId: number
   observacao?: string | null
   localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaUncheckedCreateNestedManyWithoutEnderecoInput
@@ -742,7 +742,7 @@ export type enderecoCreateWithoutParoquiasInput = {
   numero: string
   observacao?: string | null
   diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
-  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  cidade: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
   localidade?: Prisma.localidadeCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
 }
@@ -753,7 +753,7 @@ export type enderecoUncheckedCreateWithoutParoquiasInput = {
   logradouro: string
   bairro: string
   numero: string
-  cidadeId?: number
+  cidadeId: number
   observacao?: string | null
   diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
   localidade?: Prisma.localidadeUncheckedCreateNestedManyWithoutEnderecoInput
@@ -808,7 +808,7 @@ export type enderecoCreateWithoutLocalidadeInput = {
   numero: string
   observacao?: string | null
   diocese?: Prisma.dioceseCreateNestedManyWithoutEnderecoInput
-  cidade?: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
+  cidade: Prisma.cidadeCreateNestedOneWithoutEnderecoInput
   paroquias?: Prisma.paroquiaCreateNestedManyWithoutEnderecoInput
   pessoas?: Prisma.pessoaEnderecoCreateNestedManyWithoutEnderecoInput
 }
@@ -819,7 +819,7 @@ export type enderecoUncheckedCreateWithoutLocalidadeInput = {
   logradouro: string
   bairro: string
   numero: string
-  cidadeId?: number
+  cidadeId: number
   observacao?: string | null
   diocese?: Prisma.dioceseUncheckedCreateNestedManyWithoutEnderecoInput
   paroquias?: Prisma.paroquiaUncheckedCreateNestedManyWithoutEnderecoInput

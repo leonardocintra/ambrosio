@@ -264,14 +264,14 @@ export type setorCreateInput = {
   descricao: string
   ativo?: boolean
   paroquia?: Prisma.paroquiaCreateNestedManyWithoutSetorInput
-  regiao?: Prisma.regiaoCreateNestedOneWithoutSetorInput
+  regiao: Prisma.regiaoCreateNestedOneWithoutSetorInput
 }
 
 export type setorUncheckedCreateInput = {
   id?: number
   descricao: string
   ativo?: boolean
-  regiaoId?: number
+  regiaoId: number
   paroquia?: Prisma.paroquiaUncheckedCreateNestedManyWithoutSetorInput
 }
 
@@ -294,7 +294,7 @@ export type setorCreateManyInput = {
   id?: number
   descricao: string
   ativo?: boolean
-  regiaoId?: number
+  regiaoId: number
 }
 
 export type setorUpdateManyMutationInput = {
@@ -419,14 +419,14 @@ export type setorUncheckedUpdateManyWithoutRegiaoNestedInput = {
 export type setorCreateWithoutParoquiaInput = {
   descricao: string
   ativo?: boolean
-  regiao?: Prisma.regiaoCreateNestedOneWithoutSetorInput
+  regiao: Prisma.regiaoCreateNestedOneWithoutSetorInput
 }
 
 export type setorUncheckedCreateWithoutParoquiaInput = {
   id?: number
   descricao: string
   ativo?: boolean
-  regiaoId?: number
+  regiaoId: number
 }
 
 export type setorCreateOrConnectWithoutParoquiaInput = {
