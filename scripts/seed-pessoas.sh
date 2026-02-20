@@ -5,7 +5,7 @@
 API_URL="http://localhost:3005"
 EMAIL="admin@admin.com"
 PASSWORD="admin"
-QUANTIDADE_PESSOAS=1500
+QUANTIDADE_PESSOAS=20
 
 echo "=========================================="
 echo "Iniciando cadastro de pessoas de teste"
@@ -77,11 +77,19 @@ gen_cpf() {
 
 # 1. Fazer login e obter token
 echo "1. Autenticando..."
+LOGIN_PAYLOAD=$(cat <<EOF
+{
+  "email": "${EMAIL}",
+  "password": "${PASSWORD}"
+}
+EOF
+)
+
 LOGIN_RESPONSE=$(wget --no-check-certificate --quiet \
   --method POST \
   --timeout=0 \
   --header 'Content-Type: application/json' \
-  --body-data "{\n    \"email\": \"${EMAIL}\",\n    \"password\": \"${PASSWORD}\"\n  }" \
+  --body-data "${LOGIN_PAYLOAD}" \
   --output-document=- \
   "${API_URL}/auth/login")
 

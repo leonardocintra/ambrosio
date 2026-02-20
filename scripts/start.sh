@@ -1,6 +1,4 @@
 #!/bin/bash
-    echo "Response: $RESPONSE"
-#!/bin/bash
 # filepath: /home/leonardo/Github/ambrosio/scripts/start.sh
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
