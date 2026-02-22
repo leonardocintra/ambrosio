@@ -50,6 +50,7 @@ async function main() {
           '$2b$10$.TT7jgY.IqTW/3qg9RXw4.y20H4ROVqfj0TIjBi5l9ks2fb5ueQsC',
         role: 'NAO_IDENTIFICADO',
         whatsapp: '16999139999',
+        active: true,
       },
     });
 

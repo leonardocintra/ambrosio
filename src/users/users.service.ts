@@ -18,8 +18,8 @@ const SALT_OR_ROUNDS = 10;
 export class UsersService extends BaseService {
   constructor(
     private readonly prismaService: PrismaService,
-    abilityService: CaslAbilityService,
     private readonly pessoaService: PessoaService,
+    abilityService: CaslAbilityService,
   ) {
     super(abilityService);
   }
@@ -73,9 +73,17 @@ export class UsersService extends BaseService {
         SALT_OR_ROUNDS,
       );
     }
-    return this.prismaService.user.update({
+    return await this.prismaService.user.update({
       where: { id },
-      data: updateUserDto,
+      data: {
+        active: updateUserDto.active,
+        resetPasswordToken: updateUserDto.resetPasswordToken,
+        resetPasswordExpires: updateUserDto.resetPasswordExpires,
+        password: updateUserDto.password,
+        email: updateUserDto.email,
+        whatsapp: updateUserDto.whatsapp,
+        role: updateUserDto.role,
+      },
     });
   }
 

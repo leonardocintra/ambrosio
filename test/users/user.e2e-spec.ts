@@ -63,16 +63,16 @@ describe('UserController (e2e)', () => {
       limit: 1,
       data: {
         email,
-        role: ROLE_ENUM.NAO_IDENTIFICADO,
         whatsapp,
         verifiedWhatsapp: false,
-        active: false,
       },
     });
 
     expect(response.body.data).toHaveProperty('id');
     expect(response.body.data).toHaveProperty('password');
     expect(response.body.data).toHaveProperty('verifiedWhatsapp');
+    expect(response.body.data).toHaveProperty('role', ROLE_ENUM.NAO_IDENTIFICADO);
+    expect(response.body.data).toHaveProperty('active', false);
     expect(response.body.data).toHaveProperty('createdAt');
     expect(response.body.data).toHaveProperty('updatedAt');
     expect(typeof response.body.data.password).toBe('string');

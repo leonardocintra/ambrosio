@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { LoginDto } from './login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { packRules } from '@casl/ability/extra';
@@ -15,7 +14,6 @@ export class AuthService {
 
   constructor(
     private readonly jwtService: JwtService,
-    private readonly prismaService: PrismaService,
     private readonly mailService: SendEmailService,
     private readonly userService: UsersService,
     private readonly abilityService: CaslAbilityService,
@@ -24,8 +22,10 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const user = await this.userService.findOneByEmail(loginDto.email);
 
-    if (!user) {
-      this.logger.log(`Usuario não encontrado. Email ${loginDto.email} `);
+    if (!user || !user.active) {
+      this.logger.log(
+        `Usuario não encontrado ou desativado. Email ${loginDto.email} `,
+      );
       return null;
     }
 
