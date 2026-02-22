@@ -1,6 +1,7 @@
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
 import { Injectable, Scope } from '@nestjs/common';
+import { UserRoleEnum } from 'neocatecumenal';
 import {
   comunidade,
   carisma,
@@ -12,7 +13,6 @@ import {
   user,
   etapa,
 } from 'src/prisma/generated-client';
-import { ROLE_ENUM } from 'src/commons/enums/enums';
 
 export type PermActions = 'manage' | 'create' | 'read' | 'update' | 'delete';
 
@@ -46,7 +46,7 @@ const grantReadPessoaDiocese: DefinePermissions = (user, { can }) => {
   can('read', 'diocese');
 };
 
-const rolePermissionsMap: Record<ROLE_ENUM, DefinePermissions> = {
+const rolePermissionsMap: Record<UserRoleEnum, DefinePermissions> = {
   ADMIN(user, { can }) {
     can('manage', 'all');
   },

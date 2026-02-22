@@ -8,9 +8,9 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { PessoaService } from 'src/pessoa/pessoa.service';
 import { BaseService } from 'src/commons/base.service';
+import { UserRoleEnum } from 'neocatecumenal';
 
 const SALT_OR_ROUNDS = 10;
 
@@ -47,7 +47,7 @@ export class UsersService extends BaseService {
         email: createUserDto.email,
         whatsapp: createUserDto.whatsapp,
         password: hashedPassword,
-        role: ROLE_ENUM.NAO_IDENTIFICADO,
+        role: UserRoleEnum.NAO_IDENTIFICADO,
       },
     });
   }

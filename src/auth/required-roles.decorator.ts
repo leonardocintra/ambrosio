@@ -1,5 +1,5 @@
 import { SetMetadata } from '@nestjs/common';
-import { ROLE_ENUM } from 'src/commons/enums/enums';
+import { UserRoleEnum } from 'neocatecumenal';
 
-export const RequiredRoles = (...roles: ROLE_ENUM[]) =>
+export const RequiredRoles = (...roles: UserRoleEnum[]) =>
   SetMetadata('roles', roles);
