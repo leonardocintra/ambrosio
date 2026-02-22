@@ -1,10 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 import { setupTestModule } from '../test-setup';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { mockSaoPedroPessoaService } from '../../test/mocks/sao-pedro-api-mock';
+import { UserRoleEnum } from 'neocatecumenal';
 
 describe('UserController (e2e)', () => {
   let app: INestApplication;
@@ -63,16 +63,16 @@ describe('UserController (e2e)', () => {
       limit: 1,
       data: {
         email,
-        role: ROLE_ENUM.NAO_IDENTIFICADO,
         whatsapp,
         verifiedWhatsapp: false,
-        active: false,
       },
     });
 
     expect(response.body.data).toHaveProperty('id');
     expect(response.body.data).toHaveProperty('password');
     expect(response.body.data).toHaveProperty('verifiedWhatsapp');
+    expect(response.body.data).toHaveProperty('role', UserRoleEnum.NAO_IDENTIFICADO);
+    expect(response.body.data).toHaveProperty('active', false);
     expect(response.body.data).toHaveProperty('createdAt');
     expect(response.body.data).toHaveProperty('updatedAt');
     expect(typeof response.body.data.password).toBe('string');

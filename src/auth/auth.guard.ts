@@ -8,8 +8,8 @@ import dayjs from 'dayjs';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { ROLE_ENUM } from 'src/commons/enums/enums';
 import { PrismaService } from 'src/prisma.service';
+import { UserRoleEnum } from 'neocatecumenal';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -52,7 +52,7 @@ export class AuthGuard implements CanActivate {
         sub: string;
         name: string;
         email: string;
-        roles: ROLE_ENUM;
+        roles: UserRoleEnum;
         permissions: string[];
       }>(token, {
         algorithms: ['HS256'],

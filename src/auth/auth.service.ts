@@ -1,7 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { packRules } from '@casl/ability/extra';
@@ -15,7 +14,6 @@ export class AuthService {
 
   constructor(
     private readonly jwtService: JwtService,
-    private readonly prismaService: PrismaService,
     private readonly mailService: SendEmailService,
     private readonly userService: UsersService,
     private readonly abilityService: CaslAbilityService,
@@ -23,10 +21,11 @@ export class AuthService {
 
   async login(loginDto: LoginDto) {
     const user = await this.userService.findOneByEmail(loginDto.email);
+    const unauthorizedMessage =
+      'Credenciais inválidas. Verifique se o email e senha estão corretos e se o usuario esta ativo no sistema.';
 
-    if (!user) {
-      this.logger.log(`Usuario não encontrado. Email ${loginDto.email} `);
-      return null;
+    if (!user || !user.active) {
+      throw new UnauthorizedException(unauthorizedMessage);
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -35,8 +34,7 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
-      this.logger.log(`Senha invalida. User ${user.email}`);
-      return null;
+      throw new UnauthorizedException(unauthorizedMessage);
     }
 
     const ability = this.abilityService.createForUser(user);
@@ -60,6 +58,7 @@ export class AuthService {
 
     const token = randomBytes(32).toString('hex');
     const tokenHash = createHash('sha256').update(token).digest('hex');
+    // TODO: isso é uma pratica insegura, deve ser implementado um sistema de token mais robusto
     const tempPassword = Math.random().toString(36).slice(-8);
 
     await this.userService.update(user.id, {

@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/swagger';
 import { CreateUserDto } from './create-user.dto';
-import { IsOptional } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
+import { UserRoleEnum } from 'neocatecumenal';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
@@ -8,4 +9,14 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsOptional()
   resetPasswordExpires?: Date;
+
+  @IsOptional()
+  @IsBoolean({ message: 'O campo active deve ser um booleano' })
+  active?: boolean;
+
+  @IsOptional()
+  @IsEnum(UserRoleEnum, {
+    message: `O campo role deve ser um dos seguintes valores: ${Object.values(UserRoleEnum).join(', ')}`,
+  })
+  role?: UserRoleEnum;
 }

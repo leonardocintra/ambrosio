@@ -1,13 +1,13 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLE_ENUM } from 'src/commons/enums/enums';
+import { UserRoleEnum } from 'neocatecumenal';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.get<ROLE_ENUM[]>(
+    const requiredRoles = this.reflector.get<UserRoleEnum[]>(
       'roles',
       context.getHandler(),
     );
@@ -23,7 +23,7 @@ export class RoleGuard implements CanActivate {
     }
 
     return (
-      authUser!.role === ROLE_ENUM.ADMIN ||
+      authUser!.role === UserRoleEnum.ADMIN ||
       requiredRoles.includes(authUser!.role)
     );
   }
