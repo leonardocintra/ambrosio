@@ -25,6 +25,7 @@ export class UsersService extends BaseService {
   }
 
   async create(createUserDto: CreateUserDto) {
+    this.validateCreateAbility('user');
     const pessoa = await this.pessoaService.findOneByCpf(createUserDto.cpf);
     if (!pessoa) {
       throw new NotFoundException(
@@ -66,7 +67,7 @@ export class UsersService extends BaseService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    // If a password is provided in the update DTO, hash it before updating.
+    this.validateUpdateAbility('user');
     if (updateUserDto.password) {
       updateUserDto.password = await bcrypt.hash(
         updateUserDto.password,
