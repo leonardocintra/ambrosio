@@ -21,12 +21,6 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
-    const { path } = request.route;
-
-    // Permitir criação de usuário sem autenticação
-    if (path === '/users' && request.method === 'POST') {
-      return true;
-    }
 
     const authHeader = request.headers['authorization'];
     if (!authHeader?.startsWith('Bearer ')) {

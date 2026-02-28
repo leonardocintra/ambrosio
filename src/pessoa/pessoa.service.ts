@@ -318,17 +318,10 @@ export class PessoaService extends BaseService {
     pessoaId: number,
     sexoPessoa: SEXO_ENUM,
   ): Promise<PessoaConjugue> {
-    let where = {};
-
-    if (sexoPessoa === SEXO_ENUM.MASCULINO) {
-      where = {
-        pessoaMaridoId: pessoaId,
-      };
-    } else {
-      where = {
-        pessoaMulherId: pessoaId,
-      };
-    }
+    const where =
+      sexoPessoa === SEXO_ENUM.MASCULINO
+        ? { pessoaMaridoId: pessoaId }
+        : { pessoaMulherId: pessoaId };
 
     const casal = await this.prisma.pessoaCasal.findFirst({ where });
 
