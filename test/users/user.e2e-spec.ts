@@ -12,6 +12,7 @@ describe('UserController (e2e)', () => {
   const cpf = '11122233345';
   const password = faker.internet.password();
   const whatsapp = '16999999999';
+  let token = '';
 
   beforeAll(async () => {
     app = await setupTestModule([
@@ -20,6 +21,12 @@ describe('UserController (e2e)', () => {
         value: mockSaoPedroPessoaService,
       },
     ]);
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({ email: 'admin@admin.com', password: 'admin' });
+
+    token = response.body.data.access_token;
   });
 
   afterAll(async () => {
@@ -49,12 +56,15 @@ describe('UserController (e2e)', () => {
   });
 
   it('/users (POST) - Deve criar um usuário com sucesso', async () => {
-    const response = await request(app.getHttpServer()).post('/users').send({
-      email,
-      cpf,
-      password,
-      whatsapp,
-    });
+    const response = await request(app.getHttpServer())
+      .post('/users')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        email,
+        cpf,
+        password,
+        whatsapp,
+      });
 
     expect(response.status).toBe(201);
     expect(response.body).toMatchObject({
@@ -71,7 +81,10 @@ describe('UserController (e2e)', () => {
     expect(response.body.data).toHaveProperty('id');
     expect(response.body.data).toHaveProperty('password');
     expect(response.body.data).toHaveProperty('verifiedWhatsapp');
-    expect(response.body.data).toHaveProperty('role', UserRoleEnum.NAO_IDENTIFICADO);
+    expect(response.body.data).toHaveProperty(
+      'role',
+      UserRoleEnum.NAO_IDENTIFICADO,
+    );
     expect(response.body.data).toHaveProperty('active', false);
     expect(response.body.data).toHaveProperty('createdAt');
     expect(response.body.data).toHaveProperty('updatedAt');
@@ -91,12 +104,15 @@ describe('UserController (e2e)', () => {
         ativo: true,
       });
 
-    const response = await request(app.getHttpServer()).post('/users').send({
-      email,
-      cpf: '74147855632',
-      password: 'admin',
-      whatsapp,
-    });
+    const response = await request(app.getHttpServer())
+      .post('/users')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        email,
+        cpf: '74147855632',
+        password: 'admin',
+        whatsapp,
+      });
     expect(response.status).toBe(400);
     expect(response.body.message).toContain(
       `O campo 'email' já existe cadastrado. Não permitimos duplicidade.`,
@@ -104,12 +120,15 @@ describe('UserController (e2e)', () => {
   });
 
   it('/users (POST) - Não deve permitir CPF duplicado', async () => {
-    const response = await request(app.getHttpServer()).post('/users').send({
-      email,
-      cpf,
-      password: 'admin',
-      whatsapp,
-    });
+    const response = await request(app.getHttpServer())
+      .post('/users')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        email,
+        cpf,
+        password: 'admin',
+        whatsapp,
+      });
 
     expect(response.status).toBe(409);
     expect(response.body.message).toContain(

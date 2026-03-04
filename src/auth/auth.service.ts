@@ -25,6 +25,9 @@ export class AuthService {
       'Credenciais inválidas. Verifique se o email e senha estão corretos e se o usuario esta ativo no sistema.';
 
     if (!user || !user.active) {
+      this.logger.debug(
+        `Falha de login para email ${loginDto.email}: usuário não encontrado ou inativo.`,
+      );
       throw new UnauthorizedException(unauthorizedMessage);
     }
 
@@ -34,6 +37,9 @@ export class AuthService {
     );
 
     if (!isPasswordValid) {
+      this.logger.debug(
+        `Falha de login para email ${loginDto.email}: senha incorreta.`,
+      );
       throw new UnauthorizedException(unauthorizedMessage);
     }
 
@@ -71,5 +77,34 @@ export class AuthService {
 
     this.mailService.sendRecoveryEmail(user.email, resetLink, tempPassword);
     return { message: 'Email de recuperação enviado se o usuário existir.' };
+  }
+
+  async changePassword(
+    userId: string,
+    currentPassword: string,
+    newPassword: string,
+  ) {
+    this.logger.log(`Usuário ${userId} alterando senha`);
+    const user = await this.userService.findOne(userId);
+
+    if (!user || !user.active) {
+      throw new UnauthorizedException('Usuário não encontrado ou inativo.');
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      String(user.password),
+    );
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Senha atual incorreta.');
+    }
+
+    await this.userService.update(userId, {
+      password: newPassword,
+    });
+
+    this.logger.log(`Senha alterada com sucesso para usuário ${userId}`);
+    return { message: 'Senha alterada com sucesso.' };
   }
 }
