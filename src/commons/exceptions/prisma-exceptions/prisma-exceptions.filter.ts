@@ -53,7 +53,7 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
     const request = ctx.getRequest();
 
     let status = 500;
-    let message = 'Erro inesperado. Tente novamente mais tarde.';
+    let message: string;
 
     switch (exception.code) {
       case UNIQUE_CONSTRAINT_FAILED:

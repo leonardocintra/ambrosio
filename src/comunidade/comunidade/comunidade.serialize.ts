@@ -16,6 +16,7 @@ export default function serializeComunidadeResponse(
       comunidadeId: etapa.comunidadeId,
       dataInicio: etapa.dataInicio,
       dataFim: etapa.dataFim,
+      localConvivencia: etapa.localConvivencia,
       equipe: etapa.equipe
         ? {
             id: etapa.equipe.id,

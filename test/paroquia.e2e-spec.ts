@@ -189,16 +189,16 @@ describe('ParoquiaController (e2e)', () => {
 
   it(`/${principal} (POST) - 201 | deve criar uma paroquia com campos válidos`, async () => {
     const paroquiaData = {
-      descricao: faker.company.name(),
+      descricao: 'Catedral N. Sra. do Desterro',
       diocese: { id: 1 },
       setor: { id: 1 },
       endereco: {
-        cep: faker.location.zipCode('########'),
-        logradouro: faker.location.streetAddress(),
-        numero: '32',
-        bairro: faker.location.secondaryAddress(),
-        UF: faker.location.state({ abbreviated: true }),
-        cidade: faker.location.city(),
+        cep: '13208200',
+        logradouro: 'Praça Governador Pedro de Toledo',
+        numero: 's/n',
+        bairro: 'Centro',
+        UF: 'SP',
+        cidade: 'Judiaí',
       },
     };
 

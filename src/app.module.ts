@@ -20,6 +20,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
 import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
+import { LoggingInterceptor } from './commons/interceptors/logging.interceptor';
 import { SetorModule } from './mapa/setor/setor.module';
 import { MacroRegiaoModule } from './mapa/macro-regiao/macro-regiao.module';
 import { SaoPedroModule } from './external/sao-pedro/sao-pedro.module';
@@ -51,6 +52,9 @@ import * as rTracer from 'cls-rtracer';
             colorize: true,
             translateTime: 'SYS:standard',
             ignore: 'pid,hostname',
+            singleLine: false,
+            // Highlight errors
+            customColors: `err:red,statusCode:\\d{5}\\d?:yellow,statusCode:[4]\\d{2}:yellow,statusCode:[5]\\d{2}:red`,
           },
         },
         genReqId: (
@@ -104,6 +108,10 @@ import * as rTracer from 'cls-rtracer';
     AppService,
     PrismaExceptionsFilter,
     SentryGlobalFilter,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: PaginationInterceptor,

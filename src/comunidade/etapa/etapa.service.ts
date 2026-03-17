@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateEtapaDto } from './dto/create-etapa.dto';
 import { UpdateEtapaDto } from './dto/update-etapa.dto';
 import { BaseService } from 'src/commons/base.service';
@@ -21,6 +21,8 @@ export class EtapaService extends BaseService {
       `Creating etapa for comunidade ${createEtapaDto.comunidadeId}`,
     );
 
+    this.validateDateRange(createEtapaDto.dataInicio, createEtapaDto.dataFim);
+
     const etapaId = this.getEtapaIndex(createEtapaDto.etapa);
 
     return this.prisma.comunidadeEtapa.create({
@@ -28,6 +30,7 @@ export class EtapaService extends BaseService {
         etapaId,
         comunidadeId: createEtapaDto.comunidadeId,
         dataInicio: createEtapaDto.dataInicio,
+        dataFim: createEtapaDto.dataFim,
         observacao: createEtapaDto.observacao,
         localConvivencia: createEtapaDto.localConvivencia,
       },
@@ -44,13 +47,27 @@ export class EtapaService extends BaseService {
     return this.prisma.comunidadeEtapa.findUnique({ where: { id } });
   }
 
-  update(id: number, dto: UpdateEtapaDto) {
+  async update(id: number, dto: UpdateEtapaDto) {
+    const etapaAtual = await this.prisma.comunidadeEtapa.findUnique({
+      where: { id },
+      select: {
+        dataInicio: true,
+        dataFim: true,
+      },
+    });
+
+    this.validateDateRange(
+      dto.dataInicio === undefined ? etapaAtual?.dataInicio : dto.dataInicio,
+      dto.dataFim === undefined ? etapaAtual?.dataFim : dto.dataFim,
+    );
+
     return this.prisma.comunidadeEtapa.update({
       where: { id },
       data: {
         equipeId: dto.equipeId,
         localConvivencia: dto.localConvivencia,
         dataInicio: dto.dataInicio,
+        dataFim: dto.dataFim,
         observacao: dto.observacao,
       },
     });
@@ -76,5 +93,18 @@ export class EtapaService extends BaseService {
     }
 
     return index + 1;
+  }
+
+  private validateDateRange(
+    dataInicio?: Date | null,
+    dataFim?: Date | null,
+  ): void {
+    if (!dataInicio || !dataFim) {
+      return;
+    }
+
+    if (dataInicio >= dataFim) {
+      throw new BadRequestException('dataInicio deve ser menor que dataFim');
+    }
   }
 }

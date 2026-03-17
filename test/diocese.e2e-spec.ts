@@ -112,15 +112,15 @@ describe('DioceseController (e2e)', () => {
 
   it(`/${principal} (POST) - 201 | deve criar uma diocese com campos válidos`, async () => {
     const dioceseData = {
-      descricao: faker.company.name(),
+      descricao: 'Judiaí',
       tipoDiocese: { id: 2, descricao: 'Diocese' },
       endereco: {
-        cep: faker.location.zipCode('########'),
-        logradouro: faker.location.streetAddress(),
-        numero: '32',
-        bairro: faker.location.secondaryAddress(),
+        cep: '13208200',
+        logradouro: 'Rua Engenheiro Roberto Mange',
+        numero: '400',
+        bairro: 'Anhangabaú',
         UF: 'SP',
-        cidade: faker.location.city(),
+        cidade: 'Judiaí',
       },
     };
 
