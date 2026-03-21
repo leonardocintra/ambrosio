@@ -16,7 +16,7 @@ import { CreateComunidadeDto } from './dto/create-comunidade.dto';
 import { UpdateComunidadeDto } from './dto/update-comunidade.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Comunidade')
 @UseGuards(AuthGuard, RoleGuard)
@@ -31,6 +31,18 @@ export class ComunidadeController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'paroquiaId',
+    required: false,
+    description: 'ID da paróquia para filtrar as comunidades',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'numeroDaComunidade',
+    required: false,
+    description: 'Número da comunidade para filtrar as comunidades',
+    type: Number,
+  })
   findAll(
     @Query(
       'paroquiaId',
@@ -40,8 +52,16 @@ export class ComunidadeController {
       }),
     )
     paroquiaId?: number,
+    @Query(
+      'numeroDaComunidade',
+      new ParseIntPipe({
+        optional: true,
+        errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE,
+      }),
+    )
+    numeroDaComunidade?: number,
   ) {
-    return this.comunidadeService.findAll(paroquiaId ? paroquiaId : undefined);
+    return this.comunidadeService.findAll(paroquiaId, numeroDaComunidade);
   }
 
   @Get(':id')
