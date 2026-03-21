@@ -193,12 +193,14 @@ export type etapaWhereInput = {
   id?: Prisma.IntFilter<"etapa"> | number
   descricao?: Prisma.StringFilter<"etapa"> | string
   comunidadeEtapas?: Prisma.ComunidadeEtapaListRelationFilter
+  comunidades?: Prisma.ComunidadeListRelationFilter
 }
 
 export type etapaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   descricao?: Prisma.SortOrder
   comunidadeEtapas?: Prisma.comunidadeEtapaOrderByRelationAggregateInput
+  comunidades?: Prisma.comunidadeOrderByRelationAggregateInput
 }
 
 export type etapaWhereUniqueInput = Prisma.AtLeast<{
@@ -208,6 +210,7 @@ export type etapaWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.etapaWhereInput | Prisma.etapaWhereInput[]
   descricao?: Prisma.StringFilter<"etapa"> | string
   comunidadeEtapas?: Prisma.ComunidadeEtapaListRelationFilter
+  comunidades?: Prisma.ComunidadeListRelationFilter
 }, "id">
 
 export type etapaOrderByWithAggregationInput = {
@@ -231,23 +234,27 @@ export type etapaScalarWhereWithAggregatesInput = {
 export type etapaCreateInput = {
   descricao: string
   comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutEtapaInput
+  comunidades?: Prisma.comunidadeCreateNestedManyWithoutEtapaInput
 }
 
 export type etapaUncheckedCreateInput = {
   id?: number
   descricao: string
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedCreateNestedManyWithoutEtapaInput
+  comunidades?: Prisma.comunidadeUncheckedCreateNestedManyWithoutEtapaInput
 }
 
 export type etapaUpdateInput = {
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutEtapaNestedInput
+  comunidades?: Prisma.comunidadeUpdateManyWithoutEtapaNestedInput
 }
 
 export type etapaUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
   comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedUpdateManyWithoutEtapaNestedInput
+  comunidades?: Prisma.comunidadeUncheckedUpdateManyWithoutEtapaNestedInput
 }
 
 export type etapaCreateManyInput = {
@@ -292,6 +299,20 @@ export type EtapaScalarRelationFilter = {
   isNot?: Prisma.etapaWhereInput
 }
 
+export type etapaCreateNestedOneWithoutComunidadesInput = {
+  create?: Prisma.XOR<Prisma.etapaCreateWithoutComunidadesInput, Prisma.etapaUncheckedCreateWithoutComunidadesInput>
+  connectOrCreate?: Prisma.etapaCreateOrConnectWithoutComunidadesInput
+  connect?: Prisma.etapaWhereUniqueInput
+}
+
+export type etapaUpdateOneRequiredWithoutComunidadesNestedInput = {
+  create?: Prisma.XOR<Prisma.etapaCreateWithoutComunidadesInput, Prisma.etapaUncheckedCreateWithoutComunidadesInput>
+  connectOrCreate?: Prisma.etapaCreateOrConnectWithoutComunidadesInput
+  upsert?: Prisma.etapaUpsertWithoutComunidadesInput
+  connect?: Prisma.etapaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.etapaUpdateToOneWithWhereWithoutComunidadesInput, Prisma.etapaUpdateWithoutComunidadesInput>, Prisma.etapaUncheckedUpdateWithoutComunidadesInput>
+}
+
 export type etapaCreateNestedOneWithoutComunidadeEtapasInput = {
   create?: Prisma.XOR<Prisma.etapaCreateWithoutComunidadeEtapasInput, Prisma.etapaUncheckedCreateWithoutComunidadeEtapasInput>
   connectOrCreate?: Prisma.etapaCreateOrConnectWithoutComunidadeEtapasInput
@@ -306,13 +327,53 @@ export type etapaUpdateOneRequiredWithoutComunidadeEtapasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.etapaUpdateToOneWithWhereWithoutComunidadeEtapasInput, Prisma.etapaUpdateWithoutComunidadeEtapasInput>, Prisma.etapaUncheckedUpdateWithoutComunidadeEtapasInput>
 }
 
+export type etapaCreateWithoutComunidadesInput = {
+  descricao: string
+  comunidadeEtapas?: Prisma.comunidadeEtapaCreateNestedManyWithoutEtapaInput
+}
+
+export type etapaUncheckedCreateWithoutComunidadesInput = {
+  id?: number
+  descricao: string
+  comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedCreateNestedManyWithoutEtapaInput
+}
+
+export type etapaCreateOrConnectWithoutComunidadesInput = {
+  where: Prisma.etapaWhereUniqueInput
+  create: Prisma.XOR<Prisma.etapaCreateWithoutComunidadesInput, Prisma.etapaUncheckedCreateWithoutComunidadesInput>
+}
+
+export type etapaUpsertWithoutComunidadesInput = {
+  update: Prisma.XOR<Prisma.etapaUpdateWithoutComunidadesInput, Prisma.etapaUncheckedUpdateWithoutComunidadesInput>
+  create: Prisma.XOR<Prisma.etapaCreateWithoutComunidadesInput, Prisma.etapaUncheckedCreateWithoutComunidadesInput>
+  where?: Prisma.etapaWhereInput
+}
+
+export type etapaUpdateToOneWithWhereWithoutComunidadesInput = {
+  where?: Prisma.etapaWhereInput
+  data: Prisma.XOR<Prisma.etapaUpdateWithoutComunidadesInput, Prisma.etapaUncheckedUpdateWithoutComunidadesInput>
+}
+
+export type etapaUpdateWithoutComunidadesInput = {
+  descricao?: Prisma.StringFieldUpdateOperationsInput | string
+  comunidadeEtapas?: Prisma.comunidadeEtapaUpdateManyWithoutEtapaNestedInput
+}
+
+export type etapaUncheckedUpdateWithoutComunidadesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  descricao?: Prisma.StringFieldUpdateOperationsInput | string
+  comunidadeEtapas?: Prisma.comunidadeEtapaUncheckedUpdateManyWithoutEtapaNestedInput
+}
+
 export type etapaCreateWithoutComunidadeEtapasInput = {
   descricao: string
+  comunidades?: Prisma.comunidadeCreateNestedManyWithoutEtapaInput
 }
 
 export type etapaUncheckedCreateWithoutComunidadeEtapasInput = {
   id?: number
   descricao: string
+  comunidades?: Prisma.comunidadeUncheckedCreateNestedManyWithoutEtapaInput
 }
 
 export type etapaCreateOrConnectWithoutComunidadeEtapasInput = {
@@ -333,11 +394,13 @@ export type etapaUpdateToOneWithWhereWithoutComunidadeEtapasInput = {
 
 export type etapaUpdateWithoutComunidadeEtapasInput = {
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
+  comunidades?: Prisma.comunidadeUpdateManyWithoutEtapaNestedInput
 }
 
 export type etapaUncheckedUpdateWithoutComunidadeEtapasInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   descricao?: Prisma.StringFieldUpdateOperationsInput | string
+  comunidades?: Prisma.comunidadeUncheckedUpdateManyWithoutEtapaNestedInput
 }
 
 
@@ -347,10 +410,12 @@ export type etapaUncheckedUpdateWithoutComunidadeEtapasInput = {
 
 export type EtapaCountOutputType = {
   comunidadeEtapas: number
+  comunidades: number
 }
 
 export type EtapaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comunidadeEtapas?: boolean | EtapaCountOutputTypeCountComunidadeEtapasArgs
+  comunidades?: boolean | EtapaCountOutputTypeCountComunidadesArgs
 }
 
 /**
@@ -370,11 +435,19 @@ export type EtapaCountOutputTypeCountComunidadeEtapasArgs<ExtArgs extends runtim
   where?: Prisma.comunidadeEtapaWhereInput
 }
 
+/**
+ * EtapaCountOutputType without action
+ */
+export type EtapaCountOutputTypeCountComunidadesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.comunidadeWhereInput
+}
+
 
 export type etapaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   descricao?: boolean
   comunidadeEtapas?: boolean | Prisma.etapa$comunidadeEtapasArgs<ExtArgs>
+  comunidades?: boolean | Prisma.etapa$comunidadesArgs<ExtArgs>
   _count?: boolean | Prisma.EtapaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["etapa"]>
 
@@ -396,6 +469,7 @@ export type etapaSelectScalar = {
 export type etapaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "descricao", ExtArgs["result"]["etapa"]>
 export type etapaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comunidadeEtapas?: boolean | Prisma.etapa$comunidadeEtapasArgs<ExtArgs>
+  comunidades?: boolean | Prisma.etapa$comunidadesArgs<ExtArgs>
   _count?: boolean | Prisma.EtapaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type etapaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -405,6 +479,7 @@ export type $etapaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "etapa"
   objects: {
     comunidadeEtapas: Prisma.$comunidadeEtapaPayload<ExtArgs>[]
+    comunidades: Prisma.$comunidadePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -804,6 +879,7 @@ readonly fields: etapaFieldRefs;
 export interface Prisma__etapaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   comunidadeEtapas<T extends Prisma.etapa$comunidadeEtapasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.etapa$comunidadeEtapasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comunidadeEtapaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comunidades<T extends Prisma.etapa$comunidadesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.etapa$comunidadesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$comunidadePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1244,6 +1320,30 @@ export type etapa$comunidadeEtapasArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.ComunidadeEtapaScalarFieldEnum | Prisma.ComunidadeEtapaScalarFieldEnum[]
+}
+
+/**
+ * etapa.comunidades
+ */
+export type etapa$comunidadesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the comunidade
+   */
+  select?: Prisma.comunidadeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the comunidade
+   */
+  omit?: Prisma.comunidadeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.comunidadeInclude<ExtArgs> | null
+  where?: Prisma.comunidadeWhereInput
+  orderBy?: Prisma.comunidadeOrderByWithRelationInput | Prisma.comunidadeOrderByWithRelationInput[]
+  cursor?: Prisma.comunidadeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ComunidadeScalarFieldEnum | Prisma.ComunidadeScalarFieldEnum[]
 }
 
 /**

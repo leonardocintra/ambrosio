@@ -189,6 +189,7 @@ model etapa {
   id               Int               @id @default(autoincrement())
   descricao        String            @db.VarChar(50)
   comunidadeEtapas comunidadeEtapa[]
+  comunidades      comunidade[]
 }
 
 model tipoEquipe {
@@ -290,6 +291,8 @@ model comunidade {
   quantidadeMembros    Int
   observacao           String?               @db.VarChar(250)
   paroquiaId           Int
+  etapaAtualId         Int                   @default(1)
+  etapa                etapa                 @relation(fields: [etapaAtualId], references: [id])
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @default(now()) @updatedAt
   paroquia             paroquia              @relation(fields: [paroquiaId], references: [id])

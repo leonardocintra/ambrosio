@@ -391,6 +391,7 @@ export const ComunidadeScalarFieldEnum = {
   quantidadeMembros: 'quantidadeMembros',
   observacao: 'observacao',
   paroquiaId: 'paroquiaId',
+  etapaAtualId: 'etapaAtualId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

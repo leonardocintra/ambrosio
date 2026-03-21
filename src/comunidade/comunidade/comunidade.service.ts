@@ -55,12 +55,21 @@ export class ComunidadeService extends BaseService {
     return await this.findOne(comunidade.id);
   }
 
-  findAll(paroquiaId?: number) {
+  findAll(paroquiaId?: number, numeroDaComunidade?: number) {
     this.validateReadAbility('comunidade');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const where: any = {};
+    if (paroquiaId) {
+      where.paroquiaId = paroquiaId;
+    }
+    if (numeroDaComunidade) {
+      where.numeroDaComunidade = numeroDaComunidade;
+    }
     return this.prisma.comunidade.findMany({
-      where: paroquiaId ? { paroquiaId } : undefined,
+      where: Object.keys(where).length > 0 ? where : undefined,
       include: {
         paroquia: true,
+        comunidadeEtapas: true,
       },
       orderBy: { numeroDaComunidade: 'asc' },
     });
