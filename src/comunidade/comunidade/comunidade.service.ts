@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
 import { Comunidade } from 'neocatecumenal';
+import { Prisma } from 'src/prisma/generated-client';
 import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { EtapaService } from '../etapa/etapa.service';
 import serializeComunidadeResponse from './comunidade.serialize';
@@ -57,16 +58,13 @@ export class ComunidadeService extends BaseService {
 
   findAll(paroquiaId?: number, numeroDaComunidade?: number) {
     this.validateReadAbility('comunidade');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const where: any = {};
-    if (paroquiaId) {
-      where.paroquiaId = paroquiaId;
-    }
-    if (numeroDaComunidade) {
-      where.numeroDaComunidade = numeroDaComunidade;
-    }
+    const where: Prisma.comunidadeWhereInput = {
+      ...(paroquiaId != null && { paroquiaId }),
+      ...(numeroDaComunidade != null && { numeroDaComunidade }),
+    };
+
     return this.prisma.comunidade.findMany({
-      where: Object.keys(where).length > 0 ? where : undefined,
+      where,
       include: {
         paroquia: true,
         comunidadeEtapas: true,

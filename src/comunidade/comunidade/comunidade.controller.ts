@@ -61,10 +61,7 @@ export class ComunidadeController {
     )
     numeroDaComunidade?: number,
   ) {
-    return this.comunidadeService.findAll(
-      paroquiaId ? paroquiaId : undefined,
-      numeroDaComunidade ? numeroDaComunidade : undefined,
-    );
+    return this.comunidadeService.findAll(paroquiaId, numeroDaComunidade);
   }
 
   @Get(':id')
