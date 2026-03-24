@@ -9,6 +9,31 @@ import { PinoLogger } from 'nestjs-pino';
 export class LoggingInterceptor implements NestInterceptor {
   constructor(private readonly logger: PinoLogger) {}
 
+  private getRequestId(req: Request): string | undefined {
+    const requestIdHeader = req.headers['x-request-id'];
+    if (typeof requestIdHeader === 'string') {
+      return requestIdHeader;
+    }
+
+    if (Array.isArray(requestIdHeader) && requestIdHeader.length > 0) {
+      return requestIdHeader[0];
+    }
+
+    if (typeof (req as any).id === 'string') {
+      return (req as any).id;
+    }
+
+    return undefined;
+  }
+
+  private getRequestBody(req: Request): Record<string, any> | undefined {
+    const body = (req as any).body;
+    if (!body || Object.keys(body).length === 0) {
+      return undefined;
+    }
+    return body;
+  }
+
   intercept(context: ExecutionContext, next: any): Observable<any> {
     const ctx = context.switchToHttp();
     const req = ctx.getRequest<Request>();
@@ -33,9 +58,10 @@ export class LoggingInterceptor implements NestInterceptor {
                 statusCode,
                 method: req.method,
                 path: req.path,
-                duration: `${duration}ms`,
+                body: this.getRequestBody(req),
+                durationMs: duration,
                 error: errorResponse || error.message,
-                requestId: (req as any).id,
+                requestId: this.getRequestId(req),
               },
               `${req.method} ${req.path} - ${statusCode}`,
             );
@@ -59,8 +85,10 @@ export class LoggingInterceptor implements NestInterceptor {
       method: req.method,
       path: req.path,
       query: Object.keys(req.query).length > 0 ? req.query : undefined,
+      body: this.getRequestBody(req),
       duration: `${duration}ms`,
-      requestId: (req as any).id,
+      durationMs: duration,
+      requestId: this.getRequestId(req),
       response: this.safeStringify(data),
     };
 
@@ -75,8 +103,8 @@ export class LoggingInterceptor implements NestInterceptor {
       // Redirects - INFO
       this.logger.info(logData, `${req.method} ${req.path} - ${statusCode}`);
     } else {
-      // Success - DEBUG
-      this.logger.debug(logData, `${req.method} ${req.path} - ${statusCode}`);
+      // Success - INFO
+      this.logger.info(logData, `${req.method} ${req.path} - ${statusCode}`);
     }
 
     // Também setar o status no response para pino-http capturar
