@@ -36,6 +36,9 @@ import { ExternalModule } from './external/external.module';
 import { ResendModule } from 'nestjs-resend';
 import * as rTracer from 'cls-rtracer';
 
+const isElkEnabled = process.env.ELK_ENABLED === 'true';
+const elkLogFile = process.env.ELK_LOG_FILE ?? './infra/runtime-logs/ambrosio.log';
+
 @Module({
   imports: [
     LoggerModule.forRoot({
@@ -46,17 +49,25 @@ import * as rTracer from 'cls-rtracer';
             : process.env.NODE_ENV === 'production'
               ? 'info'
               : 'debug',
-        transport: {
-          target: 'pino-pretty',
-          options: {
-            colorize: true,
-            translateTime: 'SYS:standard',
-            ignore: 'pid,hostname',
-            singleLine: false,
-            // Highlight errors
-            customColors: `err:red,statusCode:\\d{5}\\d?:yellow,statusCode:[4]\\d{2}:yellow,statusCode:[5]\\d{2}:red`,
-          },
-        },
+        transport: isElkEnabled
+          ? {
+              target: 'pino/file',
+              options: {
+                destination: elkLogFile,
+                mkdir: true,
+              },
+            }
+          : {
+              target: 'pino-pretty',
+              options: {
+                colorize: true,
+                translateTime: 'SYS:standard',
+                ignore: 'pid,hostname',
+                singleLine: false,
+                // Highlight errors
+                customColors: `err:red,statusCode:\\d{5}\\d?:yellow,statusCode:[4]\\d{2}:yellow,statusCode:[5]\\d{2}:red`,
+              },
+            },
         genReqId: (
           req: IncomingMessage,
           res: ServerResponse<IncomingMessage>,
@@ -70,8 +81,8 @@ import * as rTracer from 'cls-rtracer';
         },
         customProps: (req): Record<string, any> => ({
           context: 'HTTP',
+          elkEnabled: isElkEnabled,
           requestId: rTracer.id?.(),
-          body: (req as any).body,
         }),
       },
     }),

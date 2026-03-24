@@ -45,6 +45,29 @@ $ npm run seed
 $ npm run start:dev
 ```
 
+#### Logs no Kibana (ELK local)
+
+Suba a stack de observabilidade:
+
+```bash
+$ sudo docker compose up -d elasticsearch kibana filebeat
+```
+
+Ative o modo ELK na API para gravar logs JSON em arquivo:
+
+```bash
+$ export ELK_ENABLED=true
+$ export ELK_LOG_FILE=./infra/runtime-logs/ambrosio.log
+$ npm run start:dev
+```
+
+Acesse o Kibana em http://localhost:5601.
+
+Passos no Kibana:
+1. Vá em Stack Management > Data Views.
+2. Crie o data view para o padrão `ambrosio-logs-*`.
+3. Em Discover, filtre por campos como `requestId`, `method`, `statusCode`, `path` e `durationMs`.
+
 O usuario principal é criado apos rodar o seed
 - user: admin@admin.com.br
 - pass: admin

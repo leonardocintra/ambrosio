@@ -9,6 +9,7 @@ export default function serializeComunidadeResponse(
     numeroDaComunidade: comunidade.numeroDaComunidade,
     quantidadeMembros: comunidade.quantidadeMembros,
     observacao: comunidade.observacao,
+    etapaAtual: null, // TODO: implmentar lógica para determinar a etapa atual com base nas etapas da comunidade
     comunidadeEtapas: comunidade.comunidadeEtapas.map((etapa) => ({
       id: etapa.id,
       etapaId: etapa.etapaId,

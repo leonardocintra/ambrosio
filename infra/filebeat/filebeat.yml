@@ -1,0 +1,29 @@
+filebeat.inputs:
+  - type: filestream
+    id: ambrosio-api-logs
+    enabled: true
+    paths:
+      - /var/log/ambrosio/ambrosio.log
+    parsers:
+      - ndjson:
+          target: ''
+          overwrite_keys: true
+          add_error_key: true
+
+processors:
+  - add_fields:
+      target: service
+      fields:
+        name: ambrosio-api
+  - add_fields:
+      target: ''
+      fields:
+        environment: local
+
+output.elasticsearch:
+  hosts: ['http://elasticsearch:9200']
+  index: 'ambrosio-logs-%{+yyyy.MM.dd}'
+
+setup.template.name: 'ambrosio-logs'
+setup.template.pattern: 'ambrosio-logs-*'
+setup.ilm.enabled: false
