@@ -27,14 +27,12 @@ import { SaoPedroModule } from './external/sao-pedro/sao-pedro.module';
 import { LoggerModule } from 'nestjs-pino';
 import { IncomingMessage, ServerResponse } from 'http';
 import { RegiaoModule } from './mapa/regiao/regiao.module';
-import { EtapaModule } from './comunidade/etapa/etapa.module';
 import { EquipeModule } from './equipe/equipe.module';
 import { CarismaModule } from './carisma/carisma.module';
-import { HistoricoModule } from './comunidade/historico/historico.module';
 import { ExternalModule } from './external/external.module';
 import { ResendModule } from 'nestjs-resend';
 import * as rTracer from 'cls-rtracer';
-import { ComunidadeModule } from './comunidade/comunidade/comunidade.module';
+import { ComunidadeModule } from './comunidade/comunidade.module';
 
 const isElkEnabled = process.env.ELK_ENABLED === 'true';
 const elkLogFile =
@@ -109,10 +107,8 @@ const elkLogFile =
     SaoPedroModule,
     RegiaoModule,
     ComunidadeModule,
-    EtapaModule,
     EquipeModule,
     CarismaModule,
-    HistoricoModule,
     ExternalModule,
   ],
   controllers: [AppController],

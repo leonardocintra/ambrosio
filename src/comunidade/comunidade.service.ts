@@ -6,7 +6,7 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
 import { Comunidade } from 'neocatecumenal';
 import { Prisma } from 'src/prisma/generated-client';
-import { HistoricoService } from '../historico/historico.service';
+import { HistoricoService } from './historico/historico.service';
 import { ENDERECO_INCLUDE } from 'src/commons/prisma/includes';
 import serializeComunidadeResponse from './comunidade.serialize';
 import { CreateComunidadeDto } from './dto/create-comunidade.dto';

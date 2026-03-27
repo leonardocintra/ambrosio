@@ -11,12 +11,12 @@ import {
   ParseIntPipe,
   HttpStatus,
 } from '@nestjs/common';
-import { ComunidadeService } from './comunidade.service';
 import { CreateComunidadeDto } from './dto/create-comunidade.dto';
 import { UpdateComunidadeDto } from './dto/update-comunidade.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { ApiCreatedResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ComunidadeService } from './comunidade.service';
 
 @ApiTags('Comunidade')
 @UseGuards(AuthGuard, RoleGuard)

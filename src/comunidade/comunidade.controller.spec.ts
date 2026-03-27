@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ComunidadeController } from './comunidade.controller';
-import { ComunidadeService } from './comunidade.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
@@ -13,8 +12,9 @@ import { EstadoService } from 'src/configuracoes/estado/estado.service';
 import { PaisService } from 'src/configuracoes/pais/pais.service';
 import { HttpModule } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
-import { EtapaService } from '../etapa/etapa.service';
-import { HistoricoService } from '../historico/historico.service';
+import { EtapaService } from './etapa/etapa.service';
+import { HistoricoService } from './historico/historico.service';
+import { ComunidadeService } from './comunidade.service';
 
 describe('ComunidadeController', () => {
   let controller: ComunidadeController;
