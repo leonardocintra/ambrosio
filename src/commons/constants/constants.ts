@@ -39,31 +39,3 @@ export const LIMIT_DEFAULT = 50;
 export const PAGE_DEFAULT = 1;
 
 export const SEM_INFORMACAO = 'Sem informações ou não se aplica';
-
-// INCLUDES PRISMA CLIENT
-export const ENDERECO_INCLUDE = {
-  include: {
-    cidade: {
-      include: {
-        estado: {
-          include: {
-            pais: true,
-          },
-        },
-      },
-    },
-  },
-};
-
-export const PESSOA_CARISMA_INCLUDE = {
-  include: {
-    carisma: {
-      select: {
-        id: true,
-        tipo: true,
-        descricao: true,
-        casalAndaJunto: true,
-      },
-    },
-  },
-};

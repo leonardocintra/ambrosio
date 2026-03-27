@@ -4,12 +4,7 @@ import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
 import { SEXO_ENUM } from 'src/commons/enums/enums';
 import { CreateCasalDto } from './dto/create-casal.dto';
-import {
-  ENDERECO_INCLUDE,
-  LIMIT_DEFAULT,
-  PAGE_DEFAULT,
-  PESSOA_CARISMA_INCLUDE,
-} from 'src/commons/constants/constants';
+import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { EstadoCivilEnum, Pessoa, PessoaConjugue } from 'neocatecumenal';
@@ -21,6 +16,10 @@ import {
   serializePessoaResponse,
   serializePessoasListResponse,
 } from './pessoa.serializer';
+import {
+  ENDERECO_INCLUDE,
+  PESSOA_CARISMA_INCLUDE,
+} from 'src/commons/prisma/includes';
 
 @Injectable()
 export class PessoaService extends BaseService {
