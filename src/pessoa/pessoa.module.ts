@@ -6,10 +6,12 @@ import { EstadoCivilModule } from 'src/configuracoes/estado-civil/estado-civil.m
 import { EnderecoModule } from 'src/endereco/endereco.module';
 import { SituacaoReligiosaModule } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.module';
 import { SaoPedroModule } from 'src/external/sao-pedro/sao-pedro.module';
+import { ComunidadeModule } from 'src/comunidade/comunidade.module';
+import { CasalService } from './casal/casal.service';
 
 @Module({
   controllers: [PessoaController],
-  providers: [PessoaService],
+  providers: [PessoaService, CasalService],
   exports: [PessoaService],
   imports: [
     EscolaridadeModule,
@@ -17,6 +19,7 @@ import { SaoPedroModule } from 'src/external/sao-pedro/sao-pedro.module';
     SituacaoReligiosaModule,
     EnderecoModule,
     SaoPedroModule,
+    ComunidadeModule,
   ],
 })
 export class PessoaModule {}

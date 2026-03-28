@@ -23,12 +23,16 @@ import { SexoQueryParamDto } from './dto/sexo.dto';
 import { CreateCasalDto } from './dto/create-casal.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
+import { CasalService } from './casal/casal.service';
 
 @ApiTags('Pessoas')
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('pessoa')
 export class PessoaController {
-  constructor(private readonly pessoaService: PessoaService) {}
+  constructor(
+    private readonly pessoaService: PessoaService,
+    private readonly casalService: CasalService,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({ description: 'Pessoa criada com sucesso.' })
@@ -81,7 +85,7 @@ export class PessoaController {
     },
   })
   createCasal(@Body() createCasalDto: CreateCasalDto) {
-    return this.pessoaService.createCasal(createCasalDto);
+    return this.casalService.createCasal(createCasalDto);
   }
 
   @Get()
@@ -108,7 +112,7 @@ export class PessoaController {
     description: 'Parâmetros inválidos. Use `sexo` M ou F',
   })
   findAllConjugue(@Query() query: SexoQueryParamDto) {
-    return this.pessoaService.findAllBySexoEstadoCivilCasado(
+    return this.casalService.findAllBySexoEstadoCivilCasado(
       query.sexo.toUpperCase(),
     );
   }
