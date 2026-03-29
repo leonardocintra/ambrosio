@@ -7,12 +7,14 @@ import { CreateCasalDto } from '../dto/create-casal.dto';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { serializePessoasListResponse } from '../pessoa.serializer';
+import { ComunidadeService } from 'src/comunidade/comunidade.service';
 
 @Injectable()
 export class CasalService extends BaseService {
   constructor(
     private prisma: PrismaService,
     private readonly saoPedroPessoaService: SaoPedroPessoaService,
+    private readonly comunidadeService: ComunidadeService,
     abilityService: CaslAbilityService,
   ) {
     super(abilityService);
@@ -99,9 +101,12 @@ export class CasalService extends BaseService {
       );
     }
 
-    return await this.prisma.pessoaCasal.create({
+    const casal = await this.prisma.pessoaCasal.create({
       data: { pessoaMaridoId, pessoaMulherId },
     });
+
+    await this.juntarCasalNaMesmaComunidade(conjugue.id, pessoa.id);
+    return casal;
   }
 
   async findAllBySexoEstadoCivilCasado(sexo: string) {
@@ -143,5 +148,22 @@ export class CasalService extends BaseService {
     });
 
     return serializePessoasListResponse(pessoas, externalPessoas, undefined);
+  }
+
+  private async juntarCasalNaMesmaComunidade(
+    conjugueId: number,
+    pessoaId: number,
+  ) {
+    const comunidadeConjugueId =
+      await this.comunidadeService.findByPessoaId(conjugueId);
+    if (comunidadeConjugueId) {
+      this.logger.log(
+        `Adicionando pessoa ID ${pessoaId} à comunidade ID ${comunidadeConjugueId} do conjugue ID ${conjugueId}`,
+      );
+      await this.comunidadeService.adicionarPessoa(
+        comunidadeConjugueId,
+        pessoaId,
+      );
+    }
   }
 }

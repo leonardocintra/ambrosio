@@ -82,6 +82,20 @@ export class ComunidadeService extends BaseService {
     return comunidades.map(serializeComunidadeResponse);
   }
 
+  async findByPessoaId(pessoaId: number): Promise<number | null> {
+    this.validateReadAbility('comunidade');
+    const comunidades = await this.prisma.comunidade.findMany({
+      where: {
+        comunidadePessoas: {
+          some: {
+            pessoaId,
+          },
+        },
+      },
+    });
+    return comunidades.length > 0 ? comunidades[0].id : null;
+  }
+
   async findOne(id: number): Promise<Comunidade> {
     this.validateReadAbility('comunidade');
     const comunidade = await this.prisma.comunidade.findFirstOrThrow({
