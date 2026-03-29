@@ -21,6 +21,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "generate": "prisma generate",
+    "heroku-build": "npm run generate && npm run build",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy && prisma generate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
