@@ -189,7 +189,7 @@ export type SetorGroupByOutputType = {
   _max: SetorMaxAggregateOutputType | null
 }
 
-type GetSetorGroupByPayload<T extends setorGroupByArgs> = Prisma.PrismaPromise<
+export type GetSetorGroupByPayload<T extends setorGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<SetorGroupByOutputType, T['by']> &
       {
@@ -1245,6 +1245,11 @@ export type setorFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Skip the first `n` setors.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of setors.
+   */
   distinct?: Prisma.SetorScalarFieldEnum | Prisma.SetorScalarFieldEnum[]
 }
 

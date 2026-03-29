@@ -203,7 +203,7 @@ export type PassaportePessoaGroupByOutputType = {
   _max: PassaportePessoaMaxAggregateOutputType | null
 }
 
-type GetPassaportePessoaGroupByPayload<T extends passaportePessoaGroupByArgs> = Prisma.PrismaPromise<
+export type GetPassaportePessoaGroupByPayload<T extends passaportePessoaGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PassaportePessoaGroupByOutputType, T['by']> &
       {
@@ -1206,6 +1206,11 @@ export type passaportePessoaFindManyArgs<ExtArgs extends runtime.Types.Extension
    * Skip the first `n` passaportePessoas.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of passaportePessoas.
+   */
   distinct?: Prisma.PassaportePessoaScalarFieldEnum | Prisma.PassaportePessoaScalarFieldEnum[]
 }
 

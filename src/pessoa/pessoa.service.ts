@@ -15,7 +15,8 @@ import { serializePessoaResponse } from './pessoa.serializer';
 import {
   ENDERECO_INCLUDE,
   PESSOA_CARISMA_INCLUDE,
-} from 'src/commons/prisma/includes';
+} from 'src/prisma/includes';
+import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
 
 @Injectable()
 export class PessoaService extends BaseService {
@@ -138,6 +139,17 @@ export class PessoaService extends BaseService {
       include: {
         situacaoReligiosa: true,
         pessoaCarismas: PESSOA_CARISMA_INCLUDE,
+        comunidadePessoas: {
+          include: {
+            comunidade: {
+              include: {
+                paroquia: {
+                  select: PAROQUIA_SELECT,
+                },
+              },
+            },
+          },
+        },
         enderecos: {
           include: {
             endereco: ENDERECO_INCLUDE,

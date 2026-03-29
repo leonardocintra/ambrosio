@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Pessoa } from 'neocatecumenal';
+import { Comunidade, EtapaEnum, Pessoa } from 'neocatecumenal';
 import { ESTADO_CIVIL_MAP, SEXO_ENUM } from 'src/commons/enums/enums';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 
@@ -8,6 +8,8 @@ export function serializePessoaResponse(
   external: Pessoa,
   conjugue?: any,
 ): Pessoa {
+  const comunidade = pessoa.comunidadePessoas?.[0] || null;
+
   return {
     id: pessoa.id,
     externalId: external.externalId,
@@ -19,6 +21,7 @@ export function serializePessoaResponse(
     estadoCivil: ESTADO_CIVIL_MAP[external.estadoCivil],
     dataNascimento: external.dataNascimento,
     conjugue,
+    comunidade: handleComunidade(comunidade),
     foto: external.foto,
     ativo: pessoa.ativo,
     escolaridade: external.escolaridade,
@@ -53,4 +56,43 @@ export function serializePessoasListResponse(
       return serializePessoaResponse(pessoa, external, conjugue);
     })
     .filter(Boolean); // Remove os nulls do array
+}
+
+function handleComunidade(comunidade: any): Comunidade | null {
+  if (!comunidade) {
+    return null;
+  }
+
+  return {
+    id: comunidade.comunidadeId,
+    numeroDaComunidade: comunidade.comunidade.numeroDaComunidade,
+    etapaAtual: Object.values(EtapaEnum)[comunidade.etapaAtualId - 1],
+    quantidadeMembros: comunidade.comunidade.quantidadeMembros,
+    observacao: comunidade.comunidade.observacao,
+    paroquia: {
+      id: comunidade.comunidade.paroquia.id,
+      descricao: comunidade.comunidade.paroquia.descricao,
+      diocese: {
+        id: comunidade.comunidade.paroquia.diocese.id,
+        descricao: comunidade.comunidade.paroquia.diocese.descricao,
+        endereco: null,
+        tipoDiocese: null,
+      },
+      endereco: comunidade.comunidade.paroquia.endereco,
+      setor: comunidade.comunidade.paroquia.setor,
+      comunidades: null,
+      observacao: null,
+    },
+    comunidadeEtapas:
+      comunidade.comunidade.comunidadeEtapas?.map((etapa) => ({
+        id: etapa.id,
+        descricao: etapa.descricao,
+        equipe: etapa.equipe
+          ? {
+              id: etapa.equipe.id,
+              nome: etapa.equipe.nome,
+            }
+          : null,
+      })) || [],
+  };
 }

@@ -239,7 +239,7 @@ export type ComunidadeEtapaGroupByOutputType = {
   _max: ComunidadeEtapaMaxAggregateOutputType | null
 }
 
-type GetComunidadeEtapaGroupByPayload<T extends comunidadeEtapaGroupByArgs> = Prisma.PrismaPromise<
+export type GetComunidadeEtapaGroupByPayload<T extends comunidadeEtapaGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ComunidadeEtapaGroupByOutputType, T['by']> &
       {
@@ -1650,6 +1650,11 @@ export type comunidadeEtapaFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Skip the first `n` comunidadeEtapas.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of comunidadeEtapas.
+   */
   distinct?: Prisma.ComunidadeEtapaScalarFieldEnum | Prisma.ComunidadeEtapaScalarFieldEnum[]
 }
 

@@ -203,7 +203,7 @@ export type EquipeGroupByOutputType = {
   _max: EquipeMaxAggregateOutputType | null
 }
 
-type GetEquipeGroupByPayload<T extends equipeGroupByArgs> = Prisma.PrismaPromise<
+export type GetEquipeGroupByPayload<T extends equipeGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EquipeGroupByOutputType, T['by']> &
       {
@@ -1420,6 +1420,11 @@ export type equipeFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Skip the first `n` equipes.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of equipes.
+   */
   distinct?: Prisma.EquipeScalarFieldEnum | Prisma.EquipeScalarFieldEnum[]
 }
 

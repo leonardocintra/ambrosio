@@ -178,7 +178,7 @@ export type MacroRegiaoGroupByOutputType = {
   _max: MacroRegiaoMaxAggregateOutputType | null
 }
 
-type GetMacroRegiaoGroupByPayload<T extends macroRegiaoGroupByArgs> = Prisma.PrismaPromise<
+export type GetMacroRegiaoGroupByPayload<T extends macroRegiaoGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<MacroRegiaoGroupByOutputType, T['by']> &
       {
@@ -1063,6 +1063,11 @@ export type macroRegiaoFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` macroRegiaos.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of macroRegiaos.
+   */
   distinct?: Prisma.MacroRegiaoScalarFieldEnum | Prisma.MacroRegiaoScalarFieldEnum[]
 }
 

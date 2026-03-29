@@ -204,7 +204,7 @@ export type ParoquiaGroupByOutputType = {
   _max: ParoquiaMaxAggregateOutputType | null
 }
 
-type GetParoquiaGroupByPayload<T extends paroquiaGroupByArgs> = Prisma.PrismaPromise<
+export type GetParoquiaGroupByPayload<T extends paroquiaGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ParoquiaGroupByOutputType, T['by']> &
       {
@@ -1534,6 +1534,11 @@ export type paroquiaFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Skip the first `n` paroquias.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of paroquias.
+   */
   distinct?: Prisma.ParoquiaScalarFieldEnum | Prisma.ParoquiaScalarFieldEnum[]
 }
 

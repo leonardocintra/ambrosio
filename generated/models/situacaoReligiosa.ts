@@ -178,7 +178,7 @@ export type SituacaoReligiosaGroupByOutputType = {
   _max: SituacaoReligiosaMaxAggregateOutputType | null
 }
 
-type GetSituacaoReligiosaGroupByPayload<T extends situacaoReligiosaGroupByArgs> = Prisma.PrismaPromise<
+export type GetSituacaoReligiosaGroupByPayload<T extends situacaoReligiosaGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<SituacaoReligiosaGroupByOutputType, T['by']> &
       {
@@ -1067,6 +1067,11 @@ export type situacaoReligiosaFindManyArgs<ExtArgs extends runtime.Types.Extensio
    * Skip the first `n` situacaoReligiosas.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of situacaoReligiosas.
+   */
   distinct?: Prisma.SituacaoReligiosaScalarFieldEnum | Prisma.SituacaoReligiosaScalarFieldEnum[]
 }
 

@@ -213,7 +213,7 @@ export type PaisGroupByOutputType = {
   _max: PaisMaxAggregateOutputType | null
 }
 
-type GetPaisGroupByPayload<T extends paisGroupByArgs> = Prisma.PrismaPromise<
+export type GetPaisGroupByPayload<T extends paisGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PaisGroupByOutputType, T['by']> &
       {
@@ -1239,6 +1239,11 @@ export type paisFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Skip the first `n` pais.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of pais.
+   */
   distinct?: Prisma.PaisScalarFieldEnum | Prisma.PaisScalarFieldEnum[]
 }
 

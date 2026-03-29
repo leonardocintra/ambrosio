@@ -171,7 +171,7 @@ export type TipoDioceseGroupByOutputType = {
   _max: TipoDioceseMaxAggregateOutputType | null
 }
 
-type GetTipoDioceseGroupByPayload<T extends tipoDioceseGroupByArgs> = Prisma.PrismaPromise<
+export type GetTipoDioceseGroupByPayload<T extends tipoDioceseGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<TipoDioceseGroupByOutputType, T['by']> &
       {
@@ -1031,6 +1031,11 @@ export type tipoDioceseFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` tipoDiocese.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of tipoDiocese.
+   */
   distinct?: Prisma.TipoDioceseScalarFieldEnum | Prisma.TipoDioceseScalarFieldEnum[]
 }
 

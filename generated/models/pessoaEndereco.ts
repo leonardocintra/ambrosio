@@ -175,7 +175,7 @@ export type PessoaEnderecoGroupByOutputType = {
   _max: PessoaEnderecoMaxAggregateOutputType | null
 }
 
-type GetPessoaEnderecoGroupByPayload<T extends pessoaEnderecoGroupByArgs> = Prisma.PrismaPromise<
+export type GetPessoaEnderecoGroupByPayload<T extends pessoaEnderecoGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PessoaEnderecoGroupByOutputType, T['by']> &
       {
@@ -1176,6 +1176,11 @@ export type pessoaEnderecoFindManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Skip the first `n` pessoaEnderecos.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of pessoaEnderecos.
+   */
   distinct?: Prisma.PessoaEnderecoScalarFieldEnum | Prisma.PessoaEnderecoScalarFieldEnum[]
 }
 

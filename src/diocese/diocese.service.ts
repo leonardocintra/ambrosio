@@ -16,7 +16,7 @@ import { Diocese } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select';
 import { BaseService } from 'src/commons/base.service';
-import { ENDERECO_INCLUDE } from 'src/commons/prisma/includes';
+import { ENDERECO_INCLUDE } from 'src/prisma/includes';
 
 @Injectable()
 export class DioceseService extends BaseService {

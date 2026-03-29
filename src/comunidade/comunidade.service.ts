@@ -7,7 +7,7 @@ import { ParoquiaService } from 'src/paroquia/paroquia.service';
 import { Comunidade } from 'neocatecumenal';
 import { Prisma } from 'src/prisma/generated-client';
 import { HistoricoService } from './historico/historico.service';
-import { ENDERECO_INCLUDE } from 'src/commons/prisma/includes';
+import { ENDERECO_INCLUDE } from 'src/prisma/includes';
 import serializeComunidadeResponse from './comunidade.serialize';
 import { CreateComunidadeDto } from './dto/create-comunidade.dto';
 
@@ -132,6 +132,29 @@ export class ComunidadeService extends BaseService {
     this.logger.log(`Removendo comunidade de id ${id}`);
     return this.prisma.comunidade.delete({
       where: { id },
+    });
+  }
+
+  adicionarPessoa(comunidadeId: number, pessoaId: number) {
+    this.validateUpdateAbility('comunidade');
+    return this.prisma.comunidadePessoa.create({
+      data: {
+        dataEntrada: new Date(),
+        comunidadeId,
+        pessoaId,
+      },
+    });
+  }
+
+  removerPessoa(comunidadeId: number, pessoaId: number) {
+    this.validateUpdateAbility('comunidade');
+    return this.prisma.comunidadePessoa.delete({
+      where: {
+        comunidadeId_pessoaId: {
+          comunidadeId,
+          pessoaId,
+        },
+      },
     });
   }
 }

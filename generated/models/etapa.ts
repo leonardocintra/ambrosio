@@ -171,7 +171,7 @@ export type EtapaGroupByOutputType = {
   _max: EtapaMaxAggregateOutputType | null
 }
 
-type GetEtapaGroupByPayload<T extends etapaGroupByArgs> = Prisma.PrismaPromise<
+export type GetEtapaGroupByPayload<T extends etapaGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EtapaGroupByOutputType, T['by']> &
       {
@@ -1107,6 +1107,11 @@ export type etapaFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Skip the first `n` etapas.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of etapas.
+   */
   distinct?: Prisma.EtapaScalarFieldEnum | Prisma.EtapaScalarFieldEnum[]
 }
 

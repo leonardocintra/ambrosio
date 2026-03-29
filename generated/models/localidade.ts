@@ -211,7 +211,7 @@ export type LocalidadeGroupByOutputType = {
   _max: LocalidadeMaxAggregateOutputType | null
 }
 
-type GetLocalidadeGroupByPayload<T extends localidadeGroupByArgs> = Prisma.PrismaPromise<
+export type GetLocalidadeGroupByPayload<T extends localidadeGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<LocalidadeGroupByOutputType, T['by']> &
       {
@@ -1462,6 +1462,11 @@ export type localidadeFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Skip the first `n` localidades.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of localidades.
+   */
   distinct?: Prisma.LocalidadeScalarFieldEnum | Prisma.LocalidadeScalarFieldEnum[]
 }
 

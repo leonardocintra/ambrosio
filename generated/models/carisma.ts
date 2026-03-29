@@ -185,7 +185,7 @@ export type CarismaGroupByOutputType = {
   _max: CarismaMaxAggregateOutputType | null
 }
 
-type GetCarismaGroupByPayload<T extends carismaGroupByArgs> = Prisma.PrismaPromise<
+export type GetCarismaGroupByPayload<T extends carismaGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<CarismaGroupByOutputType, T['by']> &
       {
@@ -1105,6 +1105,11 @@ export type carismaFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Skip the first `n` carismas.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of carismas.
+   */
   distinct?: Prisma.CarismaScalarFieldEnum | Prisma.CarismaScalarFieldEnum[]
 }
 

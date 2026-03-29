@@ -210,7 +210,7 @@ export type EnderecoGroupByOutputType = {
   _max: EnderecoMaxAggregateOutputType | null
 }
 
-type GetEnderecoGroupByPayload<T extends enderecoGroupByArgs> = Prisma.PrismaPromise<
+export type GetEnderecoGroupByPayload<T extends enderecoGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EnderecoGroupByOutputType, T['by']> &
       {
@@ -1680,6 +1680,11 @@ export type enderecoFindManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Skip the first `n` enderecos.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of enderecos.
+   */
   distinct?: Prisma.EnderecoScalarFieldEnum | Prisma.EnderecoScalarFieldEnum[]
 }
 

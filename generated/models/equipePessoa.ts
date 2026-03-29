@@ -200,7 +200,7 @@ export type EquipePessoaGroupByOutputType = {
   _max: EquipePessoaMaxAggregateOutputType | null
 }
 
-type GetEquipePessoaGroupByPayload<T extends equipePessoaGroupByArgs> = Prisma.PrismaPromise<
+export type GetEquipePessoaGroupByPayload<T extends equipePessoaGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EquipePessoaGroupByOutputType, T['by']> &
       {
@@ -1297,6 +1297,11 @@ export type equipePessoaFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Skip the first `n` equipePessoas.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of equipePessoas.
+   */
   distinct?: Prisma.EquipePessoaScalarFieldEnum | Prisma.EquipePessoaScalarFieldEnum[]
 }
 

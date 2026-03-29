@@ -229,7 +229,7 @@ export type ComunidadeGroupByOutputType = {
   _max: ComunidadeMaxAggregateOutputType | null
 }
 
-type GetComunidadeGroupByPayload<T extends comunidadeGroupByArgs> = Prisma.PrismaPromise<
+export type GetComunidadeGroupByPayload<T extends comunidadeGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ComunidadeGroupByOutputType, T['by']> &
       {
@@ -1783,6 +1783,11 @@ export type comunidadeFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Skip the first `n` comunidades.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of comunidades.
+   */
   distinct?: Prisma.ComunidadeScalarFieldEnum | Prisma.ComunidadeScalarFieldEnum[]
 }
 

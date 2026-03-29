@@ -171,7 +171,7 @@ export type EstadoCivilGroupByOutputType = {
   _max: EstadoCivilMaxAggregateOutputType | null
 }
 
-type GetEstadoCivilGroupByPayload<T extends estadoCivilGroupByArgs> = Prisma.PrismaPromise<
+export type GetEstadoCivilGroupByPayload<T extends estadoCivilGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EstadoCivilGroupByOutputType, T['by']> &
       {
@@ -911,6 +911,11 @@ export type estadoCivilFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` estadoCivils.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of estadoCivils.
+   */
   distinct?: Prisma.EstadoCivilScalarFieldEnum | Prisma.EstadoCivilScalarFieldEnum[]
 }
 

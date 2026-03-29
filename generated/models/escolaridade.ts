@@ -171,7 +171,7 @@ export type EscolaridadeGroupByOutputType = {
   _max: EscolaridadeMaxAggregateOutputType | null
 }
 
-type GetEscolaridadeGroupByPayload<T extends escolaridadeGroupByArgs> = Prisma.PrismaPromise<
+export type GetEscolaridadeGroupByPayload<T extends escolaridadeGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EscolaridadeGroupByOutputType, T['by']> &
       {
@@ -911,6 +911,11 @@ export type escolaridadeFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Skip the first `n` escolaridades.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of escolaridades.
+   */
   distinct?: Prisma.EscolaridadeScalarFieldEnum | Prisma.EscolaridadeScalarFieldEnum[]
 }
 
