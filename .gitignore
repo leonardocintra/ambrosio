@@ -5,6 +5,9 @@
 
 .env
 
+# Prisma
+/generated
+
 # Logs
 logs
 *.log

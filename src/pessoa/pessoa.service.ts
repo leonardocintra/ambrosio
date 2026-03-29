@@ -1,26 +1,22 @@
-import { ConflictException, HttpException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
 import { SEXO_ENUM } from 'src/commons/enums/enums';
-import { CreateCasalDto } from './dto/create-casal.dto';
-import {
-  ENDERECO_INCLUDE,
-  LIMIT_DEFAULT,
-  PAGE_DEFAULT,
-  PESSOA_CARISMA_INCLUDE,
-} from 'src/commons/constants/constants';
+import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
-import { EstadoCivilEnum, Pessoa, PessoaConjugue } from 'neocatecumenal';
+import { Pessoa, PessoaConjugue } from 'neocatecumenal';
 import { pessoa } from 'src/prisma/generated-client';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { BaseService } from 'src/commons/base.service';
+import { serializePessoaResponse } from './pessoa.serializer';
 import {
-  serializePessoaResponse,
-  serializePessoasListResponse,
-} from './pessoa.serializer';
+  ENDERECO_INCLUDE,
+  PESSOA_CARISMA_INCLUDE,
+} from 'src/prisma/includes';
+import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
 
 @Injectable()
 export class PessoaService extends BaseService {
@@ -114,133 +110,6 @@ export class PessoaService extends BaseService {
       .filter(Boolean); // Remove os nulls do array
   }
 
-  async createCasal(createCasalDto: CreateCasalDto) {
-    this.validateCreateAbility('pessoa');
-    const pessoaId = createCasalDto.pessoaId;
-    const conjugueId = createCasalDto.conjugueId;
-
-    const [pessoa, conjugue] = await Promise.all([
-      this.prisma.pessoa.findUniqueOrThrow({
-        where: { id: pessoaId },
-      }),
-      this.prisma.pessoa.findUniqueOrThrow({
-        where: { id: conjugueId },
-      }),
-    ]);
-
-    const [pessoaExternal, conjugueExternal] = await Promise.all([
-      this.saoPedroPessoaService.findExternalPessoaByUuid(pessoa.externalId),
-      this.saoPedroPessoaService.findExternalPessoaByUuid(conjugue.externalId),
-    ]);
-
-    if (
-      pessoaExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1) ||
-      conjugueExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1)
-    ) {
-      throw new HttpException(
-        'Apenas pessoas com estado civil casado podem se casar',
-        400,
-      );
-    }
-
-    if (pessoaExternal.sexo === conjugueExternal.sexo) {
-      throw new HttpException(
-        'Casal do mesmo sexo! Não existe casal do mesmo sexo. Verificar.',
-        400,
-      );
-    }
-
-    const existingConjugue = await this.prisma.pessoaCasal.findFirst({
-      where: {
-        OR: [
-          {
-            pessoaMaridoId: pessoa.id,
-          },
-          {
-            pessoaMaridoId: conjugue.id,
-          },
-          {
-            pessoaMulherId: pessoa.id,
-          },
-          {
-            pessoaMulherId: conjugue.id,
-          },
-        ],
-      },
-    });
-
-    if (existingConjugue) {
-      throw new HttpException(
-        'Marido ou mulher já está em outro relacionamento.',
-        400,
-      );
-    }
-
-    let pessoaMaridoId: number;
-    let pessoaMulherId: number;
-
-    if (pessoaExternal.sexo === SEXO_ENUM.MASCULINO.substring(0, 1)) {
-      pessoaMaridoId = pessoa.id;
-      pessoaMulherId = conjugue.id;
-    } else if (pessoaExternal.sexo === SEXO_ENUM.FEMININO.substring(0, 1)) {
-      pessoaMaridoId = conjugue.id;
-      pessoaMulherId = pessoa.id;
-    } else {
-      this.logger.error(
-        `Sexo inválido para pessoa ID ${pessoa.id} ou conjugue ID ${conjugue.id}`,
-      );
-      throw new HttpException(
-        'Marido ou esposa esta com os sexo (F ou M) cadastrado de forma errada. Verificar.',
-        400,
-      );
-    }
-
-    return await this.prisma.pessoaCasal.create({
-      data: { pessoaMaridoId, pessoaMulherId },
-    });
-  }
-
-  async findAllBySexoEstadoCivilCasado(sexo: string) {
-    // Função para buscar todas as pessoas com estado civil casado que não estão vinculadas como marido e mulher
-    const param = sexo === 'M' ? SEXO_ENUM.MASCULINO : SEXO_ENUM.FEMININO;
-    const externalPessoas =
-      await this.saoPedroPessoaService.getExternalPessoasEstadoCivilCasado(
-        param,
-      );
-
-    if (externalPessoas.length === 0) {
-      return [];
-    }
-
-    const externalIds = externalPessoas.map((pessoa) => pessoa.externalId);
-
-    const pessoas = await this.prisma.pessoa.findMany({
-      select: {
-        id: true,
-        externalId: true,
-      },
-      where: {
-        externalId: {
-          in: externalIds,
-        },
-        AND: [
-          {
-            casamentosComoMarido: {
-              none: {},
-            },
-          },
-          {
-            casamentosComoMulher: {
-              none: {},
-            },
-          },
-        ],
-      },
-    });
-
-    return serializePessoasListResponse(pessoas, externalPessoas, undefined);
-  }
-
   async findOneByCpf(cpf: string): Promise<Pessoa> {
     const externalPessoa =
       await this.saoPedroPessoaService.getExternalPessoaByCpf(cpf);
@@ -270,6 +139,17 @@ export class PessoaService extends BaseService {
       include: {
         situacaoReligiosa: true,
         pessoaCarismas: PESSOA_CARISMA_INCLUDE,
+        comunidadePessoas: {
+          include: {
+            comunidade: {
+              include: {
+                paroquia: {
+                  select: PAROQUIA_SELECT,
+                },
+              },
+            },
+          },
+        },
         enderecos: {
           include: {
             endereco: ENDERECO_INCLUDE,
@@ -329,7 +209,7 @@ export class PessoaService extends BaseService {
       this.logger.warn(
         `Pessoa com ID ${pessoaId} está com estado civil casado, mas não possui conjugue cadastrado.`,
       );
-      return;
+      return null;
     }
 
     const conjugue = await this.prisma.pessoa.findUniqueOrThrow({

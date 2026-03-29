@@ -12,11 +12,11 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { EnderecoService } from 'src/endereco/endereco.service';
 import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
-import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
 import { Diocese } from 'neocatecumenal';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select';
 import { BaseService } from 'src/commons/base.service';
+import { ENDERECO_INCLUDE } from 'src/prisma/includes';
 
 @Injectable()
 export class DioceseService extends BaseService {

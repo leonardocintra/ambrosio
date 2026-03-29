@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { CasalService } from './casal/casal.service';
 
 describe('PessoaController', () => {
   let controller: PessoaController;
@@ -24,6 +25,7 @@ describe('PessoaController', () => {
       controllers: [PessoaController],
       providers: [
         PessoaService,
+        CasalService,
         JwtService,
         CaslAbilityService,
         {

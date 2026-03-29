@@ -9,7 +9,7 @@ export default function serializeComunidadeResponse(
     numeroDaComunidade: comunidade.numeroDaComunidade,
     quantidadeMembros: comunidade.quantidadeMembros,
     observacao: comunidade.observacao,
-    etapaAtual: null, // TODO: implmentar lógica para determinar a etapa atual com base nas etapas da comunidade
+    etapaAtual: Object.values(EtapaEnum)[comunidade.etapaAtualId - 1],
     comunidadeEtapas: comunidade.comunidadeEtapas.map((etapa) => ({
       id: etapa.id,
       etapaId: etapa.etapaId,
@@ -35,13 +35,13 @@ export default function serializeComunidadeResponse(
     paroquia: {
       id: comunidade.paroquia.id,
       descricao: comunidade.paroquia.descricao,
-      endereco: null,
+      endereco: comunidade.paroquia.endereco,
       setor: null,
       diocese: {
         id: comunidade.paroquia.diocese.id,
         descricao: comunidade.paroquia.diocese.descricao,
         tipoDiocese: {
-          id: comunidade.paroquia.diocese.tipoDiocese.id,
+          id: comunidade.paroquia.diocese.tipoDioceseId,
           descricao: comunidade.paroquia.diocese.tipoDiocese.descricao,
         },
         endereco: comunidade.paroquia.diocese.endereco,

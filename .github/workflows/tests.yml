@@ -8,7 +8,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        image: postgres:17
         env:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: password
@@ -31,6 +31,11 @@ jobs:
 
       - name: 📦 Instalar dependências
         run: npm install
+
+      - name: Generate Prisma Client
+        run: npm run generate
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
       - name: ⏳ Aguardar banco estar pronto
         run: |

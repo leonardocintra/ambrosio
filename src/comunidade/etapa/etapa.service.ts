@@ -5,11 +5,13 @@ import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { EtapaEnum } from 'neocatecumenal';
+import { ComunidadeService } from '../comunidade.service';
 
 @Injectable()
 export class EtapaService extends BaseService {
   constructor(
     private prisma: PrismaService,
+    private readonly comunidadeService: ComunidadeService,
     protected readonly abilityService: CaslAbilityService,
   ) {
     super(abilityService);
@@ -25,7 +27,7 @@ export class EtapaService extends BaseService {
 
     const etapaId = this.getEtapaIndex(createEtapaDto.etapa);
 
-    return this.prisma.comunidadeEtapa.create({
+    const etapa = await this.prisma.comunidadeEtapa.create({
       data: {
         etapaId,
         comunidadeId: createEtapaDto.comunidadeId,
@@ -35,6 +37,13 @@ export class EtapaService extends BaseService {
         localConvivencia: createEtapaDto.localConvivencia,
       },
     });
+
+    // Atualiza a etapaAtualId da comunidade para a etapa recém-criada
+    await this.comunidadeService.update(etapa.comunidadeId, {
+      etapaAtualId: etapa.etapaId,
+    });
+
+    return etapa;
   }
 
   findAll(comunidadeId: number) {

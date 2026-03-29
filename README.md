@@ -18,6 +18,7 @@ Novo backend para https://apicncbrasil.cn.org.br/dashboard
 
 ```bash
 $ npm install
+$ npm run generate
 ```
 
 ## Running the app
@@ -39,8 +40,8 @@ Seguir as instruções em https://github.com/leonardocintra/sao-pedro
 
 ```bash
 $ sudo docker compose up -d
+$ npm run generate
 $ npx prisma migrate dev
-$ npx prisma generate
 $ npm run seed
 $ npm run start:dev
 ```
@@ -93,7 +94,7 @@ Isso é necessário pois a API de pessoas é "externa"
 ### production mode
 ```bash
 $ npm run start:prod
-$ npx prisma migrate deploy
+$ npm run migrate:deploy
 ```
 
 ## Test

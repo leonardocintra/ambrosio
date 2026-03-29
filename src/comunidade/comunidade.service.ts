@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateComunidadeDto } from './dto/create-comunidade.dto';
 import { UpdateComunidadeDto } from './dto/update-comunidade.dto';
 import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
@@ -7,17 +6,16 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { ParoquiaService } from 'src/paroquia/paroquia.service';
 import { Comunidade } from 'neocatecumenal';
 import { Prisma } from 'src/prisma/generated-client';
-import { ENDERECO_INCLUDE } from 'src/commons/constants/constants';
-import { EtapaService } from '../etapa/etapa.service';
+import { HistoricoService } from './historico/historico.service';
+import { ENDERECO_INCLUDE } from 'src/prisma/includes';
 import serializeComunidadeResponse from './comunidade.serialize';
-import { HistoricoService } from '../historico/historico.service';
+import { CreateComunidadeDto } from './dto/create-comunidade.dto';
 
 @Injectable()
 export class ComunidadeService extends BaseService {
   constructor(
     private prisma: PrismaService,
     private readonly paroquiaService: ParoquiaService,
-    private readonly etapaService: EtapaService,
     private readonly historicoService: HistoricoService,
     protected readonly abilityService: CaslAbilityService,
   ) {
@@ -56,21 +54,32 @@ export class ComunidadeService extends BaseService {
     return await this.findOne(comunidade.id);
   }
 
-  findAll(paroquiaId?: number, numeroDaComunidade?: number) {
+  async findAll(paroquiaId?: number, numeroDaComunidade?: number) {
     this.validateReadAbility('comunidade');
     const where: Prisma.comunidadeWhereInput = {
       ...(paroquiaId != null && { paroquiaId }),
       ...(numeroDaComunidade != null && { numeroDaComunidade }),
     };
 
-    return this.prisma.comunidade.findMany({
+    const comunidades = await this.prisma.comunidade.findMany({
       where,
       include: {
-        paroquia: true,
+        paroquia: {
+          include: {
+            endereco: ENDERECO_INCLUDE,
+            diocese: {
+              include: {
+                tipoDiocese: true,
+                endereco: ENDERECO_INCLUDE,
+              },
+            },
+          },
+        },
         comunidadeEtapas: true,
       },
       orderBy: { numeroDaComunidade: 'asc' },
     });
+    return comunidades.map(serializeComunidadeResponse);
   }
 
   async findOne(id: number): Promise<Comunidade> {
@@ -113,6 +122,7 @@ export class ComunidadeService extends BaseService {
         numeroDaComunidade: updateComunidadeDto.numeroDaComunidade,
         quantidadeMembros: updateComunidadeDto.quantidadeMembros,
         observacao: updateComunidadeDto.observacao,
+        etapaAtualId: updateComunidadeDto.etapaAtualId,
       },
     });
   }
@@ -122,6 +132,29 @@ export class ComunidadeService extends BaseService {
     this.logger.log(`Removendo comunidade de id ${id}`);
     return this.prisma.comunidade.delete({
       where: { id },
+    });
+  }
+
+  adicionarPessoa(comunidadeId: number, pessoaId: number) {
+    this.validateUpdateAbility('comunidade');
+    return this.prisma.comunidadePessoa.create({
+      data: {
+        dataEntrada: new Date(),
+        comunidadeId,
+        pessoaId,
+      },
+    });
+  }
+
+  removerPessoa(comunidadeId: number, pessoaId: number) {
+    this.validateUpdateAbility('comunidade');
+    return this.prisma.comunidadePessoa.delete({
+      where: {
+        comunidadeId_pessoaId: {
+          comunidadeId,
+          pessoaId,
+        },
+      },
     });
   }
 }
