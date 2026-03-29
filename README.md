@@ -93,7 +93,7 @@ Isso é necessário pois a API de pessoas é "externa"
 ### production mode
 ```bash
 $ npm run start:prod
-$ npx prisma migrate deploy
+$ npm run migrate:deploy
 ```
 
 ## Test
