@@ -9,6 +9,8 @@ import { EstadoModule } from './estado/estado.module';
 import { CidadeModule } from './cidade/cidade.module';
 import { DioceseModule } from 'src/diocese/diocese.module';
 import { SituacaoReligiosaModule } from './situacao-religiosa/situacao-religiosa.module';
+import { EtapasService } from './etapas/etapas.service';
+import { EtapasController } from './etapas/etapas.controller';
 
 @Module({
   imports: [
@@ -23,5 +25,7 @@ import { SituacaoReligiosaModule } from './situacao-religiosa/situacao-religiosa
     CidadeModule,
     SituacaoReligiosaModule,
   ],
+  providers: [EtapasService],
+  controllers: [EtapasController],
 })
 export class ConfiguracoesModule {}
