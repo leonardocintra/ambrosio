@@ -1,9 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { CidadeService } from './cidade.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Cidades')
 @Controller('cidade')
 export class CidadeController {
-  constructor(private readonly cidadeService: CidadeService) { }
+  constructor(private readonly cidadeService: CidadeService) {}
 
   @Get()
   findAll() {

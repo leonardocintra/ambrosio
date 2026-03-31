@@ -9,6 +9,17 @@ import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { CasalService } from './casal/casal.service';
+import { ComunidadeService } from 'src/comunidade/comunidade.service';
+import { ParoquiaService } from 'src/paroquia/paroquia.service';
+import { HistoricoService } from 'src/comunidade/historico/historico.service';
+import { DioceseService } from 'src/diocese/diocese.service';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
+import { EnderecoService } from 'src/endereco/endereco.service';
+import { EstadoService } from 'src/configuracoes/estado/estado.service';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
+import { SetorService } from 'src/mapa/setor/setor.service';
+import { PaisService } from 'src/configuracoes/pais/pais.service';
+import { HttpModule } from '@nestjs/axios';
 
 describe('PessoaController', () => {
   let controller: PessoaController;
@@ -22,11 +33,22 @@ describe('PessoaController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [HttpModule],
       controllers: [PessoaController],
       providers: [
         PessoaService,
         CasalService,
         JwtService,
+        ComunidadeService,
+        ParoquiaService,
+        HistoricoService,
+        DioceseService,
+        TipoDioceseService,
+        EnderecoService,
+        EstadoService,
+        CidadeService,
+        SetorService,
+        PaisService,
         CaslAbilityService,
         {
           provide: PrismaService,

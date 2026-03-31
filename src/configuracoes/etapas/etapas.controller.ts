@@ -1,6 +1,8 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { EtapasService } from './etapas.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Etapas do Caminho Neocatecumenal')
 @Controller('etapas')
 export class EtapasController {
   constructor(private readonly etapasService: EtapasService) {}
