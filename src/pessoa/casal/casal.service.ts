@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { EstadoCivilEnum } from 'neocatecumenal';
+import { EstadoCivilEnum, Pessoa } from 'neocatecumenal';
 import { BaseService } from 'src/commons/base.service';
 import { SEXO_ENUM } from 'src/commons/enums/enums';
 import { PrismaService } from 'src/prisma.service';
@@ -39,48 +39,12 @@ export class CasalService extends BaseService {
       this.saoPedroPessoaService.findExternalPessoaByUuid(conjugue.externalId),
     ]);
 
-    if (
-      pessoaExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1) ||
-      conjugueExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1)
-    ) {
-      throw new HttpException(
-        'Apenas pessoas com estado civil casado podem se casar',
-        400,
-      );
-    }
-
-    if (pessoaExternal.sexo === conjugueExternal.sexo) {
-      throw new HttpException(
-        'Casal do mesmo sexo! Não existe casal do mesmo sexo. Verificar.',
-        400,
-      );
-    }
-
-    const existingConjugue = await this.prisma.pessoaCasal.findFirst({
-      where: {
-        OR: [
-          {
-            pessoaMaridoId: pessoa.id,
-          },
-          {
-            pessoaMaridoId: conjugue.id,
-          },
-          {
-            pessoaMulherId: pessoa.id,
-          },
-          {
-            pessoaMulherId: conjugue.id,
-          },
-        ],
-      },
-    });
-
-    if (existingConjugue) {
-      throw new HttpException(
-        'Marido ou mulher já está em outro relacionamento.',
-        400,
-      );
-    }
+    await this.validateMarriageEligibility(
+      pessoaExternal,
+      conjugueExternal,
+      pessoa.id,
+      conjugue.id,
+    );
 
     let pessoaMaridoId: number;
     let pessoaMulherId: number;
@@ -163,6 +127,56 @@ export class CasalService extends BaseService {
       await this.comunidadeService.adicionarPessoa(
         comunidadeConjugueId,
         pessoaId,
+      );
+    }
+  }
+
+  private async validateMarriageEligibility(
+    pessoaExternal: Pessoa,
+    conjugueExternal: Pessoa,
+    pessoaId: number,
+    conjugueId: number,
+  ) {
+    if (
+      pessoaExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1) ||
+      conjugueExternal.estadoCivil !== EstadoCivilEnum.CASADO.substring(0, 1)
+    ) {
+      throw new HttpException(
+        'Apenas pessoas com estado civil casado podem se casar',
+        400,
+      );
+    }
+
+    if (pessoaExternal.sexo === conjugueExternal.sexo) {
+      throw new HttpException(
+        'Casal do mesmo sexo! Não existe casal do mesmo sexo. Verificar.',
+        400,
+      );
+    }
+
+    const existingConjugue = await this.prisma.pessoaCasal.findFirst({
+      where: {
+        OR: [
+          {
+            pessoaMaridoId: pessoaId,
+          },
+          {
+            pessoaMaridoId: conjugueId,
+          },
+          {
+            pessoaMulherId: pessoaId,
+          },
+          {
+            pessoaMulherId: conjugueId,
+          },
+        ],
+      },
+    });
+
+    if (existingConjugue) {
+      throw new HttpException(
+        'Marido ou mulher já está em outro relacionamento.',
+        400,
       );
     }
   }

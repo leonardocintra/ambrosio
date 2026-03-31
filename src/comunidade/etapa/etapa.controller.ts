@@ -18,7 +18,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RoleGuard } from 'src/auth/role/role.guard';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Comunidade Etapa')
+@ApiTags('Etapa da Comunidade')
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('etapa')
 export class EtapaController {

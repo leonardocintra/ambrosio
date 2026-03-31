@@ -1,4 +1,7 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -12,10 +15,7 @@ import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/s
 import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
 import { BaseService } from 'src/commons/base.service';
 import { serializePessoaResponse } from './pessoa.serializer';
-import {
-  ENDERECO_INCLUDE,
-  PESSOA_CARISMA_INCLUDE,
-} from 'src/prisma/includes';
+import { ENDERECO_INCLUDE, PESSOA_CARISMA_INCLUDE } from 'src/prisma/includes';
 import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
 
 @Injectable()
@@ -171,6 +171,8 @@ export class PessoaService extends BaseService {
 
   async update(id: number, updatePessoaDto: UpdatePessoaDto): Promise<Pessoa> {
     const pessoa = await this.findOne(id);
+
+    // TODO: implementar regra para alteração de estado civil e sexo caso a pessoa esteja casada, para evitar inconsistências no cadastro do casal
 
     if (updatePessoaDto.situacaoReligiosa) {
       const situacaoReligiosa = await this.situacaoReligiosaService.findOne(

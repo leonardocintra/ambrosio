@@ -108,17 +108,24 @@ async function main() {
 
   async function etapa() {
     const etapas = [
-      'pre-catecumenato',
-      '1º escrutinio',
-      'Shemá Israel',
-      '2º escrutinio',
+      'Pré Catecumenato',
+      '1º Escrutinio',
+      'Shemá',
+      '2º Escrutinio Aberto',
+      '2º Escrutinio',
       'Iniciação a Oração',
-      'Tradditio Symboli',
-      'Redditio Symboli',
-      'Pai Nosso I',
-      'Pai Nosso II',
-      'Pai Nosso III',
-      '3º escrutinio',
+      'Traditio',
+      'Retraditio',
+      'Redditio',
+      'Pai Nosso - 1ª Parte',
+      'Pai Nosso - 2ª Parte',
+      'Pai Nosso - 3ª Parte',
+      'Eleição - 1ª Parte',
+      'Eleição - 2ª Parte',
+      'Renovação das Promessas Batismais',
+      'Educação Permanente na Fé',
+      'Peregrinação à Terra Santa',
+      'Matrimônio Espiritual',
     ];
 
     for (const descricao of etapas) {
