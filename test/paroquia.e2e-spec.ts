@@ -46,7 +46,7 @@ describe('ParoquiaController (e2e)', () => {
       .expect(403)
       .expect((res) => {
         expect(res.body.message).toBe(
-          'Você não tem permissão para listar paroquias',
+          'Você não tem permissão para read paroquia',
         );
         expect(res.body.error).toBe('Forbidden');
         expect(res.body.statusCode).toBe(403);
@@ -66,7 +66,7 @@ describe('ParoquiaController (e2e)', () => {
       .expect(403)
       .expect((res) => {
         expect(res.body.message).toBe(
-          'Você não tem permissão para listar paroquias',
+          'Você não tem permissão para read paroquia',
         );
         expect(res.body.error).toBe('Forbidden');
         expect(res.body.statusCode).toBe(403);

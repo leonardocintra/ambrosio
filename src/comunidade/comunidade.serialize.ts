@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Comunidade, EtapaEnum } from 'neocatecumenal';
+import { Comunidade } from 'neocatecumenal';
 
 export default function serializeComunidadeResponse(
   comunidade: any,
@@ -9,11 +9,11 @@ export default function serializeComunidadeResponse(
     numeroDaComunidade: comunidade.numeroDaComunidade,
     quantidadeMembros: comunidade.quantidadeMembros,
     observacao: comunidade.observacao,
-    etapaAtual: Object.values(EtapaEnum)[comunidade.etapaAtualId - 1],
+    etapaAtual: comunidade.etapa,
     comunidadeEtapas: comunidade.comunidadeEtapas.map((etapa) => ({
       id: etapa.id,
       etapaId: etapa.etapaId,
-      etapa: Object.values(EtapaEnum)[etapa.etapaId - 1],
+      etapa: etapa.etapa,
       comunidadeId: etapa.comunidadeId,
       dataInicio: etapa.dataInicio,
       dataFim: etapa.dataFim,

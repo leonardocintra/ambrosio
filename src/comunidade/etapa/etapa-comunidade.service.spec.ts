@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EtapaService } from './etapa.service';
+import { EtapaComunidadeService } from './etapa-comunidade.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { PrismaService } from 'src/prisma.service';
 import { ComunidadeService } from '../comunidade.service';
@@ -15,7 +15,7 @@ import { SetorService } from 'src/mapa/setor/setor.service';
 import { HttpModule } from '@nestjs/axios';
 
 describe('EtapaService', () => {
-  let service: EtapaService;
+  let service: EtapaComunidadeService;
   let prismaService: PrismaService;
   let abilityService: CaslAbilityService;
 
@@ -23,7 +23,7 @@ describe('EtapaService', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],
       providers: [
-        EtapaService,
+        EtapaComunidadeService,
         CaslAbilityService,
         PrismaService,
         ComunidadeService,
@@ -39,7 +39,7 @@ describe('EtapaService', () => {
       ],
     }).compile();
 
-    service = await module.resolve<EtapaService>(EtapaService);
+    service = await module.resolve<EtapaComunidadeService>(EtapaComunidadeService);
     prismaService = module.get<PrismaService>(PrismaService);
     abilityService =
       await module.resolve<CaslAbilityService>(CaslAbilityService);

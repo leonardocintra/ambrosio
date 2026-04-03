@@ -291,8 +291,8 @@ model comunidade {
   quantidadeMembros    Int
   observacao           String?               @db.VarChar(250)
   paroquiaId           Int
-  etapaAtualId         Int                   @default(1)
-  etapa                etapa                 @relation(fields: [etapaAtualId], references: [id])
+  etapaAtualId         Int?
+  etapa                etapa?                @relation(fields: [etapaAtualId], references: [id])
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @default(now()) @updatedAt
   paroquia             paroquia              @relation(fields: [paroquiaId], references: [id])

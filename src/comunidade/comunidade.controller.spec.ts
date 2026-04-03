@@ -12,7 +12,7 @@ import { EstadoService } from 'src/configuracoes/estado/estado.service';
 import { PaisService } from 'src/configuracoes/pais/pais.service';
 import { HttpModule } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
-import { EtapaService } from './etapa/etapa.service';
+import { EtapaComunidadeService } from './etapa/etapa-comunidade.service';
 import { HistoricoService } from './historico/historico.service';
 import { ComunidadeService } from './comunidade.service';
 
@@ -32,7 +32,7 @@ describe('ComunidadeController', () => {
         CaslAbilityService,
         ParoquiaService,
         SetorService,
-        EtapaService,
+        EtapaComunidadeService,
         DioceseService,
         EnderecoService,
         TipoDioceseService,

@@ -11,7 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
 import { EstadoService } from 'src/configuracoes/estado/estado.service';
 import { HttpModule } from '@nestjs/axios';
-import { EtapaService } from './etapa/etapa.service';
+import { EtapaComunidadeService } from './etapa/etapa-comunidade.service';
 import { HistoricoService } from './historico/historico.service';
 import { ComunidadeService } from './comunidade.service';
 
@@ -30,7 +30,7 @@ describe('ComunidadeService', () => {
         EnderecoService,
         CidadeService,
         PaisService,
-        EtapaService,
+        EtapaComunidadeService,
         EstadoService,
         SetorService,
         JwtService,

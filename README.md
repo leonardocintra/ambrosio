@@ -72,6 +72,8 @@ Passos no Kibana:
 2. Crie o data view para o padrão `ambrosio-logs-*`.
 3. Em Discover, filtre por campos como `requestId`, `method`, `statusCode`, `path` e `durationMs`.
 
+
+#### Usuario do sistema 
 O usuario principal é criado apos rodar o seed
 - user: admin@admin.com.br
 - pass: admin

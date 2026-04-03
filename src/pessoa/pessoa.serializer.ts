@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Comunidade, EtapaEnum, Pessoa } from 'neocatecumenal';
+import { Comunidade, Pessoa } from 'neocatecumenal';
 import { ESTADO_CIVIL_MAP, SEXO_ENUM } from 'src/commons/enums/enums';
 import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 
@@ -66,7 +66,7 @@ function handleComunidade(comunidade: any): Comunidade | null {
   return {
     id: comunidade.comunidadeId,
     numeroDaComunidade: comunidade.comunidade.numeroDaComunidade,
-    etapaAtual: Object.values(EtapaEnum)[comunidade.etapaAtualId - 1],
+    etapaAtual: comunidade.etapaAtualId,
     quantidadeMembros: comunidade.comunidade.quantidadeMembros,
     observacao: comunidade.comunidade.observacao,
     paroquia: {

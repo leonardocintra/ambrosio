@@ -1,9 +1,7 @@
 import {
-  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateParoquiaDto } from './dto/create-paroquia.dto';
@@ -14,30 +12,26 @@ import { EnderecoService } from 'src/endereco/endereco.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
 import { accessibleBy } from '@casl/prisma';
 import { Paroquia } from 'neocatecumenal';
-import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
 import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
 import { Prisma } from 'src/prisma/generated-client';
 import { SetorService } from 'src/mapa/setor/setor.service';
+import { serializeParoquia } from './paroquia.serialize';
+import { BaseService } from 'src/commons/base.service';
 
 @Injectable()
-export class ParoquiaService {
-  private readonly logger = new Logger(ParoquiaService.name);
-
+export class ParoquiaService extends BaseService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly dioceseService: DioceseService,
     private readonly enderecoService: EnderecoService,
     private readonly setorService: SetorService,
-    private readonly abilityService: CaslAbilityService,
-  ) {}
+    abilityService: CaslAbilityService,
+  ) {
+    super(abilityService);
+  }
 
   async create(createParoquiaDto: CreateParoquiaDto) {
-    const { ability } = this.abilityService;
-    if (!ability.can('create', 'paroquia')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para criar paróquias',
-      );
-    }
+    this.validateCreateAbility('paroquia');
     await this.dioceseService.findOne(createParoquiaDto.diocese.id);
     await this.setorService.findOne(createParoquiaDto.setor.id);
 
@@ -46,7 +40,7 @@ export class ParoquiaService {
         return this.createParoquiaTransaction(createParoquiaDto, transaction);
       });
 
-      return this.serializeResponse(result);
+      return serializeParoquia(result);
     } catch (error) {
       this.logger.error(error);
       throw new HttpException(
@@ -71,23 +65,25 @@ export class ParoquiaService {
       select: PAROQUIA_SELECT,
     });
 
-    return results.map((result) => this.serializeResponse(result));
+    return results.map((result) => serializeParoquia(result));
   }
 
-  findOne(id: number) {
+  async findOne(id: number): Promise<Paroquia> {
     const wherePermissions = this.asPermissions();
-    return this.prisma.paroquia.findFirstOrThrow({
+    const paroquia = await this.prisma.paroquia.findFirstOrThrow({
       where: {
         AND: [{ id }, wherePermissions],
       },
       select: PAROQUIA_SELECT,
     });
+    return serializeParoquia(paroquia);
   }
 
   async update(
     id: number,
     updateParoquiaDto: UpdateParoquiaDto,
   ): Promise<Paroquia> {
+    this.validateUpdateAbility('paroquia');
     const paroquia = await this.findOne(id);
     if (!paroquia) {
       throw new NotFoundException('Paroquia não encontrada');
@@ -126,9 +122,13 @@ export class ParoquiaService {
         });
       });
 
-      return this.serializeResponse(result);
+      return serializeParoquia(result);
     } catch (error) {
       this.logger.error(error);
+      throw new HttpException(
+        `Ocorreu um erro ao atualizar a paroquia. Por favor tente novamente mais tarde. Erro: ${error}`,
+        HttpStatus.BAD_GATEWAY,
+      );
     }
   }
 
@@ -148,12 +148,8 @@ export class ParoquiaService {
   }
 
   private asPermissions() {
+    this.validateReadAbility('paroquia');
     const { ability } = this.abilityService;
-    if (!ability.can('read', 'paroquia')) {
-      throw new ForbiddenException(
-        'Você não tem permissão para listar paroquias',
-      );
-    }
     return accessibleBy(ability, 'read').paroquia;
   }
 
@@ -178,30 +174,6 @@ export class ParoquiaService {
       },
       select: PAROQUIA_SELECT,
     });
-    return this.serializeResponse(paroquia);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private serializeResponse(paroquia: any): Paroquia {
-    return {
-      id: paroquia.id,
-      descricao: paroquia.descricao,
-      endereco: serializeEndereco(paroquia.endereco),
-      setor: {
-        id: paroquia.setor.id,
-        descricao: paroquia.setor.descricao,
-        ativo: paroquia.setor.ativo,
-        regiao: null,
-      },
-      diocese: {
-        id: paroquia.diocese.id,
-        descricao: paroquia.diocese.descricao,
-        endereco: serializeEndereco(paroquia.diocese.endereco),
-        tipoDiocese: {
-          id: paroquia.diocese.tipoDiocese.id,
-          descricao: paroquia.diocese.tipoDiocese.descricao,
-        },
-      },
-    };
+    return serializeParoquia(paroquia);
   }
 }

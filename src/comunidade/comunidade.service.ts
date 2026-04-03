@@ -75,7 +75,12 @@ export class ComunidadeService extends BaseService {
             },
           },
         },
-        comunidadeEtapas: true,
+        etapa: true,
+        comunidadeEtapas: {
+          include: {
+            etapa: true,
+          },
+        },
       },
       orderBy: { numeroDaComunidade: 'asc' },
     });
@@ -101,8 +106,10 @@ export class ComunidadeService extends BaseService {
     const comunidade = await this.prisma.comunidade.findFirstOrThrow({
       where: { id },
       include: {
+        etapa: true,
         comunidadeEtapas: {
           include: {
+            etapa: true,
             equipe: true,
           },
         },
