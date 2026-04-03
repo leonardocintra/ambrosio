@@ -38,6 +38,26 @@ const isElkEnabled = process.env.ELK_ENABLED === 'true';
 const elkLogFile =
   process.env.ELK_LOG_FILE ?? './infra/runtime-logs/ambrosio.log';
 
+function extractRequestBody(req: any): unknown {
+  return req?.body ?? req?.raw?.body;
+}
+
+function stringifyRequestBody(body: unknown): string | undefined {
+  if (typeof body === 'undefined') {
+    return undefined;
+  }
+
+  if (typeof body === 'string') {
+    return body;
+  }
+
+  try {
+    return JSON.stringify(body);
+  } catch {
+    return '[unserializable-body]';
+  }
+}
+
 @Module({
   imports: [
     LoggerModule.forRoot({
@@ -78,11 +98,35 @@ const elkLogFile =
           }
           return crypto.randomUUID();
         },
-        customProps: (req): Record<string, any> => ({
-          context: 'HTTP',
-          elkEnabled: isElkEnabled,
-          requestId: rTracer.id?.(),
-        }),
+        serializers: {
+          req: (req: any): Record<string, any> => {
+            const requestBody = extractRequestBody(req);
+
+            return {
+              id: req.id,
+              method: req.method,
+              url: req.url,
+              query: req.query,
+              params: req.params,
+              headers: req.headers,
+              body: requestBody,
+              requestBody: stringifyRequestBody(requestBody),
+              remoteAddress: req.remoteAddress,
+              remotePort: req.remotePort,
+            };
+          },
+        },
+        customProps: (req): Record<string, any> => {
+          const requestBody = extractRequestBody(req);
+
+          return {
+            context: 'HTTP',
+            elkEnabled: isElkEnabled,
+            requestId: rTracer.id?.(),
+            body: requestBody,
+            requestBody: stringifyRequestBody(requestBody),
+          };
+        },
       },
     }),
     ResendModule.forRoot({
