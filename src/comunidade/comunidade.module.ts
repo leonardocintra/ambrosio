@@ -3,13 +3,12 @@ import { ComunidadeController } from './comunidade.controller';
 import { ParoquiaModule } from 'src/paroquia/paroquia.module';
 import { ComunidadeService } from './comunidade.service';
 import { HistoricoService } from './historico/historico.service';
-import { EtapaService } from './etapa/etapa.service';
-import { EtapaController } from './etapa/etapa.controller';
-import { HistoricoController } from './historico/historico.controller';
+import { EtapaComunidadeService } from './etapa/etapa-comunidade.service';
+import { EtapaComunidadeController } from './etapa/etapa-comunidade.controller';
 
 @Module({
-  controllers: [ComunidadeController, EtapaController, HistoricoController],
-  providers: [ComunidadeService, HistoricoService, EtapaService],
+  controllers: [ComunidadeController, EtapaComunidadeController],
+  providers: [ComunidadeService, HistoricoService, EtapaComunidadeService],
   imports: [ParoquiaModule],
   exports: [ComunidadeService],
 })

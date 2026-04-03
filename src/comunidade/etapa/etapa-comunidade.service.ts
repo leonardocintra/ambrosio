@@ -4,11 +4,11 @@ import { UpdateEtapaDto } from './dto/update-etapa.dto';
 import { BaseService } from 'src/commons/base.service';
 import { PrismaService } from 'src/prisma.service';
 import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { EtapaEnum } from 'neocatecumenal';
 import { ComunidadeService } from '../comunidade.service';
+import { ComunidadeEtapa } from 'neocatecumenal';
 
 @Injectable()
-export class EtapaService extends BaseService {
+export class EtapaComunidadeService extends BaseService {
   constructor(
     private prisma: PrismaService,
     private readonly comunidadeService: ComunidadeService,
@@ -17,20 +17,17 @@ export class EtapaService extends BaseService {
     super(abilityService);
   }
 
-  async create(createEtapaDto: CreateEtapaDto) {
+  async create(comunidadeId: number, createEtapaDto: CreateEtapaDto) {
     this.validateCreateAbility('etapa');
-    this.logger.log(
-      `Creating etapa for comunidade ${createEtapaDto.comunidadeId}`,
-    );
+    this.logger.log(`Creating etapa for comunidade ${comunidadeId}`);
 
     this.validateDateRange(createEtapaDto.dataInicio, createEtapaDto.dataFim);
 
-    const etapaId = this.getEtapaIndex(createEtapaDto.etapa);
-
     const etapa = await this.prisma.comunidadeEtapa.create({
       data: {
-        etapaId,
-        comunidadeId: createEtapaDto.comunidadeId,
+        comunidadeId,
+        etapaId: createEtapaDto.etapaId,
+        equipeId: createEtapaDto.equipeId,
         dataInicio: createEtapaDto.dataInicio,
         dataFim: createEtapaDto.dataFim,
         observacao: createEtapaDto.observacao,
@@ -46,19 +43,33 @@ export class EtapaService extends BaseService {
     return etapa;
   }
 
-  findAll(comunidadeId: number) {
+  findAll(comunidadeId: number): Promise<ComunidadeEtapa[]> {
     this.validateReadAbility('etapa');
-    return this.findAllByComunidade(comunidadeId);
+    // TODO: futuramente vai precisar de listar a equipe. Nesse caso precisa criar um arquivo serializador
+    return this.prisma.comunidadeEtapa.findMany({
+      where: { comunidadeId },
+      include: {
+        etapa: true,
+      },
+      orderBy: { etapaId: 'asc' },
+    });
   }
 
-  findOne(id: number) {
+  findOne(comunidadeId: number, id: number): Promise<ComunidadeEtapa> {
     this.validateReadAbility('etapa');
-    return this.prisma.comunidadeEtapa.findUnique({ where: { id } });
+    return this.prisma.comunidadeEtapa.findFirstOrThrow({
+      where: { id, comunidadeId },
+      include: {
+        etapa: true,
+      },
+    });
   }
 
-  async update(id: number, dto: UpdateEtapaDto) {
-    const etapaAtual = await this.prisma.comunidadeEtapa.findUnique({
-      where: { id },
+  async update(comunidadeId: number, id: number, dto: UpdateEtapaDto) {
+    this.validateUpdateAbility('etapa');
+
+    const etapaAtual = await this.prisma.comunidadeEtapa.findFirstOrThrow({
+      where: { id, comunidadeId },
       select: {
         dataInicio: true,
         dataFim: true,
@@ -73,6 +84,7 @@ export class EtapaService extends BaseService {
     return this.prisma.comunidadeEtapa.update({
       where: { id },
       data: {
+        etapaId: dto.etapaId,
         equipeId: dto.equipeId,
         localConvivencia: dto.localConvivencia,
         dataInicio: dto.dataInicio,
@@ -82,26 +94,19 @@ export class EtapaService extends BaseService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} etapa`;
-  }
+  async remove(comunidadeId: number, id: number) {
+    this.validateDeleteAbility('etapa');
 
-  private findAllByComunidade(comunidadeId: number) {
-    return this.prisma.comunidadeEtapa.findMany({
-      where: { comunidadeId },
-      orderBy: { etapaId: 'asc' },
+    await this.prisma.comunidadeEtapa.findFirstOrThrow({
+      where: { id, comunidadeId },
+      select: { id: true },
     });
-  }
 
-  private getEtapaIndex(etapa: EtapaEnum): number {
-    const etapas = Object.values(EtapaEnum);
-    const index = etapas.indexOf(etapa);
+    this.logger.log(`Removendo etapa ${id} da comunidade ${comunidadeId}`);
 
-    if (index === -1) {
-      throw new Error(`Etapa inválida: ${etapa}`);
-    }
-
-    return index + 1;
+    return this.prisma.comunidadeEtapa.delete({
+      where: { id },
+    });
   }
 
   private validateDateRange(

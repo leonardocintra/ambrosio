@@ -1,17 +1,15 @@
 import {
   IsDate,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsPositive,
   MaxLength,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { EtapaEnum } from 'neocatecumenal';
 
 export class UpdateEtapaDto {
-  @IsEnum(EtapaEnum)
-  etapa: EtapaEnum;
+  @IsPositive({ message: 'O campo etapaId deve ser um número positivo.' })
+  etapaId: number;
 
   @IsNumber()
   @IsPositive()
