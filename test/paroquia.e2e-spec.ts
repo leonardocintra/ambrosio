@@ -356,45 +356,45 @@ describe('ParoquiaController (e2e)', () => {
   });
 
   it(`/${principal} (PATCH) - 200 | deve atualizar uma paroquia com campos válidos`, async () => {
-    const dioceseData = {
-      descricao: faker.company.name(),
-      diocese: { id: 1 },
+    const paroquiaData = {
+      descricao: 'Nossa Senhora do Desterro Alterada',
+      diocese: { id: 6 },
       endereco: {
-        id: 2,
-        cep: faker.location.zipCode('########'),
-        logradouro: faker.location.streetAddress(),
+        id: 9,
+        cep: '37990000',
+        logradouro: 'Rua Tiradentes',
         numero: '4848',
-        bairro: faker.location.secondaryAddress(),
-        cidade: faker.location.city(),
+        bairro: 'Centro',
+        cidade: 'Ibiraci',
         UF: 'MG',
       },
     };
 
     const response = await request(app.getHttpServer())
-      .patch(`/${principal}/1`)
+      .patch(`/${principal}/2`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
-      .send(dioceseData)
-      .expect(200);
+      .send(paroquiaData);
 
+    expect(response.status).toBe(200);
     expect(response.body.data).toHaveProperty('id');
-    expect(response.body.data.descricao).toBe(dioceseData.descricao);
-    expect(response.body.data.diocese.id).toBe(dioceseData.diocese.id);
-    expect(response.body.data.endereco.cep).toBe(dioceseData.endereco.cep);
+    expect(response.body.data.descricao).toBe(paroquiaData.descricao);
+    expect(response.body.data.diocese.id).toBe(paroquiaData.diocese.id);
+    expect(response.body.data.endereco.cep).toBe(paroquiaData.endereco.cep);
     expect(response.body.data.endereco.bairro).toBe(
-      dioceseData.endereco.bairro,
+      paroquiaData.endereco.bairro,
     );
     expect(response.body.data.endereco.numero).toBe(
-      dioceseData.endereco.numero,
+      paroquiaData.endereco.numero,
     );
     expect(response.body.data.endereco.logradouro).toBe(
-      dioceseData.endereco.logradouro,
+      paroquiaData.endereco.logradouro,
     );
     expect(response.body.data.endereco.cidade.nome).toBe(
-      dioceseData.endereco.cidade,
+      paroquiaData.endereco.cidade,
     );
     expect(response.body.data.endereco.cidade.estado.sigla).toBe(
-      dioceseData.endereco.UF,
+      paroquiaData.endereco.UF,
     );
   });
 

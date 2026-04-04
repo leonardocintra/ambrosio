@@ -25,3 +25,20 @@ export const ENDERECO_SELECT = {
     },
   },
 };
+
+export const SELECT_CIDADE = {
+  id: true,
+  nome: true,
+  estado: {
+    select: {
+      sigla: true,
+      nome: true,
+      pais: {
+        select: {
+          nome: true,
+          lingua: true,
+        },
+      },
+    },
+  },
+};

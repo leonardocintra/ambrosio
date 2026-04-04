@@ -2,27 +2,11 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateCidadeDto } from './dto/create-cidade.dto';
 import { PrismaService } from 'src/prisma.service';
 import { EstadoService } from '../estado/estado.service';
+import { SELECT_CIDADE } from 'src/prisma/selects/endereco.select';
 
 @Injectable()
 export class CidadeService {
   private readonly logger = new Logger(CidadeService.name);
-
-  static readonly SELECT_CIDADE = {
-    id: true,
-    nome: true,
-    estado: {
-      select: {
-        sigla: true,
-        nome: true,
-        pais: {
-          select: {
-            nome: true,
-            lingua: true,
-          },
-        },
-      },
-    },
-  };
 
   constructor(
     private prisma: PrismaService,
@@ -57,14 +41,14 @@ export class CidadeService {
 
   findAll() {
     return this.prisma.cidade.findMany({
-      select: CidadeService.SELECT_CIDADE,
+      select: SELECT_CIDADE,
     });
   }
 
   findOne(id: number) {
     return this.prisma.cidade.findUniqueOrThrow({
       where: { id },
-      select: CidadeService.SELECT_CIDADE,
+      select: SELECT_CIDADE,
     });
   }
 

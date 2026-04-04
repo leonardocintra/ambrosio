@@ -3,6 +3,8 @@ import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
 import { PrismaClient, Sexo, tipoCarismaEnum } from '../generated/client';
+import { seedCidade } from './data/seed/cidade';
+import { seedDiocese } from './data/seed/diocese';
 
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -308,46 +310,7 @@ async function main() {
   }
 
   async function cidade() {
-    const estado = await prisma.estado.findFirst();
-    const estadoId = estado.id;
-
-    await prisma.cidade.create({
-      data: {
-        nome: 'Ibiraci',
-        estadoId,
-      },
-    });
-
-    await prisma.cidade.create({
-      data: {
-        nome: 'Guaxupé',
-        estadoId,
-      },
-    });
-
-    await prisma.cidade.create({
-      data: {
-        nome: 'Claraval',
-        estadoId,
-      },
-    });
-
-    await prisma.cidade.create({
-      data: {
-        nome: 'Cássia',
-        estadoId,
-      },
-    });
-
-    await prisma.cidade.create({
-      data: {
-        nome: 'Belo Horizonte',
-        estadoId,
-      },
-    });
-
-    console.log('---------------------------------');
-    console.log('Cidades preenchidas com sucesso!');
+    await seedCidade(prisma);
   }
 
   async function carismas() {
@@ -483,30 +446,7 @@ async function main() {
   }
 
   async function diocese() {
-    const cidade = await prisma.cidade.findUnique({
-      where: { nome: 'Guaxupé' },
-    });
-    const endereco = await prisma.endereco.create({
-      data: {
-        bairro: 'Centro',
-        cep: '37830000',
-        logradouro: 'Rua Francisco Ribeiro do Vale',
-        numero: '242',
-        observacao: 'Bipo Dom Jose Lanza',
-        cidadeId: cidade.id,
-      },
-    });
-
-    await prisma.diocese.create({
-      data: {
-        descricao: 'Mitra Diocesana de Guaxupé',
-        tipoDioceseId: 1,
-        enderecoId: endereco.id,
-      },
-    });
-
-    console.log('---------------------------------');
-    console.log('Diocese preenchido com sucesso!');
+    await seedDiocese(prisma);
   }
 
   async function paroquia() {
