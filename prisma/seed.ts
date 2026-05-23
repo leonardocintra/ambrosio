@@ -5,6 +5,8 @@ import pg from 'pg';
 import { PrismaClient, Sexo, tipoCarismaEnum } from '../generated/client';
 import { seedCidade } from './data/seed/cidade';
 import { seedDiocese } from './data/seed/diocese';
+import { seedParoquia } from './data/seed/paroquia';
+import { seedComunidade } from './data/seed/comunidade';
 
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -14,6 +16,7 @@ const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+  // Atencao: não alterar a ordem de execução das funções abaixo, pois algumas dependem de outras para serem executadas corretamente
   await pais();
   await estado();
   await cidade();
@@ -30,6 +33,7 @@ async function main() {
   await etapa();
   await diocese();
   await paroquia();
+  await comunidade();
   await admin();
   await pessoas();
 
@@ -450,29 +454,11 @@ async function main() {
   }
 
   async function paroquia() {
-    const cidade = await prisma.cidade.findFirst();
-    const endereco = await prisma.endereco.create({
-      data: {
-        bairro: 'Centro',
-        cep: '37990000',
-        logradouro: 'Rua Tiradentes',
-        numero: '789',
-        observacao: 'Padre Norival Sardinha Filho ',
-        cidadeId: cidade.id,
-      },
-    });
+    await seedParoquia(prisma);
+  }
 
-    await prisma.paroquia.create({
-      data: {
-        descricao: 'Paroquia Nossa Senhora Aparecida (Seed)',
-        dioceseId: 1,
-        enderecoId: endereco.id,
-        setorId: 1,
-      },
-    });
-
-    console.log('---------------------------------');
-    console.log('Paroquia preenchida com sucesso!');
+  async function comunidade() {
+    await seedComunidade(prisma);
   }
 
   async function pessoas() {
