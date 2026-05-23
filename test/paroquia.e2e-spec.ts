@@ -371,7 +371,7 @@ describe('ParoquiaController (e2e)', () => {
     };
 
     const response = await request(app.getHttpServer())
-      .patch(`/${principal}/2`)
+      .patch(`/${principal}/3`)
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
       .send(paroquiaData);

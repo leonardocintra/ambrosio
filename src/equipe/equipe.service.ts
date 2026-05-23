@@ -30,11 +30,6 @@ export class EquipeService extends BaseService {
       createEquipeDto.tipoEquipeId,
     );
 
-    for (const pessoa of createEquipeDto.pessoas) {
-      // TODO: Pensar uma forma melhor de fazer isso
-      await this.pessoaService.findOne(pessoa.id);
-    }
-
     const result = await this.prisma.equipe.create({
       data: {
         descricao: createEquipeDto.descricao,
@@ -43,15 +38,11 @@ export class EquipeService extends BaseService {
       },
     });
 
-    for (const pessoa of createEquipeDto.pessoas) {
-      await this.prisma.equipePessoa.create({
-        data: {
-          equipeId: result.id,
-          pessoaId: pessoa.id,
-          observacao: `Equipe/Pessoa de: ${result.descricao}`,
-        },
-      });
-    }
+    await this.syncEquipePessoas(
+      result.id,
+      result.descricao,
+      createEquipeDto.pessoas,
+    );
 
     return this.prisma.equipe.findUnique({
       where: { id: result.id },
@@ -97,13 +88,60 @@ export class EquipeService extends BaseService {
     return serializeEquipeResponse(result, pessoas);
   }
 
-  update(id: number, updateEquipeDto: UpdateEquipeDto) {
+  async update(id: number, updateEquipeDto: UpdateEquipeDto) {
     this.validateUpdateAbility('equipe');
-    return `This action updates a #${id} equipe. ${updateEquipeDto.descricao}`;
+    await this.prisma.equipe.update({
+      where: { id },
+      data: {
+        descricao: updateEquipeDto.descricao,
+        observacao: updateEquipeDto.observacao,
+        tipoEquipeId: updateEquipeDto.tipoEquipeId,
+      },
+    });
+
+    await this.syncEquipePessoas(
+      id,
+      updateEquipeDto.descricao,
+      updateEquipeDto.pessoas,
+    );
+
+    return this.prisma.equipe.findUnique({
+      where: { id },
+      include: {
+        tipoEquipe: true,
+        equipePessoas: { include: { pessoa: true } },
+      },
+    });
   }
 
   remove(id: number) {
     this.validateDeleteAbility('equipe');
     return `This action removes a #${id} equipe`;
+  }
+
+  private async syncEquipePessoas(
+    equipeId: number,
+    descricaoEquipe: string,
+    pessoas: { id: number }[],
+  ) {
+    for (const pessoa of pessoas) {
+      await this.pessoaService.findOne(pessoa.id);
+      await this.prisma.equipePessoa.upsert({
+        where: {
+          equipeId_pessoaId: {
+            equipeId,
+            pessoaId: pessoa.id,
+          },
+        },
+        update: {
+          observacao: `Equipe/Pessoa de: ${descricaoEquipe}`,
+        },
+        create: {
+          equipeId,
+          pessoaId: pessoa.id,
+          observacao: `Equipe/Pessoa de: ${descricaoEquipe}`,
+        },
+      });
+    }
   }
 }
