@@ -25,11 +25,11 @@
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy && prisma generate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test": "jest --maxWorkers=50%",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:cov": "jest --coverage --maxWorkers=2",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "npm run seed && jest --config ./test/jest-e2e.json",
+    "test:e2e": "npm run seed && jest --config ./test/jest-e2e.json --runInBand",
     "seed": "prisma migrate reset --force && tsx prisma/seed.ts"
   },
   "dependencies": {
