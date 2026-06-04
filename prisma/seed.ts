@@ -91,7 +91,6 @@ async function main() {
       { descricao: 'Seminarista', sexoUnico: Sexo.MASCULINO },
       { descricao: 'Religioso(a)', sexoUnico: null },
       { descricao: 'Diácono', sexoUnico: Sexo.MASCULINO },
-      { descricao: 'Diácono Permanente', sexoUnico: Sexo.MASCULINO },
       { descricao: 'Presbítero', sexoUnico: Sexo.MASCULINO },
       { descricao: 'Bispo', sexoUnico: Sexo.MASCULINO },
       { descricao: 'Arcebispo', sexoUnico: Sexo.MASCULINO },
