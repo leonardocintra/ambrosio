@@ -6,7 +6,4 @@ export class AppService {
     return 'Hello World! Bem vindo ao Caminho Neocatecumenal';
   }
 
-  getPing(): string {
-    return 'pong';
-  }
 }

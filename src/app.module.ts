@@ -30,6 +30,7 @@ import { RegiaoModule } from './mapa/regiao/regiao.module';
 import { EquipeModule } from './equipe/equipe.module';
 import { CarismaModule } from './carisma/carisma.module';
 import { ExternalModule } from './external/external.module';
+import { HealthModule } from './health/health.module';
 import { ResendModule } from 'nestjs-resend';
 import * as rTracer from 'cls-rtracer';
 import { ComunidadeModule } from './comunidade/comunidade.module';
@@ -154,6 +155,7 @@ function stringifyRequestBody(body: unknown): string | undefined {
     EquipeModule,
     CarismaModule,
     ExternalModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [
