@@ -37,11 +37,11 @@ describe('SituacaoReligiosaController (e2e)', () => {
         expect(res.body.data).not.toBeInstanceOf(Array);
         expect(res.body.data).toEqual({
           id: 7,
-          descricao: 'Bispo',
+          descricao: 'Arcebispo',
           sexoUnico: 'MASCULINO',
         });
         expect(res.body.data.id).toEqual(7);
-        expect(res.body.data.descricao).toEqual('Bispo');
+        expect(res.body.data.descricao).toEqual('Arcebispo');
       });
   });
 
