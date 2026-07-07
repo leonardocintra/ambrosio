@@ -124,7 +124,7 @@ export class CarismaService extends BaseService {
     } catch (error) {
       this.logger.error(
         `Erro ao atualizar carismas da pessoa ${pessoaId}:`,
-        error.message,
+        (error as Error).message,
       );
       throw error;
     }
@@ -167,7 +167,7 @@ export class CarismaService extends BaseService {
     } catch (error) {
       this.logger.error(
         `Erro ao remover carismas da pessoa ${pessoaId}:`,
-        error.message,
+        (error as Error).message,
       );
       throw error;
     }
@@ -218,7 +218,7 @@ export class CarismaService extends BaseService {
     } catch (error) {
       this.logger.error(
         `Erro ao buscar pessoas do carisma ${carismaId}:`,
-        error.message,
+        (error as Error).message,
       );
       throw error;
     }
@@ -246,7 +246,7 @@ export class CarismaService extends BaseService {
     } catch (error) {
       this.logger.error(
         `Erro ao buscar carismas da pessoa ${pessoaId}:`,
-        error.message,
+        (error as Error).message,
       );
       throw error;
     }
@@ -316,7 +316,7 @@ export class CarismaService extends BaseService {
       this.logger.log(`Carisma ID ${id} removido com sucesso`);
       return result;
     } catch (error) {
-      this.logger.error(`Erro ao remover carisma ${id}:`, error.message);
+      this.logger.error(`Erro ao remover carisma ${id}:`, (error as Error).message);
       throw error;
     }
   }
