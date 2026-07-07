@@ -3,11 +3,12 @@ import { PrismaHealthIndicator } from './prisma-health.indicator';
 import { PrismaService } from 'src/prisma.service';
 
 describe('PrismaHealthIndicator', () => {
+  let app: TestingModule;
   let indicator: PrismaHealthIndicator;
   let prismaService: PrismaService;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    app = await Test.createTestingModule({
       providers: [
         PrismaHealthIndicator,
         {
@@ -19,8 +20,12 @@ describe('PrismaHealthIndicator', () => {
       ],
     }).compile();
 
-    indicator = module.get<PrismaHealthIndicator>(PrismaHealthIndicator);
-    prismaService = module.get<PrismaService>(PrismaService);
+    indicator = app.get<PrismaHealthIndicator>(PrismaHealthIndicator);
+    prismaService = app.get<PrismaService>(PrismaService);
+  });
+
+  afterEach(async () => {
+    await app?.close();
   });
 
   it('should be defined', () => {

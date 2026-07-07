@@ -5,10 +5,11 @@ import { PrismaHealthIndicator } from './prisma-health.indicator';
 import { PrismaService } from 'src/prisma.service';
 
 describe('HealthController', () => {
+  let app: TestingModule;
   let controller: HealthController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    app = await Test.createTestingModule({
       imports: [TerminusModule],
       controllers: [HealthController],
       providers: [
@@ -22,7 +23,11 @@ describe('HealthController', () => {
       ],
     }).compile();
 
-    controller = module.get<HealthController>(HealthController);
+    controller = app.get<HealthController>(HealthController);
+  });
+
+  afterEach(async () => {
+    await app?.close();
   });
 
   it('should be defined', () => {
