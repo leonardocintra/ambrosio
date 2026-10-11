@@ -118,7 +118,3 @@ $ npm run test:cov
 ## Stay in touch
 
 - Author - [Leonardo Cintra](https://leonardocintra.com.br)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
