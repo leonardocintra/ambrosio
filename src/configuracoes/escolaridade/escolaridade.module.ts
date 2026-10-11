@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { EscolaridadeService } from './escolaridade.service';
-import { EscolaridadeController } from './escolaridade.controller';
+import { EscolaridadeService } from './escolaridade.service.js';
+import { EscolaridadeController } from './escolaridade.controller.js';
 
 @Module({
   controllers: [EscolaridadeController],

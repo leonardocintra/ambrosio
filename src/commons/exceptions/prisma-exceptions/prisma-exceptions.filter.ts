@@ -1,11 +1,11 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { Prisma } from 'src/prisma/generated-client';
+import { Prisma } from 'src/prisma/generated-client.js';
 import {
   FOREIGN_KEY_CONSTRAINT,
   MODEL_NAME_MAP,
   RECORD_DOES_NOT_EXIST,
   UNIQUE_CONSTRAINT_FAILED,
-} from 'src/commons/constants/constants';
+} from 'src/commons/constants/constants.js';
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionsFilter implements ExceptionFilter {
@@ -19,10 +19,18 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
     // ------------------------------------------------------------------
     // CORREÇÃO PARA PRISMA 7 + DRIVER ADAPTER (PG):
     // Verifica se o 'target' está na raiz (padrão antigo/nativo)
-    // OU aninhado dentro do driverAdapterError (padrão novo/pg)
+    // OU aninhado dentro do driverAdapterError (padrão novo/pg).
+    // No driver adapter o campo pode vir apenas como o nome da constraint
+    // ('user_email_key'), sem a lista 'fields'; nesse caso derivamos o(s)
+    // campo(s) a partir do nome da constraint.
     // ------------------------------------------------------------------
-    const target =
-      meta.target || meta.driverAdapterError?.cause?.constraint?.fields;
+    const cause = meta.driverAdapterError?.cause;
+    const constraint = cause?.constraint;
+
+    const explicitTarget = meta.target ?? constraint?.fields;
+    const target = Array.isArray(explicitTarget)
+      ? explicitTarget
+      : this.deriveFieldsFromConstraint(constraint?.index, cause?.table);
 
     if (Array.isArray(target) && target.length > 0) {
       return `O campo '${target.join(', ')}' já existe cadastrado. Não permitimos duplicidade.`;
@@ -45,6 +53,25 @@ export class PrismaExceptionsFilter implements ExceptionFilter {
     }
 
     return null;
+  }
+
+  private deriveFieldsFromConstraint(
+    index: unknown,
+    table: unknown,
+  ): string[] | null {
+    if (typeof index !== 'string' || index.length === 0) {
+      return null;
+    }
+
+    let field = index;
+    if (typeof table === 'string' && field.startsWith(`${table}_`)) {
+      field = field.slice(table.length + 1);
+    }
+    if (field.endsWith('_key')) {
+      field = field.slice(0, -'_key'.length);
+    }
+
+    return field.length > 0 ? [field] : null;
   }
 
   catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {

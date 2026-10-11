@@ -1,5 +1,5 @@
-import { faker } from 'node_modules/@faker-js/faker/dist/locale/pt_BR.cjs';
-import { PrismaClient } from '../../../generated/client';
+import { faker } from '@faker-js/faker/locale/pt_BR';
+import { PrismaClient } from '../../../generated/client.js';
 
 export async function seedComunidade(prisma: PrismaClient) {
   const paroquiaIds = [1, 2, 3, 4, 5];

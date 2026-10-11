@@ -1,9 +1,9 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { faker } from '@faker-js/faker/locale/pt_BR';
-import { setupTestModule } from '../test-setup';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
-import { mockSaoPedroPessoaService } from '../../test/mocks/sao-pedro-api-mock';
+import { setupTestModule } from '../test-setup.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
+import { mockSaoPedroPessoaService } from '../../test/mocks/sao-pedro-api-mock.js';
 import { UserRoleEnum } from 'neocatecumenal';
 
 describe('UserController (e2e)', () => {
@@ -94,7 +94,7 @@ describe('UserController (e2e)', () => {
 
   it('/users (POST) - Não deve permitir e-mail duplicado', async () => {
     // Mock específico para esse teste
-    jest
+    vi
       .spyOn(mockSaoPedroPessoaService, 'getExternalPessoaByCpf')
       .mockResolvedValueOnce({
         id: 3,

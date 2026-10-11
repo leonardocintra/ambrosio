@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateLocalidadeDto } from './dto/create-localidade.dto';
-import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
-import { PrismaService } from 'src/prisma.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
+import { CreateLocalidadeDto } from './dto/create-localidade.dto.js';
+import { UpdateLocalidadeDto } from './dto/update-localidade.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
 
 @Injectable()
 export class LocalidadeService {

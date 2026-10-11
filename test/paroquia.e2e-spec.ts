@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common';
-import { setupTestModule } from './test-setup';
+import { setupTestModule } from './test-setup.js';
 import request from 'supertest';
 import { faker } from '@faker-js/faker/locale/pt_BR';
 

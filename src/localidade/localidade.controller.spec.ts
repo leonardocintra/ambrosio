@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LocalidadeController } from './localidade.controller';
-import { LocalidadeService } from './localidade.service';
-import { PrismaService } from 'src/prisma.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
+import { LocalidadeController } from './localidade.controller.js';
+import { LocalidadeService } from './localidade.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
 import { JwtService } from '@nestjs/jwt';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 
 describe('LocalidadeController', () => {
   let controller: LocalidadeController;
@@ -23,19 +23,19 @@ describe('LocalidadeController', () => {
         {
           provide: PrismaService,
           useValue: {
-            create: jest.fn(),
-            findFirstOrThrow: jest.fn(),
+            create: vi.fn(),
+            findFirstOrThrow: vi.fn(),
           },
         },
         {
           provide: EnderecoService,
           useValue: {
-            createByPessoaId: jest.fn(),
-            create: jest.fn(),
-            findAllByPessoaId: jest.fn(),
-            findOne: jest.fn(),
-            update: jest.fn(),
-            remove: jest.fn(),
+            createByPessoaId: vi.fn(),
+            create: vi.fn(),
+            findAllByPessoaId: vi.fn(),
+            findOne: vi.fn(),
+            update: vi.fn(),
+            remove: vi.fn(),
           },
         },
       ],

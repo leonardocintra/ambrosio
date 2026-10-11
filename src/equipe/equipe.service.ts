@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEquipeDto } from './dto/create-equipe.dto';
-import { UpdateEquipeDto } from './dto/update-equipe.dto';
-import { BaseService } from 'src/commons/base.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PrismaService } from 'src/prisma.service';
-import { TipoEquipeService } from 'src/configuracoes/tipo-equipe/tipo-equipe.service';
-import { PessoaService } from 'src/pessoa/pessoa.service';
+import { CreateEquipeDto } from './dto/create-equipe.dto.js';
+import { UpdateEquipeDto } from './dto/update-equipe.dto.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { TipoEquipeService } from 'src/configuracoes/tipo-equipe/tipo-equipe.service.js';
+import { PessoaService } from 'src/pessoa/pessoa.service.js';
 import { Equipe, Pessoa } from 'neocatecumenal';
 import {
   serializeEquipeResponse,
   serializeEquipeResponseList,
-} from './equipe.serializer';
+} from './equipe.serializer.js';
 
 @Injectable()
 export class EquipeService extends BaseService {

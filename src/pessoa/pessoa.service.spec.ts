@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PessoaService } from './pessoa.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { PessoaService } from './pessoa.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
 
 describe('PessoaService', () => {
   let service: PessoaService;
@@ -20,25 +20,25 @@ describe('PessoaService', () => {
         {
           provide: PrismaService,
           useValue: {
-            create: jest.fn(),
-            findFirstOrThrow: jest.fn(),
+            create: vi.fn(),
+            findFirstOrThrow: vi.fn(),
           },
         },
         {
           provide: SituacaoReligiosaService,
           useValue: {
-            create: jest.fn(),
-            findAll: jest.fn(),
-            findOne: jest.fn(),
-            update: jest.fn(),
-            remove: jest.fn(),
+            create: vi.fn(),
+            findAll: vi.fn(),
+            findOne: vi.fn(),
+            update: vi.fn(),
+            remove: vi.fn(),
           },
         },
         {
           provide: SaoPedroPessoaService,
           useValue: {
-            getPessoas: jest.fn().mockResolvedValue([]),
-            postExternalPessoa: jest
+            getPessoas: vi.fn().mockResolvedValue([]),
+            postExternalPessoa: vi
               .fn()
               .mockResolvedValue({ id: 1, nome: 'João' }),
           },

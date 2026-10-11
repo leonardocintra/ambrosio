@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { EscolaridadeModule } from './escolaridade/escolaridade.module';
-import { EstadoCivilModule } from './estado-civil/estado-civil.module';
-import { TipoDioceseModule } from './tipo-diocese/tipo-diocese.module';
-import { TipoEquipeModule } from './tipo-equipe/tipo-equipe.module';
-import { TipoLocalidadeModule } from './tipo-localidade/tipo-localidade.module';
-import { PaisModule } from './pais/pais.module';
-import { EstadoModule } from './estado/estado.module';
-import { CidadeModule } from './cidade/cidade.module';
-import { DioceseModule } from 'src/diocese/diocese.module';
-import { SituacaoReligiosaModule } from './situacao-religiosa/situacao-religiosa.module';
-import { EtapasService } from './etapas/etapas.service';
-import { EtapasController } from './etapas/etapas.controller';
+import { EscolaridadeModule } from './escolaridade/escolaridade.module.js';
+import { EstadoCivilModule } from './estado-civil/estado-civil.module.js';
+import { TipoDioceseModule } from './tipo-diocese/tipo-diocese.module.js';
+import { TipoEquipeModule } from './tipo-equipe/tipo-equipe.module.js';
+import { TipoLocalidadeModule } from './tipo-localidade/tipo-localidade.module.js';
+import { PaisModule } from './pais/pais.module.js';
+import { EstadoModule } from './estado/estado.module.js';
+import { CidadeModule } from './cidade/cidade.module.js';
+import { DioceseModule } from 'src/diocese/diocese.module.js';
+import { SituacaoReligiosaModule } from './situacao-religiosa/situacao-religiosa.module.js';
+import { EtapasService } from './etapas/etapas.service.js';
+import { EtapasController } from './etapas/etapas.controller.js';
 
 @Module({
   imports: [

@@ -3,7 +3,7 @@ import {
   CaslAbilityService,
   PermActions,
   PermissionResource,
-} from 'src/casl/casl-ability/casl-ability.service';
+} from 'src/casl/casl-ability/casl-ability.service.js';
 import * as rTracer from 'cls-rtracer';
 
 @Injectable()

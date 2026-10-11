@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHistoricoDto } from './dto/create-historico.dto';
-import { BaseService } from 'src/commons/base.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { SEM_INFORMACAO } from 'src/commons/constants/constants';
+import { CreateHistoricoDto } from './dto/create-historico.dto.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { SEM_INFORMACAO } from 'src/commons/constants/constants.js';
 
 @Injectable()
 export class HistoricoService extends BaseService {

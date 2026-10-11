@@ -1,5 +1,5 @@
 import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
-import { RegiaoService } from './regiao.service';
+import { RegiaoService } from './regiao.service.js';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Regiões')

@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { MacroRegiaoService } from './macro-regiao.service';
+import { MacroRegiaoService } from './macro-regiao.service.js';
 
 @Controller('macro-regiao')
 export class MacroRegiaoController {

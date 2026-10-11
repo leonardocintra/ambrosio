@@ -9,12 +9,12 @@ import {
   UseGuards,
   Req,
 } from '@nestjs/common';
-import { Request } from 'express';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
+import type { Request } from 'express';
+import { UsersService } from './users.service.js';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import { UpdateUserDto } from './dto/update-user.dto.js';
+import { AuthGuard } from 'src/auth/auth.guard.js';
+import { RoleGuard } from 'src/auth/role/role.guard.js';
 
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('users')

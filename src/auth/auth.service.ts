@@ -1,12 +1,12 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { LoginDto } from './login.dto';
+import { LoginDto } from './login.dto.js';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 import { packRules } from '@casl/ability/extra';
 import { createHash, randomBytes } from 'crypto';
-import { SendEmailService } from 'src/external/send-email/send-email.service';
-import { UsersService } from 'src/users/users.service';
+import { SendEmailService } from 'src/external/send-email/send-email.service.js';
+import { UsersService } from 'src/users/users.service.js';
 
 @Injectable()
 export class AuthService {

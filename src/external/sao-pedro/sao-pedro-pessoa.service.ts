@@ -1,20 +1,20 @@
 import { HttpService } from '@nestjs/axios';
 import { HttpException, Injectable } from '@nestjs/common';
-import { SaoPedroAuthService } from './sao-pedro-auth.service';
-import { CreatePessoaDto } from 'src/pessoa/dto/create-pessoa.dto';
+import { SaoPedroAuthService } from './sao-pedro-auth.service.js';
+import { CreatePessoaDto } from 'src/pessoa/dto/create-pessoa.dto.js';
 import { Pessoa } from 'neocatecumenal';
 import { firstValueFrom } from 'rxjs';
-import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto';
-import { BaseService } from 'src/commons/base.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 import {
   serializeExternalPessoaResponse,
   serializeExternalPessoasResponse,
-} from './sao-pedro-pessoa.serializer';
-import { UpdatePessoaDto } from 'src/pessoa/dto/update-pessoa.dto';
-import { CreatePessoaMapper } from './mapper/create-pessoa.mapper';
-import { UpdatePessoaMapper } from './mapper/update-pessoa.mapper';
-import { SEXO_ENUM } from 'src/commons/enums/enums';
+} from './sao-pedro-pessoa.serializer.js';
+import { UpdatePessoaDto } from 'src/pessoa/dto/update-pessoa.dto.js';
+import { CreatePessoaMapper } from './mapper/create-pessoa.mapper.js';
+import { UpdatePessoaMapper } from './mapper/update-pessoa.mapper.js';
+import { SEXO_ENUM } from 'src/commons/enums/enums.js';
 
 @Injectable()
 export class SaoPedroPessoaService extends BaseService {

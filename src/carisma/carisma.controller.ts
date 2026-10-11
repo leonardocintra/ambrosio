@@ -8,13 +8,13 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { CarismaService } from './carisma.service';
-import { CreateCarismaDto } from './dto/create-carisma.dto';
-import { UpdateCarismaDto } from './dto/update-carisma.dto';
+import { CarismaService } from './carisma.service.js';
+import { CreateCarismaDto } from './dto/create-carisma.dto.js';
+import { UpdateCarismaDto } from './dto/update-carisma.dto.js';
 import { ApiTags, ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
-import { CreateCarismaDaPessoaDto } from './dto/create-carisma-da-pessoa.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
+import { CreateCarismaDaPessoaDto } from './dto/create-carisma-da-pessoa.dto.js';
+import { AuthGuard } from 'src/auth/auth.guard.js';
+import { RoleGuard } from 'src/auth/role/role.guard.js';
 
 @ApiTags('Carisma')
 @UseGuards(AuthGuard, RoleGuard)

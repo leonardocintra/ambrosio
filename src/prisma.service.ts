@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from 'src/prisma/generated-client';
+import { PrismaClient } from 'src/prisma/generated-client.js';
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL is not defined.');

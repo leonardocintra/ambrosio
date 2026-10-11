@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RegiaoController } from './regiao.controller';
-import { RegiaoService } from './regiao.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PrismaService } from 'src/prisma.service';
+import { RegiaoController } from './regiao.controller.js';
+import { RegiaoService } from './regiao.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PrismaService } from 'src/prisma.service.js';
 import { JwtService } from '@nestjs/jwt';
 
 describe('RegiaoController', () => {

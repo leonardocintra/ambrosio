@@ -6,7 +6,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { LIMIT_DEFAULT, PAGE_DEFAULT } from '../constants/constants';
+import { LIMIT_DEFAULT, PAGE_DEFAULT } from '../constants/constants.js';
 
 interface Pagination {
   server: string;

@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EnderecoService } from './endereco.service';
-import { PrismaService } from 'src/prisma.service';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
+import { EnderecoService } from './endereco.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { PaisService } from 'src/configuracoes/pais/pais.service.js';
+import { EstadoService } from 'src/configuracoes/estado/estado.service.js';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service.js';
 import { HttpModule } from '@nestjs/axios';
 
 describe('EnderecoService', () => {
@@ -24,8 +24,8 @@ describe('EnderecoService', () => {
         {
           provide: PrismaService,
           useValue: {
-            create: jest.fn(),
-            findFirstOrThrow: jest.fn(),
+            create: vi.fn(),
+            findFirstOrThrow: vi.fn(),
           },
         },
       ],

@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CaslAbilityService } from './casl-ability.service';
+import { CaslAbilityService } from './casl-ability.service.js';
 
 describe('CaslAbilityService', () => {
   let service: CaslAbilityService;

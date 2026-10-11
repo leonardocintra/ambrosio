@@ -10,11 +10,11 @@ import {
   ParseIntPipe,
   HttpStatus,
 } from '@nestjs/common';
-import { EtapaComunidadeService } from './etapa-comunidade.service';
-import { CreateEtapaDto } from './dto/create-etapa.dto';
-import { UpdateEtapaDto } from './dto/update-etapa.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
+import { EtapaComunidadeService } from './etapa-comunidade.service.js';
+import { CreateEtapaDto } from './dto/create-etapa.dto.js';
+import { UpdateEtapaDto } from './dto/update-etapa.dto.js';
+import { AuthGuard } from 'src/auth/auth.guard.js';
+import { RoleGuard } from 'src/auth/role/role.guard.js';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Etapa da Comunidade')

@@ -1,13 +1,13 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
-import { CreatePaisDto } from './dto/create-pais.dto';
-import { UpdatePaisDto } from './dto/update-pais.dto';
-import { PrismaService } from 'src/prisma.service';
+import { CreatePaisDto } from './dto/create-pais.dto.js';
+import { UpdatePaisDto } from './dto/update-pais.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
-import { IPaisOnu } from './IPaisOnu';
-import { Prisma } from 'src/prisma/generated-client';
-import { UNIQUE_CONSTRAINT_FAILED } from 'src/commons/constants/constants';
+import { IPaisOnu } from './IPaisOnu.js';
+import { Prisma } from 'src/prisma/generated-client.js';
+import { UNIQUE_CONSTRAINT_FAILED } from 'src/commons/constants/constants.js';
 
 @Injectable()
 export class PaisService {

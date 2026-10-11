@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HistoricoService } from './historico.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { HistoricoService } from './historico.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 
 describe('HistoricoService', () => {
   let service: HistoricoService;

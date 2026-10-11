@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateEstadoDto } from './dto/create-estado.dto';
-import { PrismaService } from 'src/prisma.service';
-import { PaisService } from '../pais/pais.service';
+import { CreateEstadoDto } from './dto/create-estado.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { PaisService } from '../pais/pais.service.js';
 
 @Injectable()
 export class EstadoService {

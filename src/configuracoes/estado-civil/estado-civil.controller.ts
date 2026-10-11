@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { EstadoCivilService } from './estado-civil.service';
+import { EstadoCivilService } from './estado-civil.service.js';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Estado Civil')

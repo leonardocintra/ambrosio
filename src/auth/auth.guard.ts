@@ -7,8 +7,8 @@ import {
 import dayjs from 'dayjs';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PrismaService } from 'src/prisma.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PrismaService } from 'src/prisma.service.js';
 import { UserRoleEnum } from 'neocatecumenal';
 
 @Injectable()

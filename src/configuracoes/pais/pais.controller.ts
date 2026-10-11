@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { PaisService } from './pais.service';
-import { CreatePaisDto } from './dto/create-pais.dto';
+import { PaisService } from './pais.service.js';
+import { CreatePaisDto } from './dto/create-pais.dto.js';
 
 @Controller('pais')
 export class PaisController {

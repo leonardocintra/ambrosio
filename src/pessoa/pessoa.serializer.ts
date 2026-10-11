@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Comunidade, Pessoa } from 'neocatecumenal';
-import { ESTADO_CIVIL_MAP, SEXO_ENUM } from 'src/commons/enums/enums';
-import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
+import { ESTADO_CIVIL_MAP, SEXO_ENUM } from 'src/commons/enums/enums.js';
+import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco.js';
 
 export function serializePessoaResponse(
   pessoa: any,

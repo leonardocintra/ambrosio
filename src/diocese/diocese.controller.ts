@@ -8,12 +8,12 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { DioceseService } from './diocese.service';
-import { CreateDioceseDto } from './dto/create-diocese.dto';
-import { UpdateDioceseDto } from './dto/update-diocese.dto';
+import { DioceseService } from './diocese.service.js';
+import { CreateDioceseDto } from './dto/create-diocese.dto.js';
+import { UpdateDioceseDto } from './dto/update-diocese.dto.js';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
+import { AuthGuard } from 'src/auth/auth.guard.js';
+import { RoleGuard } from 'src/auth/role/role.guard.js';
 
 @UseGuards(AuthGuard, RoleGuard)
 @ApiTags('Diocese')

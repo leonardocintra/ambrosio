@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EquipeController } from './equipe.controller';
-import { EquipeService } from './equipe.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { TipoEquipeService } from 'src/configuracoes/tipo-equipe/tipo-equipe.service';
-import { PessoaService } from 'src/pessoa/pessoa.service';
-import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
-import { SaoPedroAuthService } from 'src/external/sao-pedro/sao-pedro-auth.service';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { EquipeController } from './equipe.controller.js';
+import { EquipeService } from './equipe.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { TipoEquipeService } from 'src/configuracoes/tipo-equipe/tipo-equipe.service.js';
+import { PessoaService } from 'src/pessoa/pessoa.service.js';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service.js';
+import { SaoPedroAuthService } from 'src/external/sao-pedro/sao-pedro-auth.service.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
 import { HttpModule } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
 

@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CarismaService } from './carisma.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PessoaService } from 'src/pessoa/pessoa.service';
-import { SaoPedroAuthService } from 'src/external/sao-pedro/sao-pedro-auth.service';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
-import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
+import { CarismaService } from './carisma.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PessoaService } from 'src/pessoa/pessoa.service.js';
+import { SaoPedroAuthService } from 'src/external/sao-pedro/sao-pedro-auth.service.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service.js';
 import { HttpModule } from '@nestjs/axios';
 
 describe('CarismaService', () => {

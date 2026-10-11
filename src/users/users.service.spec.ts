@@ -1,12 +1,12 @@
-import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service.js';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersService } from './users.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PessoaService } from 'src/pessoa/pessoa.service';
-import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
-import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { UsersService } from './users.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PessoaService } from 'src/pessoa/pessoa.service.js';
+import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service.js';
+import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -24,7 +24,7 @@ describe('UsersService', () => {
         {
           provide: PrismaService,
           useValue: {
-            create: jest.fn(),
+            create: vi.fn(),
           },
         },
         {
@@ -42,8 +42,8 @@ describe('UsersService', () => {
         {
           provide: SaoPedroPessoaService,
           useValue: {
-            getPessoas: jest.fn().mockResolvedValue([]),
-            postExternalPessoa: jest
+            getPessoas: vi.fn().mockResolvedValue([]),
+            postExternalPessoa: vi
               .fn()
               .mockResolvedValue({ id: 1, nome: 'João' }),
           },

@@ -1,8 +1,8 @@
 import { INestApplication, Type } from '@nestjs/common';
 import { TestingModule, Test } from '@nestjs/testing';
-import { AppModule } from '../src/app.module';
+import { AppModule } from '../src/app.module.js';
 import { ValidationPipe } from '@nestjs/common';
-import { PrismaExceptionsFilter } from '../src/commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
+import { PrismaExceptionsFilter } from '../src/commons/exceptions/prisma-exceptions/prisma-exceptions.filter.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Override = { provider: Type<any>; value: any };

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { BaseService } from 'src/commons/base.service';
-import { PrismaService } from 'src/prisma.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { PrismaService } from 'src/prisma.service.js';
 
 @Injectable()
 export class RegiaoService extends BaseService {

@@ -8,8 +8,8 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateTipoLocalidadeDto } from 'src/configuracoes/tipo-localidade/dto/create-tipo-localidade.dto';
-import { CreateEnderecoDto } from 'src/endereco/dto/create-endereco.dto';
+import { CreateTipoLocalidadeDto } from 'src/configuracoes/tipo-localidade/dto/create-tipo-localidade.dto.js';
+import { CreateEnderecoDto } from 'src/endereco/dto/create-endereco.dto.js';
 
 class DioceseDto {
   @IsPositive()

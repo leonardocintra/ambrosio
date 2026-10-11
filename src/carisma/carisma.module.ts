@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { CarismaService } from './carisma.service';
-import { CarismaController } from './carisma.controller';
-import { PessoaModule } from 'src/pessoa/pessoa.module';
+import { CarismaService } from './carisma.service.js';
+import { CarismaController } from './carisma.controller.js';
+import { PessoaModule } from 'src/pessoa/pessoa.module.js';
 
 @Module({
   controllers: [CarismaController],

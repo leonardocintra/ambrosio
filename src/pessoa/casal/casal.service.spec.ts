@@ -1,20 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CasalService } from './casal.service';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { CasalService } from './casal.service.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 import { HttpModule } from '@nestjs/axios';
-import { SaoPedroAuthService } from 'src/external/sao-pedro/sao-pedro-auth.service';
-import { ComunidadeService } from 'src/comunidade/comunidade.service';
-import { HistoricoService } from 'src/comunidade/historico/historico.service';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
-import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
-import { DioceseService } from 'src/diocese/diocese.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
-import { SetorService } from 'src/mapa/setor/setor.service';
-import { ParoquiaService } from 'src/paroquia/paroquia.service';
+import { SaoPedroAuthService } from 'src/external/sao-pedro/sao-pedro-auth.service.js';
+import { ComunidadeService } from 'src/comunidade/comunidade.service.js';
+import { HistoricoService } from 'src/comunidade/historico/historico.service.js';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service.js';
+import { EstadoService } from 'src/configuracoes/estado/estado.service.js';
+import { PaisService } from 'src/configuracoes/pais/pais.service.js';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service.js';
+import { DioceseService } from 'src/diocese/diocese.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
+import { SetorService } from 'src/mapa/setor/setor.service.js';
+import { ParoquiaService } from 'src/paroquia/paroquia.service.js';
 
 describe('CasalService', () => {
   let service: CasalService;

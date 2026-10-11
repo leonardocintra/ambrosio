@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { PaisService } from './pais.service';
-import { PaisController } from './pais.controller';
+import { PaisService } from './pais.service.js';
+import { PaisController } from './pais.controller.js';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({

@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EnderecoController } from './endereco.controller';
-import { EnderecoService } from './endereco.service';
-import { PrismaService } from 'src/prisma.service';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
+import { EnderecoController } from './endereco.controller.js';
+import { EnderecoService } from './endereco.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { PaisService } from 'src/configuracoes/pais/pais.service.js';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service.js';
+import { EstadoService } from 'src/configuracoes/estado/estado.service.js';
 import { HttpModule } from '@nestjs/axios';
 
 describe('EnderecoController', () => {
@@ -26,8 +26,8 @@ describe('EnderecoController', () => {
         {
           provide: PrismaService,
           useValue: {
-            create: jest.fn(),
-            findFirstOrThrow: jest.fn(),
+            create: vi.fn(),
+            findFirstOrThrow: vi.fn(),
           },
         },
       ],

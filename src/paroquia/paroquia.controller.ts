@@ -9,13 +9,13 @@ import {
   UseGuards,
   Query,
 } from '@nestjs/common';
-import { ParoquiaService } from './paroquia.service';
-import { CreateParoquiaDto } from './dto/create-paroquia.dto';
-import { UpdateParoquiaDto } from './dto/update-paroquia.dto';
+import { ParoquiaService } from './paroquia.service.js';
+import { CreateParoquiaDto } from './dto/create-paroquia.dto.js';
+import { UpdateParoquiaDto } from './dto/update-paroquia.dto.js';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
-import { FindAllParoquiasQueryDto } from './dto/findAll-paroquia.dto';
+import { AuthGuard } from 'src/auth/auth.guard.js';
+import { RoleGuard } from 'src/auth/role/role.guard.js';
+import { FindAllParoquiasQueryDto } from './dto/findAll-paroquia.dto.js';
 
 @ApiTags('Paróquias')
 @UseGuards(AuthGuard, RoleGuard)

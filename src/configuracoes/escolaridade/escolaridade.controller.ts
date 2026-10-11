@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { EscolaridadeService } from './escolaridade.service';
+import { EscolaridadeService } from './escolaridade.service.js';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Escolaridade')

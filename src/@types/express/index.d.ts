@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type * as express from 'express';
-import type { user } from 'src/prisma/generated-client';
+import type { user } from 'src/prisma/generated-client.js';
 
 declare global {
   namespace Express {
