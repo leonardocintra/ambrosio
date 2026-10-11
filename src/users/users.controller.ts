@@ -19,7 +19,7 @@ import { RoleGuard } from 'src/auth/role/role.guard.js';
 @UseGuards(AuthGuard, RoleGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -34,6 +34,11 @@ export class UsersController {
   @Get('me')
   getMe(@Req() req: Request) {
     return req.user;
+  }
+
+  @Get('roles')
+  getRoles() {
+    return this.usersService.getRoles();
   }
 
   @Get(':id')

@@ -94,6 +94,10 @@ export class UsersService extends BaseService {
     });
   }
 
+  getRoles() {
+    return Object.values(UserRoleEnum);
+  }
+
   private async validateUniquePessoaForUser(pessoaId: number) {
     const cpfAlreadyExists = await this.prismaService.user.findFirst({
       where: { pessoaId },
