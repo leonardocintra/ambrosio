@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SituacaoReligiosaService } from './situacao-religiosa.service';
-import { SituacaoReligiosaController } from './situacao-religiosa.controller';
+import { SituacaoReligiosaService } from './situacao-religiosa.service.js';
+import { SituacaoReligiosaController } from './situacao-religiosa.controller.js';
 
 @Module({
   controllers: [SituacaoReligiosaController],

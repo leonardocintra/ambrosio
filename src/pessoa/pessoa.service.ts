@@ -2,21 +2,21 @@ import {
   ConflictException,
   Injectable,
 } from '@nestjs/common';
-import { CreatePessoaDto } from './dto/create-pessoa.dto';
-import { UpdatePessoaDto } from './dto/update-pessoa.dto';
-import { PrismaService } from 'src/prisma.service';
-import { SEXO_ENUM } from 'src/commons/enums/enums';
-import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { CreatePessoaDto } from './dto/create-pessoa.dto.js';
+import { UpdatePessoaDto } from './dto/update-pessoa.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { SEXO_ENUM } from 'src/commons/enums/enums.js';
+import { LIMIT_DEFAULT, PAGE_DEFAULT } from 'src/commons/constants/constants.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 import { accessibleBy } from '@casl/prisma';
 import { Pessoa, PessoaConjugue } from 'neocatecumenal';
-import { pessoa } from 'src/prisma/generated-client';
-import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
-import { BaseService } from 'src/commons/base.service';
-import { serializePessoaResponse } from './pessoa.serializer';
-import { ENDERECO_INCLUDE, PESSOA_CARISMA_INCLUDE } from 'src/prisma/includes';
-import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
+import { pessoa } from 'src/prisma/generated-client.js';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { serializePessoaResponse } from './pessoa.serializer.js';
+import { ENDERECO_INCLUDE, PESSOA_CARISMA_INCLUDE } from 'src/prisma/includes.js';
+import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select.js';
 
 @Injectable()
 export class PessoaService extends BaseService {

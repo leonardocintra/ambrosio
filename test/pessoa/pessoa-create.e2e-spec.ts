@@ -1,9 +1,9 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { setupTestModule } from '../test-setup';
-import { pessoaMock } from '../mocks/pessoa-mock';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
-import { mockSaoPedroPessoaService } from '../../test/mocks/sao-pedro-api-mock';
+import { setupTestModule } from '../test-setup.js';
+import { pessoaMock } from '../mocks/pessoa-mock.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
+import { mockSaoPedroPessoaService } from '../../test/mocks/sao-pedro-api-mock.js';
 
 describe('PessoaCreateController (e2e)', () => {
   let app: INestApplication;
@@ -79,7 +79,7 @@ describe('PessoaCreateController (e2e)', () => {
 
   it(`/${principal} (POST) - 201 | deve cadastrar pessoa corretamente`, async () => {
     // Mock específico para este teste
-    jest
+    vi
       .spyOn(mockSaoPedroPessoaService, 'getExternalPessoaByCpf')
       .mockResolvedValueOnce(null);
     const response = await request(app.getHttpServer())

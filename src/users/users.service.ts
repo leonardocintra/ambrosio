@@ -3,13 +3,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from 'src/prisma.service';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import { UpdateUserDto } from './dto/update-user.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
 import * as bcrypt from 'bcrypt';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PessoaService } from 'src/pessoa/pessoa.service';
-import { BaseService } from 'src/commons/base.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PessoaService } from 'src/pessoa/pessoa.service.js';
+import { BaseService } from 'src/commons/base.service.js';
 import { UserRoleEnum } from 'neocatecumenal';
 
 const SALT_OR_ROUNDS = 10;

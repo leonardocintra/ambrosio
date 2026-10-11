@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
-import { CreateUserDto } from './create-user.dto';
+import { CreateUserDto } from './create-user.dto.js';
 import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
 import { UserRoleEnum } from 'neocatecumenal';
 

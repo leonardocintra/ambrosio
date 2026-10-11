@@ -1,4 +1,4 @@
-import { CreateEnderecoDto } from './create-endereco.dto';
+import { CreateEnderecoDto } from './create-endereco.dto.js';
 import { IsNotEmpty, IsNumber, IsPositive } from 'class-validator';
 
 export class UpdateEnderecoDto extends CreateEnderecoDto {

@@ -1,5 +1,5 @@
 import { Pessoa } from 'neocatecumenal';
-import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto';
+import { ExternalResponsePessoaDto } from './dto/external-response-pessoa.dto.js';
 
 export function serializeExternalPessoaResponse(
   data: ExternalResponsePessoaDto,

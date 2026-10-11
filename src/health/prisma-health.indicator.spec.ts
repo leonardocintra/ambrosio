@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaHealthIndicator } from './prisma-health.indicator';
-import { PrismaService } from 'src/prisma.service';
+import { TerminusModule } from '@nestjs/terminus';
+import { PrismaHealthIndicator } from './prisma-health.indicator.js';
+import { PrismaService } from 'src/prisma.service.js';
 
 describe('PrismaHealthIndicator', () => {
   let app: TestingModule;
@@ -9,12 +10,13 @@ describe('PrismaHealthIndicator', () => {
 
   beforeEach(async () => {
     app = await Test.createTestingModule({
+      imports: [TerminusModule],
       providers: [
         PrismaHealthIndicator,
         {
           provide: PrismaService,
           useValue: {
-            $queryRaw: jest.fn(),
+            $queryRaw: vi.fn(),
           },
         },
       ],
@@ -33,18 +35,20 @@ describe('PrismaHealthIndicator', () => {
   });
 
   it('should return healthy status when database responds', async () => {
-    jest.spyOn(prismaService, '$queryRaw').mockResolvedValue([{ '1': 1 }]);
+    vi.spyOn(prismaService, '$queryRaw').mockResolvedValue([{ '1': 1 }]);
 
     const result = await indicator.isHealthy('prisma');
 
     expect(result.prisma.status).toBe('up');
   });
 
-  it('should throw HealthCheckError when database fails', async () => {
-    jest
+  it('should return down status when database fails', async () => {
+    vi
       .spyOn(prismaService, '$queryRaw')
       .mockRejectedValue(new Error('Connection refused'));
 
-    await expect(indicator.isHealthy('prisma')).rejects.toThrow();
+    const result = await indicator.isHealthy('prisma');
+
+    expect(result.prisma.status).toBe('down');
   });
 });

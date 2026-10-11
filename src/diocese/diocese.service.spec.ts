@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DioceseService } from './diocese.service';
-import { PrismaService } from 'src/prisma.service';
-import { LocalidadeService } from 'src/localidade/localidade.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { TipoLocalidadeService } from 'src/configuracoes/tipo-localidade/tipo-localidade.service';
-import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
+import { DioceseService } from './diocese.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { LocalidadeService } from 'src/localidade/localidade.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { TipoLocalidadeService } from 'src/configuracoes/tipo-localidade/tipo-localidade.service.js';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service.js';
+import { PaisService } from 'src/configuracoes/pais/pais.service.js';
+import { EstadoService } from 'src/configuracoes/estado/estado.service.js';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service.js';
 import { HttpModule } from '@nestjs/axios';
 
 describe('DioceseService', () => {
@@ -39,8 +39,8 @@ describe('DioceseService', () => {
         {
           provide: PrismaService,
           useValue: {
-            create: jest.fn(),
-            findFirstOrThrow: jest.fn(),
+            create: vi.fn(),
+            findFirstOrThrow: vi.fn(),
           },
         }
       ],

@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { TipoEquipeService } from './tipo-equipe.service';
+import { TipoEquipeService } from './tipo-equipe.service.js';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Tipos de Equipe')

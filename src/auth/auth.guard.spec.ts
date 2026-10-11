@@ -1,8 +1,8 @@
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from 'src/prisma.service';
-import { AuthGuard } from './auth.guard';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { PrismaService } from 'src/prisma.service.js';
+import { AuthGuard } from './auth.guard.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 
 describe('AuthGuard', () => {
   let guard: AuthGuard;

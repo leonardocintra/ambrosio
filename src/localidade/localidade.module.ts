@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { LocalidadeService } from './localidade.service';
-import { LocalidadeController } from './localidade.controller';
-import { EnderecoModule } from 'src/endereco/endereco.module';
+import { LocalidadeService } from './localidade.service.js';
+import { LocalidadeController } from './localidade.controller.js';
+import { EnderecoModule } from 'src/endereco/endereco.module.js';
 
 @Module({
   controllers: [LocalidadeController],

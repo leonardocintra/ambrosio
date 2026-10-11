@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MacroRegiaoService } from './macro-regiao.service';
-import { PrismaService } from 'src/prisma.service';
+import { MacroRegiaoService } from './macro-regiao.service.js';
+import { PrismaService } from 'src/prisma.service.js';
 
 describe('MacroRegiaoService', () => {
   let service: MacroRegiaoService;
@@ -25,20 +25,20 @@ describe('MacroRegiaoService', () => {
       { id: 1, descricao: 'Macro Região 1', ativo: true },
       { id: 2, descricao: 'Macro Região 2', ativo: false },
     ];
-    jest.spyOn(prisma.macroRegiao, 'findMany').mockResolvedValue(macroRegioes);
+    vi.spyOn(prisma.macroRegiao, 'findMany').mockResolvedValue(macroRegioes);
 
     expect(await service.findAll()).toEqual(macroRegioes);
   });
 
   it('should return a macro-regiao by id', async () => {
     const macroRegiao = { id: 1, descricao: 'Macro Região 1', ativo: true };
-    jest.spyOn(prisma.macroRegiao, 'findUniqueOrThrow').mockResolvedValue(macroRegiao);
+    vi.spyOn(prisma.macroRegiao, 'findUniqueOrThrow').mockResolvedValue(macroRegiao);
 
     expect(await service.findOne(1)).toEqual(macroRegiao);
   });
 
   it('should return undefined for a non-existing macro-regiao', async () => {
-    jest.spyOn(prisma.macroRegiao, 'findUniqueOrThrow').mockResolvedValue(null);
+    vi.spyOn(prisma.macroRegiao, 'findUniqueOrThrow').mockResolvedValue(null);
 
     expect(await service.findOne(999)).toBeNull();
   });

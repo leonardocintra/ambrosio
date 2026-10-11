@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ParoquiaService } from './paroquia.service';
-import { ParoquiaController } from './paroquia.controller';
-import { DioceseModule } from 'src/diocese/diocese.module';
-import { EnderecoModule } from 'src/endereco/endereco.module';
-import { SetorModule } from 'src/mapa/setor/setor.module';
+import { ParoquiaService } from './paroquia.service.js';
+import { ParoquiaController } from './paroquia.controller.js';
+import { DioceseModule } from 'src/diocese/diocese.module.js';
+import { EnderecoModule } from 'src/endereco/endereco.module.js';
+import { SetorModule } from 'src/mapa/setor/setor.module.js';
 
 @Module({
   controllers: [ParoquiaController],

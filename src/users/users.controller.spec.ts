@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { PrismaService } from 'src/prisma.service';
+import { UsersController } from './users.controller.js';
+import { UsersService } from './users.service.js';
+import { PrismaService } from 'src/prisma.service.js';
 import { JwtService } from '@nestjs/jwt';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PessoaService } from 'src/pessoa/pessoa.service';
-import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
-import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
-import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PessoaService } from 'src/pessoa/pessoa.service.js';
+import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service.js';
+import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service.js';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -33,8 +33,8 @@ describe('UsersController', () => {
         {
           provide: SaoPedroPessoaService,
           useValue: {
-            getPessoas: jest.fn().mockResolvedValue([]),
-            postExternalPessoa: jest
+            getPessoas: vi.fn().mockResolvedValue([]),
+            postExternalPessoa: vi
               .fn()
               .mockResolvedValue({ id: 1, nome: 'João' }),
           },

@@ -1,8 +1,8 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { CreateCidadeDto } from './dto/create-cidade.dto';
-import { PrismaService } from 'src/prisma.service';
-import { EstadoService } from '../estado/estado.service';
-import { SELECT_CIDADE } from 'src/prisma/selects/endereco.select';
+import { CreateCidadeDto } from './dto/create-cidade.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { EstadoService } from '../estado/estado.service.js';
+import { SELECT_CIDADE } from 'src/prisma/selects/endereco.select.js';
 
 @Injectable()
 export class CidadeService {

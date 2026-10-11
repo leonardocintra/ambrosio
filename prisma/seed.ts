@@ -2,11 +2,11 @@ import 'dotenv/config';
 
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
-import { PrismaClient, Sexo, tipoCarismaEnum } from '../generated/client';
-import { seedCidade } from './data/seed/cidade';
-import { seedDiocese } from './data/seed/diocese';
-import { seedParoquia } from './data/seed/paroquia';
-import { seedComunidade } from './data/seed/comunidade';
+import { PrismaClient, Sexo, tipoCarismaEnum } from '../generated/client.js';
+import { seedCidade } from './data/seed/cidade.js';
+import { seedDiocese } from './data/seed/diocese.js';
+import { seedParoquia } from './data/seed/paroquia.js';
+import { seedComunidade } from './data/seed/comunidade.js';
 
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,

@@ -7,7 +7,7 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateEnderecoDto } from 'src/endereco/dto/create-endereco.dto';
+import { CreateEnderecoDto } from 'src/endereco/dto/create-endereco.dto.js';
 
 class DioceseDto {
   @IsNumber()

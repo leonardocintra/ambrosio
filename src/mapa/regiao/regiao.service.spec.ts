@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RegiaoService } from './regiao.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PrismaService } from 'src/prisma.service';
+import { RegiaoService } from './regiao.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PrismaService } from 'src/prisma.service.js';
 
 describe('RegiaoService', () => {
   let service: RegiaoService;

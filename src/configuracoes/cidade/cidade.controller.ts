@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { CidadeService } from './cidade.service';
+import { CidadeService } from './cidade.service.js';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Cidades')

@@ -6,8 +6,8 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { CreateTipoDioceseDto } from 'src/configuracoes/tipo-diocese/dto/create-tipo-diocese.dto';
-import { CreateEnderecoDto } from 'src/endereco/dto/create-endereco.dto';
+import { CreateTipoDioceseDto } from 'src/configuracoes/tipo-diocese/dto/create-tipo-diocese.dto.js';
+import { CreateEnderecoDto } from 'src/endereco/dto/create-endereco.dto.js';
 
 export class CreateDioceseDto {
   @IsString()

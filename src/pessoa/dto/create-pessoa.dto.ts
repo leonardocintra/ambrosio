@@ -1,4 +1,4 @@
-import { situacaoReligiosa } from 'src/prisma/generated-client';
+import type { situacaoReligiosa } from 'src/prisma/generated-client.js';
 import { Type } from 'class-transformer';
 import {
   IsDate,
@@ -11,7 +11,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { EscolaridadeEnum, EstadoCivilEnum } from 'neocatecumenal';
-import { SEXO_ENUM } from 'src/commons/enums/enums';
+import { SEXO_ENUM } from 'src/commons/enums/enums.js';
 
 export class CreatePessoaDto {
   @IsNotEmpty()

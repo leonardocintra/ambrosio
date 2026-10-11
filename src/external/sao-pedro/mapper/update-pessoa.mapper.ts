@@ -1,6 +1,6 @@
-import { ExternalCreatePessoaDto } from '../dto/external-create-pessoa.dto';
-import { SEXO_ENUM } from 'src/commons/enums/enums';
-import { UpdatePessoaDto } from 'src/pessoa/dto/update-pessoa.dto';
+import { ExternalCreatePessoaDto } from '../dto/external-create-pessoa.dto.js';
+import { SEXO_ENUM } from 'src/commons/enums/enums.js';
+import { UpdatePessoaDto } from 'src/pessoa/dto/update-pessoa.dto.js';
 
 export class UpdatePessoaMapper {
   static toExternal(updateDto: UpdatePessoaDto): ExternalCreatePessoaDto {

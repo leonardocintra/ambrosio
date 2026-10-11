@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateEnderecoDto } from './dto/create-endereco.dto';
-import { UpdateEnderecoDto } from './dto/update-endereco.dto';
-import { PrismaService } from 'src/prisma.service';
-import { Prisma } from 'src/prisma/generated-client';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
+import { CreateEnderecoDto } from './dto/create-endereco.dto.js';
+import { UpdateEnderecoDto } from './dto/update-endereco.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { Prisma } from 'src/prisma/generated-client.js';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service.js';
+import { EstadoService } from 'src/configuracoes/estado/estado.service.js';
+import { PaisService } from 'src/configuracoes/pais/pais.service.js';
 
 @Injectable()
 export class EnderecoService {

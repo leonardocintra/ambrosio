@@ -8,9 +8,9 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { PessoaService } from './pessoa.service';
-import { CreatePessoaDto } from './dto/create-pessoa.dto';
-import { UpdatePessoaDto } from './dto/update-pessoa.dto';
+import { PessoaService } from './pessoa.service.js';
+import { CreatePessoaDto } from './dto/create-pessoa.dto.js';
+import { UpdatePessoaDto } from './dto/update-pessoa.dto.js';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -19,11 +19,11 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { SexoQueryParamDto } from './dto/sexo.dto';
-import { CreateCasalDto } from './dto/create-casal.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
-import { CasalService } from './casal/casal.service';
+import { SexoQueryParamDto } from './dto/sexo.dto.js';
+import { CreateCasalDto } from './dto/create-casal.dto.js';
+import { AuthGuard } from 'src/auth/auth.guard.js';
+import { RoleGuard } from 'src/auth/role/role.guard.js';
+import { CasalService } from './casal/casal.service.js';
 
 @ApiTags('Pessoas')
 @UseGuards(AuthGuard, RoleGuard)

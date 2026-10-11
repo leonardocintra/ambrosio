@@ -8,12 +8,12 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { LocalidadeService } from './localidade.service';
-import { CreateLocalidadeDto } from './dto/create-localidade.dto';
-import { UpdateLocalidadeDto } from './dto/update-localidade.dto';
+import { LocalidadeService } from './localidade.service.js';
+import { CreateLocalidadeDto } from './dto/create-localidade.dto.js';
+import { UpdateLocalidadeDto } from './dto/update-localidade.dto.js';
 import { ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
+import { AuthGuard } from 'src/auth/auth.guard.js';
+import { RoleGuard } from 'src/auth/role/role.guard.js';
 
 @ApiTags('Localidades do caminho')
 @UseGuards(AuthGuard, RoleGuard)

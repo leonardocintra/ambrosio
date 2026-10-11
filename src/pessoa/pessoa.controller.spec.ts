@@ -1,24 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PessoaController } from './pessoa.controller';
-import { PessoaService } from './pessoa.service';
-import { PrismaService } from 'src/prisma.service';
-import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service';
-import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service';
+import { PessoaController } from './pessoa.controller.js';
+import { PessoaService } from './pessoa.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { EstadoCivilService } from 'src/configuracoes/estado-civil/estado-civil.service.js';
+import { EscolaridadeService } from 'src/configuracoes/escolaridade/escolaridade.service.js';
 import { JwtService } from '@nestjs/jwt';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
-import { CasalService } from './casal/casal.service';
-import { ComunidadeService } from 'src/comunidade/comunidade.service';
-import { ParoquiaService } from 'src/paroquia/paroquia.service';
-import { HistoricoService } from 'src/comunidade/historico/historico.service';
-import { DioceseService } from 'src/diocese/diocese.service';
-import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
-import { SetorService } from 'src/mapa/setor/setor.service';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { SituacaoReligiosaService } from 'src/configuracoes/situacao-religiosa/situacao-religiosa.service.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
+import { CasalService } from './casal/casal.service.js';
+import { ComunidadeService } from 'src/comunidade/comunidade.service.js';
+import { ParoquiaService } from 'src/paroquia/paroquia.service.js';
+import { HistoricoService } from 'src/comunidade/historico/historico.service.js';
+import { DioceseService } from 'src/diocese/diocese.service.js';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
+import { EstadoService } from 'src/configuracoes/estado/estado.service.js';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service.js';
+import { SetorService } from 'src/mapa/setor/setor.service.js';
+import { PaisService } from 'src/configuracoes/pais/pais.service.js';
 import { HttpModule } from '@nestjs/axios';
 
 describe('PessoaController', () => {
@@ -53,39 +53,39 @@ describe('PessoaController', () => {
         {
           provide: PrismaService,
           useValue: {
-            create: jest.fn(),
-            findFirstOrThrow: jest.fn(),
+            create: vi.fn(),
+            findFirstOrThrow: vi.fn(),
           },
         },
         {
           provide: EstadoCivilService,
           useValue: {
-            findAll: jest.fn(),
-            findOne: jest.fn(),
+            findAll: vi.fn(),
+            findOne: vi.fn(),
           },
         },
         {
           provide: EscolaridadeService,
           useValue: {
-            findAll: jest.fn(),
-            findOne: jest.fn(),
+            findAll: vi.fn(),
+            findOne: vi.fn(),
           },
         },
         {
           provide: SituacaoReligiosaService,
           useValue: {
-            create: jest.fn(),
-            findAll: jest.fn(),
-            findOne: jest.fn(),
-            update: jest.fn(),
-            remove: jest.fn(),
+            create: vi.fn(),
+            findAll: vi.fn(),
+            findOne: vi.fn(),
+            update: vi.fn(),
+            remove: vi.fn(),
           },
         },
         {
           provide: SaoPedroPessoaService,
           useValue: {
-            getPessoas: jest.fn().mockResolvedValue([]),
-            postExternalPessoa: jest
+            getPessoas: vi.fn().mockResolvedValue([]),
+            postExternalPessoa: vi
               .fn()
               .mockResolvedValue({ id: 1, nome: 'João' }),
           },

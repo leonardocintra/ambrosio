@@ -1,13 +1,13 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { EstadoCivilEnum, Pessoa } from 'neocatecumenal';
-import { BaseService } from 'src/commons/base.service';
-import { SEXO_ENUM } from 'src/commons/enums/enums';
-import { PrismaService } from 'src/prisma.service';
-import { CreateCasalDto } from '../dto/create-casal.dto';
-import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { serializePessoasListResponse } from '../pessoa.serializer';
-import { ComunidadeService } from 'src/comunidade/comunidade.service';
+import { BaseService } from 'src/commons/base.service.js';
+import { SEXO_ENUM } from 'src/commons/enums/enums.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CreateCasalDto } from '../dto/create-casal.dto.js';
+import { SaoPedroPessoaService } from 'src/external/sao-pedro/sao-pedro-pessoa.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { serializePessoasListResponse } from '../pessoa.serializer.js';
+import { ComunidadeService } from 'src/comunidade/comunidade.service.js';
 
 @Injectable()
 export class CasalService extends BaseService {

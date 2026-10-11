@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EtapaComunidadeService } from './etapa-comunidade.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { PrismaService } from 'src/prisma.service';
-import { ComunidadeService } from '../comunidade.service';
-import { ParoquiaService } from 'src/paroquia/paroquia.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
-import { HistoricoService } from '../historico/historico.service';
-import { DioceseService } from 'src/diocese/diocese.service';
-import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
-import { SetorService } from 'src/mapa/setor/setor.service';
+import { EtapaComunidadeService } from './etapa-comunidade.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { ComunidadeService } from '../comunidade.service.js';
+import { ParoquiaService } from 'src/paroquia/paroquia.service.js';
+import { EstadoService } from 'src/configuracoes/estado/estado.service.js';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service.js';
+import { HistoricoService } from '../historico/historico.service.js';
+import { DioceseService } from 'src/diocese/diocese.service.js';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
+import { PaisService } from 'src/configuracoes/pais/pais.service.js';
+import { SetorService } from 'src/mapa/setor/setor.service.js';
 import { HttpModule } from '@nestjs/axios';
 
 describe('EtapaService', () => {

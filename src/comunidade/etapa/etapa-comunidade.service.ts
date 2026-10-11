@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateEtapaDto } from './dto/create-etapa.dto';
-import { UpdateEtapaDto } from './dto/update-etapa.dto';
-import { BaseService } from 'src/commons/base.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { ComunidadeService } from '../comunidade.service';
+import { CreateEtapaDto } from './dto/create-etapa.dto.js';
+import { UpdateEtapaDto } from './dto/update-etapa.dto.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { ComunidadeService } from '../comunidade.service.js';
 import { ComunidadeEtapa } from 'neocatecumenal';
 
 @Injectable()

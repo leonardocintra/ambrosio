@@ -1,4 +1,4 @@
-import { PrismaClient } from '../../../generated/client';
+import { PrismaClient } from '../../../generated/client.js';
 
 export async function seedParoquia(prisma: PrismaClient) {
   const cidadeFranca = await prisma.cidade.findUnique({

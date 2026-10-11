@@ -3,7 +3,7 @@ import {
   Get,
   Param,
 } from '@nestjs/common';
-import { TipoLocalidadeService } from './tipo-localidade.service';
+import { TipoLocalidadeService } from './tipo-localidade.service.js';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Tipos de Localidade')

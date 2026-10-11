@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SetorService } from './setor.service';
-import { PrismaService } from 'src/prisma.service';
+import { SetorService } from './setor.service.js';
+import { PrismaService } from 'src/prisma.service.js';
 
 describe('SetorService', () => {
   let service: SetorService;
@@ -18,8 +18,8 @@ describe('SetorService', () => {
 
   const prismaMock = {
     setor: {
-      findMany: jest.fn().mockResolvedValue(mockSetorArray),
-      findUniqueOrThrow: jest
+      findMany: vi.fn().mockResolvedValue(mockSetorArray),
+      findUniqueOrThrow: vi
         .fn()
         .mockImplementation(({ where: { id } }) =>
           Promise.resolve(mockSetorArray.find((setor) => setor.id === id)),

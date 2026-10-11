@@ -1,12 +1,12 @@
 import 'dotenv/config';
 
-import './instrument';
+import './instrument.js';
 
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/prisma-exceptions.filter';
+import { PrismaExceptionsFilter } from './commons/exceptions/prisma-exceptions/prisma-exceptions.filter.js';
 import { SentryGlobalFilter } from '@sentry/nestjs/setup';
 import * as rTracer from 'cls-rtracer';
 
@@ -36,4 +36,4 @@ async function bootstrap() {
   await app.startAllMicroservices();
   await app.listen(3005);
 }
-bootstrap();
+await bootstrap();

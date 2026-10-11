@@ -1,19 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from 'src/prisma.service';
-import { ParoquiaService } from 'src/paroquia/paroquia.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { DioceseService } from 'src/diocese/diocese.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
-import { CidadeService } from 'src/configuracoes/cidade/cidade.service';
-import { PaisService } from 'src/configuracoes/pais/pais.service';
-import { SetorService } from 'src/mapa/setor/setor.service';
+import { PrismaService } from 'src/prisma.service.js';
+import { ParoquiaService } from 'src/paroquia/paroquia.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { DioceseService } from 'src/diocese/diocese.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
+import { CidadeService } from 'src/configuracoes/cidade/cidade.service.js';
+import { PaisService } from 'src/configuracoes/pais/pais.service.js';
+import { SetorService } from 'src/mapa/setor/setor.service.js';
 import { JwtService } from '@nestjs/jwt';
-import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
-import { EstadoService } from 'src/configuracoes/estado/estado.service';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service.js';
+import { EstadoService } from 'src/configuracoes/estado/estado.service.js';
 import { HttpModule } from '@nestjs/axios';
-import { EtapaComunidadeService } from './etapa/etapa-comunidade.service';
-import { HistoricoService } from './historico/historico.service';
-import { ComunidadeService } from './comunidade.service';
+import { EtapaComunidadeService } from './etapa/etapa-comunidade.service.js';
+import { HistoricoService } from './historico/historico.service.js';
+import { ComunidadeService } from './comunidade.service.js';
 
 describe('ComunidadeService', () => {
   let service: ComunidadeService;

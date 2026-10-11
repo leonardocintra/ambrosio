@@ -24,10 +24,10 @@ jobs:
       - name: 📥 Checkout código
         uses: actions/checkout@v6
 
-      - name: ⚡️ Instalar Node.js 22
+      - name: ⚡️ Instalar Node.js 24
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
 
       - name: 📦 Instalar dependências
         run: npm install

@@ -1,6 +1,6 @@
-import { COMUNIDADE_SELECT } from './comunidade.select';
-import { DIOCESE_SELECT } from './diocese.select';
-import { ENDERECO_SELECT } from './endereco.select';
+import { COMUNIDADE_SELECT } from './comunidade.select.js';
+import { DIOCESE_SELECT } from './diocese.select.js';
+import { ENDERECO_SELECT } from './endereco.select.js';
 
 export const PAROQUIA_SELECT = {
   id: true,

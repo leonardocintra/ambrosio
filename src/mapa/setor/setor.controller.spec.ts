@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SetorController } from './setor.controller';
-import { SetorService } from './setor.service';
-import { PrismaService } from 'src/prisma.service';
+import { SetorController } from './setor.controller.js';
+import { SetorService } from './setor.service.js';
+import { PrismaService } from 'src/prisma.service.js';
 
 describe('SetorController', () => {
   let controller: SetorController;
@@ -16,8 +16,8 @@ describe('SetorController', () => {
           provide: PrismaService,
           useValue: {
             setor: {
-              findMany: jest.fn(),
-              findUniqueOrThrow: jest.fn(),
+              findMany: vi.fn(),
+              findUniqueOrThrow: vi.fn(),
             },
           },
         },
@@ -38,7 +38,7 @@ describe('SetorController', () => {
       { id: 1, descricao: 'Setor 1', ativo: true, regiaoId: 1 },
       { id: 2, descricao: 'Setor 2', ativo: false, regiaoId: 2 },
     ];
-    jest.spyOn(prisma.setor, 'findMany').mockResolvedValue(setores);
+    vi.spyOn(prisma.setor, 'findMany').mockResolvedValue(setores);
 
     expect(await controller.findAll()).toEqual(setores);
   });
@@ -50,13 +50,13 @@ describe('SetorController', () => {
       ativo: true,
       regiaoId: 1,
     };
-    jest.spyOn(prisma.setor, 'findUniqueOrThrow').mockResolvedValue(setor);
+    vi.spyOn(prisma.setor, 'findUniqueOrThrow').mockResolvedValue(setor);
 
     expect(await controller.findOne('1')).toEqual(setor);
   });
 
   it('should return undefined for a non-existing setor', async () => {
-    jest.spyOn(prisma.setor, 'findUniqueOrThrow').mockResolvedValue(null);
+    vi.spyOn(prisma.setor, 'findUniqueOrThrow').mockResolvedValue(null);
 
     expect(await controller.findOne('999')).toBeNull();
   });

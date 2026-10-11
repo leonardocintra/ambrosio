@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { SetorService } from './setor.service';
+import { SetorService } from './setor.service.js';
 
 @Controller('setor')
 export class SetorController {

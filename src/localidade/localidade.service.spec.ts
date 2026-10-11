@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { LocalidadeService } from './localidade.service';
-import { PrismaService } from 'src/prisma.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
+import { LocalidadeService } from './localidade.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
 
 describe('LocalidadeService', () => {
   let service: LocalidadeService;
@@ -15,19 +15,19 @@ describe('LocalidadeService', () => {
         {
           provide: PrismaService,
           useValue: {
-            create: jest.fn(),
-            findFirstOrThrow: jest.fn(),
+            create: vi.fn(),
+            findFirstOrThrow: vi.fn(),
           },
         },
         {
           provide: EnderecoService,
           useValue: {
-            createByPessoaId: jest.fn(),
-            create: jest.fn(),
-            findAllByPessoaId: jest.fn(),
-            findOne: jest.fn(),
-            update: jest.fn(),
-            remove: jest.fn(),
+            createByPessoaId: vi.fn(),
+            create: vi.fn(),
+            findAllByPessoaId: vi.fn(),
+            findOne: vi.fn(),
+            update: vi.fn(),
+            remove: vi.fn(),
           },
         },
       ],

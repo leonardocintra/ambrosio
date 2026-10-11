@@ -4,19 +4,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateParoquiaDto } from './dto/create-paroquia.dto';
-import { UpdateParoquiaDto } from './dto/update-paroquia.dto';
-import { PrismaService } from 'src/prisma.service';
-import { DioceseService } from 'src/diocese/diocese.service';
-import { EnderecoService } from 'src/endereco/endereco.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { CreateParoquiaDto } from './dto/create-paroquia.dto.js';
+import { UpdateParoquiaDto } from './dto/update-paroquia.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { DioceseService } from 'src/diocese/diocese.service.js';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 import { accessibleBy } from '@casl/prisma';
 import { Paroquia } from 'neocatecumenal';
-import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select';
-import { Prisma } from 'src/prisma/generated-client';
-import { SetorService } from 'src/mapa/setor/setor.service';
-import { serializeParoquia } from './paroquia.serialize';
-import { BaseService } from 'src/commons/base.service';
+import { PAROQUIA_SELECT } from 'src/prisma/selects/paroquia.select.js';
+import { Prisma } from 'src/prisma/generated-client.js';
+import { SetorService } from 'src/mapa/setor/setor.service.js';
+import { serializeParoquia } from './paroquia.serialize.js';
+import { BaseService } from 'src/commons/base.service.js';
 
 @Injectable()
 export class ParoquiaService extends BaseService {

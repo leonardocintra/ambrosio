@@ -1,5 +1,5 @@
 import { Paroquia } from 'neocatecumenal';
-import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
+import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function serializeParoquia(paroquia: any): Paroquia {

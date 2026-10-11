@@ -1,5 +1,5 @@
 export const mockSaoPedroPessoaService = {
-  findAllPessoas: jest.fn().mockResolvedValue([
+  findAllPessoas: vi.fn().mockResolvedValue([
     {
       id: 1,
       externalId: 'id-usuario-teste-e2e-1',
@@ -16,7 +16,7 @@ export const mockSaoPedroPessoaService = {
       dataNascimento: new Date('1994-02-23'),
     },
   ]),
-  getExternalPessoaByCpf: jest.fn().mockResolvedValue({
+  getExternalPessoaByCpf: vi.fn().mockResolvedValue({
     id: 1,
     externalId: 'id-usuario-teste-e2e-1',
     nome: 'Pessoa Carismatica Mock',
@@ -31,7 +31,7 @@ export const mockSaoPedroPessoaService = {
     ativo: true,
     dataNascimento: new Date('1994-02-23'),
   }),
-  findExternalPessoaByUuid: jest.fn().mockResolvedValue({
+  findExternalPessoaByUuid: vi.fn().mockResolvedValue({
     id: 2,
     externalId: 'id-usuario-teste-e2e-2',
     nome: 'Carmem Hernandez Mock',
@@ -46,7 +46,7 @@ export const mockSaoPedroPessoaService = {
     ativo: true,
     dataNascimento: new Date('1932-02-23'),
   }),
-  createExternalPessoa: jest.fn().mockResolvedValue({
+  createExternalPessoa: vi.fn().mockResolvedValue({
     id: 2,
     externalId: 'id-usuario-teste-e2e-2',
     nome: 'Carmem Hernandez Mock',
@@ -61,5 +61,5 @@ export const mockSaoPedroPessoaService = {
     ativo: true,
     dataNascimento: new Date('1932-02-23'),
   }),
-  updateExternalPessoa: jest.fn().mockResolvedValue({}),
+  updateExternalPessoa: vi.fn().mockResolvedValue({}),
 };

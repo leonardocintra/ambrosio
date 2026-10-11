@@ -8,12 +8,12 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { EquipeService } from './equipe.service';
-import { CreateEquipeDto } from './dto/create-equipe.dto';
-import { UpdateEquipeDto } from './dto/update-equipe.dto';
+import { EquipeService } from './equipe.service.js';
+import { CreateEquipeDto } from './dto/create-equipe.dto.js';
+import { UpdateEquipeDto } from './dto/update-equipe.dto.js';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { RoleGuard } from 'src/auth/role/role.guard';
+import { AuthGuard } from 'src/auth/auth.guard.js';
+import { RoleGuard } from 'src/auth/role/role.guard.js';
 
 @Controller('equipe')
 @ApiTags('Equipe')

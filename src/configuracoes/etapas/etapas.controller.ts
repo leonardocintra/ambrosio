@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { EtapasService } from './etapas.service';
+import { EtapasService } from './etapas.service.js';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Etapas do Caminho Neocatecumenal')

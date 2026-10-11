@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateComunidadeDto } from './dto/update-comunidade.dto';
-import { BaseService } from 'src/commons/base.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { ParoquiaService } from 'src/paroquia/paroquia.service';
+import { UpdateComunidadeDto } from './dto/update-comunidade.dto.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { ParoquiaService } from 'src/paroquia/paroquia.service.js';
 import { Comunidade } from 'neocatecumenal';
-import { Prisma } from 'src/prisma/generated-client';
-import { HistoricoService } from './historico/historico.service';
-import { ENDERECO_INCLUDE } from 'src/prisma/includes';
-import serializeComunidadeResponse from './comunidade.serialize';
-import { CreateComunidadeDto } from './dto/create-comunidade.dto';
+import { Prisma } from 'src/prisma/generated-client.js';
+import { HistoricoService } from './historico/historico.service.js';
+import { ENDERECO_INCLUDE } from 'src/prisma/includes.js';
+import serializeComunidadeResponse from './comunidade.serialize.js';
+import { CreateComunidadeDto } from './dto/create-comunidade.dto.js';
 
 @Injectable()
 export class ComunidadeService extends BaseService {

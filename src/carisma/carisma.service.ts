@@ -1,12 +1,12 @@
 import { Injectable, HttpException, BadRequestException } from '@nestjs/common';
-import { CreateCarismaDto } from './dto/create-carisma.dto';
-import { UpdateCarismaDto } from './dto/update-carisma.dto';
-import { BaseService } from 'src/commons/base.service';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
-import { CARISMA_IDS_ENUM, TIPO_CARISMA_ENUM } from 'src/commons/enums/enums';
-import { PessoaService } from 'src/pessoa/pessoa.service';
-import { CreateCarismaDaPessoaDto } from './dto/create-carisma-da-pessoa.dto';
+import { CreateCarismaDto } from './dto/create-carisma.dto.js';
+import { UpdateCarismaDto } from './dto/update-carisma.dto.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
+import { CARISMA_IDS_ENUM, TIPO_CARISMA_ENUM } from 'src/commons/enums/enums.js';
+import { PessoaService } from 'src/pessoa/pessoa.service.js';
+import { CreateCarismaDaPessoaDto } from './dto/create-carisma-da-pessoa.dto.js';
 import { Pessoa } from 'neocatecumenal';
 
 @Injectable()

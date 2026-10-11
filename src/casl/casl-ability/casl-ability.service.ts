@@ -12,7 +12,7 @@ import {
   pessoa,
   user,
   etapa,
-} from 'src/prisma/generated-client';
+} from 'src/prisma/generated-client.js';
 
 export type PermActions = 'manage' | 'create' | 'read' | 'update' | 'delete';
 

@@ -5,18 +5,18 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateDioceseDto } from './dto/create-diocese.dto';
-import { UpdateDioceseDto } from './dto/update-diocese.dto';
-import { PrismaService } from 'src/prisma.service';
-import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service';
+import { CreateDioceseDto } from './dto/create-diocese.dto.js';
+import { UpdateDioceseDto } from './dto/update-diocese.dto.js';
+import { PrismaService } from 'src/prisma.service.js';
+import { CaslAbilityService } from 'src/casl/casl-ability/casl-ability.service.js';
 import { accessibleBy } from '@casl/prisma';
-import { EnderecoService } from 'src/endereco/endereco.service';
-import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service';
+import { EnderecoService } from 'src/endereco/endereco.service.js';
+import { TipoDioceseService } from 'src/configuracoes/tipo-diocese/tipo-diocese.service.js';
 import { Diocese } from 'neocatecumenal';
-import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco';
-import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select';
-import { BaseService } from 'src/commons/base.service';
-import { ENDERECO_INCLUDE } from 'src/prisma/includes';
+import { serializeEndereco } from 'src/commons/utils/serializers/serializerEndereco.js';
+import { DIOCESE_SELECT } from 'src/prisma/selects/diocese.select.js';
+import { BaseService } from 'src/commons/base.service.js';
+import { ENDERECO_INCLUDE } from 'src/prisma/includes.js';
 
 @Injectable()
 export class DioceseService extends BaseService {

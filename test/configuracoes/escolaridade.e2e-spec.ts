@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { setupTestModule } from '../test-setup';
+import { setupTestModule } from '../test-setup.js';
 
 describe('EscolaridadeController (e2e)', () => {
   let app: INestApplication;

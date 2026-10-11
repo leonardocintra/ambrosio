@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { SetorService } from './setor.service';
-import { SetorController } from './setor.controller';
+import { SetorService } from './setor.service.js';
+import { SetorController } from './setor.controller.js';
 
 @Module({
   controllers: [SetorController],
