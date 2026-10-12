@@ -50,7 +50,7 @@ export class ParoquiaService extends BaseService {
     }
   }
 
-  async findAll(dioceseId?: number) {
+  async findAll(dioceseId?: number): Promise<Paroquia[]> {
     const permissionWhere = this.asPermissions();
     const where = {
       ...permissionWhere,

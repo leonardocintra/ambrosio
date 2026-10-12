@@ -11,14 +11,14 @@ export function serializeEndereco(end: any): Endereco {
     complemento: end.complemento,
     observacao: end.observacao,
     cidade: {
-      id: end.cidadeId,
+      id: end.cidade.id,
       nome: end.cidade.nome,
       estado: {
-        id: end.cidade.estadoId,
+        id: end.cidade.estado.id,
         sigla: end.cidade.estado.sigla,
         nome: end.cidade.estado.nome,
         pais: {
-          id: end.cidade.estado.paisId,
+          id: end.cidade.estado.pais.id,
           nome: end.cidade.estado.pais.nome,
         },
       },
