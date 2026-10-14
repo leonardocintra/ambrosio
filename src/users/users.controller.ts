@@ -13,6 +13,7 @@ import type { Request } from 'express';
 import { UsersService } from './users.service.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
+import { AdicionarParoquiasAoUsuarioDto } from './dto/adicionar-paroquias-ao-usuario.dto.js';
 import { AuthGuard } from 'src/auth/auth.guard.js';
 import { RoleGuard } from 'src/auth/role/role.guard.js';
 
@@ -49,6 +50,17 @@ export class UsersController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
+  }
+
+  @Patch(':id/paroquias')
+  adicionarParoquiasAoUsuario(
+    @Param('id') id: string,
+    @Body() adicionarParoquiasAoUsuarioDto: AdicionarParoquiasAoUsuarioDto,
+  ) {
+    return this.usersService.adicionarParoquiasAoUsuario(
+      id,
+      adicionarParoquiasAoUsuarioDto.paroquiaIds,
+    );
   }
 
   @Delete(':id')
