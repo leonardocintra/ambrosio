@@ -30,7 +30,7 @@ export class ParoquiaController {
 
   @Get()
   findAll(@Query() query: FindAllParoquiasQueryDto) {
-    return this.paroquiaService.findAll(+query.dioceseId);
+    return this.paroquiaService.findAll(query);
   }
 
   @Get(':id')

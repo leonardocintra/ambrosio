@@ -58,8 +58,27 @@ export class UsersService extends BaseService {
     return this.prismaService.user.findMany();
   }
 
-  findOne(id: string) {
-    return this.prismaService.user.findUniqueOrThrow({ where: { id } });
+  async findOne(id: string) {
+    const user = await this.prismaService.user.findUniqueOrThrow({
+      where: { id },
+      include: {
+        usuarioParoquias: {
+          select: {
+            paroquia: {
+              select: {
+                id: true,
+                descricao: true
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return {
+      ...user,
+      usuarioParoquias: user.usuarioParoquias.map(({ paroquia }) => paroquia),
+    };
   }
 
   findOneByEmail(email: string) {
@@ -85,6 +104,18 @@ export class UsersService extends BaseService {
         whatsapp: updateUserDto.whatsapp,
         role: updateUserDto.role,
       },
+    });
+  }
+
+  async adicionarParoquiasAoUsuario(userId: string, paroquiaIds: number[]) {
+    this.validateUpdateAbility('user');
+    return await this.prismaService.$transaction(async (tx) => {
+      await tx.user.findUniqueOrThrow({ where: { id: userId } });
+      await tx.usuarioParoquia.deleteMany({ where: { userId } });
+
+      return await tx.usuarioParoquia.createMany({
+        data: paroquiaIds.map((paroquiaId) => ({ userId, paroquiaId })),
+      });
     });
   }
 

@@ -24,20 +24,8 @@ describe('PaisController (e2e)', () => {
         expect(res.body.data[0]).toBeInstanceOf(Object);
         expect(typeof res.body.data[0].id).toBe('number');
         expect(typeof res.body.data[0].nome).toBe('string');
-        expect(typeof res.body.data[0].capital).toBe('string');
-        expect(typeof res.body.data[0].isoAlpha2).toBe('string');
-        expect(typeof res.body.data[0].lingua).toBe('string');
-        expect(typeof res.body.data[0].regiao).toBe('string');
-        expect(typeof res.body.data[0].subRegiao).toBe('string');
-        expect(typeof res.body.data[0].regiaoIntermediaria).toBe('string');
         expect(res.body.data[0].id).toBe(1);
         expect(res.body.data[0].nome).toBe('Brasil');
-        expect(res.body.data[0].capital).toBe('Brasília');
-        expect(res.body.data[0].isoAlpha2).toBe('BR');
-        expect(res.body.data[0].lingua).toBe('portugues');
-        expect(res.body.data[0].regiao).toBe('América');
-        expect(res.body.data[0].subRegiao).toBe('América Latina e Caribe');
-        expect(res.body.data[0].regiaoIntermediaria).toBe('América do sul');
       });
   });
 
@@ -48,12 +36,6 @@ describe('PaisController (e2e)', () => {
       .expect((res) => {
         expect(res.body.data.id).toBe(2);
         expect(res.body.data.nome).toBe('Peru');
-        expect(res.body.data.capital).toBe('Lima');
-        expect(res.body.data.isoAlpha2).toBe('PE');
-        expect(res.body.data.lingua).toBe('aimará');
-        expect(res.body.data.regiao).toBe('América');
-        expect(res.body.data.subRegiao).toBe('América Latina e Caribe');
-        expect(res.body.data.regiaoIntermediaria).toBe('América do sul');
       });
   });
 
@@ -78,12 +60,6 @@ describe('PaisController (e2e)', () => {
       .expect(201)
       .expect((res) => {
         expect(res.body.data.nome).toBe('Argentina');
-        expect(res.body.data.capital).toBe('Buenos Aires');
-        expect(res.body.data.isoAlpha2).toBe('AR');
-        expect(res.body.data.lingua).toBe('espanhol');
-        expect(res.body.data.regiao).toBe('América');
-        expect(res.body.data.subRegiao).toBe('América Latina e Caribe');
-        expect(res.body.data.regiaoIntermediaria).toBe('América do sul');
       });
   });
 

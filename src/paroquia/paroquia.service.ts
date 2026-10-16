@@ -17,6 +17,7 @@ import { Prisma } from 'src/prisma/generated-client.js';
 import { SetorService } from 'src/mapa/setor/setor.service.js';
 import { serializeParoquia } from './paroquia.serialize.js';
 import { BaseService } from 'src/commons/base.service.js';
+import { FindAllParoquiasQueryDto } from './dto/findAll-paroquia.dto.js';
 
 @Injectable()
 export class ParoquiaService extends BaseService {
@@ -50,14 +51,25 @@ export class ParoquiaService extends BaseService {
     }
   }
 
-  async findAll(dioceseId?: number): Promise<Paroquia[]> {
+  async findAll(query: FindAllParoquiasQueryDto): Promise<Paroquia[]> {
+    const dioceseId = query.dioceseId ? +query.dioceseId : undefined;
+    const cidadeId = query.cidadeId ? +query.cidadeId : undefined;
+    
     const permissionWhere = this.asPermissions();
     const where = {
       ...permissionWhere,
     };
 
-    if (dioceseId) {
+    if (query.dioceseId) {
       where.dioceseId = dioceseId;
+    }
+
+    if (query.cidadeId) {
+      where.endereco = {
+        cidade: {
+          id: cidadeId,
+        }
+      };
     }
 
     const results = await this.prisma.paroquia.findMany({

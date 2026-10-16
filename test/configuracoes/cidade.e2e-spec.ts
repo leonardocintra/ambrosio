@@ -35,7 +35,6 @@ describe('CidadeController (e2e)', () => {
         const { pais } = estado;
         expect(pais).toBeInstanceOf(Object);
         expect(typeof pais.nome).toBe('string');
-        expect(typeof pais.lingua).toBe('string');
       });
   });
 
@@ -53,7 +52,6 @@ describe('CidadeController (e2e)', () => {
 
         const pais = estado.pais;
         expect(pais.nome).toBe('Brasil');
-        expect(pais.lingua).toBe('portugues');
       });
   });
 

@@ -8,7 +8,7 @@ export class PaisController {
 
   @Post()
   create(@Body() createPaisDto: CreatePaisDto) {
-    return this.paisService.createOrSelect(createPaisDto);
+    return this.paisService.create(createPaisDto);
   }
 
   @Get()
