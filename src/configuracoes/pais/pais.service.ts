@@ -3,11 +3,9 @@ import { CreatePaisDto } from './dto/create-pais.dto.js';
 import { UpdatePaisDto } from './dto/update-pais.dto.js';
 import { PrismaService } from 'src/prisma.service.js';
 import { HttpService } from '@nestjs/axios';
-import { catchError, firstValueFrom } from 'rxjs';
-import { AxiosError } from 'axios';
-import { IPaisOnu } from './IPaisOnu.js';
 import { Prisma } from 'src/prisma/generated-client.js';
 import { UNIQUE_CONSTRAINT_FAILED } from 'src/commons/constants/constants.js';
+
 
 @Injectable()
 export class PaisService {
@@ -16,22 +14,13 @@ export class PaisService {
   constructor(
     private prisma: PrismaService,
     private readonly httpService: HttpService,
-  ) {}
+  ) { }
 
-  async createOrSelect(createPaisDto: CreatePaisDto) {
-    const paisOnu: IPaisOnu = await this.buscaPaisOnu(createPaisDto);
-
+  async create(createPaisDto: CreatePaisDto) {
     try {
       return await this.prisma.pais.create({
         data: {
-          nome: paisOnu.nome.abreviado,
-          capital: paisOnu.governo.capital.nome,
-          isoAlpha2: paisOnu.id['ISO-3166-1-ALPHA-2'],
-          lingua: paisOnu.linguas[0].nome,
-          regiao: paisOnu.localizacao.regiao.nome,
-          subRegiao: paisOnu.localizacao['sub-regiao'].nome,
-          regiaoIntermediaria:
-            paisOnu.localizacao['regiao-intermediaria']?.nome,
+          nome: createPaisDto.nome,
         },
       });
     } catch (error) {
@@ -61,89 +50,21 @@ export class PaisService {
   }
 
   update(id: number, updatePaisDto: UpdatePaisDto) {
-    return `This action updates a #${id} pai $${updatePaisDto.nome}`;
+    return this.prisma.pais.update({
+      where: { id },
+      data: updatePaisDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} pai`;
+    return this.prisma.pais.delete({
+      where: { id },
+    });
   }
 
   private findByName(nome: string) {
     return this.prisma.pais.findFirstOrThrow({
       where: { nome },
     });
-  }
-
-  private async buscaPaisOnu(createPaisDto: CreatePaisDto): Promise<IPaisOnu> {
-    const { data: dataAll } = await firstValueFrom(
-      this.httpService
-        .get<
-          IPaisOnu[]
-        >('https://servicodados.ibge.gov.br/api/v1/paises/listar-todos')
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data);
-            throw new HttpException(
-              `API de paises com erro. Erro: ${error.message}`,
-              502,
-            );
-          }),
-        ),
-    );
-
-    if (!dataAll) {
-      throw new HttpException(
-        'Não foi possivel validar o pais digitado. Erro na busca de paises da ONU',
-        400,
-      );
-    }
-
-    const paisesValidos = Array.from(
-      new Map(
-        dataAll.map((p) => [
-          p.nome.abreviado,
-          { id: p.id, nome: p.nome.abreviado },
-        ]),
-      ).values(),
-    );
-
-    const paisEncontrado = paisesValidos.find(
-      (p) =>
-        p.nome
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase() ===
-        createPaisDto.nome
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase(),
-    );
-
-    if (!paisEncontrado) {
-      throw new HttpException(
-        'Pais não encontrado. Verifique se digitou corretamente o nome e tente novamente',
-        404,
-      );
-    }
-
-    const idPaisOnu = paisEncontrado.id['ISO-3166-1-ALPHA-2'];
-
-    const { data: dataOne } = await firstValueFrom(
-      this.httpService
-        .get<
-          IPaisOnu[]
-        >(`https://servicodados.ibge.gov.br/api/v1/paises/${idPaisOnu}`)
-        .pipe(
-          catchError((error: AxiosError) => {
-            this.logger.error(error.response.data);
-            throw new HttpException(
-              `API de paises com erro. Erro: ${error.message}`,
-              502,
-            );
-          }),
-        ),
-    );
-
-    return dataOne[0];
   }
 }

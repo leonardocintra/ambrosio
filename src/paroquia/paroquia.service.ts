@@ -52,19 +52,22 @@ export class ParoquiaService extends BaseService {
   }
 
   async findAll(query: FindAllParoquiasQueryDto): Promise<Paroquia[]> {
+    const dioceseId = query.dioceseId ? +query.dioceseId : undefined;
+    const cidadeId = query.cidadeId ? +query.cidadeId : undefined;
+    
     const permissionWhere = this.asPermissions();
     const where = {
       ...permissionWhere,
     };
 
     if (query.dioceseId) {
-      where.dioceseId = query.dioceseId;
+      where.dioceseId = dioceseId;
     }
 
     if (query.cidadeId) {
       where.endereco = {
         cidade: {
-          id: +query.cidadeId,
+          id: cidadeId,
         }
       };
     }

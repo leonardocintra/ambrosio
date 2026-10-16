@@ -36,7 +36,6 @@ export const SELECT_CIDADE = {
       pais: {
         select: {
           nome: true,
-          lingua: true,
         },
       },
     },

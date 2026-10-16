@@ -9,15 +9,9 @@ datasource db {
 }
 
 model pais {
-  id                  Int      @id @default(autoincrement())
-  isoAlpha2           String   @db.VarChar(2)
-  nome                String   @unique @db.VarChar(100)
-  regiao              String   @db.VarChar(100)
-  subRegiao           String   @db.VarChar(100)
-  regiaoIntermediaria String?  @db.VarChar(100)
-  lingua              String   @db.VarChar(50)
-  capital             String   @db.VarChar(100)
-  estado              estado[]
+  id     Int      @id @default(autoincrement())
+  nome   String   @unique @db.VarChar(100)
+  estado estado[]
 }
 
 model estado {

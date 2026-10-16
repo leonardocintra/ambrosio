@@ -146,25 +146,13 @@ async function main() {
   async function pais() {
     await prisma.pais.create({
       data: {
-        capital: 'Brasília',
         nome: 'Brasil',
-        lingua: 'portugues',
-        regiao: 'América',
-        subRegiao: 'América Latina e Caribe',
-        regiaoIntermediaria: 'América do sul',
-        isoAlpha2: 'BR',
       },
     });
 
     await prisma.pais.create({
       data: {
-        capital: 'Lima',
         nome: 'Peru',
-        lingua: 'aimará',
-        regiao: 'América',
-        subRegiao: 'América Latina e Caribe',
-        regiaoIntermediaria: 'América do sul',
-        isoAlpha2: 'PE',
       },
     });
 
